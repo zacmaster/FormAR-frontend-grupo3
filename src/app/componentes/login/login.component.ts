@@ -12,11 +12,12 @@ export class LoginComponent implements OnInit {
   }
 
   constructor(){
-    this.usuario = new Usuario('','');
+    this.usuario = new Usuario('','','');
   }
 
   onSubmit(){
     console.log(this.usuario);
     
   }
+
 }
