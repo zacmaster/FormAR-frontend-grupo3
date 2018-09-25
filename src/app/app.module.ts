@@ -13,6 +13,8 @@ import { LoginComponent } from './vistas/login/login.component';
 import { HomeComponent } from './vistas/home/home.component';
 import { RegisterComponent } from './vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
+import { ClientesListComponent } from './componentes/clientes-list/clientes-list.component';
+import { AbmClientesComponent } from './vistas/abm-clientes/abm-clientes.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.co
     HomeComponent,
     RegisterComponent,
     PageNotFoundComponent,
+    ClientesListComponent,
+    AbmClientesComponent,
   ],
   imports: [
     BrowserModule,
