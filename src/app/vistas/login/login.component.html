@@ -35,7 +35,7 @@
                 <span *ngIf="!password.valid && password.touched">La constraseña es obligatoria y debe tener un mínimo de 4 caracteres</span>
               </div>
               <button class="btn btn-success" type="submit" mr-4>Login</button>
-              <a href="#" class="btn btn-info ml-4">Registrar</a>
+              <a [routerLink]="['/register']" class="btn btn-info ml-4">Registrar</a>
             </div>
           </div>
         </form>
