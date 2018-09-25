@@ -1,5 +1,5 @@
 export class Cliente {
-    id: number = 0;
+    id: number;
     name: string;
     lastname: string;
     email: string;
@@ -10,6 +10,10 @@ export class Cliente {
         this.lastname = lastname;
         this.email = email;
         this.phone = phone;
+    }
+    //for testing purpose
+    setId(id: number){
+        this.id = id;
     }
 }
 
