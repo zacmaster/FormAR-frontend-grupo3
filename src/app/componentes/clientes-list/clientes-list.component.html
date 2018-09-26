@@ -1,25 +1,75 @@
-<div class="container p-0">
-  <h4 class="text-center">Clientes</h4>
-  <table class="table table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th>#</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Email</th>
-        <th>Teléfono</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let cliente of clientes">
-        <th scope="row"> {{ cliente.id }} </th>
-        <td> {{ cliente.name }} </td>
-        <td> {{ cliente.lastname }} </td>
-        <td> {{ cliente.email }} </td>
-        <td> {{ cliente.phone }} </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col-xs-4 col-md-4" *ngIf="true">
+      <div class="card mt-4">
+          <div class="card-head">
+            <span class="btn btn-danger float-right"><i class="fas fa-times"></i></span>
+          </div>
+          <div class="card-body">
+              <div class="card-title">
+                Agregue un nuevo cliente
+              </div>
+            <div class="form-group">
+              <input  class="form-control"
+                      type="text"
+                      placeholder="Ingrese nombre"
+                      name=""
+                      id="">
+            </div>
+            <div class="form-group">
+              <input  class="form-control"
+                      type="text"
+                      placeholder="Ingrese apellido"
+                      name=""
+                      id="">
+            </div>
+            <div class="form-group">
+              <input  class="form-control"
+                      type="text"
+                      placeholder="Ingrese email"
+                      name=""
+                      id="">
+            </div>
+            <div class="form-group">
+              <input  class="form-control"
+                      type="text"
+                      placeholder="Ingrese teléfono"
+                      name=""
+                      id="">
+            </div>
+            <button class="btn btn-primary">Agregar</button>
+        </div>
+  </div>
+
+  </div>
+  <div class="col-xs-8 col-md-8">
+      <div class="container p-0">
+          <table class="table table-hover mt-4">
+            <thead class="thead-light">
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cliente of clientes">
+                <th scope="row"> {{ cliente.id }} </th>
+                <td> {{ cliente.name }} </td>
+                <td> {{ cliente.lastname }} </td>
+                <td> {{ cliente.email }} </td>
+                <td> {{ cliente.phone }} </td>
+                <td>
+                  <span class="btn btn-success mr-2"><i class="fas fa-edit"></i></span>
+                  <span class="btn btn-danger"><i class="fas fa-minus-circle"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  </div>
 </div>  
 
 <button (click)="eliminar()">Eliminar</button>
