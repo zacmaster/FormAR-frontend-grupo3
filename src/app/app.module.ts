@@ -15,6 +15,10 @@ import { RegisterComponent } from './vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
 import { ClientesListComponent } from './componentes/clientes-list/clientes-list.component';
 import { AbmClientesComponent } from './vistas/abm-clientes/abm-clientes.component';
+import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
+
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+
 
 @NgModule({
   declarations: [
@@ -26,12 +30,14 @@ import { AbmClientesComponent } from './vistas/abm-clientes/abm-clientes.compone
     PageNotFoundComponent,
     ClientesListComponent,
     AbmClientesComponent,
+    DialogoConfirmacionComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [
     UsuarioService
