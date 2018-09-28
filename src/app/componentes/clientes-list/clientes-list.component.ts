@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClienteService } from '../../servicios/cliente.service';
 import { Cliente } from '../../modelos/cliente';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { PATTERNS } from '../../utilidades/patterns';
 
 @Component({
   selector: 'clientes-list',
@@ -14,10 +15,13 @@ export class ClientesListComponent implements OnInit {
   mostrarDialogo: boolean = false;
   clienteSeleccionado: Cliente = new Cliente('','','','');
   nombreCliente: string = '';
+
   dlg = {
     titulo: 'Baja de cliente',
     texto: ''
   }
+
+  public patterns = PATTERNS;
 
 
 
@@ -26,8 +30,11 @@ export class ClientesListComponent implements OnInit {
 
   ngOnInit() {
     this.getClientes();
+    console.log(this.patterns.email);
+    
   }
 
+  
 
   getClientes(){
     this._clienteService.getClientes()
