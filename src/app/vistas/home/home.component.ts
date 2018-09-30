@@ -7,9 +7,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  linksNavegacion = [
+    {
+      name: 'Alumnos',
+      active: true,
+      url: '/home/alumnos'
+    },
+    {
+      name: 'Contactos',
+      active: false,
+      url: '/home/contactos'
+    },
+    {
+      name: 'Cursos',
+      active: false,
+      url: '/home/cursos'
+    },
+    {
+      name: 'Cursadas',
+      active: false,
+      url: '/home/cursadas'
+    },
+    {
+      name: 'Inscripción',
+      active: false,
+      url: '/home/inscripcion'
+    }
+  ]
+
   constructor() { }
 
   ngOnInit() {
+
   }
 
+
+
+  clickLink(){
+  }
 }

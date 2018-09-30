@@ -14,10 +14,14 @@ import { HomeComponent } from './vistas/home/home.component';
 import { RegisterComponent } from './vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
 import { ClientesListComponent } from './componentes/clientes-list/clientes-list.component';
-import { AbmClientesComponent } from './vistas/abm-clientes/abm-clientes.component';
+import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
 import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
 
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { ContactosComponent } from './vistas/contactos/contactos.component';
+import { CursosComponent } from './vistas/cursos/cursos.component';
+import { CursadasComponent } from './vistas/cursadas/cursadas.component';
+import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component';
 
 
 @NgModule({
@@ -29,8 +33,12 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
     RegisterComponent,
     PageNotFoundComponent,
     ClientesListComponent,
-    AbmClientesComponent,
+    AbmAlumnosComponent,
     DialogoConfirmacionComponent,
+    ContactosComponent,
+    CursosComponent,
+    CursadasComponent,
+    InscripcionComponent,
   ],
   imports: [
     BrowserModule,
