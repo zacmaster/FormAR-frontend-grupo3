@@ -3,6 +3,7 @@ import { ClienteService } from '../../servicios/cliente.service';
 import { Cliente } from '../../modelos/cliente';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
+import { VALIDACIONES } from '../../utilidades/mensajes';
 
 @Component({
   selector: 'clientes-list',
@@ -12,15 +13,21 @@ import { PATTERNS } from '../../utilidades/patterns';
 export class ClientesListComponent implements OnInit {
   public clientes = [];
   public edicion: boolean = false;
-  mostrarDialogo: boolean = false;
+  tituloNuevoAlumno = "Nuevo alumno";
+  tituloEdicionAlumno = "Edición de alumno";
+  mostrarDialogoAB = false;
+  mostrarDialogoBorrar: boolean = false;
   clienteSeleccionado: Cliente = new Cliente('','','','');
   nombreCliente: string = '';
+  textoAgregar = 'Agregar';
+  textoEditar = 'Guardar';
 
   dlg = {
     titulo: 'Baja de cliente',
     texto: ''
   }
 
+  public VALIDACIONES = VALIDACIONES;
   public patterns = PATTERNS;
 
 
@@ -50,14 +57,14 @@ export class ClientesListComponent implements OnInit {
                       ${ this.clienteSeleccionado.name }
                       ${ this.clienteSeleccionado.lastname } ?`
 
-    this.mostrarDialogo = true;
+    this.mostrarDialogoBorrar = true;
     
   }
 
   eliminar(){
     this._spinnerService.show();
     setTimeout(() => {
-      this.mostrarDialogo = false;
+      this.mostrarDialogoBorrar = false;
       this._clienteService.deleteCliente(this.clienteSeleccionado.id).
         subscribe(response =>{
           this.getClientes();
@@ -77,6 +84,7 @@ export class ClientesListComponent implements OnInit {
         subscribe(response => {
           this.clientes.push(cliente);
           this.clienteSeleccionado = new Cliente('','','','');
+          this.mostrarDialogoAB = false;
         })
 
       })
@@ -90,6 +98,7 @@ export class ClientesListComponent implements OnInit {
         console.log(r)
         this.clienteSeleccionado = new Cliente('','','','');
         this.edicion = false;
+        this.mostrarDialogoAB = false;
       })  
   }
 
@@ -106,11 +115,19 @@ export class ClientesListComponent implements OnInit {
   }
 
   ocultarDialogo(){
-    this.mostrarDialogo = false;
+    this.mostrarDialogoBorrar = false;
+    this.mostrarDialogoAB = false;
   }
-  nuevoCliente(){
+
+  nuevoAlumno(){
+    this.edicion = false;
     this.clienteSeleccionado = new Cliente('','','','');
+    this.mostrarDialogoAB = true;
+  }
+
+  editarAlumno(){
     this.edicion = true;
+    this.mostrarDialogoAB = true;
   }
 
 

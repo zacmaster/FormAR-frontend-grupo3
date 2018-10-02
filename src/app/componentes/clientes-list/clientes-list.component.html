@@ -1,119 +1,164 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-4 col-md-4" *ngIf="edicion">
-        <div class="card mt-4">
-            <div class="card-head">
-              <span class="btn btn-danger float-right" (click)="edicion = false"><i class="fas fa-times"></i></span>
+<div class="">
+  <div class="">
+    <div class="dialogoEdicion" *ngIf="mostrarDialogoAB">
+        <div class="card mt-4 w-50 mx-auto">
+            <div class="card-head d-flex  w-100 justify-content-between">
+              <div></div>
+              <div class="pt-2">
+                <h5 *ngIf="!edicion" class="">{{ tituloNuevoAlumno}}</h5>
+                <h5 *ngIf="edicion" class="">{{ tituloEdicionAlumno}}</h5>
+              </div>
+              <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
             </div>
             <div class="card-body">
-                <div class="card-title">
-                  Agregue un nuevo cliente
-                </div>
-              <div class="form-group">
-                <input  #name="ngModel"
-                        class="form-control"
-                        type="text"
-                        [(ngModel)]="clienteSeleccionado.name"
-                        placeholder="Ingrese nombre"
-                        >
-                <span *ngIf="!name.isValid && name.touched">Debe ingresar un nombre válido</span>
-              </div>
-              <div class="form-group">
-                <input  class="form-control"
-                        [(ngModel)]="clienteSeleccionado.lastname"
-                        type="text"
-                        required
-                        placeholder="Ingrese apellido"
-                        name=""
-                        id="">
-                      </div>
-              <div class="form-group">
-                <input  
-                        id="email"
-                        name="email"
-                        class="form-control"
-                        required
-                        minlength="6"
-                        type="text"
-                        #email="ngModel"
-                        [(ngModel)]="clienteSeleccionado.email"
-                        placeholder="Ingrese email"
-                        [pattern]="patterns.email"
-                        >
-
-                  <div  *ngIf="email.invalid && (email.dirty || email.touched)"
+              <div class="row">
+                <div class="form-group col">
+                  <label for="name">Nombre</label>
+                    <input  #name="ngModel"
+                            class="form-control"
+                            type="text"
+                            required
+                            [(ngModel)]="clienteSeleccionado.name"
+                            placeholder="Ingrese nombre"
+                            id="name"
+                            name="name"
+                            >
+                  <div  *ngIf="name.invalid && (name.dirty || name.touched)"
                         class="alert alert-danger">
-                      
-                      <div *ngIf="email.errors.required">El email es obligatorio</div>    
-                      <div *ngIf="email.errors.minlength">Min lenght</div>    
-                      <div *ngIf="email.errors.pattern">Email inválido</div>    
-                  
-                  
-                  
+                    <div *ngIf="name.errors.required">{{ VALIDACIONES.nombreRequerido }}</div>    
                   </div>
-
-
-
-
-
+                </div>
+                <div class="form-group col">
+                  <label for="lastname">Apellido</label>
+                  <input  class="form-control"
+                  [(ngModel)]="clienteSeleccionado.lastname"
+                  type="text"
+                  required
+                  placeholder="Ingrese apellido"
+                  name="lastname"
+                  id="lastname">
+                  <div  *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
+                        class="alert alert-danger">
+                    <div *ngIf="lastname.errors.required">{{ VALIDACIONES.apellidoRequerido }}</div>    
+                  </div>
+                </div>
 
               </div>
-              <div class="form-group">
-                <input  class="form-control"
-                        [(ngModel)]="clienteSeleccionado.phone"
-                        type="text"
-                        placeholder="Ingrese teléfono"
-                        name=""
-                        id="">
+              <div class="row">
+                <div class="form-group col">
+                  <label for="lastname">DNI</label>
+                  <input  class="form-control"
+                  [(ngModel)]="clienteSeleccionado.dni"
+                  type="text"
+                  placeholder="Ingrese DNI"
+                  name="dni"
+                  id="dni">
+
+                  <div  *ngIf="dni.invalid && (dni.dirty || dni.touched)"
+                        class="alert alert-danger">
+                    <div *ngIf="dni.errors.minlength">{{ VALIDACIONES.minimoSeis }}</div>    
+                  </div>
+                </div>
+                <div class="form-group col">
+                  <label for="nacimiento">Fecha Nac.</label>
+                  <input  type="date"
+                          name=""
+                          id=""
+                          class="form-control"
+                          >
+                </div>
               </div>
-              <button class="btn btn-primary" (click)="guardar()">Agregar</button>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="email">Email</label>
+                  <input  
+                  id="email"
+                  name="email"
+                          class="form-control"
+                          required
+                          minlength="6"
+                          type="text"
+                          #email="ngModel"
+                          [(ngModel)]="clienteSeleccionado.email"
+                          placeholder="Ingrese email"
+                          [pattern]="patterns.email"
+                          >
+                          
+                          <div  *ngIf="email.invalid && (email.dirty || email.touched)"
+                          class="alert alert-danger">
+                          
+                            <div *ngIf="email.errors.required">{{ VALIDACIONES.emailRequerido }}</div>    
+                            <div *ngIf="email.errors.minlength">{{ VALIDACIONES.minimoSeis }}</div>    
+                            <div *ngIf="email.errors.pattern">{{ VALIDACIONES.emailValido }}}</div>    
+                          
+                          </div>
+                </div>
+                <div class="form-group col">
+                  <label for="lastname">Teléfono</label>
+                  <input  class="form-control"
+                          [(ngModel)]="clienteSeleccionado.phone"
+                          type="text"
+                          placeholder="Ingrese teléfono"
+                          name=""
+                          id="phone">
+                </div>
+
+              </div>
+              <button class="btn btn-primary float-right " (click)="guardar()">
+                <span *ngIf="edicion">{{ textoEditar }}</span>
+                <span *ngIf="!edicion">{{ textoAgregar }}</span>
+              </button>
           </div>
     </div>
   
     </div>
-    <div class="col-xs-8 col-md-8">
-        <div class="container p-0">
-            <table class="table table-hover mt-4 bg-light">
-              <thead class="thead-light">
-                <tr>
-                  <th>#</th>
-                  <th>Nombre</th>
-                  <th>Apellido</th>
-                  <th>Email</th>
-                  <th>Teléfono</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let cliente of clientes" >
-                  <th scope="row"> {{ cliente.id }} </th>
-                  <td> {{ cliente.name }} </td>
-                  <td> {{ cliente.lastname }} </td>
-                  <td> {{ cliente.email }} </td>
-                  <td> {{ cliente.phone }} </td>
-                  <td>
-                    <span class="btn btn-success mr-2" (click)="edicion = true; clienteSeleccionado = cliente">
-                      <i class="fas fa-edit"></i>
-                    </span>
-                    <span class="btn btn-danger" (click)="clienteSeleccionado = cliente; mostrarDialogoEliminar()">
-                      <i class="fas fa-minus-circle"></i>
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+    <div class="p-0">
+        <div class="bg-light">
+            <div class="input-group py-4 col-5">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Filtrar</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                <div class="input-group-append">
+                  <button class="btn btn-success" (click)="nuevoAlumno()"><span>{{ tituloNuevoAlumno}}</span></button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover bg-light">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Alumno</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>DNI</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let cliente of clientes" >
+                        <td> {{ cliente.name }}  {{ cliente.lastname }}</td>
+                        <td> {{ cliente.phone }} </td>
+                        <td> {{ cliente.email }} </td>
+                        <td>  {{ cliente.dni }}</td>
+                        <td>
+                          <span class="btn btn-success mr-2" (click)="editarAlumno(); clienteSeleccionado = cliente">
+                            <i class="fas fa-edit"></i>
+                          </span>
+                          <span class="btn btn-danger" (click)="clienteSeleccionado = cliente; mostrarDialogoEliminar()">
+                            <i class="fas fa-minus-circle"></i>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
           </div>
     </div>
   </div>  
-  
-  <button (click)="eliminar()">Eliminar</button>
-  <button (click)="nuevoCliente()">Agregar</button>
-  <button (click)="actualizar()">Actualizar</button>
-  <button (click)="obtenerCliente()">ObtenerCliente2</button>
 </div>
 
 
-<dialogo-confirmacion *ngIf="mostrarDialogo"
+<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
                       (clickBotonCerrar)="ocultarDialogo()"
                       (clickBotonIzquierdo)="ocultarDialogo()"
                       (clickBotonDerecho)="eliminar()"

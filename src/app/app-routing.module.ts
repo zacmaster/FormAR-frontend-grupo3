@@ -12,7 +12,7 @@ import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '', redirectTo: '/home/alumnos', pathMatch: 'full' },
     { 
         path: 'home',
         component:  HomeComponent,

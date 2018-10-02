@@ -1,0 +1,21 @@
+.dialogoEdicion{
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: rgb(104, 104, 104,0.3);
+}
+
+.card{
+    -moz-box-shadow:0 0 8px 0 black !important;
+    -webkit-box-shadow:0 0 8px 0 black !important;
+    box-shadow:0 0 8px 0 black !important;
+}
+
+tbody{
+    max-height: 200px;
+    overflow-y: scroll;
+}

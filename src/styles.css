@@ -17,3 +17,4 @@ body{
 :not(output):-moz-ui-invalid:-moz-focusring {
     box-shadow: 0 0 2px 2px rgba(255,0,0,0.4);
 }
+
