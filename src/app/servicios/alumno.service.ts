@@ -1,58 +1,58 @@
 import { Injectable } from '@angular/core';
 
-import { ICliente } from '../interfaces/icliente'
+import { IAlumno } from '../interfaces/ialumno'
 
 import { GLOBAL } from './global';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Cliente } from '../modelos/cliente';
+import { Alumno } from '../modelos/alumno';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService {
-  public clientesUrl: string =  GLOBAL.url + 'clientes';
+export class AlumnoService {
+  public alumnosUrl: string =  GLOBAL.url + 'alumnos';
 
   constructor(private _http: HttpClient) { }
 
 
-  getClientes(): Observable<ICliente[]>{
-    return this._http.get<ICliente[]>(this.clientesUrl)
+  getAlumnos(): Observable<IAlumno[]>{
+    return this._http.get<IAlumno[]>(this.alumnosUrl)
   }
   
-  addCliente(cliente: Cliente): Observable<Cliente>{
-    return this._http.post<Cliente>(this.clientesUrl, cliente, GLOBAL.httpOptions)
+  addAlumno(alumno: Alumno): Observable<Alumno>{
+    return this._http.post<Alumno>(this.alumnosUrl, alumno, GLOBAL.httpOptions)
       .pipe(catchError(this.handleError))
     }
     
-  updateCliente(cliente: Cliente){
-    const url =`${this.clientesUrl}/${cliente.id}`;
+  updateAlumno(alumno: Alumno){
+    const url =`${this.alumnosUrl}/${alumno.id}`;
 
-    return this._http.put<Cliente>(url, cliente, GLOBAL.httpOptions).
+    return this._http.put<Alumno>(url, alumno, GLOBAL.httpOptions).
       pipe(catchError(this.handleError))
 
   }
 
-  deleteCliente(id: number): Observable<{}>{
-    const url = `${this.clientesUrl}/${id}`;
+  deleteAlumno(id: number): Observable<{}>{
+    const url = `${this.alumnosUrl}/${id}`;
 
     return this._http.delete(url, GLOBAL.httpOptions)
       .pipe(catchError(this.handleError))
   }
 
-  getCliente(id: number): Observable<ICliente> {
-    return this.getClientes().pipe(
-      map(clientes => clientes.find(cliente => cliente.id === id))
+  getAlumno(id: number): Observable<IAlumno> {
+    return this.getAlumnos().pipe(
+      map(alumnos => alumnos.find(alumno => alumno.id === id))
     )
   }
 
-  save(cliente: Cliente){
-    if(cliente.id)
-      return this.updateCliente(cliente)
+  save(alumno: Alumno){
+    if(alumno.id)
+      return this.updateAlumno(alumno)
     else
-      this.addCliente(cliente)
+      this.addAlumno(alumno)
   }
 
 

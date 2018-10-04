@@ -24,6 +24,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     `
       .contenedor{
         position: absolute;
+        z-index: 5;
         top: 0;
         left: 0;
         height: 100%;

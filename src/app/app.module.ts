@@ -13,7 +13,7 @@ import { LoginComponent } from './vistas/login/login.component';
 import { HomeComponent } from './vistas/home/home.component';
 import { RegisterComponent } from './vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
-import { ClientesListComponent } from './componentes/clientes-list/clientes-list.component';
+import { AlumnosListComponent } from './componentes/alumnos-list/alumnos-list.component';
 import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
 import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
 
@@ -22,6 +22,9 @@ import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
 import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component';
+import { ContactosListComponent } from './componentes/contactos-list/contactos-list.component';
+import { FormularioAlumnoComponent } from './componentes/formulario-alumno/formulario-alumno.component';
+import { FormularioContactoComponent } from './formulario-contacto/formulario-contacto.component';
 
 
 @NgModule({
@@ -32,13 +35,16 @@ import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component
     HomeComponent,
     RegisterComponent,
     PageNotFoundComponent,
-    ClientesListComponent,
+    AlumnosListComponent,
     AbmAlumnosComponent,
     DialogoConfirmacionComponent,
     ContactosComponent,
     CursosComponent,
     CursadasComponent,
     InscripcionComponent,
+    ContactosListComponent,
+    FormularioAlumnoComponent,
+    FormularioContactoComponent,
   ],
   imports: [
     BrowserModule,

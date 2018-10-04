@@ -6,8 +6,8 @@ import { LoginComponent } from '../app/vistas/login/login.component';
 import { RegisterComponent } from '../app/vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
 import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
-import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
+import { ContactosListComponent } from './componentes/contactos-list/contactos-list.component';
 import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component';
 
@@ -19,7 +19,7 @@ const routes: Routes = [
         children:[
             { path: '', redirectTo: '/home/alumnos', pathMatch: 'full'},
             { path: 'alumnos', component: AbmAlumnosComponent},
-            { path: 'contactos', component: ContactosComponent},
+            { path: 'contactos', component: ContactosListComponent},
             { path: 'cursos', component: CursosComponent},
             { path: 'cursadas', component: CursadasComponent},
             { path: 'inscripcion', component: InscripcionComponent}

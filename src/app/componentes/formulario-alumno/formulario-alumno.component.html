@@ -1,0 +1,97 @@
+<div class="card mt-4 w-50 mx-auto">
+    <div class="card-head d-flex  w-100 justify-content-between">
+      <div></div>
+      <div class="pt-2">
+        <h5 *ngIf="!edicion" class="">{{ tituloNuevoAlumno}}</h5>
+        <h5 *ngIf="edicion" class="">{{ tituloEdicionAlumno}}</h5>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="form-group col">
+          <label for="name">{{ LABEL_REQUIRED.name }}</label>
+            <input  
+                    class="form-control"
+                    type="text"
+                    required
+                    placeholder="Ingrese nombre"
+                    id="name"
+                    name="name"
+                    >
+          <div  *ngIf="false"
+                class="alert alert-danger">
+            <div *ngIf="false">{{ VALIDACIONES.nombreRequerido }}</div>    
+          </div>
+        </div>
+        <!-- <div class="form-group col">
+          <label for="lastname">Apellido</label>
+          <input  class="form-control"
+          type="text"
+          required
+          placeholder="Ingrese apellido"
+          name="lastname"
+          id="lastname">
+          <div  *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
+                class="alert alert-danger">
+            <div *ngIf="lastname.errors.required">{{ VALIDACIONES.apellidoRequerido }}</div>    
+          </div>
+        </div> -->
+
+      </div>
+      <!-- <div class="row">
+        <div class="form-group col">
+          <label for="lastname">DNI</label>
+          <input  class="form-control"
+          type="text"
+          placeholder="Ingrese DNI"
+          name="dni"
+          id="dni">
+
+          <div  *ngIf="dni.invalid && (dni.dirty || dni.touched)"
+                class="alert alert-danger">
+            <div *ngIf="dni.errors.minlength">{{ VALIDACIONES.minimoSeis }}</div>    
+          </div>
+        </div>
+        <div class="form-group col">
+          <label for="nacimiento">Fecha Nac.</label>
+          <input  type="date"
+                  name=""
+                  id=""
+                  class="form-control"
+                  >
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col">
+          <label for="email">Email</label>
+          <input  
+          id="email"
+          name="email"
+                  class="form-control"
+                  required
+                  minlength="6"
+                  type="text"
+                  placeholder="Ingrese email"
+                  [pattern]="patterns.email"
+                  >
+                  
+                  <div  *ngIf="email.invalid && (email.dirty || email.touched)"
+                  class="alert alert-danger">
+                  
+                    <div *ngIf="email.errors.required">{{ VALIDACIONES.emailRequerido }}</div>    
+                    <div *ngIf="email.errors.minlength">{{ VALIDACIONES.minimoSeis }}</div>    
+                    <div *ngIf="email.errors.pattern">{{ VALIDACIONES.emailValido }}}</div>    
+                  
+                  </div>
+        </div>
+        <div class="form-group col">
+          <label for="lastname">Teléfono</label>
+          <input  class="form-control"
+                  type="text"
+                  placeholder="Ingrese teléfono"
+                  name=""
+                  id="phone">
+        </div>
+
+      </div> -->
+  </div>
