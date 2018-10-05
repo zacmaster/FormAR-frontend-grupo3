@@ -4,7 +4,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-default">Filtrar</span>
           </div>
-          <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+          <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
           <div class="input-group-append">
             <button class="btn btn-success" (click)="nuevoContacto()"><span>{{ tituloNuevoContacto}}</span></button>
           </div>
@@ -20,7 +20,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let contacto of contactos" >
+                <tr *ngFor="let contacto of contactos | search: {fecha: busqueda, nombreAlumno: busqueda, titulo: busqueda}" >
                   <td> {{ contacto.fecha }}</td>
                   <td> {{ contacto.nombreAlumno }} </td>
                   <td> {{ contacto.titulo }} </td>

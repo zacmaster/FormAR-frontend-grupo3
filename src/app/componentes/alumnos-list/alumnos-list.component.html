@@ -121,11 +121,14 @@
     </div>
     <div class="p-0">
         <div class="bg-light">
+
             <div class="input-group py-4 col-5">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
+
                 <div class="input-group-append">
                   <button class="btn btn-success" (click)="nuevoAlumno()"><span>{{ tituloNuevoAlumno}}</span></button>
                 </div>
@@ -142,7 +145,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let alumno of alumnos" >
+                      <tr *ngFor="let alumno of alumnos | search: {name: busqueda, lastname: busqueda, dni: busqueda}" >
                         <td> {{ alumno.name }}  {{ alumno.lastname }}</td>
                         <td> {{ alumno.phone }} </td>
                         <td> {{ alumno.email }} </td>

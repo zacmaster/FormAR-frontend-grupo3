@@ -25,7 +25,7 @@ import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component
 import { ContactosListComponent } from './componentes/contactos-list/contactos-list.component';
 import { FormularioAlumnoComponent } from './componentes/formulario-alumno/formulario-alumno.component';
 import { FormularioContactoComponent } from './formulario-contacto/formulario-contacto.component';
-
+import { SearchPipe } from './pipes/search.pipe';
 
 @NgModule({
   declarations: [
@@ -45,6 +45,7 @@ import { FormularioContactoComponent } from './formulario-contacto/formulario-co
     ContactosListComponent,
     FormularioAlumnoComponent,
     FormularioContactoComponent,
+    SearchPipe
   ],
   imports: [
     BrowserModule,
