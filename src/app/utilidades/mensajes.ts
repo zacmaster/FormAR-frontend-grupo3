@@ -24,10 +24,16 @@ export const LABEL_REQUIRED ={
     dni: "DNI*",
     fechaNacimiento: "Fecha de nacimiento*",
     email: "Email*",
-    phone:  "Teléfono*"
+    phone:  "Teléfono*",
+    nombreCurso: "Nombre del curso*",
+    temario: "Temario*",
+    seleccionCategoria: "Seleccione un tipo de curso*"
+
 }
 
 export const LABEL ={
+    cancelar: "Cancelar",
+    aceptar: "Aceptar",
     name: "Nombre",
     lastname: "Apellido",
     dni: "DNI",
@@ -37,5 +43,23 @@ export const LABEL ={
     filtrar: "Filtrar",
     alumno: "Alumno",
     agregar: "Agregar",
-    acciones: "Acciones"
+    acciones: "Acciones",
+    fecha: "Fecha",
+    titulo: "Título",
+    descripcion: "Descripción",
+    nuevoContacto: "Nuevo Contacto",
+    nuevoCurso: "Nuevo Curso",
+    editarContacto: "Editar Contacto",
+    nombreCurso: "Nombre del curso",
+    temario: "Temario",
+    agregarTipoCurso: "Nuevo tipo de curso",
+    tituloInscipcion: "Nueva Inscripción",
+    seleccionCurso: "Seleccione un Curso",
+    seleccionAlumno: "Seleccione un Alumno",
+    inscribir: "Inscribir",
+    inscribiendo: "Inscribiendo a "
+
+
+
+
 }
