@@ -1,3 +1,105 @@
-<p>
-  cursadas works!
-</p>
+<div class="p-0">
+    <div class="bg-light">
+        <div class="input-group py-4 col-5">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
+            </div>
+            
+            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
+
+            <div class="input-group-append">
+              <button class="btn btn-success"><span>{{ _LABEL.nuevaCursada }}</span></button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover bg-light">
+                <thead class="thead-light">
+                  <tr>
+                    <th>{{ _LABEL.curso }}</th>
+                    <th>{{ _LABEL.descripcion }}</th>
+                    <th>{{ _LABEL.tipoCurso }}</th>
+                    <th>{{ _LABEL.fechaInicio }}</th>
+                    <th>{{ _LABEL.fechaFin }}</th>
+                    <th>{{ _LABEL.acciones }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let cursada of cursadas | search: { curso: busqueda }" >
+                    <td> {{ cursada.curso }}</td>
+                    <td> {{ cursada.descripcion }} </td>
+                    <td> {{ cursada.tipoCurso }} </td>
+                    <td>  {{ cursada.fechaInicio }}</td>
+                    <td>  {{ cursada.fechaFin }}</td>
+                    <td>
+                      <span class="btn btn-info mr-2" >
+                        <i class="fas fa-file-signature"></i>
+                      </span>
+                      <span class="btn btn-success mr-2">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                      <span class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+</div>
+
+
+<div class="contenedor d-flex justify-content-center align-items-center justify-content-center">
+    <div  class="dialogo bg-light p-3">
+      <div class="dialogoHeader">
+        <div></div>
+        <div class="text-center">{{ _LABEL.nuevaCursada }}</div>
+      </div>
+        
+      <div class="mt-3">
+        <label for="basic-url">{{ _LABEL.seleccionCurso  }}</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col form-group">
+          <label for="">{{ _LABEL.fechaInicio }}</label>
+          <input type="date" class="form-control">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col form-group">
+          <label for="">{{ _LABEL.fechaFin }}</label>
+          <input type="date" class="form-control">
+        </div>
+      </div>
+        
+  
+  
+      <div class="dialogoFooter d-flex mx-5 mt-3 mb-3 justify-content-between">
+        <span class="btn btn-danger mr-3" (click)="clickBtnIzquierdo()">{{ _LABEL.cancelar }}</span>
+        <span class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">
+          {{ _LABEL.crear }}
+          <i class="fas fa-check"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<!-- 
+<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
+                      (clickBotonCerrar)="ocultarDialogo()"
+                      (clickBotonIzquierdo)="ocultarDialogo()"
+                      (clickBotonDerecho)="eliminar()"
+                      [titulo]="dlg.titulo"
+                      [texto]="dlg.texto"
+                      >
+
+</dialogo-confirmacion>
+<ng4-loading-spinner></ng4-loading-spinner> -->

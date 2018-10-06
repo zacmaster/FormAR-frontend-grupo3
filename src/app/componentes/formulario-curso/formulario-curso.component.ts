@@ -9,7 +9,7 @@ import { LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 export class FormularioCursoComponent implements OnInit {
   // imports
   public _LABEL: object;
-  public _LABEL_REQUIRED: object; 
+  public _LABEL_REQUIRED: object;
 
 
   categorias = ["Arte","Informática","Maquillaje"];

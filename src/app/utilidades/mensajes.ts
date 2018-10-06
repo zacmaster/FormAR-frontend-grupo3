@@ -52,14 +52,20 @@ export const LABEL ={
     editarContacto: "Editar Contacto",
     nombreCurso: "Nombre del curso",
     temario: "Temario",
+    curso: "Curso",
+    tipoCurso: "Tipo de curso",
     agregarTipoCurso: "Nuevo tipo de curso",
     tituloInscipcion: "Nueva Inscripción",
     seleccionCurso: "Seleccione un Curso",
     seleccionAlumno: "Seleccione un Alumno",
     inscribir: "Inscribir",
-    inscribiendo: "Inscribiendo a "
-
-
+    inscribiendo: "Inscribiendo a ",
+    fechaInicio: "Fechan de inicio",
+    fechaFin: "Fecha de fin",
+    filtroTipoCurso: "Filtrar por tipo de curso",
+    inscribirAlumno: "Inscribir alumno",
+    nuevaCursada: "Nueva cursada",
+    crear: "Crear"
 
 
 }
