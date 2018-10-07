@@ -15,6 +15,7 @@ export class CursosComponent implements OnInit, DoCheck {
   public cursos = [];
   public cursosCopia = [];
   public tipoCursos = [];
+  busqueda;
 
 
   nombreNuevoTipoCurso = "";

@@ -1,8 +1,9 @@
 import { HttpHeaders } from "@angular/common/http";
+import { environment } from "../../environments/environment";
 
 export var GLOBAL = {
     //url con mock objects
-    url: 'http://localhost:3000/',
+    url: environment.url,
 
     httpOptions : {
         headers: new HttpHeaders({

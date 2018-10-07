@@ -63,7 +63,7 @@ import { LABEL } from '../../utilidades/mensajes';
 })
 export class DialogoInscripcionComponent implements OnInit {
   _LABEL = LABEL;
-
+  busqueda;
 
   public nombreUsuario = "";
   constructor() { }
@@ -71,4 +71,10 @@ export class DialogoInscripcionComponent implements OnInit {
   ngOnInit() {
   }
 
+  clickBtnIzquierdo(){
+
+  }
+  clickBtnDerecho(){
+    
+  }
 }

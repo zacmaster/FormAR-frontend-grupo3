@@ -26,7 +26,6 @@ import { ContactosListComponent } from './componentes/contactos-list/contactos-l
 import { FormularioAlumnoComponent } from './componentes/formulario-alumno/formulario-alumno.component';
 import { FormularioContactoComponent } from './formulario-contacto/formulario-contacto.component';
 import { SearchPipe } from './pipes/search.pipe';
-import { FormularioCursoComponent } from './componentes/formulario-curso/formulario-curso.component';
 import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/dialogo-inscripcion.component';
 
 @NgModule({
@@ -48,7 +47,6 @@ import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/d
     FormularioAlumnoComponent,
     FormularioContactoComponent,
     SearchPipe,
-    FormularioCursoComponent,
     DialogoInscripcionComponent,
   ],
   imports: [

@@ -21,6 +21,7 @@ export class AlumnosListComponent implements OnInit {
   nombreAlumno: string = '';
   textoAgregar = "Agregar";
   textoEditar = "Guardar";
+  busqueda;
 
   dlg = {
     titulo: 'Baja de alumno',

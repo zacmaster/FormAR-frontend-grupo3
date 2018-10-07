@@ -8,8 +8,9 @@ import { LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 })
 export class FormularioAlumnoComponent implements OnInit {
   // imports
-  public LABEL: object;
-  public LABEL_REQUIRED: object; 
+  public LABEL;
+  public LABEL_REQUIRED;
+  agregandoAlumno: boolean = false; 
 
 
   public tituloNuevoAlumno = "Nuevo alumno";

@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactosListComponent implements OnInit {
   tituloNuevoContacto: string = "Nuevo contacto";
+  busqueda;
   
   contactos = [
     {

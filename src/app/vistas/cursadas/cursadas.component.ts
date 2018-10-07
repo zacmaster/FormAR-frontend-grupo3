@@ -12,7 +12,7 @@ export class CursadasComponent implements OnInit {
 
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
-
+  busqueda;
   cursadas = [
     {
       curso: "Tapiceria",
@@ -24,7 +24,12 @@ export class CursadasComponent implements OnInit {
     }
   ]
 
+  clickBtnIzquierdo(){
 
+  }
+  clickBtnDerecho(){
+    
+  }
 
   constructor() { }
 

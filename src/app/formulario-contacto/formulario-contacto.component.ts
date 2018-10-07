@@ -9,6 +9,7 @@ import { ContactoService } from '../servicios/contacto.service';
 })
 export class FormularioContactoComponent implements OnInit {
 
+  agregandoAlumno = false;
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
 
