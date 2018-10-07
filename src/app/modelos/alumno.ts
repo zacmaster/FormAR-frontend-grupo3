@@ -27,6 +27,11 @@ export class Alumno {
     setId(id: number){
         this.id = id;
     }
+
+    public setDisabled(){
+        this.disabled = true;
+    }
+
 }
 
 

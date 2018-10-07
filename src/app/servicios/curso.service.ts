@@ -1,63 +1,57 @@
 import { Injectable } from '@angular/core';
 
-import { IAlumno } from '../interfaces/ialumno'
-
+import { ICurso } from '../interfaces/icurso'
 import { GLOBAL } from './global';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError} from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Alumno } from '../modelos/alumno';
-
+import { Curso } from '../modelos/curso';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AlumnoService {
-  public alumnosUrl: string =  GLOBAL.url + 'alumnos';
+export class CursoService {
+  public cursosURL: string = GLOBAL.url + 'cursos';
 
   constructor(private _http: HttpClient) { }
 
-
-  getAlumnos(): Observable<IAlumno[]>{
-    return this._http.get<IAlumno[]>(this.alumnosUrl);
+  getCursos(): Observable<ICurso[]>{
+    return this._http.get<ICurso[]>(this.cursosURL)
   }
-  
-  addAlumno(alumno: Alumno): Observable<Alumno>{
-    alumno.disabled = false;
-    return this._http.post<Alumno>(this.alumnosUrl, alumno, GLOBAL.httpOptions)
+
+
+  addCurso(curso: Curso): Observable<Curso>{
+    return this._http.post<Curso>(this.cursosURL, curso, GLOBAL.httpOptions)
       .pipe(catchError(this.handleError))
     }
     
-  updateAlumno(alumno: Alumno){
-    const url =`${this.alumnosUrl}/${alumno.id}`;
+  updateCurso(curso: Curso){
+    const url =`${this.cursosURL}/${curso.id}`;
 
-    return this._http.put<Alumno>(url, alumno, GLOBAL.httpOptions).
+    return this._http.put<Curso>(url, curso, GLOBAL.httpOptions).
       pipe(catchError(this.handleError))
 
   }
 
-  deleteAlumno(alumno: Alumno): Observable<{}>{
-    alumno.disabled = true;
-    const url = `${this.alumnosUrl}/${alumno.id}`;
+  deleteCurso(id: number): Observable<{}>{
+    const url = `${this.cursosURL}/${id}`;
 
-    return this._http.put<Alumno>(url, alumno, GLOBAL.httpOptions)
+    return this._http.delete(url, GLOBAL.httpOptions)
       .pipe(catchError(this.handleError))
   }
 
-  getAlumno(id: number): Observable<IAlumno> {
-    return this.getAlumnos().pipe(
-      map(alumnos => alumnos.find(alumno => alumno.id === id))
+  getCurso(id: number): Observable<ICurso> {
+    return this.getCursos().pipe(
+      map(cursos => cursos.find(curso => curso.id === id))
     )
   }
 
-  save(alumno: Alumno){
-    if(alumno.id)
-      return this.updateAlumno(alumno)
+  save(curso: Curso){
+    if(curso.id)
+      return this.updateCurso(curso)
     else
-      this.addAlumno(alumno)
+      this.addCurso(curso)
   }
-
-
 
 
 
@@ -78,5 +72,4 @@ export class AlumnoService {
   };
 
 
-  
 }

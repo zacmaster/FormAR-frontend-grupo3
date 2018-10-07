@@ -40,14 +40,18 @@ export class AlumnosListComponent implements OnInit {
   ngOnInit() {
     this.getAlumnos();
     
+    
   }
 
-  
 
   getAlumnos(){
     this._alumnoService.getAlumnos()
       .subscribe(response =>{
-        this.alumnos = response;
+        this.alumnos = [];
+        response.forEach(e => {
+          if(!e.disabled)
+            this.alumnos.push(e)
+        })
       })
   }
 
@@ -65,7 +69,7 @@ export class AlumnosListComponent implements OnInit {
     this._spinnerService.show();
     setTimeout(() => {
       this.mostrarDialogoBorrar = false;
-      this._alumnoService.deleteAlumno(this.alumnoSeleccionado.id).
+      this._alumnoService.deleteAlumno(this.alumnoSeleccionado).
         subscribe(response =>{
           this.getAlumnos();
           this._spinnerService.hide();

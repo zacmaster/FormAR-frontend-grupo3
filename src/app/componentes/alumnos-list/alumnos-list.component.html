@@ -145,7 +145,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let alumno of alumnos | search: {name: busqueda, lastname: busqueda, dni: busqueda}" >
+                      <tr *ngFor="let alumno of alumnos" >
                         <td> {{ alumno.name }}  {{ alumno.lastname }}</td>
                         <td> {{ alumno.phone }} </td>
                         <td> {{ alumno.email }} </td>
