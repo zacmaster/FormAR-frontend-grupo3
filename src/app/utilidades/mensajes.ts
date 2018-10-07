@@ -65,7 +65,22 @@ export const LABEL ={
     filtroTipoCurso: "Filtrar por tipo de curso",
     inscribirAlumno: "Inscribir alumno",
     nuevaCursada: "Nueva cursada",
-    crear: "Crear"
+    crear: "Crear",
+    nuevoAlumno: "Nuevo Alumno",
+    elegirAlumnoLista: "Elegir alumno de la lista",
+    contacto: "Contacto"
 
 
+}
+
+export const HVR ={
+    nuevo: "nuevo",
+    editar: "Editar",
+    eliminar: "Eliminar",
+    temario: "Ver tamario",
+    editarCurso: "Editar curso",
+    eliminarCurso: "Eliminar curso",
+    inscribirAlumno: "Inscribir Alumno",
+
+    
 }

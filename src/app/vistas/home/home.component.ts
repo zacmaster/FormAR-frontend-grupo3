@@ -27,11 +27,6 @@ export class HomeComponent implements OnInit {
       name: 'Cursadas',
       active: false,
       url: '/home/cursadas'
-    },
-    {
-      name: 'Inscripción',
-      active: false,
-      url: '/home/inscripcion'
     }
   ]
 

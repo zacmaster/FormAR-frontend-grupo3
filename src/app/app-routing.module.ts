@@ -9,7 +9,6 @@ import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component'
 import { CursosComponent } from './vistas/cursos/cursos.component';
 import { ContactosListComponent } from './componentes/contactos-list/contactos-list.component';
 import { CursadasComponent } from './vistas/cursadas/cursadas.component';
-import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home/alumnos', pathMatch: 'full' },
@@ -22,7 +21,6 @@ const routes: Routes = [
             { path: 'contactos', component: ContactosListComponent},
             { path: 'cursos', component: CursosComponent},
             { path: 'cursadas', component: CursadasComponent},
-            { path: 'inscripcion', component: InscripcionComponent}
         ]
     },
     { path: 'login', component:  LoginComponent},

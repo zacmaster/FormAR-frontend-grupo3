@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LABEL } from '../utilidades/mensajes';
+import { LABEL, LABEL_REQUIRED } from '../utilidades/mensajes';
 import { ContactoService } from '../servicios/contacto.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { ContactoService } from '../servicios/contacto.service';
 export class FormularioContactoComponent implements OnInit {
 
   _LABEL = LABEL;
+  _LABEL_R = LABEL_REQUIRED;
 
   constructor(private _contatoService: ContactoService) { }
 

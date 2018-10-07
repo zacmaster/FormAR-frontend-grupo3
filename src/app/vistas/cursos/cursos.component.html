@@ -1,3 +1,50 @@
-<p>
-  cursos works!
-</p>
+<div class="p-0">
+    <div class="bg-light">
+        <div class="input-group py-4 col-5">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
+            </div>
+            
+            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
+
+            <div class="input-group-append">
+              <button class="btn btn-success"><span>{{ _LABEL.nuevaCursada }}</span></button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover bg-light">
+                <thead class="thead-light">
+                  <tr>
+                    <th>{{ _LABEL.nombreCurso }}</th>
+                    <th>{{ _LABEL.tipoCurso }}</th>
+                    <th>{{ _LABEL.temario }}</th>
+                    <th>{{ _LABEL.acciones }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let curso of cursos | search: { nombre: busqueda }" >
+                    <td> {{ curso.nombre }}</td>
+                    <td> {{ curso.tipoCurso }} </td>
+                    <td> 
+                      <span class="btn btn-info" [title]="_HVR.temario">
+                        <i class="fas fa-ellipsis-h"></i>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="btn btn-info mr-2" [title]="_HVR.inscribirAlumno">
+                        <i class="fas fa-file-signature"></i>
+                      </span>
+                      <span class="btn btn-success mr-2" [title]="_HVR.editarCurso">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                      <span class="btn btn-danger" [title]="_HVR.eliminarCurso">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+</div>
+
+<formulario-curso></formulario-curso>
