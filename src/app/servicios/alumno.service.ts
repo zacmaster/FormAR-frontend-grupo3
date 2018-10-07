@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 
 import { IAlumno } from '../interfaces/ialumno'
+import { Alumno } from '../modelos/alumno';
 
 import { GLOBAL } from './global';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Alumno } from '../modelos/alumno';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlumnoService {
-  public alumnosUrl: string =  GLOBAL.url + 'alumnos';setDisabled
+  public alumnosUrl: string =  GLOBAL.url + 'alumnos';
 
   constructor(private _http: HttpClient) { }
 

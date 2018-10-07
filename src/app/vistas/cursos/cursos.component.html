@@ -24,9 +24,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let curso of cursos | search: { nombre: busqueda }" >
+                  <tr *ngFor="let curso of cursosCopia" >
                     <td> {{ curso.name }}</td>
-                    <td> {{ curso.tipoCurso }} </td>
+                    <td> {{ curso.tipoName }} </td>
                     <td> 
                       <span class="btn btn-info"
                             [title]="_HVR.temario"

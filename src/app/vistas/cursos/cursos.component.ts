@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { LABEL, HVR, setCadena } from '../../utilidades/mensajes';
 import { CursoService } from '../../servicios/curso.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { Curso } from '../../modelos/curso';
+import { TipoCursoService } from '../../servicios/tipo-curso.service';
+import { TipoCurso } from '../../modelos/tipo-curso';
 @Component({
   selector: 'app-cursos',
   templateUrl: './cursos.component.html',
   styleUrls: ['./cursos.component.css']
 })
-export class CursosComponent implements OnInit {
+export class CursosComponent implements OnInit, DoCheck {
   
   public cursos = [];
+  public cursosCopia = [];
+  public tipoCursos = [];
   
 
   _LABEL = LABEL;
   _HVR = HVR;
 
-  cursoSeleccionado: Curso = this.newCurso();
+  cursoSeleccionado: Curso;
   mostrarDialogoBorrar: boolean = false;
   mostrarDialogoAB: boolean = false;
   edicion: boolean = false;
@@ -33,25 +37,51 @@ export class CursosComponent implements OnInit {
 
 
   constructor(private _cursoService: CursoService,
+              private _tipoCursoService: TipoCursoService,
               private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
     this.getCursos();
-    
+  }
+  ngDoCheck(){
   }
 
   getCursos(){
-    this._cursoService.getCursos()
-      .subscribe(response =>{
-        this.cursos = [];
-        response.forEach(e =>{
-          if(!e.disabled)
-            this.cursos.push(e)
-        })
-        console.log(this.cursos);
+    Promise.all([
+      this._tipoCursoService.getTipoCursos().toPromise(),
+      this._cursoService.getCursos().toPromise()
+    ]).then( r => {
+      r[0].forEach(e => {
+        if(!e.disabled)
+          this.tipoCursos.push(e)
+      });
+      r[1].forEach(e => {
+        if(!e.disabled)
+          this.cursos.push(e)
+      })
+    }).then(
+      () => {
+        this.configuracionCurso(this.cursos, this.tipoCursos)
+        console.log("cursos copia",this.cursosCopia);
         
       })
+    }
+
+
+  private configuracionCurso(cursos, tipoCursos: TipoCurso[]){
+    cursos.forEach(curso => {
+      tipoCursos.forEach(tipo => {
+        if(curso.tipo == tipo.id){
+          var cursoCopia = curso;
+          cursoCopia.tipoName = tipo.name;
+          this.cursosCopia.push(cursoCopia);
+        }
+      })
+    })
   }
+
+      
+
 
   eliminar(){
     this._spinnerService.show();
@@ -127,7 +157,8 @@ export class CursosComponent implements OnInit {
 
 
   private newCurso(): Curso{
-    return new Curso('','',);
+    let tipoCursoDefault = this.tipoCursos[0].id;
+    return new Curso('',tipoCursoDefault,'');
   }
 
   mostrarDialogoEliminar(){
