@@ -3,7 +3,8 @@
         <div class="card-head d-flex  p-1 w-100 justify-content-between">
             <div></div>
             <div class="pt-2">
-              <h5 class="">{{ _LABEL.nuevoCurso }}</h5>
+              <h5 *ngIf="!edicion">{{ _LABEL.nuevoCurso }}</h5>
+              <h5 *ngIf="edicion">{{ _LABEL.editarCurso }}</h5>
             </div>
             <span class="btn btn-danger" (click)="clickBtnCerrar()">
               <i class="fas fa-times"></i>
@@ -27,8 +28,8 @@
               <div class="row mb-5 form-group">
                 <div class=" col-6">
                   <select class="custom-select">
-                      <option *ngFor="let categoria of categorias">
-                        {{ categoria }}
+                      <option *ngFor="let tipoCurso of tipoCursos">
+                        {{ tipoCurso }}
                       </option>
                     </select>
                 </div>

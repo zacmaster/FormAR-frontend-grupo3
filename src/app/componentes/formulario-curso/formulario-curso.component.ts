@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 
 @Component({
@@ -12,15 +12,24 @@ export class FormularioCursoComponent implements OnInit {
   public _LABEL_REQUIRED: object;
 
 
-  categorias = ["Arte","Informática","Maquillaje"];
   nuevoTipoCursoShowed: boolean = false;
   nuevoTipoCurso: string = "";
+  @Input() edicion: boolean = false;
+  @Input() tipoCursos = [];
+  tipoCursosName = [];
+
 
 
   @Output() clickBotonCerrar = new EventEmitter<boolean>();
   @Output() clickNuevoTipoCurso = new EventEmitter<string>();
 
   constructor() { }
+
+  ngDoCheck(){
+    this.tipoCursos.forEach(c => {
+      this.tipoCursosName.push(c.name)
+    })
+  }
 
 
   clickBtnCerrar(){

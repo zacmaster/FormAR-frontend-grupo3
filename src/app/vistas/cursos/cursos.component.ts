@@ -1,5 +1,5 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
-import { LABEL, HVR, setCadena } from '../../utilidades/mensajes';
+import { HVR, LABEL, LABEL_REQUIRED, setCadena } from '../../utilidades/mensajes';
 import { CursoService } from '../../servicios/curso.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { Curso } from '../../modelos/curso';
@@ -15,12 +15,15 @@ export class CursosComponent implements OnInit, DoCheck {
   public cursos = [];
   public cursosCopia = [];
   public tipoCursos = [];
-  
+
+
+  nombreNuevoTipoCurso = "";
 
   _LABEL = LABEL;
+  _LABEL_REQUIRED = LABEL_REQUIRED;
   _HVR = HVR;
 
-  cursoSeleccionado: Curso;
+  public cursoSeleccionado: Curso = this.newCurso();
   mostrarDialogoBorrar: boolean = false;
   mostrarDialogoAB: boolean = false;
   edicion: boolean = false;
@@ -30,9 +33,6 @@ export class CursosComponent implements OnInit, DoCheck {
     titulo: this._LABEL.bajaCurso,
     texto: ''
   }
-  
-  
-  
 
 
 
@@ -44,9 +44,14 @@ export class CursosComponent implements OnInit, DoCheck {
     this.getCursos();
   }
   ngDoCheck(){
+    console.log(this.nombreNuevoTipoCurso);
+    
   }
 
   getCursos(){
+    this.cursos = [];
+    this.tipoCursos = [];
+    this.cursosCopia = [];
     Promise.all([
       this._tipoCursoService.getTipoCursos().toPromise(),
       this._cursoService.getCursos().toPromise()
@@ -134,6 +139,10 @@ export class CursosComponent implements OnInit, DoCheck {
     this.mostrarDialogoAB = true;
   }
 
+  cerrarDialogo(){
+    this.mostrarDialogoAB = false;
+  }
+
   editarCurso(){
     this.edicion = true;
     this.mostrarDialogoAB = true;
@@ -157,22 +166,19 @@ export class CursosComponent implements OnInit, DoCheck {
 
 
   private newCurso(): Curso{
-    let tipoCursoDefault = this.tipoCursos[0].id;
-    return new Curso('',tipoCursoDefault,'');
+    return new Curso('',0,'');
   }
 
   mostrarDialogoEliminar(){
+
+    console.log("eliminando:",this.cursoSeleccionado);
     setCadena(this.cursoSeleccionado.name);
-    console.log(this.cursoSeleccionado);
+    this._LABEL = LABEL;
     
     this.dlg.texto = this._LABEL.seguroEliminarCurso;
     this.mostrarDialogoBorrar = true;
     
   }
-
-
-
-
 
 
 }

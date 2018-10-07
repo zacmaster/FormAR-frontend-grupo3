@@ -33,7 +33,7 @@ export const LABEL_REQUIRED ={
 
 }
 
-export const LABEL ={
+export var LABEL ={
     cancelar: "Cancelar",
     aceptar: "Aceptar",
     name: "Nombre",
@@ -72,6 +72,7 @@ export const LABEL ={
     elegirAlumnoLista: "Elegir alumno de la lista",
     contacto: "Contacto",
     bajaCurso: "Eliminar curso",
+    editarCurso: "Editar curso",
     seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?"
 
 
