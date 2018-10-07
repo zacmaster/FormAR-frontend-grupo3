@@ -13,7 +13,7 @@ import { Alumno } from '../modelos/alumno';
   providedIn: 'root'
 })
 export class AlumnoService {
-  public alumnosUrl: string =  GLOBAL.url + 'alumnos';
+  public alumnosUrl: string =  GLOBAL.url + 'alumnos';setDisabled
 
   constructor(private _http: HttpClient) { }
 

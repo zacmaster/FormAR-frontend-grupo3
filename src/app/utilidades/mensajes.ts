@@ -1,3 +1,5 @@
+export var cadena;
+
 export const VALIDACION = {
     minimoTres: "Se requiere un mínimo de 3 caracteres para este campo",
     minimoSeis: "Se requiere un mínimo de 6 caracteres para este campo",
@@ -68,7 +70,9 @@ export const LABEL ={
     crear: "Crear",
     nuevoAlumno: "Nuevo Alumno",
     elegirAlumnoLista: "Elegir alumno de la lista",
-    contacto: "Contacto"
+    contacto: "Contacto",
+    bajaCurso: "Eliminar curso",
+    seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?"
 
 
 }
@@ -83,4 +87,8 @@ export const HVR ={
     inscribirAlumno: "Inscribir Alumno",
 
     
+}
+
+export function setCadena(texto){
+    cadena = texto;
 }

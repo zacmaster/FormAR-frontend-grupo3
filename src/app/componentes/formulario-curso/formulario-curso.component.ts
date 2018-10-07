@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 
 @Component({
@@ -14,9 +14,23 @@ export class FormularioCursoComponent implements OnInit {
 
   categorias = ["Arte","Informática","Maquillaje"];
   nuevoTipoCursoShowed: boolean = false;
+  nuevoTipoCurso: string = "";
+
+
+  @Output() clickBotonCerrar = new EventEmitter<boolean>();
+  @Output() clickNuevoTipoCurso = new EventEmitter<string>();
 
   constructor() { }
 
+
+  clickBtnCerrar(){
+    this.nuevoTipoCurso = "";
+    this.clickBotonCerrar.emit(true);
+  }
+
+  clickBtnAgregarTipoCurso(name){
+    this.clickNuevoTipoCurso.emit(name)
+  }
   ngOnInit() {
     this._LABEL = LABEL;
     this._LABEL_REQUIRED = LABEL_REQUIRED;

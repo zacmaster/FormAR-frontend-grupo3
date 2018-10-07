@@ -33,10 +33,11 @@ export class CursoService {
 
   }
 
-  deleteCurso(id: number): Observable<{}>{
-    const url = `${this.cursosURL}/${id}`;
+  deleteCurso(curso: Curso): Observable<{}>{
+    curso.disabled = true;
+    const url = `${this.cursosURL}/${curso.id}`;
 
-    return this._http.delete(url, GLOBAL.httpOptions)
+    return this._http.put(url,curso, GLOBAL.httpOptions)
       .pipe(catchError(this.handleError))
   }
 
