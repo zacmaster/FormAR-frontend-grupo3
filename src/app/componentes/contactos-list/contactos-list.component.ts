@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes'
 
 @Component({
   selector: 'app-contactos-list',
@@ -8,6 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class ContactosListComponent implements OnInit {
   tituloNuevoContacto: string = "Nuevo contacto";
   busqueda;
+  mostrarDialogo = false;
+
+  _LABEL = LABEL;
+  _LABEL_REQUIRED = LABEL_REQUIRED;
   
   contactos = [
     {
@@ -28,7 +33,8 @@ export class ContactosListComponent implements OnInit {
   }
 
   nuevoContacto(){
-    alert("Agregando nuevo contacto")
+
+    this.mostrarDialogo = true;
   }
   
   editarContacto(){
