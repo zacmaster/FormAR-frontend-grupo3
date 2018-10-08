@@ -13,6 +13,7 @@ export class CursadasComponent implements OnInit {
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
   busqueda;
+  mostrarDialogo = false;
   cursadas = [
     {
       curso: "Tapiceria",
