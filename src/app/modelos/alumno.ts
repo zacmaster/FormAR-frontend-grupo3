@@ -1,7 +1,7 @@
 import { Contacto } from "src/app/modelos/contacto";
+import { Resource } from "../componentes/resource";
 
-export class Alumno {
-    id: number;
+export class Alumno extends Resource{
     name: string;
     lastname: string;
     email: string;
@@ -16,6 +16,7 @@ export class Alumno {
                     phone: string,
                     dni: string,
                 ){
+        super()
         this.name = name;
         this.lastname = lastname;
         this.email = email;

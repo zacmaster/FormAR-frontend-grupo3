@@ -27,6 +27,7 @@ import { FormularioAlumnoComponent } from './componentes/formulario-alumno/formu
 import { FormularioContactoComponent } from './formulario-contacto/formulario-contacto.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/dialogo-inscripcion.component';
+import { AlumnoService } from './servicios/alumno.service';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/d
     Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [
-    UsuarioService
+    AlumnoService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AlumnoService } from '../../servicios/alumno.service';
 import { Alumno } from '../../modelos/alumno';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
 import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
+import { AlumnoService } from '../../servicios/alumno.service';
 
 @Component({
   selector: 'alumnos-list',
@@ -40,19 +40,14 @@ export class AlumnosListComponent implements OnInit {
 
   ngOnInit() {
     this.getAlumnos();
-    
-    
   }
 
 
   getAlumnos(){
     this._alumnoService.getAlumnos()
       .subscribe(response =>{
-        this.alumnos = [];
-        response.forEach(e => {
-          if(!e.disabled)
-            this.alumnos.push(e)
-        })
+        this.alumnos = response
+        
       })
   }
 

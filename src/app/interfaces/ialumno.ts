@@ -1,7 +1,7 @@
 import { Contacto } from "../modelos/contacto";
+import { Iresource } from "./iresource";
 
-export interface IAlumno {
-    id: number,
+export interface IAlumno extends Iresource{
     name: string,
     lastname: string,
     email: string,
