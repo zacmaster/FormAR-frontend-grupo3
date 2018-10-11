@@ -31,19 +31,19 @@
                   </div>
                 </div>
                 <div class="form-group col">
-                  <label for="lastname">{{ _LABEL_R.lastname }}</label>
+                  <label for="apellido">{{ _LABEL_R.apellido }}</label>
                   <input  class="form-control"
-                          #lastname="ngModel"
+                          #apellido="ngModel"
                           type="text"
                           required
-                          [(ngModel)]="alumnoSeleccionado.lastname"
+                          [(ngModel)]="alumnoSeleccionado.apellido"
                           placeholder="Ingrese apellido"
-                          id="lastname"
-                          name="lastname"
+                          id="apellido"
+                          name="apellido"
                           >
-                          <div  *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
+                          <div  *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)"
                                 class="alert alert-danger">
-                            <div *ngIf="lastname.errors.required">{{ _VALIDACION.apellidoRequerido }}</div>    
+                            <div *ngIf="apellido.errors.required">{{ _VALIDACION.apellidoRequerido }}</div>    
                           </div>
                         </div>
 
@@ -100,14 +100,14 @@
                   </div>
                 </div>
                 <div class="form-group col">
-                  <label for="phone">{{ _LABEL.phone }}</label>
+                  <label for="telefono">{{ _LABEL.telefono }}</label>
                   <input  class="form-control"
-                          [(ngModel)]="alumnoSeleccionado.phone"
+                          [(ngModel)]="alumnoSeleccionado.telefono"
                           type="text"
                           placeholder="Ingrese teléfono"
-                          name="phone"
-                          #phone="ngModel"
-                          id="phone">
+                          name="telefono"
+                          #telefono="ngModel"
+                          id="telefono">
                 </div>
 
               </div>
@@ -138,7 +138,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>{{ _LABEL.alumno }}</th>
-                        <th>{{ _LABEL.phone }}</th>
+                        <th>{{ _LABEL.telefono }}</th>
                         <th>{{ _LABEL.email }}</th>
                         <th>{{ _LABEL.dni }}</th>
                         <th>{{ _LABEL.acciones }}</th>
@@ -146,8 +146,8 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let alumno of alumnos" >
-                        <td> {{ alumno.name }}  {{ alumno.lastname }}</td>
-                        <td> {{ alumno.phone }} </td>
+                        <td> {{ alumno.name }}  {{ alumno.apellido }}</td>
+                        <td> {{ alumno.telefono }} </td>
                         <td> {{ alumno.email }} </td>
                         <td>  {{ alumno.dni }}</td>
                         <td>

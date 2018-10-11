@@ -54,8 +54,8 @@ export class AlumnosListComponent implements OnInit {
 
   mostrarDialogoEliminar(){
     this.dlg.texto =  `¿Está seguro que desea dar de baja a
-                      ${ this.alumnoSeleccionado.name }
-                      ${ this.alumnoSeleccionado.lastname } ?`
+                      ${ this.alumnoSeleccionado.nombre }
+                      ${ this.alumnoSeleccionado.apellido } ?`
 
     this.mostrarDialogoBorrar = true;
     
@@ -125,7 +125,7 @@ export class AlumnosListComponent implements OnInit {
   }
 
   private newAlumno(): Alumno{
-    return new Alumno('','','','','')
+    return new Alumno('','','','','','','','')
   }
 
 }

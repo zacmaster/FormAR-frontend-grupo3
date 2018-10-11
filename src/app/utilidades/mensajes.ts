@@ -21,12 +21,12 @@ export const VALIDACION = {
 }
 
 export const LABEL_REQUIRED ={
-    name: "Nombre*",
-    lastname: "Apellido*",
+    nombre: "Nombre*",
+    apellido: "Apellido*",
     dni: "DNI*",
     fechaNacimiento: "Fecha de nacimiento*",
     email: "Email*",
-    phone:  "Teléfono*",
+    telefono:  "Teléfono*",
     nombreCurso: "Nombre del curso*",
     temario: "Temario*",
     seleccionCategoria: "Seleccione un tipo de curso*"
@@ -36,12 +36,12 @@ export const LABEL_REQUIRED ={
 export var LABEL ={
     cancelar: "Cancelar",
     aceptar: "Aceptar",
-    name: "Nombre",
-    lastname: "Apellido",
+    nombre: "Nombre",
+    apellido: "Apellido",
     dni: "DNI",
     fechaNacimiento: "Fecha de nacimiento",
     email: "Email",
-    phone:  "Teléfono",
+    telefono:  "Teléfono",
     filtrar: "Filtrar",
     alumno: "Alumno",
     agregar: "Agregar",

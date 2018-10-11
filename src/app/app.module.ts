@@ -23,8 +23,6 @@ import { CursosComponent } from './vistas/cursos/cursos.component';
 import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component';
 import { ContactosListComponent } from './componentes/contactos-list/contactos-list.component';
-import { FormularioAlumnoComponent } from './componentes/formulario-alumno/formulario-alumno.component';
-import { FormularioContactoComponent } from './formulario-contacto/formulario-contacto.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/dialogo-inscripcion.component';
 import { AlumnoService } from './servicios/alumno.service';
@@ -45,8 +43,6 @@ import { AlumnoService } from './servicios/alumno.service';
     CursadasComponent,
     InscripcionComponent,
     ContactosListComponent,
-    FormularioAlumnoComponent,
-    FormularioContactoComponent,
     SearchPipe,
     DialogoInscripcionComponent,
   ],
