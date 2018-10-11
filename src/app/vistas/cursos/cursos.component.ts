@@ -62,7 +62,6 @@ export class CursosComponent implements OnInit, DoCheck {
           this.tipoCursos.push(e)
       });
       r[1].forEach(e => {
-        if(!e.disabled)
           this.cursos.push(e)
       })
     }).then(
@@ -167,13 +166,13 @@ export class CursosComponent implements OnInit, DoCheck {
 
 
   private newCurso(): Curso{
-    return new Curso('',0,'');
+    return new Curso('','','');
   }
 
   mostrarDialogoEliminar(){
 
     console.log("eliminando:",this.cursoSeleccionado);
-    setCadena(this.cursoSeleccionado.name);
+    setCadena(this.cursoSeleccionado.nombre);
     this._LABEL = LABEL;
     
     this.dlg.texto = this._LABEL.seguroEliminarCurso;

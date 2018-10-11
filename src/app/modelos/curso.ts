@@ -1,16 +1,19 @@
-export class Curso {
-    id: number = 0;
-    name: string;
-    tipo: number = 0;
+import { Resource } from "../componentes/resource";
+import { ICurso } from "../interfaces/icurso";
+
+export class Curso extends Resource implements ICurso{
     temario: string;
-    disabled: boolean;
+    nombre: string;
+    idArea: string;
 
 
-    constructor(name: string,
-                tipo: number,
-                temario: string){
-        this.name = name;
-        this.temario = temario;
-        this.tipo = tipo;
-    }
+	constructor($temario: string, $nombre: string, $idArea: string) {
+        super();
+		this.temario = $temario;
+		this.nombre = $nombre;
+		this.idArea = $idArea;
+	}
+
+
+
 }

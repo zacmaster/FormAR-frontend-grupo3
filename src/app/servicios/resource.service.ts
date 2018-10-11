@@ -17,8 +17,11 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
    }
 
   public create(item: T): Observable<T>{
+    var url = `${this.url}/${this.endpoint}`;
+    console.log("url to post: ", url);
+    
     return this.httpClient
-      .post<T>(`${this.url}/${this.endpoint}`, item,this.httpOptions)
+      .post<T>(url, item,this.httpOptions)
       .pipe(catchError(this.handleError))
   }
   public read(id: number): Observable<I>{
@@ -41,7 +44,10 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
   }
   
   public list(): Observable<I[]>{
-    return this.httpClient.get<I[]>(`${this.url}/${this.endpoint}`);
+    let url = `${this.url}/${this.endpoint}`;
+    console.log('url: ',url);
+    
+    return this.httpClient.get<I[]>(url);
   }
 
 

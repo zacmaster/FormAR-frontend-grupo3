@@ -1,7 +1,7 @@
-export interface ICurso {
-    id: number,
-    name: string,
-    tipo: number,
+import { Iresource } from "./iresource";
+
+export interface ICurso extends Iresource {
+    nombre: string,
     temario: string,
-    disabled: boolean
+    idArea: string,
 }

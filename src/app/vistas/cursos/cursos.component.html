@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let curso of cursosCopia" >
-                    <td> {{ curso.name }}</td>
+                    <td> {{ curso.nombre }}</td>
                     <td> {{ curso.tipoName }} </td>
                     <td> 
                       <span class="btn btn-info"
@@ -80,7 +80,7 @@
     <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
-          <div class="titulo text-center" ><p> {{ _LABEL.temario }} de {{ cursoSeleccionado.name }} </p></div>
+          <div class="titulo text-center" ><p> {{ _LABEL.temario }} de {{ cursoSeleccionado.nombre }} </p></div>
           <span class="btn btn-danger" (click)="cerrarTemario()"><i class="fas fa-times"></i></span>
         </div>
         <div class="dialogoBody p-3 pt-3 text-center">
@@ -123,7 +123,7 @@
               <div class=" col-6">
                 <select class="custom-select">
                     <option *ngFor="let tipoCurso of tipoCursos">
-                      {{ tipoCurso.name }}
+                      {{ tipoCurso.nombre }}
                     </option>
                   </select>
               </div>

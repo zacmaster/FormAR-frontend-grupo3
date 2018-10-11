@@ -16,7 +16,7 @@ import { ResourceService } from "./resource.service";
 export class AlumnoService extends ResourceService<Alumno, IAlumno>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'alumnos','');
+    super(_http,GLOBAL.url + 'alumno','');
    }
 
 
