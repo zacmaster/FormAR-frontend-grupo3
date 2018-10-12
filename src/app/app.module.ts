@@ -18,6 +18,10 @@ import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component'
 import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
 
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
 import { CursadasComponent } from './vistas/cursadas/cursadas.component';
@@ -51,6 +55,8 @@ import { AlumnoService } from './servicios/alumno.service';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    TooltipModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [

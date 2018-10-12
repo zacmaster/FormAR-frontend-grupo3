@@ -33,7 +33,10 @@ export class AlumnosListComponent implements OnInit {
    _VALIDACION = VALIDACION;
    _PATTERN = PATTERNS;
 
-
+  ngDoCheck(){
+    console.log(this.alumnoSeleccionado.fechaNacimiento);
+    
+  }
 
   constructor(private _alumnoService: AlumnoService,
               private _spinnerService: Ng4LoadingSpinnerService) { }
@@ -75,10 +78,12 @@ export class AlumnosListComponent implements OnInit {
   }
 
   private agregar(alumno: Alumno){
+    console.log("alumno seleccionado: ",this.alumnoSeleccionado);
+    
     this._alumnoService.getAlumnos().toPromise().
-      then( lista => {
-          alumno.id = Math.max.apply(Math, lista.map(function(o){ return o.id })) + 1
-      }).
+      // then( lista => {
+      //     alumno.id = Math.max.apply(Math, lista.map(function(o){ return o.id })) + 1
+      // }).
       then(() => {
         this._alumnoService.addAlumno(alumno).
         subscribe(response => {
@@ -101,11 +106,13 @@ export class AlumnosListComponent implements OnInit {
   }
 
   guardar(){
-    if(this.alumnoSeleccionado.id){
+    if(this.alumnoSeleccionado.id != 0){
       this.editar(this.alumnoSeleccionado)
     }
-    else
-      this.agregar(this.alumnoSeleccionado)
+    else{
+      this.agregar(this.alumnoSeleccionado);
+
+    }
   }
 
   ocultarDialogo(){
@@ -125,7 +132,11 @@ export class AlumnosListComponent implements OnInit {
   }
 
   private newAlumno(): Alumno{
-    return new Alumno('','','','','','','','')
+    let alumno = new Alumno('','','','','','');
+    // alumno.fechaNacimiento = '1000-01-01';
+    alumno.fechaNacimiento = new Date().toLocaleDateString();
+    alumno.fechaRegistro = '1000-01-01 00:00:00';
+    return alumno;
   }
 
 }

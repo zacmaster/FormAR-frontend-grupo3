@@ -14,15 +14,17 @@ export class Alumno extends Resource implements IAlumno{
 
 
 
-	constructor($nombre: string, $apellido: string, $email: string, $dni: string, $telefono: string, $fechaNacimiento: string, $fechaRegistro: string, $tipo: string) {
+	constructor($nombre: string, $apellido: string, $email: string, $dni: string, $telefono: string, $tipo: string) {
         super();
+
+        this.id = 0;
         this.nombre = $nombre;
 		this.apellido = $apellido;
 		this.email = $email;
 		this.dni = $dni;
 		this.telefono = $telefono;
-		this.fechaNacimiento = $fechaNacimiento;
-		this.fechaRegistro = $fechaRegistro;
+		this.fechaNacimiento;
+		this.fechaRegistro;
 		this.tipo = $tipo;
 	}
 
