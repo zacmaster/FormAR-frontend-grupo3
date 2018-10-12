@@ -8,6 +8,7 @@ import { AlumnoService } from '../../servicios/alumno.service';
 import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
 
+
 @Component({
   selector: 'alumnos-list',
   templateUrl: './alumnos-list.component.html',
@@ -15,8 +16,21 @@ import * as esLocale from 'date-fns/locale/es';
 })
 export class AlumnosListComponent implements OnInit {
 
+  dateNac;
   options: DatepickerOptions = {
-    locale: esLocale
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'DD[-]MM[-]YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 1,
+    locale: esLocale,
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', 
+    addClass: 'form-control', 
+    addStyle: {}, 
+    fieldId: 'my-date-picker', 
+    useEmptyBarTitle: false,
   };
 
   public alumnos = [];
@@ -42,7 +56,7 @@ export class AlumnosListComponent implements OnInit {
    _PATTERN = PATTERNS;
 
   ngDoCheck(){
-    console.log(this.alumnoSeleccionado.fechaNacimiento);
+    //console.log(this.alumnoSeleccionado.fechaNacimiento);
     
   }
 
@@ -87,6 +101,7 @@ export class AlumnosListComponent implements OnInit {
 
   private agregar(alumno: Alumno){
     console.log("alumno seleccionado: ",this.alumnoSeleccionado);
+    this.alumnoSeleccionado.fechaNacimiento= this.dateNac.toLocaleDateString('en-GB');
     
     this._alumnoService.getAlumnos().toPromise().
       // then( lista => {
@@ -105,6 +120,7 @@ export class AlumnosListComponent implements OnInit {
   
   private editar(alumno: Alumno){
     
+    this.alumnoSeleccionado.fechaNacimiento= this.dateNac.toLocaleDateString('en-GB');
     this._alumnoService.updateAlumno(alumno).
       subscribe(r => {
         this.alumnoSeleccionado = this.newAlumno();
@@ -141,9 +157,7 @@ export class AlumnosListComponent implements OnInit {
 
   private newAlumno(): Alumno{
     let alumno = new Alumno('','','','','','');
-    // alumno.fechaNacimiento = '1000-01-01';
-    alumno.fechaNacimiento = new Date().toLocaleDateString();
-    alumno.fechaRegistro = '1000-01-01 00:00:00';
+    alumno.fechaRegistro = new Date().toLocaleDateString('en-GB');
     return alumno;
   }
 

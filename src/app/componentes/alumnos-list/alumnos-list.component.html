@@ -66,15 +66,10 @@
                         </div>
                       </div>
                 <div class="form-group col">
-                    <ng-datepicker [(ngModel)]="date" [options]="options"></ng-datepicker>
-                  <!-- <label for="nacimiento">{{ _LABEL.fechaNacimiento }}</label>
-                  <input
-                          type="text"
-                          placeholder="Datepicker"
-                          class="form-control"
-                          bsDatepicker
-                          [(ngModel)]="alumnoSeleccionado.fechaNacimiento"
-                  > -->
+                    
+                 <label for="nacimiento">{{ _LABEL.fechaNacimiento }}</label>
+                 <ng-datepicker class="datePicker" [(ngModel)]="dateNac" [options]="options"></ng-datepicker>
+                 
 
                 </div>
               </div>
@@ -105,6 +100,7 @@
                 </div>
                 <div class="form-group col">
                   <label for="telefono">{{ _LABEL.telefono }}</label>
+              
                   <input  class="form-control"
                           [(ngModel)]="alumnoSeleccionado.telefono"
                           type="text"
