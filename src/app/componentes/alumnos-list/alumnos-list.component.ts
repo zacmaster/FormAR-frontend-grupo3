@@ -5,12 +5,20 @@ import { PATTERNS } from '../../utilidades/patterns';
 import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 import { AlumnoService } from '../../servicios/alumno.service';
 
+import {DatepickerOptions} from 'ng2-datepicker';
+import * as esLocale from 'date-fns/locale/es';
+
 @Component({
   selector: 'alumnos-list',
   templateUrl: './alumnos-list.component.html',
   styleUrls: ['./alumnos-list.component.css']
 })
 export class AlumnosListComponent implements OnInit {
+
+  options: DatepickerOptions = {
+    locale: esLocale
+  };
+
   public alumnos = [];
   public edicion: boolean = false;
   tituloNuevoAlumno = "Nuevo alumno";

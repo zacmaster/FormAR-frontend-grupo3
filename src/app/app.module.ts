@@ -9,6 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
 
 
+import { NgDatepickerModule } from 'ng2-datepicker';
+
+
 import { LoginComponent } from './vistas/login/login.component';
 import { HomeComponent } from './vistas/home/home.component';
 import { RegisterComponent } from './vistas/register/register.component';
@@ -18,8 +21,7 @@ import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component'
 import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
 
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 
 
 import { ContactosComponent } from './vistas/contactos/contactos.component';
@@ -55,8 +57,7 @@ import { AlumnoService } from './servicios/alumno.service';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    TooltipModule.forRoot(),
-    BsDatepickerModule.forRoot(),
+    NgDatepickerModule,
     Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [
