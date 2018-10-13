@@ -17,7 +17,7 @@
                   <tr>
                     <th>{{ _LABEL.curso }}</th>
                     <th>{{ _LABEL.descripcion }}</th>
-                    <th>{{ _LABEL.tipoCurso }}</th>
+                    <th>{{ _LABEL.area }}</th>
                     <th>{{ _LABEL.fechaInicio }}</th>
                     <th>{{ _LABEL.fechaFin }}</th>
                     <th>{{ _LABEL.acciones }}</th>
@@ -27,7 +27,7 @@
                   <tr *ngFor="let cursada of cursadas | search: { curso: busqueda }" >
                     <td> {{ cursada.curso }}</td>
                     <td> {{ cursada.descripcion }} </td>
-                    <td> {{ cursada.tipoCurso }} </td>
+                    <td> {{ cursada.area }} </td>
                     <td>  {{ cursada.fechaInicio }}</td>
                     <td>  {{ cursada.fechaFin }}</td>
                     <td>

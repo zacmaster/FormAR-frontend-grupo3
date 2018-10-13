@@ -29,7 +29,7 @@ export const LABEL_REQUIRED ={
     telefono:  "Teléfono*",
     nombreCurso: "Nombre del curso*",
     temario: "Temario*",
-    seleccionCategoria: "Seleccione un tipo de curso*"
+    seleccionArea: "Seleccione un área*"
 
 }
 
@@ -58,8 +58,8 @@ export var LABEL ={
     nombreCurso: "Nombre del curso",
     temario: "Temario",
     curso: "Curso",
-    tipoCurso: "Tipo de curso",
-    agregarTipoCurso: "Nuevo tipo de curso",
+    areaCurso: "Área",
+    agregarArea: "Nueva área",
     tituloInscipcion: "Nueva Inscripción",
     seleccionCurso: "Seleccione un Curso",
     seleccionAlumno: "Seleccione un Alumno",
@@ -67,7 +67,7 @@ export var LABEL ={
     inscribiendo: "Inscribiendo a ",
     fechaInicio: "Fechan de inicio",
     fechaFin: "Fecha de fin",
-    filtroTipoCurso: "Filtrar por tipo de curso",
+    filtroArea: "Filtrar por área de curso",
     inscribirAlumno: "Inscribir alumno",
     nuevaCursada: "Nueva cursada",
     crear: "Crear",
@@ -76,7 +76,8 @@ export var LABEL ={
     contacto: "Contacto",
     bajaCurso: "Eliminar curso",
     editarCurso: "Editar curso",
-    seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?"
+    seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
+
 
 
 }

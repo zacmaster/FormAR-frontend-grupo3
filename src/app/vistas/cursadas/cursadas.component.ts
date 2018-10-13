@@ -18,7 +18,7 @@ export class CursadasComponent implements OnInit {
     {
       curso: "Tapiceria",
       descripcion: "Curso de Tapiceria",
-      tipoCurso: "Oficio",
+      area: "Oficio",
       fechaInicio: "22/09/2018",
       fechaFin: "22/12/2018"
 

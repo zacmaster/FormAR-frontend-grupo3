@@ -3,8 +3,8 @@ import { HVR, LABEL, LABEL_REQUIRED, setCadena } from '../../utilidades/mensajes
 import { CursoService } from '../../servicios/curso.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { Curso } from '../../modelos/curso';
-import { TipoCursoService } from '../../servicios/tipo-curso.service';
-import { TipoCurso } from '../../modelos/tipo-curso';
+import { AreaService } from '../../servicios/area.service';
+import { Area } from '../../modelos/area';
 @Component({
   selector: 'app-cursos',
   templateUrl: './cursos.component.html',
@@ -18,7 +18,7 @@ export class CursosComponent implements OnInit, DoCheck {
   busqueda;
 
 
-  nombreNuevoTipoCurso = "";
+  nombreNuevoArea = "";
 
   _LABEL = LABEL;
   _LABEL_REQUIRED = LABEL_REQUIRED;
@@ -38,14 +38,14 @@ export class CursosComponent implements OnInit, DoCheck {
 
 
   constructor(private _cursoService: CursoService,
-              private _tipoCursoService: TipoCursoService,
+              private _tipoCursoService: AreaService,
               private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
     this.getCursos();
   }
   ngDoCheck(){
-    console.log(this.nombreNuevoTipoCurso);
+    console.log(this.nombreNuevoArea);
     
   }
 
@@ -54,11 +54,11 @@ export class CursosComponent implements OnInit, DoCheck {
     this.tipoCursos = [];
     this.cursosCopia = [];
     Promise.all([
-      this._tipoCursoService.getTipoCursos().toPromise(),
+      this._tipoCursoService.getAreas().toPromise(),
       this._cursoService.getCursos().toPromise()
     ]).then( r => {
       r[0].forEach(e => {
-        if(!e.disabled)
+        if(!e.deshabilitado)
           this.tipoCursos.push(e)
       });
       r[1].forEach(e => {
@@ -73,12 +73,12 @@ export class CursosComponent implements OnInit, DoCheck {
     }
 
 
-  private configuracionCurso(cursos, tipoCursos: TipoCurso[]){
+  private configuracionCurso(cursos, tipoCursos: Area[]){
     cursos.forEach(curso => {
       tipoCursos.forEach(tipo => {
         if(curso.tipo == tipo.id){
           var cursoCopia = curso;
-          cursoCopia.tipoName = tipo.name;
+          cursoCopia.tipoName = tipo.nombre;
           this.cursosCopia.push(cursoCopia);
         }
       })
