@@ -46,10 +46,6 @@
     padding-top: 5px;
     font-weight: bolder;
   }
-  .dialogoHeader{
-    padding-bottom: 2px;
-    border-bottom: 1px solid #0003;
-  }
   
   .contenedor-area{
     width: 100%;
@@ -58,4 +54,17 @@
     background-color: rgb(104, 104, 104,0.8);
     top: 0%;
     left: 0%;
+  }
+
+  .contenedor-area .dialogo{
+    border-radius: 5px;
+    width: 500px;
+    height: auto;
+    margin: auto;
+    margin-top: 15vh;
+
+  }
+  .table-container{
+    height: 200px;
+    overflow-y: scroll;
   }
