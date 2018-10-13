@@ -28,6 +28,8 @@ export class AreaService extends ResourceService<Area, IArea>{
   }
 
   updateArea(area: Area){
+    console.log("area: ", area);
+    
     return super.update(area);
   }
 

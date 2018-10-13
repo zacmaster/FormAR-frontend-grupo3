@@ -1,4 +1,6 @@
-export class Resource {
+import { Iresource } from "../interfaces/iresource";
+
+export class Resource implements Iresource{
     id: number;
     
     public copiar(resource: Resource): void{

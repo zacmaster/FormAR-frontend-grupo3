@@ -60,7 +60,7 @@ export var LABEL ={
     nombreCurso: "Nombre del curso",
     temario: "Temario",
     curso: "Curso",
-    areaCurso: "Área",
+    area: "Área",
     agregarArea: "Nueva área",
     tituloInscipcion: "Nueva Inscripción",
     seleccionCurso: "Seleccione un Curso",

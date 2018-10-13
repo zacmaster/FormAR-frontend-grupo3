@@ -14,18 +14,25 @@ export class CursosComponent implements OnInit, DoCheck {
   
   public cursos = [];
   public cursosCopia = [];
-  public tipoCursos = [];
-  public areas = ["Area1", "area2", "area3", "area2", "area3", "area2", "area3"]
+  public areas = [];
   busqueda;
-
-
-  nombreNuevoArea = "";
+  
+  
+  edicionArea: boolean = false;
+  popupAreasShowed: boolean = false;
+  
+  
+  private nombreNuevoArea: string;
 
   _LABEL = LABEL;
   _LABEL_REQUIRED = LABEL_REQUIRED;
   _HVR = HVR;
-
+  
+  public areaSeleccionada: Area = this.newArea();
   public cursoSeleccionado: Curso = this.newCurso();
+
+
+
   mostrarDialogoBorrar: boolean = false;
   mostrarDialogoAB: boolean = false;
   edicion: boolean = false;
@@ -39,44 +46,44 @@ export class CursosComponent implements OnInit, DoCheck {
 
 
   constructor(private _cursoService: CursoService,
-              private _tipoCursoService: AreaService,
+              private _areaService: AreaService,
               private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
+    this.cargarAreas();
     this.getCursos();
   }
   ngDoCheck(){
-    console.log(this.nombreNuevoArea);
+    // console.log(this.nombreNuevoArea);
     
   }
 
   getCursos(){
     this.cursos = [];
-    this.tipoCursos = [];
+    this.areas = [];
     this.cursosCopia = [];
     Promise.all([
-      this._tipoCursoService.getAreas().toPromise(),
+      this._areaService.getAreas().toPromise(),
       this._cursoService.getCursos().toPromise()
     ]).then( r => {
       r[0].forEach(e => {
-        if(!e.deshabilitado)
-          this.tipoCursos.push(e)
+          this.areas.push(e)
       });
       r[1].forEach(e => {
           this.cursos.push(e)
       })
     }).then(
       () => {
-        this.configuracionCurso(this.cursos, this.tipoCursos)
+        this.configuracionCurso(this.cursos, this.areas)
         console.log("cursos copia",this.cursosCopia);
         
       })
     }
 
 
-  private configuracionCurso(cursos, tipoCursos: Area[]){
+  private configuracionCurso(cursos, areas: Area[]){
     cursos.forEach(curso => {
-      tipoCursos.forEach(tipo => {
+      areas.forEach(tipo => {
         if(curso.tipo == tipo.id){
           var cursoCopia = curso;
           cursoCopia.tipoName = tipo.nombre;
@@ -170,15 +177,72 @@ export class CursosComponent implements OnInit, DoCheck {
     return new Curso('','','');
   }
 
+  clickAgregarArea(nombre: string){
+    // this.areas.push(this.nombreNuevoArea);
+    this._areaService.addArea(this.areaSeleccionada).toPromise().
+    then(() => {
+      this.cargarAreas();
+      this.areaSeleccionada = this.newArea();
+    })
+  }
+
+  private editarArea(area: Area){
+    this.edicionArea = true;
+    this.areaSeleccionada.copiar(area);
+  }
+
+  updateArea(area: Area){
+    this._areaService.updateArea(area).toPromise()
+    .then(() =>{
+      this.areaSeleccionada = this.newArea();
+      this.edicionArea = false;
+      this.cargarAreas();
+
+    }
+    )
+  }
+  eliminarArea(area: Area){
+    this._spinnerService.show();
+    this._areaService.deleteArea(area).toPromise()
+      .then(() => {
+        this.cargarAreas();
+        this._spinnerService.hide();
+      })
+  }
+
+  private cargarAreas(){
+    this._spinnerService.show();
+    this._areaService.getAreas()
+      .subscribe(response => {
+        this.areas = response;
+        this._spinnerService.hide();
+        console.log("areas: ",this.areas)
+      })
+  }
   mostrarDialogoEliminar(){
 
-    console.log("eliminando:",this.cursoSeleccionado);
+    // console.log("eliminando:",this.cursoSeleccionado);
     setCadena(this.cursoSeleccionado.nombre);
     this._LABEL = LABEL;
     
     this.dlg.texto = this._LABEL.seguroEliminarCurso;
     this.mostrarDialogoBorrar = true;
     
+  }
+
+  mostrarPopupAreas(){
+    this.edicionArea = false;
+    this.cargarAreas();
+    this.popupAreasShowed = true;
+  }
+  ocultarPopupAreas(){
+    this.popupAreasShowed = false;
+    this.areaSeleccionada = this.newArea();
+  }
+
+  private newArea(): Area{
+    let area = new Area('');
+    return area;
   }
 
 

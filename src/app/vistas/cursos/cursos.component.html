@@ -110,7 +110,13 @@
             <div class="row">
               <div class="form-group col">
                 <label for="">{{ _LABEL_REQUIRED.nombreCurso }}</label>
-                <input type="text" class="form-control" >
+                <input
+                        type="text"
+                        class="form-control"
+                        required
+                        minlength="5"
+                        maxlength="20"
+                >
               </div>
             </div>
 
@@ -152,8 +158,10 @@
                   </select>
               </div>
               <div class="col-6">
-                <button class="btn btn-success"
-                        (click)="nuevoAreaShowed = true">
+                <button
+                        class="btn btn-success"
+                        (click)="mostrarPopupAreas()"
+                >
                         <i class="fas fa-ellipsis-h"></i>
                 </button>
               </div>
@@ -174,30 +182,48 @@
 
   
   <div  class="contenedor-area d-flex justify-content-center align-items-center justify-content-center"
-        *ngIf="nuevoAreaShowed">
+        *ngIf="popupAreasShowed">
     <div  class="dialogo bg-light p-1">
       <div class="dialogoBody p-3 pt-3 text-center">
         <div class="form-group d-flex">
           <input  
                   class="form-control mr-2"
                   type="text"
-                  [(ngModel)]="nombreNuevoArea"
+                  [(ngModel)]="areaSeleccionada.nombre"
                   placeholder="Nueva Área"
+                  minlength="3"
+                  maxlength="10"
                   >
-          <button class="btn btn-success">
+          <button 
+                  class="btn btn-success"
+                  *ngIf="!edicionArea"
+                  (click)="clickAgregarArea()"
+          >
               <i class="fas fa-plus"></i>
+          </button>
+          <button 
+                  class="btn btn-primary"
+                  *ngIf="edicionArea"
+                  (click)="updateArea(areaSeleccionada)">
+              <i class="fas fa-check"></i>
           </button>
         </div>
       </div>
       <div class="table-container">
         <table class="table">
           <tr *ngFor="let area of areas">
-            <td class="w-75 ml-3">{{ area }}</td>
+            <td class="w-75 ml-3">{{ area.nombre }}</td>
             <td>
-              <button class="btn btn-success mr-2">
+              <button
+                      class="btn btn-success mr-2"
+                      (click)="editarArea(area)"        
+              >
                   <i class="fas fa-edit"></i>
               </button>
-              <button class="btn btn-danger">
+              <button
+                      class="btn btn-danger"
+                      (click)="eliminarArea(area)"
+              >
                   <i class="fas fa-trash-alt"></i>
               </button>
             </td>
@@ -207,7 +233,7 @@
       </div>
       <div class="dialogoFooter">
         <button class="btn btn-primary float-right m-3"
-              (click)="clickBtnAgregarArea()"
+              (click)="ocultarPopupAreas()"
         >{{ _LABEL.aceptar }}</button>
       </div>
     </div>

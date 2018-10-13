@@ -1,3 +1,7 @@
 export interface Iresource {
-    id: number
+    id: number;
+
+    copiar(iresource: Iresource);
+
+
 }

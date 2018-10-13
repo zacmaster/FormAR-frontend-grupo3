@@ -1,12 +1,13 @@
 import { IArea } from "../interfaces/iarea";
+import { Resource } from "../componentes/resource";
 
-export class Area implements IArea{
-    id: number;
+export class Area  extends Resource implements IArea{
     nombre: string;
-    deshabilitado: boolean;
 
     constructor(nombre: string){
+        super();
         this.nombre = nombre;
+        this.id = 0;
     }
 
 }
