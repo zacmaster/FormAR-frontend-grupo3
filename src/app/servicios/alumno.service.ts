@@ -6,7 +6,6 @@ import { Alumno } from '../modelos/alumno';
 import { GLOBAL } from './global';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError} from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import { ResourceService } from "./resource.service";
 
 

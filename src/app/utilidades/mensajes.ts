@@ -29,6 +29,7 @@ export const LABEL_REQUIRED ={
     telefono:  "Teléfono*",
     nombreCurso: "Nombre del curso*",
     temario: "Temario*",
+    descripcion: "Descripción*",
     seleccionArea: "Seleccione un área*"
 
 }
@@ -50,6 +51,7 @@ export var LABEL ={
     fecha: "Fecha",
     titulo: "Título",
     descripcion: "Descripción",
+    ingreseDescripcion: "Ingrese descripción",
     nuevoAlumno: "Nuevo alumno",
     edicionAlumno: "Edición de alumno",
     nuevoContacto: "Nuevo Contacto",

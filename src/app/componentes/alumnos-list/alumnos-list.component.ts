@@ -150,15 +150,4 @@ export class AlumnosListComponent implements OnInit {
     return alumno;
   }
 
-  private copiarAlumno(alumno: Alumno){
-    this.alumnoSeleccionado.id = alumno.id;
-    this.alumnoSeleccionado.nombre = alumno.nombre;
-    this.alumnoSeleccionado.apellido = alumno.apellido;
-    this.alumnoSeleccionado.dni = alumno.dni;
-    this.alumnoSeleccionado.email = alumno.email;
-    this.alumnoSeleccionado.telefono = alumno.telefono;
-    this.alumnoSeleccionado.fechaNacimiento = alumno.fechaNacimiento;
-    this.alumnoSeleccionado.fechaRegistro = alumno.fechaRegistro;
-  }
-
 }

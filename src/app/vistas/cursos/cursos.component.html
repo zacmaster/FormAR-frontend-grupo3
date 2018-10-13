@@ -113,6 +113,29 @@
                 <input type="text" class="form-control" >
               </div>
             </div>
+
+            <div class="row">
+              <div class="form-group col">
+                <label for="">{{ _LABEL_REQUIRED.descripcion }}</label>
+                <input  
+                      type="text"
+                      class="form-control"
+                >
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col">
+                <label for="">{{ _LABEL_REQUIRED.temario }}</label>
+                <textarea
+                          name=""
+                          id=""
+                          rows="1"
+                          class="form-control"
+                          maxlength="200"
+                ></textarea>
+              </div>
+            </div>
   
             <div class="row">
               <div class="col">
@@ -121,6 +144,7 @@
             </div>
             <div class="row mb-5 form-group">
               <div class=" col-6">
+                <label for=""></label>
                 <select class="custom-select">
                     <option *ngFor="let area of areas">
                       {{ area.nombre }}
@@ -130,14 +154,14 @@
               <div class="col-6">
                 <button class="btn btn-success"
                         (click)="nuevoAreaShowed = true">
-                        {{ _LABEL.agregarArea }}
+                        <i class="fas fa-ellipsis-h"></i>
                 </button>
               </div>
   
             </div>
             <div class="row form-group">
                 <div class="col">
-                  <span class="btn btn-primary float-right">{{_LABEL.aceptar}}</span>
+                  <button class="btn btn-primary float-right">{{ _LABEL.aceptar }}</button>
                 </div>
               </div>
 
