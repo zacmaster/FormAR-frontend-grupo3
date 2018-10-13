@@ -8,8 +8,8 @@ export class Alumno extends Resource implements IAlumno{
     email: string;
     dni: string;
     telefono: string;
-    fechaNacimiento: string;
-    fechaRegistro: string;
+    fechaNacimiento: number;
+    fechaRegistro: number;
     tipo: string;
 
 
@@ -23,8 +23,6 @@ export class Alumno extends Resource implements IAlumno{
 		this.email = $email;
 		this.dni = $dni;
 		this.telefono = $telefono;
-		this.fechaNacimiento;
-		this.fechaRegistro;
 		this.tipo = $tipo;
 	}
 

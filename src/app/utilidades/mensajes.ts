@@ -34,6 +34,7 @@ export const LABEL_REQUIRED ={
 }
 
 export var LABEL ={
+    guardar: "Guardar",
     cancelar: "Cancelar",
     aceptar: "Aceptar",
     nombre: "Nombre",
@@ -49,6 +50,8 @@ export var LABEL ={
     fecha: "Fecha",
     titulo: "Título",
     descripcion: "Descripción",
+    nuevoAlumno: "Nuevo alumno",
+    edicionAlumno: "Edición de alumno",
     nuevoContacto: "Nuevo Contacto",
     nuevoCurso: "Nuevo Curso",
     editarContacto: "Editar Contacto",
@@ -68,7 +71,7 @@ export var LABEL ={
     inscribirAlumno: "Inscribir alumno",
     nuevaCursada: "Nueva cursada",
     crear: "Crear",
-    nuevoAlumno: "Nuevo Alumno",
+    bajaAlumno: "Baja de Alumno",
     elegirAlumnoLista: "Elegir alumno de la lista",
     contacto: "Contacto",
     bajaCurso: "Eliminar curso",

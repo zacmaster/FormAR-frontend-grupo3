@@ -19,7 +19,7 @@ export class AlumnosListComponent implements OnInit {
   dateNac;
   options: DatepickerOptions = {
     minYear: 1970,
-    maxYear: 2030,
+    maxYear: 2000,
     displayFormat: 'DD[-]MM[-]YYYY',
     barTitleFormat: 'MMMM YYYY',
     dayNamesFormat: 'dd',
@@ -35,20 +35,14 @@ export class AlumnosListComponent implements OnInit {
 
   public alumnos = [];
   public edicion: boolean = false;
-  tituloNuevoAlumno = "Nuevo alumno";
-  tituloEdicionAlumno = "Edición de alumno";
   mostrarDialogoAB = false;
   mostrarDialogoBorrar: boolean = false;
   alumnoSeleccionado: Alumno = this.newAlumno();
   nombreAlumno: string = '';
-  textoAgregar = "Agregar";
-  textoEditar = "Guardar";
   busqueda;
 
-  dlg = {
-    titulo: 'Baja de alumno',
-    texto: ''
-  }
+  textoDlgEliminar: string;
+
 
    _LABEL = LABEL;
    _LABEL_R = LABEL_REQUIRED;
@@ -56,7 +50,7 @@ export class AlumnosListComponent implements OnInit {
    _PATTERN = PATTERNS;
 
   ngDoCheck(){
-    //console.log(this.alumnoSeleccionado.fechaNacimiento);
+    console.log("dateNac: ",this.dateNac);
     
   }
 
@@ -78,7 +72,7 @@ export class AlumnosListComponent implements OnInit {
 
 
   mostrarDialogoEliminar(){
-    this.dlg.texto =  `¿Está seguro que desea dar de baja a
+    this.textoDlgEliminar =  `¿Está seguro que desea dar de baja a
                       ${ this.alumnoSeleccionado.nombre }
                       ${ this.alumnoSeleccionado.apellido } ?`
 
@@ -100,29 +94,24 @@ export class AlumnosListComponent implements OnInit {
   }
 
   private agregar(alumno: Alumno){
-    console.log("alumno seleccionado: ",this.alumnoSeleccionado);
-    this.alumnoSeleccionado.fechaNacimiento= this.dateNac.toLocaleDateString('en-GB');
     
-    this._alumnoService.getAlumnos().toPromise().
-      // then( lista => {
-      //     alumno.id = Math.max.apply(Math, lista.map(function(o){ return o.id })) + 1
-      // }).
-      then(() => {
+    this.alumnoSeleccionado.fechaNacimiento = + this.dateNac;
+    
+    console.log("alumno seleccionado: ",this.alumnoSeleccionado);
+        alumno.fechaRegistro = + new Date();
         this._alumnoService.addAlumno(alumno).
         subscribe(response => {
-          this.alumnos.push(alumno);
+          this.getAlumnos();
           this.alumnoSeleccionado = this.newAlumno();
           this.mostrarDialogoAB = false;
         })
-
-      })
-  }
-  
-  private editar(alumno: Alumno){
+    }
     
-    this.alumnoSeleccionado.fechaNacimiento= this.dateNac.toLocaleDateString('en-GB');
+  private editar(alumno: Alumno){
+      this.alumnoSeleccionado.fechaNacimiento = + this.dateNac;
     this._alumnoService.updateAlumno(alumno).
       subscribe(r => {
+        this.getAlumnos();
         this.alumnoSeleccionado = this.newAlumno();
         this.edicion = false;
         this.mostrarDialogoAB = false;
@@ -153,12 +142,23 @@ export class AlumnosListComponent implements OnInit {
   editarAlumno(){
     this.edicion = true;
     this.mostrarDialogoAB = true;
+    this.dateNac = new Date(this.alumnoSeleccionado.fechaNacimiento);
   }
 
   private newAlumno(): Alumno{
     let alumno = new Alumno('','','','','','');
-    alumno.fechaRegistro = new Date().toLocaleDateString('en-GB');
     return alumno;
+  }
+
+  private copiarAlumno(alumno: Alumno){
+    this.alumnoSeleccionado.id = alumno.id;
+    this.alumnoSeleccionado.nombre = alumno.nombre;
+    this.alumnoSeleccionado.apellido = alumno.apellido;
+    this.alumnoSeleccionado.dni = alumno.dni;
+    this.alumnoSeleccionado.email = alumno.email;
+    this.alumnoSeleccionado.telefono = alumno.telefono;
+    this.alumnoSeleccionado.fechaNacimiento = alumno.fechaNacimiento;
+    this.alumnoSeleccionado.fechaRegistro = alumno.fechaRegistro;
   }
 
 }

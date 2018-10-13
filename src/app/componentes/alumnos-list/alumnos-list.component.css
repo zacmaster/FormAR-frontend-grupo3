@@ -19,6 +19,6 @@ tbody{
     max-height: 200px;
     overflow-y: scroll;
 }
-#ngx-datepicker-container[_ngcontent-c4]{
-    z-index: 6;
+.ngx-datepicker-position-bottom-right{
+    border: solid 1px red !important;
 }

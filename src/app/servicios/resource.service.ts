@@ -32,14 +32,21 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
 
   
   public update(item: T): Observable<T>{
+
+    console.log("item:", item);
+    
+    let url = `${this.url}/${this.endpoint}`;
+    console.log("url:::::   ",url);
+    
+ 
     return this.httpClient
-    .put<T>(`${this.url}/${this.endpoint}/${item.id}`, item,this.httpOptions)
+    .put<T>(url, item,this.httpOptions)
     .pipe(catchError(this.handleError))
   }
   
   public delete(item: T): Observable<{}>{
     return this.httpClient
-    .delete(`${this.url}/${this.endpoint}/${item.id}`, this.httpOptions)
+    .delete(`${this.url}/${this.endpoint}${item.id}`, this.httpOptions)
     .pipe(catchError(this.handleError))
   }
   
