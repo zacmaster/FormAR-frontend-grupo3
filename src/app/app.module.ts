@@ -27,6 +27,7 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
+import { SalasComponent } from './vistas/salas/salas.component';
 import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InscripcionComponent } from './vistas/inscripcion/inscripcion.component';
 import { ContactosListComponent } from './componentes/contactos-list/contactos-list.component';
@@ -48,6 +49,7 @@ import { AlumnoService } from './servicios/alumno.service';
     ContactosComponent,
     CursosComponent,
     InstructoresComponent,
+    SalasComponent,
     CursadasComponent,
     InscripcionComponent,
     ContactosListComponent,

@@ -10,6 +10,7 @@ import { CursosComponent } from './vistas/cursos/cursos.component';
 import { ContactosListComponent } from './componentes/contactos-list/contactos-list.component';
 import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
+import { SalasComponent } from './vistas/salas/salas.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home/alumnos', pathMatch: 'full' },
@@ -23,6 +24,7 @@ const routes: Routes = [
             { path: 'cursos', component: CursosComponent},
             { path: 'cursadas', component: CursadasComponent},
             { path: 'instructores', component: InstructoresComponent},
+            { path: 'salas', component: SalasComponent},
         ]
     },
     { path: 'login', component:  LoginComponent},

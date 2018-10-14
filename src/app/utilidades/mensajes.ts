@@ -78,9 +78,15 @@ export var LABEL ={
     contacto: "Contacto",
     bajaCurso: "Eliminar curso",
     editarCurso: "Editar curso",
-    seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?"
+    seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
 
-
+    seleccion: {
+        curso: "Seleccione un curso",
+        cursada: "Seleccione una cursada",
+        instructor: "Seleccione un instructor",
+        sala: "Seleccione una sala",
+        alumno: "Seleccione un alumno"
+    }
 }
 
 export const HVR ={
