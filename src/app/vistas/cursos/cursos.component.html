@@ -19,7 +19,6 @@
                   <tr>
                     <th>{{ _LABEL.nombreCurso }}</th>
                     <th>{{ _LABEL.area }}</th>
-                    <!-- <th>{{ _LABEL.temario }}</th> -->
                     <th>Info</th>
                     <th>{{ _LABEL.acciones }}</th>
                   </tr>
@@ -57,12 +56,6 @@
         </div>
 </div>
 
-<!-- <formulario-curso *ngIf="mostrarDialogoAB"
-                  (clickBotonCerrar)="ocultarDialogo()"
-                  [edicion]="edicion"
-                  [areas]="areas"
-                  >
-</formulario-curso> -->
 
 
 <dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
@@ -118,6 +111,7 @@
                         minlength="5"
                         maxlength="20"
                         [(ngModel)]="cursoSeleccionado.nombre"
+                        [placeholder]="_LABEL.curso"
                 >
               </div>
             </div>
@@ -129,11 +123,13 @@
                       type="text"
                       class="form-control"
                       [(ngModel)]="cursoSeleccionado.descripcion"
+                      [placeholder]="_LABEL.descripcion"
+                      required
                 >
               </div>
             </div>
 
-            <div class="row">
+            <div class="row contenedorTemario">
               <div class="form-group col">
                 <label for="">{{ _LABEL_REQUIRED.temario }}</label>
                 <textarea
@@ -142,6 +138,8 @@
                           rows="1"
                           class="form-control"
                           maxlength="200"
+                          required
+                          [placeholder]="_LABEL.temario"
                 ></textarea>
               </div>
             </div>
@@ -154,8 +152,13 @@
             <div class="row mb-5 form-group">
               <div class=" col-6">
                 <label for=""></label>
-                <select class="custom-select">
-                    <option *ngFor="let area of areas">
+                <select 
+                        class="custom-select"
+                >
+                    <option
+                            *ngFor="let area of areas"
+                            [(ngModel)]="cursoSeleccionado.area.nombre"
+                    >
                       {{ area.nombre }}
                     </option>
                   </select>

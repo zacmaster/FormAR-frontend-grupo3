@@ -58,15 +58,18 @@ export class AlumnosListComponent implements OnInit {
               private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
-    this.getAlumnos();
+    this._spinnerService.show();
+    setTimeout(()=>{
+      this.getAlumnos().then(
+        () => this._spinnerService.hide()
+      )},1000)
   }
 
 
   getAlumnos(){
-    this._alumnoService.getAlumnos()
-      .subscribe(response =>{
-        this.alumnos = response
-        
+    return this._alumnoService.getAlumnos()
+      .toPromise().then(r => {
+        this.alumnos = r
       })
   }
 

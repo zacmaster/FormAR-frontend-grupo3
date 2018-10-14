@@ -29,7 +29,7 @@ export class CursosComponent implements OnInit, DoCheck {
   _HVR = HVR;
   
   public areaSeleccionada: Area = this.newArea();
-  public cursoSeleccionado: Curso = this.newCurso();
+  public cursoSeleccionado: Curso;
 
 
 
@@ -67,6 +67,7 @@ export class CursosComponent implements OnInit, DoCheck {
         }
       })
     })
+    this.cursoSeleccionado = this.cursosCopia[0];
   }
 
       
