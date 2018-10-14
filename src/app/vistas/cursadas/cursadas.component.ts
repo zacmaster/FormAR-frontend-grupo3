@@ -21,7 +21,8 @@ export class CursadasComponent implements OnInit {
   _LABEL_R = LABEL_REQUIRED;
   busqueda;
   mostrarDialogo = false;
-  cursadas = []
+  cursadas = [];
+  fechaInicio: string;
     // {
     //   curso: "Tapiceria",
     //   descripcion: "Curso de Tapiceria",
@@ -85,6 +86,10 @@ export class CursadasComponent implements OnInit {
 
   cargarCursadas(){
     return this._cusadaService.list().toPromise();
+  }
+
+  aFechaHumana(fecha: number): string{
+    return new Date(fecha).toLocaleDateString();
   }
 
 }
