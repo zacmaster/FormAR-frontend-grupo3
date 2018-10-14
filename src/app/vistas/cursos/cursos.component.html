@@ -19,20 +19,21 @@
                   <tr>
                     <th>{{ _LABEL.nombreCurso }}</th>
                     <th>{{ _LABEL.area }}</th>
-                    <th>{{ _LABEL.temario }}</th>
+                    <!-- <th>{{ _LABEL.temario }}</th> -->
+                    <th>Info</th>
                     <th>{{ _LABEL.acciones }}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let curso of cursosCopia" >
-                    <td> {{ curso.nombre }}</td>
-                    <td> {{ curso.tipoName }} </td>
+                  <tr *ngFor="let cursoCopia of cursosCopia" >
+                    <td> {{ cursoCopia.nombre }}</td>
+                    <td> {{ cursoCopia.area.nombre }} </td>
                     <td> 
-                      <span class="btn btn-info"
+                      <button class="btn btn-warning"
                             [title]="_HVR.temario"
                             (click)="cursoSeleccionado = curso; mostrarTemario()">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </span>
+                            <i class="fas fa-info"></i>
+                      </button>
                     </td>
                     <td>
                       <span class="btn btn-info mr-2" [title]="_HVR.inscribirAlumno">
@@ -116,6 +117,7 @@
                         required
                         minlength="5"
                         maxlength="20"
+                        [(ngModel)]="cursoSeleccionado.nombre"
                 >
               </div>
             </div>
@@ -126,6 +128,7 @@
                 <input  
                       type="text"
                       class="form-control"
+                      [(ngModel)]="cursoSeleccionado.descripcion"
                 >
               </div>
             </div>
@@ -192,7 +195,7 @@
                   [(ngModel)]="areaSeleccionada.nombre"
                   placeholder="Nueva Área"
                   minlength="3"
-                  maxlength="10"
+                  maxlength="20"
                   >
           <button 
                   class="btn btn-success"
