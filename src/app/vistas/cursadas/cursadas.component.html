@@ -54,27 +54,44 @@
         <div></div>
         <div class="text-center">{{ _LABEL.nuevaCursada }}</div>
       </div>
-        
+
+      <!--  SELECT ALUMNO -->
+      <div class="mt-3">
+        <label for="basic-url">{{ _LABEL.seleccione.curso  }}</label>
+        <div class="input-group">
+          <select class="form-control">
+            <option *ngFor="let curso of alumnos">
+              {{ curso.nombre }}
+            </option>
+          </select>  
+        </div>
+        <div>
+            <br>
+            <p>CURSO: id: {{cursoSeleccionado.id}} {{cursoSeleccionado.curso}}</p> 
+        </div>
+      </div>
+      <!--  FIN SELECT CURSO -->
+
       <!--  SELECT CURSO -->
       <div class="mt-3">
-        <label for="basic-url">{{ _LABEL.seleccion.curso  }}</label>
+        <label for="basic-url">{{ _LABEL.seleccione.curso  }}</label>
         <div class="input-group">
-          <select class="form-control" placeholder="Cursos Prueba" [(ngModel)]="cursoSeleccionado">
-            <option *ngFor="let curso of cursos" [value]="curso.id">
+          <select class="form-control">
+            <option *ngFor="let curso of cursos" [value]="curso.id" (click)=guardarCurso(curso)>
               {{ curso.curso }}
             </option>
           </select>  
         </div>
         <div>
             <br>
-            <p>CURSO: id: {{cursoSeleccionado}}</p> 
+            <p>CURSO: id: {{cursoSeleccionado.id}} {{cursoSeleccionado.curso}}</p> 
         </div>
       </div>
       <!--  FIN SELECT CURSO -->
         
       <!--  SELECT INSTRUCTOR -->
       <div class="mt-3">
-        <label for="basic-url">{{ _LABEL.seleccion.instructor  }}</label>
+        <label for="basic-url">{{ _LABEL.seleccione.instructor  }}</label>
         <div class="input-group">
           <select class="form-control" placeholder="Instructor" [(ngModel)]="instructorSeleccionado">
             <option *ngFor="let instructor of instructores" [value]="instructor.id">
@@ -91,7 +108,7 @@
   
       <!--  SELECT SALA -->
       <div class="mt-3">
-          <label for="basic-url">{{ _LABEL.seleccion.sala  }}</label>
+          <label for="basic-url">{{ _LABEL.seleccione.sala  }}</label>
           <div class="input-group">
             <select class="form-control" placeholder="Sala" [(ngModel)]="salaSeleccionada">
               <option *ngFor="let sala of salas" [value]="sala.sala">
@@ -108,7 +125,7 @@
 
         <!--  SELECT DIAS -->
         <div class="mt-3">
-          <label for="basic-url">{{ _LABEL.seleccion.dias  }}</label>
+          <label for="basic-url">{{ _LABEL.seleccione.dias  }}</label>
           <div class="input-group">
             <select class="form-control" [(ngModel)]="diasSeleccionados" multiple>
               <option *ngFor="let dia of dias" [value]="dia.dia">

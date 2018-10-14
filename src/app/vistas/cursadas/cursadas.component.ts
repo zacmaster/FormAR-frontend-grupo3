@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes'
+import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes';
 import {FormControl} from '@angular/forms';
 import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { Alumno } from '../../modelos/alumno';
+import { PATTERNS } from '../../utilidades/patterns';
+import { AlumnoService } from '../../servicios/alumno.service';
 
 @Component({
   selector: 'app-cursadas',
@@ -11,10 +14,22 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 })
 export class CursadasComponent implements OnInit {
 
-  cursoSeleccionado = new FormControl();
-  instructorSeleccionado = new FormControl();
-  salaSeleccionada = new FormControl();
-  diasSeleccionados = new FormControl();
+  cursoSeleccionado = {
+    id: "",
+    curso: ""
+  };
+  instructorSeleccionado = {
+    id: "",
+    nombre: ""
+  };
+  salaSeleccionada = {
+    id: "",
+    sala: ""
+  };
+  diasSeleccionados = {
+    id: "",
+    dia: ""
+  };
   cantClases: string;
 
   _LABEL = LABEL;
@@ -32,16 +47,21 @@ export class CursadasComponent implements OnInit {
     // }
   // ];
 
+  public guardarCurso(curso){
+    this.cursoSeleccionado.id=curso.id;
+    this.cursoSeleccionado.curso=curso.curso;
+  }
+
   cursos = [
-    {id: '0', curso: 'curso1'},
-    {id: '1', curso: 'curso2'},
-    {id: '2', curso: 'curso3'}
+    {id: 0, curso: 'Programación'},
+    {id: 1, curso: 'Costura'},
+    {id: 2, curso: 'Ingles'}
   ];
 
   instructores = [
-    {id: 0, nombre: 'pedro'},
-    {id: 1, nombre: 'marcos'},
-    {id: 2, nombre: 'sebastian'}
+    {id: 0, nombre: 'Pedro'},
+    {id: 1, nombre: 'Marcos'},
+    {id: 2, nombre: 'Sebastian'}
   ];
 
   salas = [
@@ -86,5 +106,8 @@ export class CursadasComponent implements OnInit {
   cargarCursadas(){
     return this._cusadaService.list().toPromise();
   }
-
+  
+  ngDoCheck(){
+    console.log("Curso Seleccionado: ",this.cursoSeleccionado);
+  }
 }
