@@ -51,6 +51,8 @@ export var LABEL ={
     titulo: "Título",
     descripcion: "Descripción",
     nuevoAlumno: "Nuevo alumno",
+    nuevoInstructor: "Nuevo instructor",
+    nuevaSala: "Nueva sala",
     edicionAlumno: "Edición de alumno",
     nuevoContacto: "Nuevo Contacto",
     nuevoCurso: "Nuevo Curso",
