@@ -13,7 +13,6 @@ import { Area } from '../../modelos/area';
 export class CursosComponent implements OnInit, DoCheck {
   
   public cursos = [];
-  public cursosCopia = [];
   public areas = [];
   busqueda;
   
@@ -50,25 +49,12 @@ export class CursosComponent implements OnInit, DoCheck {
               private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
-    this.descargarCursos();
+    this.getCursos();
   }
   ngDoCheck(){
     
   }
 
-
-  private configuracionCurso(cursos, areas: Area[]){
-    cursos.forEach(curso => {
-      areas.forEach(area => {
-        if(curso.idArea == area.id){
-          var cursoCopia = curso;
-          cursoCopia.area = area;
-          this.cursosCopia.push(cursoCopia);
-        }
-      })
-    })
-    this.cursoSeleccionado = this.cursosCopia[0];
-  }
 
       
 
@@ -221,20 +207,11 @@ export class CursosComponent implements OnInit, DoCheck {
     return area;
   }
 
-  private descargarCursos(){
-    Promise.all([
-      this._areaService.getAreas().toPromise(),
-      this._cursoService.getCursos().toPromise()
-    ])
-    .then(r => {
-      r[0].forEach(area => {
-        this.areas.push(area);
-      });
-      r[1].forEach(curso => {
-        this.cursos.push(curso)
-      });
-    })
-    .then(() => this.configuracionCurso(this.cursos,this.areas))
+  private getCursos(){
+    this._cursoService.list()
+      .subscribe(r => {
+        this.cursos = r
+      })
   }
 
 

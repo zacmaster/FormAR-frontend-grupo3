@@ -24,9 +24,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let cursoCopia of cursosCopia" >
-                    <td> {{ cursoCopia.nombre }}</td>
-                    <td> {{ cursoCopia.area.nombre }} </td>
+                  <tr *ngFor="let curso of cursos" >
+                    <td> {{ curso.nombre }}</td>
+                    <td> {{ curso.area.nombre }} </td>
                     <td> 
                       <button class="btn btn-warning"
                             [title]="_HVR.temario"
@@ -70,15 +70,19 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 
 
+<!-- TEMARIO -->
+
 <div class="contenedor-temario"  *ngIf="temarioShowed">
     <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
-          <div class="titulo text-center" ><p> {{ _LABEL.temario }} de {{ cursoSeleccionado.nombre }} </p></div>
+          <div class="titulo text-center" ><p> {{ cursoSeleccionado.nombre }} </p></div>
           <span class="btn btn-danger" (click)="cerrarTemario()"><i class="fas fa-times"></i></span>
         </div>
         <div class="dialogoBody p-3 pt-3 text-center">
-          <p> {{ cursoSeleccionado.temario }} </p>
+          <p> <span style="font-weight: bold">{{ _LABEL.descripcion }}: </span>{{ cursoSeleccionado.descripcion }} </p>
+          <p> <span style="font-weight: bold">{{ _LABEL.temario }}:</span> {{ cursoSeleccionado.temario }} </p>
+
         </div>
       </div>
 </div>
