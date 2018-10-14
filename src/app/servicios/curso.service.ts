@@ -14,7 +14,7 @@ import { ResourceService } from './resource.service';
 export class CursoService extends ResourceService<Curso, ICurso>{
 
   constructor(private _http: HttpClient) {
-    super(_http, GLOBAL.url + 'curso','');
+    super(_http, GLOBAL.url + 'cursos','');
   }
 
   getCursos(): Observable<ICurso[]>{

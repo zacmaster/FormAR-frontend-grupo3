@@ -78,6 +78,8 @@ export var LABEL ={
     descripcion: "Descripción",
     ingreseDescripcion: "Ingrese descripción",
     nuevoAlumno: "Nuevo alumno",
+    nuevoInstructor: "Nuevo instructor",
+    nuevaSala: "Nueva sala",
     edicionAlumno: "Edición de alumno",
     nuevoContacto: "Nuevo Contacto",
     nuevoCurso: "Nuevo Curso",
@@ -114,13 +116,18 @@ export var LABEL ={
         descripcion: "Ingrese la descripción",
         temario: "Ingrese el temario"
     },
-    seleccione: {
-        area: "Seleccione Area"
-    },
     boton: {
         inscribir:  "Inscribir",
         editar:     "Editar",
         eliminar:   "Eliminar"
+    },
+    seleccione: {
+        area: "Seleccione un area",
+        curso: "Seleccione un curso",
+        cursada: "Seleccione una cursada",
+        instructor: "Seleccione un instructor",
+        sala: "Seleccione una sala",
+        alumno: "Seleccione un alumno"
     }
 }
 
