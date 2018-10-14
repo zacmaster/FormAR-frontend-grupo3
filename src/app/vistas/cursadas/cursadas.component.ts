@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes'
 import {FormControl} from '@angular/forms';
+import { CursadaService } from 'src/app/servicios/cursada.service';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-cursadas',
@@ -19,16 +21,16 @@ export class CursadasComponent implements OnInit {
   _LABEL_R = LABEL_REQUIRED;
   busqueda;
   mostrarDialogo = false;
-  cursadas = [
-    {
-      curso: "Tapiceria",
-      descripcion: "Curso de Tapiceria",
-      area: "Oficio",
-      fechaInicio: "22/09/2018",
-      fechaFin: "22/12/2018"
+  cursadas = []
+    // {
+    //   curso: "Tapiceria",
+    //   descripcion: "Curso de Tapiceria",
+    //   area: "Oficio",
+    //   fechaInicio: "22/09/2018",
+    //   fechaFin: "22/12/2018"
 
-    }
-  ];
+    // }
+  // ];
 
   cursos = [
     {id: '0', curso: 'curso1'},
@@ -65,9 +67,24 @@ export class CursadasComponent implements OnInit {
     
   }
 
-  constructor() { }
+  constructor(private _cusadaService: CursadaService,
+              private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
+    console.log("on init");
+    
+    this._spinnerService.show();
+    setTimeout(() => {
+      this.cargarCursadas()
+        .then(r => {
+          this.cursadas = r;
+          this._spinnerService.hide();
+        })
+    },1000)
+  }
+
+  cargarCursadas(){
+    return this._cusadaService.list().toPromise();
   }
 
 }

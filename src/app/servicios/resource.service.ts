@@ -35,7 +35,7 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
 
     console.log("item:", item);
     
-    let url = `${this.url}/${this.endpoint}`;
+    let url = `${this.url}/${this.endpoint}/${item.id}`;
     console.log("url:::::   ",url);
     
  

@@ -150,7 +150,7 @@ export class CursosComponent implements OnInit, DoCheck {
 
 
   private newCurso(): Curso{
-    return new Curso('','',0);
+    return new Curso('','','');
   }
 
   clickAgregarArea(nombre: string){

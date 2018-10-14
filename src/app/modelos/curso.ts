@@ -1,17 +1,19 @@
 import { Resource } from "../componentes/resource";
 import { ICurso } from "../interfaces/icurso";
+import { Area } from "./area";
 
 export class Curso extends Resource implements ICurso{
     nombre: string;
+	descripcion: string;
+	area: Area;
     temario: string;
-    idArea: number;
 
 
-	constructor($nombre: string,$temario: string, $idArea: number) {
+	constructor($nombre: string,$descripcion: string, $temario: string) {
         super();
-		this.temario = $temario;
 		this.nombre = $nombre;
-		this.idArea = $idArea;
+		this.descripcion = $descripcion;
+		this.temario = $temario;
 	}
 
 

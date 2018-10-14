@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let cursada of cursadas | search: { curso: busqueda }" >
-                    <td> {{ cursada.curso }}</td>
+                    <td> {{ cursada.nombre }}</td>
                     <td> {{ cursada.descripcion }} </td>
                     <td> {{ cursada.area }} </td>
                     <td>  {{ cursada.fechaInicio }}</td>
