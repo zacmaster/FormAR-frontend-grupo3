@@ -90,11 +90,12 @@ export class AlumnosListComponent implements OnInit {
           this._spinnerService.hide();
           this.alumnoSeleccionado = this.newAlumno();
         })
-    }, 1000)
+    }, 500)
   }
 
   private agregar(alumno: Alumno){
-    
+    this._spinnerService.show();
+    setTimeout(() => {
     this.alumnoSeleccionado.fechaNacimiento = + this.dateNac;
     
     console.log("alumno seleccionado: ",this.alumnoSeleccionado);
@@ -104,8 +105,10 @@ export class AlumnosListComponent implements OnInit {
           this.getAlumnos();
           this.alumnoSeleccionado = this.newAlumno();
           this.mostrarDialogoAB = false;
+          this._spinnerService.hide();
         })
-    }
+    }, 500)
+  }
     
   private editar(alumno: Alumno){
       this.alumnoSeleccionado.fechaNacimiento = + this.dateNac;

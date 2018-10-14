@@ -1,10 +1,12 @@
+import { EmailValidator } from "@angular/forms";
+import { validateConfig } from "@angular/router/src/config";
+
 export var cadena;
 
 export const VALIDACION = {
     minimoTres: "Se requiere un mínimo de 3 caracteres para este campo",
     minimoSeis: "Se requiere un mínimo de 6 caracteres para este campo",
     minimoOcho: "Se requiere un mínimo de 8 caracteres para este campo",
-
 
     emailRequerido: "El campo email es obligatorio",
     emailValido: "El email ingresado no es válido",
@@ -16,8 +18,31 @@ export const VALIDACION = {
     apellidoValido: "El apellido ingresado no es válido",
     
     telefonoValido: "El teléfono ingresado no es válido",
+    telefonoRequerido: "El campo teléfono es obligatorio",
 
-    
+    asuntoRequerido: "El campo asunto es obligatorio",
+    descripcionRequerido: "El campo descripción es obligatorio",
+
+    dniValido: "El DNI ingresado no es válido",
+    dniRequerido: "El campo DNI es obligatorio",
+
+    valido: {
+        nombre: "El nombre ingresado no es válido", 
+        apellido: "El apellido ingresado no es válido",
+        dni: "El DNI ingresado no es válido",
+        telefono: "El teléfono ingresado no es válido",
+        email: "El email ingresado no es válido",
+        asunto: "El asunto ingresado no es válido"
+    },
+
+    requerido: {
+        nombre: "El campo nombre es obligatorio", 
+        apellido: "El campo apellido es obligatorio",
+        dni: "El campo DNI es obligatorio",
+        telefono: "El campo teléfono es obligatorio",
+        email: "El campo email es obligatorio",
+        asunto: "El campo asunto es obligatorio"
+    }
 }
 
 export const LABEL_REQUIRED ={
@@ -49,7 +74,7 @@ export var LABEL ={
     agregar: "Agregar",
     acciones: "Acciones",
     fecha: "Fecha",
-    titulo: "Título",
+    asunto: "Asunto",
     descripcion: "Descripción",
     ingreseDescripcion: "Ingrese descripción",
     nuevoAlumno: "Nuevo alumno",
@@ -79,9 +104,24 @@ export var LABEL ={
     bajaCurso: "Eliminar curso",
     editarCurso: "Editar curso",
     seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
-
-
-
+    ingrese: {
+        nombre: "Ingrese el nombre",
+        apellido: "Ingrese el apellido",
+        dni: "Ingrese el DNI",
+        email: "Ingrese el email",
+        telefono: "Ingrese el telefono",
+        asunto: "Ingrese el titulo",
+        descripcion: "Ingrese la descripción",
+        temario: "Ingrese el temario"
+    },
+    seleccione: {
+        area: "Seleccione Area"
+    },
+    boton: {
+        inscribir:  "Inscribir",
+        editar:     "Editar",
+        eliminar:   "Eliminar"
+    }
 }
 
 export const HVR ={

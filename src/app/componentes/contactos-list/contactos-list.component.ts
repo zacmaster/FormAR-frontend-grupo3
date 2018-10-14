@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes'
+import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
+import { PATTERNS } from '../../utilidades/patterns';
+import { Alumno } from '../../modelos/alumno';
+import {DatepickerOptions} from 'ng2-datepicker';
+import * as esLocale from 'date-fns/locale/es';
 
 @Component({
   selector: 'app-contactos-list',
@@ -11,8 +15,29 @@ export class ContactosListComponent implements OnInit {
   busqueda;
   mostrarDialogo = false;
 
+  alumnoSeleccionado: Alumno = this.newAlumno();
+
+  dateNac;
+  options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2000,
+    displayFormat: 'DD[-]MM[-]YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 1,
+    locale: esLocale,
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', 
+    addClass: 'form-control', 
+    addStyle: {}, 
+    fieldId: 'my-date-picker', 
+    useEmptyBarTitle: false,
+  };
+
   _LABEL = LABEL;
-  _LABEL_REQUIRED = LABEL_REQUIRED;
+  _LABEL_R = LABEL_REQUIRED;
+  _VALIDACION = VALIDACION;
+  _PATTERN = PATTERNS;
   
   contactos = [
     {
@@ -45,6 +70,10 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogoEliminar(){
     alert("Dialogo eliminar..")
 
+  }
+
+  private newAlumno(): Alumno{
+    return new Alumno('','','','','','')
   }
 
 }
