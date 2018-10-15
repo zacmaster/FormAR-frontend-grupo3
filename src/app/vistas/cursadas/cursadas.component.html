@@ -24,11 +24,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let cursada of cursadas | search: { curso: busqueda }" >
-                    <td> {{ cursada.nombre }}</td>
-                    <td> {{ cursada.descripcion }} </td>
-                    <td> {{ cursada.area }} </td>
-                    <td>  {{ aFechaHumana(cursada.fechaInicio) }}</td>
+                  <tr *ngFor="let cursada of cursadas" >
+                    <td> {{ cursada.curso.nombre }}</td>
+                    <td> {{ cursada.curso.descripcion }} </td>
+                    <td> {{ cursada.curso.area.nombre }} </td>
+                    <td>  {{ cursada.fechaInicio }}</td>
                     <td>  {{ cursada.fechaFin }}</td>
                     <td>
                       <span class="btn btn-info mr-2" >
@@ -64,7 +64,7 @@
               {{ curso.nombre }}
             </option>
           </select>  
-        </div>
+        </div>  
         <div>
             <br>
             <p>CURSO: id: {{cursoSeleccionado.id}} {{cursoSeleccionado.curso}}</p> 

@@ -36,15 +36,6 @@ export class CursadasComponent implements OnInit {
   mostrarDialogo = false;
   cursadas = [];
   fechaInicio: string;
-    // {
-    //   curso: "Tapiceria",
-    //   descripcion: "Curso de Tapiceria",
-    //   area: "Oficio",
-    //   fechaInicio: "22/09/2018",
-    //   fechaFin: "22/12/2018"
-
-    // }
-  // ];
 
   public guardarCurso(curso){
     this.cursoSeleccionado.id=curso.id;
