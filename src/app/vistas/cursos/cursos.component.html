@@ -24,7 +24,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let curso of cursos" >
+                  <tr *ngFor="let curso of cursos | search: {nombre: busqueda}" >
                     <td> {{ curso.nombre }}</td>
                     <td> {{ curso.area.nombre }} </td>
                     <td> 

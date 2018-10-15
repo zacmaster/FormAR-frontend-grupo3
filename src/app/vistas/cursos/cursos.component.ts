@@ -16,7 +16,7 @@ export class CursosComponent implements OnInit, DoCheck {
   areas: Area[] = [];
   private cursoSeleccionado: Curso = this.newCurso();
   private areaSeleccionada: Area = this.newArea();
-  busqueda;
+  busqueda: string = "";
   
   
   edicionArea: boolean = false;
@@ -276,6 +276,7 @@ export class CursosComponent implements OnInit, DoCheck {
           nuevoCurso.area = nuevaArea;
           this.cursos.push(nuevoCurso)
         })
+        this.busqueda = undefined;
       })
   }
 
