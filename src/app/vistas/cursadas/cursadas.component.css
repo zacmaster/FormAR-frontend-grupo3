@@ -21,7 +21,7 @@
   }
 
 .contenedor-form{
-  overflow-y: scroll;
-  height: 80vh;
-  width: 60vw;
+  overflow-y: auto;
+  height: 40vw;
+  width: 50vw;
 }

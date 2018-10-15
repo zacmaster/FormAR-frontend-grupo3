@@ -94,7 +94,7 @@ export var LABEL ={
     seleccionAlumno: "Seleccione un Alumno",
     inscribir: "Inscribir",
     inscribiendo: "Inscribiendo a ",
-    fechaInicio: "Fechan de inicio",
+    fechaInicio: "Fecha de inicio",
     fechaFin: "Fecha de fin",
     filtroArea: "Filtrar por área de curso",
     inscribirAlumno: "Inscribir alumno",
@@ -116,12 +116,16 @@ export var LABEL ={
         descripcion: "Ingrese la descripción",
         temario: "Ingrese el temario",
         cantClases: "Ingrese la cantidad de clases",
-        precioClase: "Ingrese el precio por clase"
+        precioClase: "Ingrese el precio por clase",
+        cupoMaximo: "Ingrese el cupo máximo de personas",
+        cupoMinimo: "Ingrese el cupo mínimo de personas"
     },
     titulo: {
         cantClases: "Cantidad de clases",
         precioClase: "Precio por clase",
-        matricula: "Importe de matrícula: $"
+        matricula: "Importe de matrícula: $",
+        cupoMinimo: "Cantidad Mínima de Inscriptos",
+        cupoMaximo: "Cantidad Máxima de Inscriptos"
     },
     boton: {
         inscribir:  "Inscribir",

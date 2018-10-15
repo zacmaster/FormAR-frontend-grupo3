@@ -27,6 +27,8 @@ export class CursadasComponent implements OnInit {
   fechaInicio: string;
   fechaFin: string;
   turnoSeleccionado: string;
+  cupoMinimo: number;
+  cupoMaximo: number;
 
   cursoSeleccionado = {
     id: 0,
@@ -67,7 +69,7 @@ export class CursadasComponent implements OnInit {
   ];
 
   dias = [
-    {dia: 'Domingo', id: 0},
+    // {dia: 'Domingo', id: 0},
     {dia: 'Lunes', id: 1},
     {dia: 'Martes', id: 2},
     {dia: 'Miercoles', id: 3},
