@@ -4,10 +4,9 @@ import { Resource } from "../componentes/resource";
 export class Area  extends Resource implements IArea{
     nombre: string;
 
-    constructor(nombre: string){
+    constructor(){
         super();
-        this.nombre = nombre;
-        this.id = 0;
+        this.nombre = "";
     }
     public copiar(area: Area){
         super.copiar(area);
