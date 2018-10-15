@@ -6,6 +6,7 @@ import { PATTERNS } from '../../utilidades/patterns';
 
 import { CursadaService } from 'src/app/servicios/cursada.service';
 import { CursoService } from '../../servicios/curso.service';
+import { log } from 'util';
 
 @Component({
   selector: 'app-cursadas',
@@ -20,7 +21,12 @@ export class CursadasComponent implements OnInit {
   mostrarDialogo = false;
   cursadas = [];
   cursos = [];
+  cantClases: number;
+  precioClase: number;
+  matricula: number;
   fechaInicio: string;
+  fechaFin: string;
+  turnoSeleccionado: string;
 
   cursoSeleccionado = {
     id: 0,
@@ -45,7 +51,7 @@ export class CursadasComponent implements OnInit {
     id: "",
     dia: ""
   } 
-  cantClases: string;
+
 
   instructores = [
     {id: 0, nombre: 'Pedro'},
@@ -69,6 +75,14 @@ export class CursadasComponent implements OnInit {
     {dia: 'Viernes', id: 5},
     {dia: 'Sabado', id: 6}
   ];
+
+  turnos = [
+    {turno: 'Mañana', horario: '8 a 12'},
+    {turno: 'Tarde', horario: '13 a 17'},
+    {turno: 'Noche', horario: '18 a 22'}
+  ];
+
+
   clickBtnIzquierdo(){
 
   }
@@ -100,7 +114,7 @@ export class CursadasComponent implements OnInit {
   }
   
   ngDoCheck(){
-    console.log("Curso Seleccionado: ",this.cursoSeleccionado);
+    this.matricula = this.precioClase * this.cantClases * 20 / 100;
   }
 
   aFechaHumana(fecha: number): string{
@@ -126,12 +140,3 @@ export class CursadasComponent implements OnInit {
   }
 }
 
-
-
-// id: 0,
-// nombre: "",
-// descripcion: "",
-// temario: "",
-// area: {
-//   id: 0,
-//   nombre: ""

@@ -114,7 +114,14 @@ export var LABEL ={
         telefono: "Ingrese el telefono",
         asunto: "Ingrese el titulo",
         descripcion: "Ingrese la descripción",
-        temario: "Ingrese el temario"
+        temario: "Ingrese el temario",
+        cantClases: "Ingrese la cantidad de clases",
+        precioClase: "Ingrese el precio por clase"
+    },
+    titulo: {
+        cantClases: "Cantidad de clases",
+        precioClase: "Precio por clase",
+        matricula: "Importe de matrícula: $"
     },
     boton: {
         inscribir:  "Inscribir",
@@ -127,7 +134,10 @@ export var LABEL ={
         cursada: "Seleccione una cursada",
         instructor: "Seleccione un instructor",
         sala: "Seleccione una sala",
-        alumno: "Seleccione un alumno"
+        alumno: "Seleccione un alumno",
+        dias: "Seleccione los días de cursada",
+        hora: "Seleccione la hora de cursada",
+        turno: "Seleccione un turno"
     }
 }
 
