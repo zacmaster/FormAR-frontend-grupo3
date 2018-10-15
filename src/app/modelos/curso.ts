@@ -17,5 +17,7 @@ export class Curso extends Resource implements ICurso{
 	}
 
 
-
+	public copiar(curso: Curso){
+		super.copiar(curso)
+	}
 }

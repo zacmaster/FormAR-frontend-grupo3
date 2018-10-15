@@ -101,7 +101,7 @@ export class AlumnosListComponent implements OnInit {
     setTimeout(() => {
     this.alumnoSeleccionado.fechaNacimiento = + this.dateNac;
     
-    console.log("alumno seleccionado: ",this.alumnoSeleccionado);
+    console.log("alumno para postear: ",this.alumnoSeleccionado);
         alumno.fechaRegistro = + new Date();
         this._alumnoService.addAlumno(alumno).
         subscribe(response => {

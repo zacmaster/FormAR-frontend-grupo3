@@ -9,7 +9,9 @@ export class Area  extends Resource implements IArea{
         this.nombre = nombre;
         this.id = 0;
     }
-
+    public copiar(area: Area){
+        super.copiar(area);
+    }
 
 
 }

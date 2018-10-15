@@ -2,7 +2,7 @@ import { Resource } from '../componentes/resource';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { GLOBAL } from './global';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Iresource } from '../interfaces/iresource';
 
 export class ResourceService<T extends  Resource, I extends Iresource> {
@@ -35,7 +35,8 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
 
     console.log("item:", item);
     
-    let url = `${this.url}/${this.endpoint}/${item.id}`;
+    // let url = `${this.url}/${this.endpoint}/${item.id}`; //for json-server
+    let url = `${this.url}/${this.endpoint}`; //for real api
     console.log("url:::::   ",url);
     
  
@@ -54,8 +55,9 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
     let url = `${this.url}/${this.endpoint}`;
     console.log('url: ',url);
     
-    return this.httpClient.get<I[]>(url);
+    return this.httpClient.get<I[]>(url)
   }
+
 
 
   private handleError(error: HttpErrorResponse) {

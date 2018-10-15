@@ -171,6 +171,7 @@
                           *ngIf="!edicion"
                           class="btn btn-primary float-right"
                           (click)="guardar(cursoSeleccionado)"
+                          [disabled]="areas.length == 0"
                   
                   >{{ _LABEL.agregar }}</button>
                   <button
