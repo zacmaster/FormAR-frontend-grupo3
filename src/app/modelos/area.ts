@@ -10,4 +10,6 @@ export class Area  extends Resource implements IArea{
         this.id = 0;
     }
 
+
+
 }

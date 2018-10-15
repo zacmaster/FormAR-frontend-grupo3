@@ -3,9 +3,7 @@ import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes';
 import {FormControl} from '@angular/forms';
 import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import { Alumno } from '../../modelos/alumno';
 import { PATTERNS } from '../../utilidades/patterns';
-import { AlumnoService } from '../../servicios/alumno.service';
 
 @Component({
   selector: 'app-cursadas',
@@ -29,14 +27,15 @@ export class CursadasComponent implements OnInit {
   diasSeleccionados = {
     id: "",
     dia: ""
-  };
+  } 
   cantClases: string;
 
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
   busqueda;
   mostrarDialogo = false;
-  cursadas = []
+  cursadas = [];
+  fechaInicio: string;
     // {
     //   curso: "Tapiceria",
     //   descripcion: "Curso de Tapiceria",
@@ -110,4 +109,9 @@ export class CursadasComponent implements OnInit {
   ngDoCheck(){
     console.log("Curso Seleccionado: ",this.cursoSeleccionado);
   }
+
+  aFechaHumana(fecha: number): string{
+    return new Date(fecha).toLocaleDateString();
+  }
+
 }
