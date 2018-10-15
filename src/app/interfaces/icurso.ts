@@ -6,4 +6,6 @@ export interface ICurso extends Iresource {
     descripcion: string,
     temario: string,
     area: Area
+
+    copiar(icurso: ICurso);
 }

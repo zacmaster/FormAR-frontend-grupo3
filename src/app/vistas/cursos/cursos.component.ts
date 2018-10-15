@@ -12,18 +12,18 @@ import { Area } from '../../modelos/area';
 })
 export class CursosComponent implements OnInit, DoCheck {
   
-  cursos = [];
-  areas = [];
+  cursos: Curso[] = [];
+  areas: Area[] = [];
   private cursoSeleccionado: Curso = this.newCurso();
   private areaSeleccionada: Area = this.newArea();
-  busqueda;
+  busqueda: string = "";
   
   
   edicionArea: boolean = false;
   popupAreasShowed: boolean = false;
   
   
-  private nombreNuevoArea: string;
+  private nombreNuevoArea: string = "";
 
   _LABEL = LABEL;
   _LABEL_REQUIRED = LABEL_REQUIRED;
@@ -49,13 +49,17 @@ export class CursosComponent implements OnInit, DoCheck {
               private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
-    this.getCursos();
     this.getAreas();
+    this.getCursos();
   }
   ngDoCheck(){
     // console.log("area seleccionada: ",this.areaSeleccionada);
     console.log("curso seleccionado: ",this.cursoSeleccionado);
     // console.log("ara de curso: ", this.cursoSeleccionado.area);
+    console.log("input: ", this.nombreNuevoArea)
+    // console.log("cursos: ", this.cursos);
+    
+    console.log("areas: ",this.areas);
     
     
     
@@ -111,11 +115,19 @@ export class CursosComponent implements OnInit, DoCheck {
     this.mostrarDialogoAB = false;
   }
 
+  //muestra el formulario vacío
   nuevoCurso(){
     this.edicion = false;
     this.cursoSeleccionado = this.newCurso();
-    this.areaSeleccionada = this.areas[0];
     this.cursoSeleccionado.area = this.newArea(); //Método seguro para el copiado
+    console.log("nuevoCurso(). cursoSeleccionado: ",this.cursoSeleccionado
+    );
+    
+    if(this.areas[0] != undefined ){
+      this.areaSeleccionada.copiar(this.areas[0]);
+    }
+    // console.log("this.cursoSeleccionado.area: ",this.cursoSeleccionado.area);
+    
     this.cursoSeleccionado.area.copiar(this.areaSeleccionada);
     this.mostrarDialogoAB = true;
   }
@@ -126,7 +138,7 @@ export class CursosComponent implements OnInit, DoCheck {
 
   editarCurso(){
     console.log("editarCurso()",this.cursoSeleccionado);
-    
+    this.areaSeleccionada.copiar(this.areas[0])
     this.edicion = true;
     this.seleccionAreaAlEditar();
     this.mostrarDialogoAB = true;
@@ -163,7 +175,7 @@ export class CursosComponent implements OnInit, DoCheck {
 
 
   private newCurso(): Curso{
-    let curso = new Curso('','','');
+    let curso = new Curso();
     curso.area = null;
     return curso;
   }
@@ -174,28 +186,30 @@ export class CursosComponent implements OnInit, DoCheck {
   }
 
   clickAgregarArea(nombre: string){
-    // this.areas.push(this.nombreNuevoArea);
-    this._areaService.addArea(this.areaSeleccionada).toPromise().
+    let nuevaArea = new Area();
+    nuevaArea.nombre = nombre;
+    
+    this._areaService.addArea(nuevaArea).toPromise().
     then(() => {
-      this.getAreas();
-      this.areaSeleccionada = this.areas[0];
+      this.getAreas()
     })
   }
 
   editarArea(area: Area){
     this.edicionArea = true;
-    this.areaSeleccionada.copiar(area);
+    this.nombreNuevoArea = area.nombre;
   }
-
+  
   updateArea(area: Area){
+    area.nombre = this.nombreNuevoArea;
+    this.nombreNuevoArea = "";
     this._areaService.updateArea(area).toPromise()
     .then(() =>{
       this.areaSeleccionada = this.newArea();
       this.edicionArea = false;
       this.getAreas();
 
-    }
-    )
+    })
   }
   eliminarArea(area: Area){
     this._spinnerService.show();
@@ -208,9 +222,17 @@ export class CursosComponent implements OnInit, DoCheck {
 
   private getAreas(){
     this._areaService.getAreas()
-      .subscribe(response => {
-        this.areas = response;
-        console.log("areas: ",this.areas)
+      .subscribe(areas => {
+        this.areas = [];
+        areas.forEach(area => {
+          let nuevaArea = new Area();
+          nuevaArea.copiar(area);
+          this.areas.push(nuevaArea);
+        });
+
+        if(this.areas.length !== 0){
+          this.areaSeleccionada = this.areas[0];
+        }
       })
   }
   mostrarDialogoEliminar(){
@@ -227,24 +249,55 @@ export class CursosComponent implements OnInit, DoCheck {
     this.popupAreasShowed = true;
   }
   ocultarPopupAreas(){
+    this.nombreNuevoArea = "";
     this.popupAreasShowed = false;
-    this.areaSeleccionada = this.newArea();
+    if(this.areas.length !== 0){
+      this.areaSeleccionada = this.areas[0];
+    }
   }
 
   private newArea(): Area{
-    return new Area('');
+    return new Area();
   }
 
   private getCursos(){
+    this.cursos = [];
     this._cursoService.list()
-      .subscribe(r => {
-        this.cursos = r
+      .subscribe(cursos => {
+        cursos.forEach(curso => {
+          let nuevoCurso = new Curso();
+          let nuevaArea = new Area();
+
+          nuevaArea.copiar(curso.area); //work-around por serialización
+          console.log("este es el curso que me llega: ",curso);
+          
+          nuevoCurso.copiar(curso);
+
+          nuevoCurso.area = nuevaArea;
+          this.cursos.push(nuevoCurso)
+        })
+        this.busqueda = undefined;
       })
   }
 
   seleccionarArea(area){
     this.areaSeleccionada = area;
     this.cursoSeleccionado.area.copiar(this.areaSeleccionada);
+  }
+
+  deshabilitarNuevaArea(): boolean{
+    return this.nombreNuevoArea.length < 3;
+  }
+
+  areaEnUso(area): boolean{
+    let enUso: boolean = false;
+    if(this.cursos.length > 0){
+      this.cursos.forEach(curso => {
+        if(curso.area.id == area.id)
+          enUso = true
+      })
+    } 
+    return enUso;
   }
 
 }

@@ -24,6 +24,7 @@ export class AlumnoService extends ResourceService<Alumno, IAlumno>{
   }
   
   addAlumno(alumno: Alumno): Observable<Alumno>{
+    console.log("posteando: ",alumno)
     return super.create(alumno);
   }
   

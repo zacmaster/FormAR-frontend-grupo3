@@ -30,7 +30,7 @@
                     <td> 
                       <button class="btn btn-warning"
                             [title]="_HVR.temario"
-                            (click)="cursoSeleccionado = curso; mostrarTemario()">
+                            (click)="cursoSeleccionado.copiar(curso); mostrarTemario()">
                             <i class="fas fa-info"></i>
                       </button>
                     </td>
@@ -171,6 +171,7 @@
                           *ngIf="!edicion"
                           class="btn btn-primary float-right"
                           (click)="guardar(cursoSeleccionado)"
+                          [disabled]="areas.length == 0"
                   
                   >{{ _LABEL.agregar }}</button>
                   <button
@@ -198,7 +199,7 @@
           <input  
                   class="form-control mr-2"
                   type="text"
-                  [(ngModel)]="areaSeleccionada.nombre"
+                  [(ngModel)]="nombreNuevoArea"
                   placeholder="Nueva Área"
                   minlength="3"
                   maxlength="20"
@@ -206,7 +207,8 @@
           <button 
                   class="btn btn-success"
                   *ngIf="!edicionArea"
-                  (click)="clickAgregarArea()"
+                  (click)="clickAgregarArea(nombreNuevoArea)"
+                  [disabled]="deshabilitarNuevaArea()"
           >
               <i class="fas fa-plus"></i>
           </button>
@@ -232,6 +234,7 @@
               <button
                       class="btn btn-danger"
                       (click)="eliminarArea(area)"
+                      [disabled]="areaEnUso(area)"
               >
                   <i class="fas fa-trash-alt"></i>
               </button>

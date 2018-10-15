@@ -7,6 +7,7 @@ import { AlumnoService } from '../../servicios/alumno.service';
 
 import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
+import { CursadaService } from 'src/app/servicios/cursada.service';
 
 
 @Component({
@@ -39,7 +40,7 @@ export class AlumnosListComponent implements OnInit {
   mostrarDialogoBorrar: boolean = false;
   alumnoSeleccionado: Alumno = this.newAlumno();
   nombreAlumno: string = '';
-  busqueda;
+  busqueda: string = "";
 
   textoDlgEliminar: string;
 
@@ -50,12 +51,15 @@ export class AlumnosListComponent implements OnInit {
    _PATTERN = PATTERNS;
 
   ngDoCheck(){
-    console.log("dateNac: ",this.dateNac);
+    console.log("alumnos", this.alumnos);
     
   }
 
-  constructor(private _alumnoService: AlumnoService,
-              private _spinnerService: Ng4LoadingSpinnerService) { }
+  constructor(
+              private _alumnoService: AlumnoService,
+              private _spinnerService: Ng4LoadingSpinnerService,
+              private _cursadaService: CursadaService
+              ) { }
 
   ngOnInit() {
     this._spinnerService.show();
@@ -67,9 +71,15 @@ export class AlumnosListComponent implements OnInit {
 
 
   getAlumnos(){
+    this.alumnos = [];
     return this._alumnoService.getAlumnos()
-      .toPromise().then(r => {
-        this.alumnos = r
+      .toPromise().then(alumnos => {
+        alumnos.forEach(alumno => {
+          let nuevoAlumno =  new Alumno();
+          nuevoAlumno.copiar(alumno);
+          this.alumnos.push(alumno);
+        })
+        this.busqueda = undefined;
       })
   }
 
@@ -101,7 +111,7 @@ export class AlumnosListComponent implements OnInit {
     setTimeout(() => {
     this.alumnoSeleccionado.fechaNacimiento = + this.dateNac;
     
-    console.log("alumno seleccionado: ",this.alumnoSeleccionado);
+    console.log("alumno para postear: ",this.alumnoSeleccionado);
         alumno.fechaRegistro = + new Date();
         this._alumnoService.addAlumno(alumno).
         subscribe(response => {
@@ -152,7 +162,7 @@ export class AlumnosListComponent implements OnInit {
   }
 
   private newAlumno(): Alumno{
-    let alumno = new Alumno('','','','','','');
+    let alumno = new Alumno();
     return alumno;
   }
 

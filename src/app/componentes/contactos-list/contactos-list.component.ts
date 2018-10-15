@@ -73,7 +73,7 @@ export class ContactosListComponent implements OnInit {
   }
 
   private newAlumno(): Alumno{
-    return new Alumno('','','','','','')
+    return new Alumno()
   }
 
 }

@@ -9,13 +9,17 @@ export class Curso extends Resource implements ICurso{
     temario: string;
 
 
-	constructor($nombre: string,$descripcion: string, $temario: string) {
+	constructor() {
         super();
-		this.nombre = $nombre;
-		this.descripcion = $descripcion;
-		this.temario = $temario;
+		this.nombre = "";
+		this.descripcion = "";
+		this.temario = "";
 	}
 
 
-
+	public copiar(curso: Curso){
+		console.log("curso a copiar: ",curso);
+		
+		super.copiar(curso)
+	}
 }
