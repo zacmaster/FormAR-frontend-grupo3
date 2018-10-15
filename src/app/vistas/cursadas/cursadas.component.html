@@ -48,29 +48,12 @@
 </div>
 
 
-<div class="contenedor d-flex justify-content-center align-items-center justify-content-center contenedor-form" *ngIf="mostrarDialogo">
-    <div  class="dialogo bg-light p-3">
+<div class="contenedor d-flex justify-content-center align-items-center justify-content-center " *ngIf="mostrarDialogo">
+    <div class="dialogo bg-light p-3 contenedor-form">
       <div class="dialogoHeader">
         <div></div>
         <div class="text-center">{{ _LABEL.nuevaCursada }}</div>
       </div>
-
-      <!--  SELECT ALUMNO -->
-      <div class="mt-3">
-        <label for="basic-url">{{ _LABEL.seleccione.curso  }}</label>
-        <div class="input-group">
-          <select class="form-control">
-            <option *ngFor="let curso of alumnos">
-              {{ curso.nombre }}
-            </option>
-          </select>  
-        </div>  
-        <div>
-            <br>
-            <p>CURSO: id: {{cursoSeleccionado.id}} {{cursoSeleccionado.curso}}</p> 
-        </div>
-      </div>
-      <!--  FIN SELECT CURSO -->
 
       <!--  SELECT CURSO -->
       <div class="mt-3">
@@ -78,13 +61,9 @@
         <div class="input-group">
           <select class="form-control">
             <option *ngFor="let curso of cursos" [value]="curso.id" (click)=guardarCurso(curso)>
-              {{ curso.curso }}
+              {{ curso.nombre }}
             </option>
           </select>  
-        </div>
-        <div>
-            <br>
-            <p>CURSO: id: {{cursoSeleccionado.id}} {{cursoSeleccionado.curso}}</p> 
         </div>
       </div>
       <!--  FIN SELECT CURSO -->

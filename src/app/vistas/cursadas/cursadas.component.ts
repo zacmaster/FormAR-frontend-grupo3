@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes';
 import {FormControl} from '@angular/forms';
-import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
+
+import { CursadaService } from 'src/app/servicios/cursada.service';
+import { CursoService } from '../../servicios/curso.service';
 
 @Component({
   selector: 'app-cursadas',
@@ -12,10 +14,25 @@ import { PATTERNS } from '../../utilidades/patterns';
 })
 export class CursadasComponent implements OnInit {
 
+  _LABEL = LABEL;
+  _LABEL_R = LABEL_REQUIRED;
+  busqueda;
+  mostrarDialogo = false;
+  cursadas = [];
+  cursos = [];
+  fechaInicio: string;
+
   cursoSeleccionado = {
-    id: "",
-    curso: ""
+    id: 0,
+    nombre: "",
+    descripcion: "",
+    temario: "",
+    area: {
+      id: 0,
+      nombre: ""
+    }
   };
+
   instructorSeleccionado = {
     id: "",
     nombre: ""
@@ -29,24 +46,6 @@ export class CursadasComponent implements OnInit {
     dia: ""
   } 
   cantClases: string;
-
-  _LABEL = LABEL;
-  _LABEL_R = LABEL_REQUIRED;
-  busqueda;
-  mostrarDialogo = false;
-  cursadas = [];
-  fechaInicio: string;
-
-  public guardarCurso(curso){
-    this.cursoSeleccionado.id=curso.id;
-    this.cursoSeleccionado.curso=curso.curso;
-  }
-
-  cursos = [
-    {id: 0, curso: 'Programación'},
-    {id: 1, curso: 'Costura'},
-    {id: 2, curso: 'Ingles'}
-  ];
 
   instructores = [
     {id: 0, nombre: 'Pedro'},
@@ -77,7 +76,8 @@ export class CursadasComponent implements OnInit {
     
   }
 
-  constructor(private _cusadaService: CursadaService,
+  constructor(private _cursadaService: CursadaService,
+              private _cursoService: CursoService,
               private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
@@ -91,10 +91,12 @@ export class CursadasComponent implements OnInit {
           this._spinnerService.hide();
         })
     },1000)
+
+    this.getCursos();
   }
 
   cargarCursadas(){
-    return this._cusadaService.list().toPromise();
+    return this._cursadaService.list().toPromise();
   }
   
   ngDoCheck(){
@@ -105,4 +107,31 @@ export class CursadasComponent implements OnInit {
     return new Date(fecha).toLocaleDateString();
   }
 
+  // METODOS DE CURSOS
+
+  private getCursos(){
+    this._cursoService.list()
+      .subscribe(r => {
+        this.cursos = r
+      })
+  }
+
+  public guardarCurso(curso){
+    this.cursoSeleccionado.id=curso.id;
+    this.cursoSeleccionado.nombre=curso.nombre;
+    this.cursoSeleccionado.descripcion=curso.descripcion;
+    this.cursoSeleccionado.temario=curso.temario;
+    this.cursoSeleccionado.area.id=curso.area.id;
+    this.cursoSeleccionado.area.nombre=curso.area.nombre;
+  }
 }
+
+
+
+// id: 0,
+// nombre: "",
+// descripcion: "",
+// temario: "",
+// area: {
+//   id: 0,
+//   nombre: ""
