@@ -55,12 +55,13 @@ export class CursosComponent implements OnInit, DoCheck {
   }
   ngDoCheck(){
     // console.log("area seleccionada: ",this.areaSeleccionada);
-    console.log("curso seleccionado: ",this.cursoSeleccionado);
+    // console.log("curso seleccionado: ",this.cursoSeleccionado);
     // console.log("ara de curso: ", this.cursoSeleccionado.area);
-    console.log("input: ", this.nombreNuevoArea)
+    // console.log("input: ", this.nombreNuevoArea)
     // console.log("cursos: ", this.cursos);
+    // console.log("busqueda: ", this.busqueda);
     
-    console.log("areas: ",this.areas);
+    // console.log("areas: ",this.areas);
     
     
     
@@ -92,12 +93,12 @@ export class CursosComponent implements OnInit, DoCheck {
 
   private agregar(curso: Curso){
         this._cursoService.addCurso(curso).
-        subscribe(() => {
+        toPromise().then(() => {
           this.cursoSeleccionado = this.newCurso();
           this.mostrarDialogoAB = false;
           this.getCursos();
 
-      })
+      }).then(this.busqueda = undefined)
   }
 
   private editar(curso: Curso){
@@ -143,6 +144,7 @@ export class CursosComponent implements OnInit, DoCheck {
     this.edicion = true;
     this.seleccionAreaAlEditar();
     this.mostrarDialogoAB = true;
+    this.busqueda = undefined;
   }
 
   private seleccionAreaAlEditar(){
@@ -263,7 +265,9 @@ export class CursosComponent implements OnInit, DoCheck {
 
   private getCursos(){
     this.cursos = [];
-    this._cursoService.list()
+    this._spinnerService.show();
+    setTimeout(() =>{
+      this._cursoService.list()
       .subscribe(cursos => {
         cursos.forEach(curso => {
           let nuevoCurso = new Curso();
@@ -277,8 +281,12 @@ export class CursosComponent implements OnInit, DoCheck {
           nuevoCurso.area = nuevaArea;
           this.cursos.push(nuevoCurso)
         })
+        this._spinnerService.hide();
         this.busqueda = undefined;
       })
+    }
+      ,800)
+    
   }
 
   seleccionarArea(area){

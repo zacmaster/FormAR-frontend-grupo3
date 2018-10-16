@@ -2,15 +2,19 @@ import { Iresource } from "./iresource";
 import { Curso } from "../modelos/curso";
 
 export interface Icursada extends Iresource{
-    fechaInicio: number,
-    precioClase: number,
-    cantidadClases: number,
-    cupoMaximo: number,
-    cupoMinimo: number,
-    horarios: any,
-    curso: Curso,
-    instructor: any,
-    sala: any
-    
 
+    fechaInicio: number;
+    fechaFin: number;
+    turno: string;
+    horario: string;
+    dias: string[];
+    instructor: any;
+    sala: any;
+    precioClase: number;
+    matricula: number;
+    cantidadClases: number;
+    cupoMinimo: number;
+    cupoMaximo: number;
+    curso: Curso;
+    
 }
