@@ -133,7 +133,8 @@ export var LABEL ={
     boton: {
         inscribir:  "Inscribir",
         editar:     "Editar",
-        eliminar:   "Eliminar"
+        eliminar:   "Eliminar",
+        verCursadas: "Ver cursadas del alumno"
     },
     seleccione: {
         area: "Seleccione un area",

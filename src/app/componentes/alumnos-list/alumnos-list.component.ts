@@ -193,6 +193,31 @@ export class AlumnosListComponent implements OnInit {
   clickConfirmarInscripcion(){
     this.inscripcionShowed = false;
   }
+
+  mostrarCursadasAlumno(){
+
+  }
+
+  tieneCursadas(alumno: Alumno): boolean{
+    
+    // TO-DO: Agregar alumnos a cursadas(back-end)
+
+
+    // let tieneCursada: boolean= false;
+    // if(this.cursadas.length > 0 ){
+    //   this.cursadas.forEach(cursada => {
+    //     cursada.forEach(a => {
+    //       if(a.id == alumno.id)
+    //         tieneCursada = true;
+    //     })
+    //   })
+    // }
+    // return tieneCursada
+    return false
+  }
+
+
+
   fechaACadeana(fecha: number):  string{
     let date = new Date(fecha);
     return date.toLocaleDateString();

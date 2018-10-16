@@ -162,6 +162,15 @@
                           <button class="btn btn-info mr-2" [title]="_LABEL.boton.inscribir" (click)="clickInscripcionAlumno(alumno)">
                             <i class="fas fa-file-signature"></i>
                           </button>
+                          
+                          <button
+                                  class="btn btn-warning mr-2"
+                                  [title]="_LABEL.boton.verCursadas"
+                                  (click)="alumnoSeleccionado.copiar(alumno);mostrarCursadasAlumno();"
+                                  [disabled]="! tieneCursadas(alumno)"
+                                  >
+                            <i class="fas fa-book-reader"></i>
+                          </button>
                           <button class="btn btn-success mr-2" [title]="_LABEL.boton.editar" (click)="alumnoSeleccionado.copiar(alumno);editarAlumno();">
                             <i class="fas fa-user-edit"></i>
                           </button>
