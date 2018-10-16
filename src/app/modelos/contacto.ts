@@ -1,20 +1,18 @@
 import { Resource } from "../componentes/resource";
-import { Icontacto } from "../interfaces/icontacto";
+import { IContacto } from "../interfaces/icontacto";
 import { Curso } from "./curso";
 import { Area } from "./area";
 
-export class Contacto extends Resource implements Icontacto{
+export class Contacto extends Resource implements IContacto{
     fecha: number;
     asunto: string;
     descripcion: string;
     curso: Curso;
     area: Area;
 
-	constructor($asunto: string, $descripcion: string) {
+    constructor(){
         super();
-		this.asunto = $asunto;
-		this.descripcion = $descripcion;
-	}
+    }
 
 
 }

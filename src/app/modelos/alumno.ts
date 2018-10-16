@@ -28,10 +28,7 @@ export class Alumno extends Resource implements IAlumno{
 
 
 
-    
+
 
 
 }
-
-
-
