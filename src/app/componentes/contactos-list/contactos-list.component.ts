@@ -20,6 +20,8 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogo = false;
   agregandoAlumno = false;
 
+  alumnoSeleccionado = new Alumno('','','','','','');
+  contactoNuevo = new Contacto();
   alumnoNuevo = {
     id: "",
     nombre: "",
@@ -32,25 +34,25 @@ export class ContactosListComponent implements OnInit {
     tipo: ""
   };
 
-  alumnoSeleccionado = {
-    id: "",
-    nombre: "",
-    apellido: "",
-    email: "",
-    dni: "",
-    telefono: "",
-    fechaNacimiento: "",
-    fechaRegistro: "",
-    tipo: ""
-  };
+  // alumnoSeleccionado = {
+  //   id: "",
+  //   nombre: "",
+  //   apellido: "",
+  //   email: "",
+  //   dni: "",
+  //   telefono: "",
+  //   fechaNacimiento: "",
+  //   fechaRegistro: "",
+  //   tipo: ""
+  // };
 
-  contactoNuevo = {
-    id: "",
-    fecha: "",
-    asunto: "",
-    descripcion: ""
-
-  };
+  // contactoNuevo = {
+  //   id: "",
+  //   fecha: "",
+  //   asunto: "",
+  //   descripcion: ""
+  //
+  // };
 
   public guardarAlumno(alumno){
 
@@ -149,11 +151,22 @@ export class ContactosListComponent implements OnInit {
   guardar(){
     this.validarAlumno();
     console.log(this.alumnoSeleccionado.id);
-    if(this.alumnoSeleccionado.id != ""){
+    if(this.alumnoSeleccionado.id != null){
+      this.agregar(this.alumnoSeleccionado,this.contactoNuevo)
       console.log("guardarAlumno();");
       console.log("guardarContacto();");
     }
 
+
+  }
+
+  private agregar(alumno: Alumno, contacto: Contacto){
+
+    if (this.agregandoAlumno)
+      this._alumnoService.addAlumno(alumno);
+
+    contacto.alumno = alumno;
+    this._contactoService.addContacto(contacto);
 
   }
 
