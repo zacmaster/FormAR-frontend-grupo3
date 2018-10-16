@@ -15,7 +15,7 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
     super(_http, GLOBAL.url + 'cursadas','');
   }
 
-  public getCursos(): Observable<Icursada[]>{
+  public getCursadas(): Observable<Icursada[]>{
     return super.list();
   }
 

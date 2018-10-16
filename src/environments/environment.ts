@@ -8,7 +8,7 @@ export const environment = {
   // url: 'http://192.168.4.103:8080/RestTP/services/'
   // url: 'http://localhost:8080/RestTP/services/'
   // url: 'http://192.168.1.71:3000/'
-  // url: 'http://192.168.1.71:8080/'
+  url: 'http://192.168.1.71:3000/v1/'
   // url: 'http://192.168.1.67:3000/'
 
 };

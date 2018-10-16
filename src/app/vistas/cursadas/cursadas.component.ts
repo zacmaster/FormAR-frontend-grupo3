@@ -3,10 +3,11 @@ import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes';
 import {FormControl} from '@angular/forms';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
-
 import { CursadaService } from 'src/app/servicios/cursada.service';
 import { CursoService } from '../../servicios/curso.service';
 import { log } from 'util';
+import { Cursada } from 'src/app/modelos/cursada';
+import { Curso } from 'src/app/modelos/curso';
 
 @Component({
   selector: 'app-cursadas',
@@ -15,31 +16,29 @@ import { log } from 'util';
 })
 export class CursadasComponent implements OnInit {
 
+  constructor(private _cursadaService: CursadaService,
+    private _cursoService: CursoService,
+    private _spinnerService: Ng4LoadingSpinnerService) { }
+
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
   busqueda;
   mostrarDialogo = false;
   cursadas = [];
   cursos = [];
+
+  cursadaSeleccionada: Cursada = this.newCursada();
+
   cantClases: number;
   precioClase: number;
   matricula: number;
-  fechaInicio: string;
-  fechaFin: string;
+  fechaInicio: number;
+  fechaFin: number;
   turnoSeleccionado: string;
   cupoMinimo: number;
   cupoMaximo: number;
 
-  cursoSeleccionado = {
-    id: 0,
-    nombre: "",
-    descripcion: "",
-    temario: "",
-    area: {
-      id: 0,
-      nombre: ""
-    }
-  };
+  cursoSeleccionado = new Curso();
 
   instructorSeleccionado = {
     id: "",
@@ -53,7 +52,6 @@ export class CursadasComponent implements OnInit {
     id: "",
     dia: ""
   } 
-
 
   instructores = [
     {id: 0, nombre: 'Pedro'},
@@ -70,12 +68,12 @@ export class CursadasComponent implements OnInit {
 
   dias = [
     // {dia: 'Domingo', id: 0},
-    {dia: 'Lunes', id: 1},
-    {dia: 'Martes', id: 2},
-    {dia: 'Miercoles', id: 3},
-    {dia: 'Jueves', id: 4},
-    {dia: 'Viernes', id: 5},
-    {dia: 'Sabado', id: 6}
+    {dia: 'Lunes'},
+    {dia: 'Martes'},
+    {dia: 'Miercoles'},
+    {dia: 'Jueves'},
+    {dia: 'Viernes'},
+    {dia: 'Sabado'}
   ];
 
   turnos = [
@@ -88,35 +86,64 @@ export class CursadasComponent implements OnInit {
   clickBtnIzquierdo(){
 
   }
-  clickBtnDerecho(){
-    
+  guardarCursada(){
+    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
+    this.cursadaSeleccionada.fechaInicio = + this.fechaInicio;
+    this.cursadaSeleccionada.curso = this.cursoSeleccionado;
+    this.agregar(this.cursadaSeleccionada);
   }
 
-  constructor(private _cursadaService: CursadaService,
-              private _cursoService: CursoService,
-              private _spinnerService: Ng4LoadingSpinnerService) { }
-
-  ngOnInit() {
-    console.log("on init");
-    
-    this._spinnerService.show();
-    setTimeout(() => {
-      this.cargarCursadas()
-        .then(r => {
-          this.cursadas = r;
-          this._spinnerService.hide();
-        })
-    },1000)
-
-    this.getCursos();
-  }
-
+  // METODOS CURSADAS
+  
   cargarCursadas(){
     return this._cursadaService.list().toPromise();
   }
   
-  ngDoCheck(){
-    this.matricula = this.precioClase * this.cantClases * 20 / 100;
+  agregar(cursada: Cursada){
+    this._spinnerService.show();
+    setTimeout(() => {
+    console.log("cursada seleccionad: ",this.cursadaSeleccionada);
+        this._cursadaService.addCursada(cursada).
+        subscribe(response => {
+          this.getCursadas();
+          this.cursadaSeleccionada = this.newCursada();
+          this.mostrarDialogo = false;
+          this._spinnerService.hide();
+        })
+    }, 500)
+    
+  }
+
+  getCursadas(){
+    this.cursadas = [];
+    this._cursadaService.list()
+    .subscribe(cursadas => {
+      cursadas.forEach(cursada => {
+        let nuevaCursada = new Cursada();
+        let nuevoCurso = new Curso();
+        nuevoCurso.copiar(cursada.curso);
+        nuevaCursada.copiar(cursada);
+        nuevaCursada.curso = nuevoCurso;
+        this.cursadas.push(nuevaCursada)
+    })
+        this.busqueda = undefined;
+    })
+
+
+    return this._cursadaService.getCursadas()
+      .toPromise().then(r => {
+    this.cursadas = r
+  })
+  }
+
+  fechaInicioCurso(fecha: number): string{ 
+    let nuevaFecha = new Date(fecha);
+    return nuevaFecha.toLocaleDateString();
+  }
+
+  private newCursada(): Cursada{
+    let cursada = new Cursada();
+    return cursada;
   }
 
   aFechaHumana(fecha: number): string{
@@ -133,12 +160,30 @@ export class CursadasComponent implements OnInit {
   }
 
   public guardarCurso(curso){
-    this.cursoSeleccionado.id=curso.id;
-    this.cursoSeleccionado.nombre=curso.nombre;
-    this.cursoSeleccionado.descripcion=curso.descripcion;
-    this.cursoSeleccionado.temario=curso.temario;
-    this.cursoSeleccionado.area.id=curso.area.id;
-    this.cursoSeleccionado.area.nombre=curso.area.nombre;
+    this.cursoSeleccionado.copiar(curso);
   }
+
+
+  // METODOS DEL SISTEMA
+
+  ngOnInit() {
+    console.log("on init");
+    this._spinnerService.show();
+    setTimeout(() => {
+      this.cargarCursadas()
+        .then(r => {
+          this.cursadas = r;
+          this._spinnerService.hide();
+        })
+    },1000)
+    this.getCursos();
+  }
+
+  ngDoCheck(){
+  }
+
+
+
+
 }
 
