@@ -13,24 +13,35 @@
           <table class="table table-hover bg-light">
               <thead class="thead-light">
                 <tr>
-                  <th>Fecha</th>
-                  <th>Alumno</th>
-                  <th>Título</th>
-                  <th>Acciones</th>
+                  <th>{{ _LABEL.fecha }}</th>
+                  <th>{{ _LABEL.alumno }}</th>
+                  <th>{{ _LABEL.asunto }}</th>
+                  <th>{{ _LABEL.acciones }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let contacto of contactos | search: {fecha: busqueda, nombreAlumno: busqueda, titulo: busqueda}" >
-                  <td> {{ contacto.fecha }}</td>
-                  <td> {{ contacto.nombreAlumno }} </td>
-                  <td> {{ contacto.titulo }} </td>
+                  <td> {{ fechaComoString(contacto.fecha) }}</td>
+                  <td> {{ contacto.alumno.nombre }} {{ contacto.alumno.apellido }}</td>
+                  <td> {{ contacto.asunto }} </td>
                   <td>
-                    <span class="btn btn-success mr-2" (click)="editarContacto(); contactoSeleccionado = contacto">
+
+                    <button class="btn btn-warning mr-2"
+                            [title]="_LABEL.info.contacto">
+                      <i class="fas fa-info"></i>
+                    </button>
+
+                    <button class="btn btn-success mr-2"
+                            [title]="_LABEL.editar.contacto"
+                            (click)="editarContacto(); contactoSeleccionado = contacto">
                       <i class="fas fa-edit"></i>
-                    </span>
-                    <span class="btn btn-danger" (click)=" contactoSeleccionado = contacto; mostrarDialogoEliminar()">
+                    </button>
+
+                    <button class="btn btn-danger"
+                            [title]="_LABEL.eliminar.contacto"
+                            (click)=" contactoSeleccionado = contacto; mostrarDialogoEliminar()">
                       <i class="fas fa-minus-circle"></i>
-                    </span>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -59,7 +70,7 @@
                 <!-- Alumno Seleccionado -->
                 <div class="input-group" *ngIf="!agregandoAlumno">
                     <select class="custom-select">
-                      <option *ngFor="let alumno of alumnos" [value]="alumno.id" (click)=guardarAlumno(alumno)>
+                      <option *ngFor="let alumno of alumnos" [value]="alumno.id" (click)="actualizarAlumnoSeleccionado(alumno)">
                         <td> {{ alumno.nombre }}  {{ alumno.apellido }}</td>
                       </option>
                     </select>
@@ -208,7 +219,7 @@
                 <label for="">{{ _LABEL_R.fecha }}</label>
                 <ng-datepicker
                                 #fechaContacto = "ngModel"
-                                [(ngModel)]="contactoNuevo.fecha"
+                                [(ngModel)]="fechaContactoSeleccionado"
                                 [options]="options"
                                 style="z-index: 1000; position: relative;"
                         ></ng-datepicker>
@@ -253,12 +264,14 @@
             </div>
             <!-- Boton de Agregar Contacto CON ALUMNO SELECCIONADO-->
             <div class="d-flex justify-content-end" *ngIf="!agregandoAlumno">
-                <button class="btn btn-primary float-right"
-                        [disabled]="!alumnoSeleccionado.id ||
-                                    fechaContacto.invalid ||
-                                    asuntoContacto.invalid "
-                        (click)="guardar()"
-                         >
+                <button
+                      [disabled]="!alumnoSeleccionado.id ||
+                      fechaContacto.invalid ||
+                      asuntoContacto.invalid "
+
+                      class="btn btn-primary float-right"
+                      (click)="guardarContacto()"
+                >
                     <span>{{ _LABEL.agregar }}</span>
                 </button>
             </div>
@@ -282,3 +295,5 @@
 
     </div>
 </div>
+
+

@@ -72,7 +72,7 @@ export class AlumnosListComponent implements OnInit {
     setTimeout(()=>{
       this.getAlumnos().then(
         () => this._spinnerService.hide()
-      )},1000)
+      )},600)
   }
 
 
@@ -220,7 +220,7 @@ export class AlumnosListComponent implements OnInit {
 
   fechaACadeana(fecha: number):  string{
     let date = new Date(fecha);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString('en-GB');
   }
 
 }

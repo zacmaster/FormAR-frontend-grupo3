@@ -60,6 +60,8 @@ export class ContactosListComponent implements OnInit {
   cursos: Curso[];
   areas: Area[];
 
+  fechaContactoSeleccionado: Date = new Date();
+
 
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
@@ -93,15 +95,18 @@ export class ContactosListComponent implements OnInit {
   }
 
   ngOnInit() {
+      this.getContactos();
       this.getAlumnos().then(() =>{
         if(this.alumnos.length > 0)
         this.alumnoSeleccionado.copiar(this.alumnos[0]);
+        this.contactoNuevo.alumno.copiar(this.alumnoSeleccionado);
       })
-
+      this.getAreas();
   }
 
   ngDoCheck(){
     console.log("alumnos: ",this.alumnos);
+    console.log("contactoNuevo: ",this.contactoNuevo);
     
   }
 
@@ -109,8 +114,10 @@ export class ContactosListComponent implements OnInit {
   getContactos(){
     return this._contactoService.getContactos()
     .toPromise()
-    .then(contactos => contactos.forEach(contacto =>{
+    .then(contactos => {
       this.contactos = [];
+      
+      contactos.forEach(contacto =>{
 
       let contacto_aux = new Contacto();
       let alumno_aux = new Alumno();
@@ -128,9 +135,10 @@ export class ContactosListComponent implements OnInit {
       contacto_aux.curso = curso_aux;
 
       this.contactos.push(contacto_aux);
+    })
 
 
-    }))
+    })
   }
   getAlumnos(){
     return this._alumnoService.getAlumnos()
@@ -189,7 +197,7 @@ export class ContactosListComponent implements OnInit {
   }
 
   nuevoContacto(){
-
+    this.dateNac
     this.mostrarDialogo = true;
   }
 
@@ -208,13 +216,20 @@ export class ContactosListComponent implements OnInit {
     }
   }
 
-  guardar(){
-    this.validarAlumno();
-    console.log(this.alumnoSeleccionado.id);
-    if(this.alumnoSeleccionado.id != 0){
-      console.log("guardarAlumno();");
-      console.log("guardarContacto();");
-    }
+  guardarContacto(){
+    this.contactoNuevo.area.copiar(this.areas[0]);
+    this.contactoNuevo.curso = undefined;
+    this._contactoService.addContacto(this.contactoNuevo).subscribe(() => {
+      this.getContactos();
+      this.mostrarDialogo = false;
+      this.contactoNuevo = new Contacto();
+    })
+    // this.validarAlumno();
+    // console.log(this.alumnoSeleccionado.id);
+    // if(this.alumnoSeleccionado.id != 0){
+    //   console.log("guardarAlumno();");
+    //   console.log("guardarContacto();");
+    // }
   }
 
   private newAlumno(): Alumno{
@@ -224,7 +239,17 @@ export class ContactosListComponent implements OnInit {
 
   public fechaComoString(fecha: number): string{
     let date = new Date(fecha);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString('en-GB');
+  }
+
+  actualizarAlumnoSeleccionado(alumno: Alumno){
+    this.alumnoSeleccionado.copiar(alumno);
+    this.contactoNuevo.alumno.copiar(this.alumnoSeleccionado);
+  }
+
+  dateACadena(date: Date): string{
+    let d = new Date(date);
+    return d.toLocaleDateString('en-GB');
   }
 
 }

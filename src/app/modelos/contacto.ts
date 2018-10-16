@@ -14,9 +14,12 @@ export class Contacto extends Resource implements IContacto{
 
     constructor(){
         super();
-        this.fecha = 0;
+        this.fecha = + new Date();
         this.asunto = '';
         this.descripcion = '';
+        this.area = new Area();
+        this.curso = new Curso();
+        this.alumno = new Alumno();
     }
 
 

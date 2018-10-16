@@ -138,8 +138,9 @@ export class CursadasComponent implements OnInit {
 
   fechaInicioCurso(fecha: number): string{ 
     let nuevaFecha = new Date(fecha);
-    return nuevaFecha.toLocaleDateString();
+    return nuevaFecha.toLocaleDateString('en-GB');
   }
+
 
   private newCursada(): Cursada{
     let cursada = new Cursada();
@@ -147,7 +148,7 @@ export class CursadasComponent implements OnInit {
   }
 
   aFechaHumana(fecha: number): string{
-    return new Date(fecha).toLocaleDateString();
+    return new Date(fecha).toLocaleDateString('en-GB');
   }
 
   // METODOS DE CURSOS
@@ -180,6 +181,13 @@ export class CursadasComponent implements OnInit {
   }
 
   ngDoCheck(){
+
+    console.log("precio: ",this.cursadaSeleccionada.precioClase);
+    console.log("matricula:_" , this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100);
+    
+    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
+    // this.cursadaSeleccionada.matricula = ;
+   
   }
 
 

@@ -146,6 +146,15 @@ export var LABEL ={
         dias: "Seleccione los días de cursada",
         hora: "Seleccione la hora de cursada",
         turno: "Seleccione un turno"
+    },
+    editar: {
+        contacto: "Editar contacto"
+    },
+    eliminar: {
+        contacto: "Eliminar contacto"
+    },
+    info: {
+        contacto: "Descripción del contacto"
     }
 }
 

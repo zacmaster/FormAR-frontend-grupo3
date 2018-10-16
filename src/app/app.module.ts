@@ -34,6 +34,7 @@ import { ContactosListComponent } from './componentes/contactos-list/contactos-l
 import { SearchPipe } from './pipes/search.pipe';
 import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/dialogo-inscripcion.component';
 import { AlumnoService } from './servicios/alumno.service';
+import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { AlumnoService } from './servicios/alumno.service';
     ContactosListComponent,
     SearchPipe,
     DialogoInscripcionComponent,
+    DialogoInfoComponent,
   ],
   imports: [
     BrowserModule,
