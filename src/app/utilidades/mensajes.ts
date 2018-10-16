@@ -13,10 +13,10 @@ export const VALIDACION = {
 
     nombreRequerido: "El campo nombre es obligatorio",
     nombreValido: "El nombre ingresado no es válido",
-    
+
     apellidoRequerido: "El campo apellido es obligatorio",
     apellidoValido: "El apellido ingresado no es válido",
-    
+
     telefonoValido: "El teléfono ingresado no es válido",
     telefonoRequerido: "El campo teléfono es obligatorio",
 
@@ -27,7 +27,7 @@ export const VALIDACION = {
     dniRequerido: "El campo DNI es obligatorio",
 
     valido: {
-        nombre: "El nombre ingresado no es válido", 
+        nombre: "El nombre ingresado no es válido",
         apellido: "El apellido ingresado no es válido",
         dni: "El DNI ingresado no es válido",
         telefono: "El teléfono ingresado no es válido",
@@ -36,12 +36,13 @@ export const VALIDACION = {
     },
 
     requerido: {
-        nombre: "El campo nombre es obligatorio", 
+        nombre: "El campo nombre es obligatorio",
         apellido: "El campo apellido es obligatorio",
         dni: "El campo DNI es obligatorio",
         telefono: "El campo teléfono es obligatorio",
         email: "El campo email es obligatorio",
-        asunto: "El campo asunto es obligatorio"
+        asunto: "El campo asunto es obligatorio",
+        fecha: "El campo fecha es obligatorio"
     }
 }
 
@@ -55,7 +56,9 @@ export const LABEL_REQUIRED ={
     nombreCurso: "Nombre del curso*",
     temario: "Temario*",
     descripcion: "Descripción*",
-    seleccionArea: "Seleccione un área*"
+    seleccionArea: "Seleccione un área*",
+    fecha: "Fecha*",
+    asunto: "Asunto*"
 
 }
 
@@ -140,7 +143,7 @@ export const HVR ={
     eliminarCurso: "Eliminar curso",
     inscribirAlumno: "Inscribir Alumno",
 
-    
+
 }
 
 export function setCadena(texto){

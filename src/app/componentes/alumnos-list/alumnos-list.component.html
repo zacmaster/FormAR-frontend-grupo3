@@ -14,7 +14,7 @@
               <div class="row">
                 <div class="form-group col">
                   <label for="nombre">{{ _LABEL_R.nombre }}</label>
-                  <input 
+                  <input
                             #nombre = "ngModel"
                             class="form-control"
                             type="text"
@@ -26,14 +26,14 @@
                             [pattern]="_PATTERN.nombre"
                             >
                   <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
-                    <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>   
-                    <div *ngIf="nombre.errors.pattern">{{ _VALIDACION.valido.nombre }}</div>     
-                    <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>     
+                    <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>
+                    <div *ngIf="nombre.errors.pattern">{{ _VALIDACION.valido.nombre }}</div>
+                    <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
                   </div>
                 </div>
                 <div class="form-group col">
                   <label for="apellido">{{ _LABEL_R.apellido }}</label>
-                  
+
                   <input #apellido = "ngModel"
                                 class="form-control"
                                 type="text"
@@ -45,20 +45,20 @@
                                 [pattern]="_PATTERN.nombre"
                                 >
                         <div  *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger">
-                          <div *ngIf="apellido.errors.required">{{ _VALIDACION.requerido.apellido }}</div>          
-                          <div *ngIf="apellido.errors.pattern">{{ _VALIDACION.valido.apellido }}</div>  
-                          <div *ngIf="apellido.errors.minlength">{{ _VALIDACION.minimoTres }}</div>  
+                          <div *ngIf="apellido.errors.required">{{ _VALIDACION.requerido.apellido }}</div>
+                          <div *ngIf="apellido.errors.pattern">{{ _VALIDACION.valido.apellido }}</div>
+                          <div *ngIf="apellido.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
                         </div>
                       </div>
               </div>
               <div class="row">
                 <div class="form-group col">
                   <label for="dni">{{ _LABEL_R.dni }}</label>
-                    <input 
+                    <input
                                 #dni = "ngModel"
                                 class="form-control"
                                 type="text"
-                                required 
+                                required
                                 minlength="6"
                                 maxlength="9"
                                 [(ngModel)]="alumnoSeleccionado.dni"
@@ -67,53 +67,53 @@
                                 >
                         <div  *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="alert alert-danger">
                           <div *ngIf="dni.errors.required">{{ _VALIDACION.requerido.dni }}</div>
-                          <div *ngIf="dni.errors.pattern">{{ _VALIDACION.valido.dni}}</div>    
-                          <div *ngIf="dni.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>  
+                          <div *ngIf="dni.errors.pattern">{{ _VALIDACION.valido.dni}}</div>
+                          <div *ngIf="dni.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
                         </div>
                       </div>
                 <div class="form-group col">
-                    
+
                  <label for="nacimiento">{{ _LABEL.fechaNacimiento }}</label>
-                 <ng-datepicker 
+                 <ng-datepicker
                                 style="position: relative;z-index: 1000"
                                 id="calendario"
                                 [(ngModel)]="dateNac"
                                 [options]="options"
                   ></ng-datepicker>
-                 
+
 
                 </div>
               </div>
               <div class="row">
                 <div class="form-group col">
                   <label for="email">{{ _LABEL_R.email }}</label>
-                  <input 
+                  <input
                                   #email="ngModel"
                                   class="form-control"
                                   type="email"
-                                  required 
+                                  required
                                   [(ngModel)]="alumnoSeleccionado.email"
                                   [placeholder]="_LABEL.ingrese.email"
                                   [pattern]="_PATTERN.email"
                                   >
                           <div  *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-                              <div *ngIf="email.errors.required">{{ _VALIDACION.requerido.email }}</div>    
+                              <div *ngIf="email.errors.required">{{ _VALIDACION.requerido.email }}</div>
                               <div *ngIf="email.errors.pattern">{{ _VALIDACION.valido.email }}</div>
                           </div>
                 </div>
                 <div class="form-group col">
-                  <label for="telefono">{{ _LABEL.telefono }}</label>
-                  <input 
+                  <label for="telefono">{{ _LABEL_R.telefono }}</label>
+                  <input
                                   #telefono="ngModel"
                                   class="form-control"
-                                  type="text" 
+                                  type="text"
                                   required
                                   [(ngModel)]="alumnoSeleccionado.telefono"
                                   [placeholder]="_LABEL.ingrese.telefono"
                                   [pattern]="_PATTERN.telefono"
                                   >
                           <div  *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
-                              <div *ngIf="telefono.errors.required">{{ _VALIDACION.requerido.telefono }}</div>    
+                              <div *ngIf="telefono.errors.required">{{ _VALIDACION.requerido.telefono }}</div>
                               <div *ngIf="telefono.errors.pattern">{{ _VALIDACION.valido.telefono }}</div>
                           </div>
                 </div>
@@ -125,7 +125,7 @@
               </button>
           </div>
     </div>
-  
+
     </div>
     <div class="p-0">
         <div class="bg-light">
@@ -134,7 +134,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
                 </div>
-                
+
                 <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
 
                 <div class="input-group-append">
@@ -175,13 +175,13 @@
             </div>
           </div>
     </div>
-  </div>  
+  </div>
 </div>
 
 
 
 
-<dialogo-confirmacion 
+<dialogo-confirmacion
                       *ngIf="mostrarDialogoBorrar"
                       (clickBotonCerrar)="ocultarDialogo()"
                       (clickBotonIzquierdo)="ocultarDialogo()"

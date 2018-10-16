@@ -19,19 +19,16 @@ export class Alumno extends Resource implements IAlumno{
 
         this.id = 0;
         this.nombre = $nombre;
-		this.apellido = $apellido;
-		this.email = $email;
-		this.dni = $dni;
-		this.telefono = $telefono;
-		this.tipo = $tipo;
+    		this.apellido = $apellido;
+    		this.email = $email;
+    		this.dni = $dni;
+    		this.telefono = $telefono;
+    		this.tipo = $tipo;
 	}
 
 
 
-    
+
 
 
 }
-
-
-
