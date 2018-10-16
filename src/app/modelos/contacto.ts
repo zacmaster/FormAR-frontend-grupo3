@@ -2,6 +2,7 @@ import { Resource } from "../componentes/resource";
 import { IContacto } from "../interfaces/icontacto";
 import { Curso } from "./curso";
 import { Area } from "./area";
+import { Alumno } from "./alumno";
 
 export class Contacto extends Resource implements IContacto{
     fecha: number;
@@ -9,9 +10,13 @@ export class Contacto extends Resource implements IContacto{
     descripcion: string;
     curso: Curso;
     area: Area;
+    alumno: Alumno;
 
     constructor(){
         super();
+        this.fecha = 0;
+        this.asunto = '';
+        this.descripcion = '';
     }
 
 

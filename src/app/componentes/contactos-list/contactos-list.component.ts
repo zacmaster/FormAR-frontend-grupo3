@@ -8,7 +8,10 @@ import { ContactoService } from '../../servicios/contacto.service';
 
 import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
-import { flatten } from '@angular/core/src/render3/util';
+import { Curso } from 'src/app/modelos/curso';
+import { Area } from 'src/app/modelos/area';
+import { CursoService } from 'src/app/servicios/curso.service';
+import { AreaService } from 'src/app/servicios/area.service';
 
 @Component({
   selector: 'app-contactos-list',
@@ -21,33 +24,14 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogo = false;
   agregandoAlumno = false;
 
-  alumnoNuevo = {
-    id: "",
-    nombre: "",
-    apellido: "",
-    email: "",
-    dni: "",
-    telefono: "",
-    fechaNacimiento: "",
-    fechaRegistro: "",
-    tipo: ""
-  };
+  alumnoNuevo = new Alumno();
 
   alumnoSeleccionado: Alumno = new Alumno();
 
   contactoNuevo: Contacto = new Contacto();
 
   public guardarAlumno(alumno){
-
-    this.alumnoSeleccionado.id=alumno.id;
-    this.alumnoSeleccionado.nombre= alumno.nombre;
-    this.alumnoSeleccionado.apellido= alumno.apellido;
-    this.alumnoSeleccionado.email= alumno.email;
-    this.alumnoSeleccionado.dni= alumno.dni;
-    this.alumnoSeleccionado.telefono= alumno.telefono;
-    this.alumnoSeleccionado.fechaNacimiento= alumno.fechaNacimiento;
-    this.alumnoSeleccionado.fechaRegistro= alumno.fechaRegistro;
-    this.alumnoSeleccionado.tipo= alumno.tipo;
+    this.alumnoSeleccionado.copiar(alumno);
   }
 
 
@@ -71,7 +55,11 @@ export class ContactosListComponent implements OnInit {
     useEmptyBarTitle: false,
   };
 
-  public alumnos = [];
+  alumnos: Alumno[];
+  contactos:  Contacto[];
+  cursos: Curso[];
+  areas: Area[];
+
 
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
@@ -79,41 +67,125 @@ export class ContactosListComponent implements OnInit {
   _PATTERN = PATTERNS;
 
 
-  contactos = [
-    {
-      fecha: "12/04/2018",
-      nombreAlumno: "Carlos",
-      titulo: "Taller de costura"
-    },
-    {
-      fecha: "11/10/2012",
-      nombreAlumno: "Jorge",
-      titulo: "Taller de pintura"
-    },
-  ];
+  // contactos = [
+  //   {
+  //     fecha: "12/04/2018",
+  //     nombreAlumno: "Carlos",
+  //     titulo: "Taller de costura"
+  //   },
+  //   {
+  //     fecha: "11/10/2012",
+  //     nombreAlumno: "Jorge",
+  //     titulo: "Taller de pintura"
+  //   },
+  // ];
 
-  constructor(private _alumnoService: AlumnoService, private _contactoService : ContactoService) {
+  constructor(
+    
+    private _alumnoService: AlumnoService,
+    private _contactoService : ContactoService,
+    private _cursoService: CursoService,
+    private _areaService: AreaService
+
+
+    ) {
 
   }
 
   ngOnInit() {
-
-    setTimeout(()=>{
       this.getAlumnos().then(() =>{
         if(this.alumnos.length > 0)
         this.alumnoSeleccionado.copiar(this.alumnos[0]);
-      }
+      })
 
-      )},500);
-      //this.guardarAlumno(this.getAlumnos[0]);
-      this.agregandoAlumno = false;
   }
 
+  ngDoCheck(){
+    console.log("alumnos: ",this.alumnos);
+    
+  }
+
+
+  getContactos(){
+    return this._contactoService.getContactos()
+    .toPromise()
+    .then(contactos => contactos.forEach(contacto =>{
+      this.contactos = [];
+
+      let contacto_aux = new Contacto();
+      let alumno_aux = new Alumno();
+      let area_aux = new Area();
+      let curso_aux = new Curso();
+
+      area_aux.copiar(contacto.area);
+      alumno_aux.copiar(contacto.alumno);
+      curso_aux.copiar(contacto.curso);
+
+      contacto_aux.copiar(contacto);
+
+      contacto_aux.area = area_aux;
+      contacto_aux.alumno = alumno_aux;
+      contacto_aux.curso = curso_aux;
+
+      this.contactos.push(contacto_aux);
+
+
+    }))
+  }
   getAlumnos(){
     return this._alumnoService.getAlumnos()
-      .toPromise().then(r => {
-        this.alumnos = r
+      .toPromise()
+      .then(alumnos =>  {
+        this.alumnos = [];
+        alumnos.forEach(alumno => {
+          let alumno_aux = new Alumno();
+          alumno_aux.copiar(alumno);
+          this.alumnos.push(alumno_aux);
+        })
+        this.alumnoSeleccionado.copiar(this.alumnos[0]); 
       })
+  }
+
+  getCursos(){
+    return this._areaService.getAreas()
+      .toPromise()
+      .then(
+        areas => {
+          this.areas = [];
+          areas.forEach(area =>{
+            let area_aux = new Area();
+            area_aux.copiar(area);
+            this.areas.push(area_aux);
+        })
+    })
+      .then(() =>{
+        return this._cursoService.getCursos()
+          .toPromise()
+          .then(
+            cursos => {
+              this.cursos = [];
+              cursos.forEach(curso =>{
+                let area_aux = new Area();
+                let curso_aux = new Curso();
+                curso_aux.copiar(curso);
+                area_aux.copiar(curso.area);
+                curso_aux.area = area_aux;
+                this.cursos.push(curso);
+              })
+            }
+          )
+      }) 
+  }
+
+  getAreas(){
+    return this._areaService.getAreas()
+      .toPromise()
+      .then(areas => areas.forEach(area=>{
+        this.areas = [];
+        let area_aux = new Area();
+        area_aux.copiar(area);
+        this.areas.push(area);
+      }))
   }
 
   nuevoContacto(){

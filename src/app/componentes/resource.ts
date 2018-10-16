@@ -4,9 +4,13 @@ export class Resource implements Iresource{
     id: number = 0;
     
     public copiar(resource: Resource): void{
-        for(let atributo in resource){
-            this[atributo] = resource[atributo];
+        if(resource != null && resource != undefined){
+            for(let atributo in resource){
+                this[atributo] = resource[atributo];
+            }
         }
+        else
+            self = undefined;
     }
         
     
