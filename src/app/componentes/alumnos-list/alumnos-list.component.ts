@@ -8,6 +8,7 @@ import { AlumnoService } from '../../servicios/alumno.service';
 import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
 import { CursadaService } from 'src/app/servicios/cursada.service';
+import { Cursada } from 'src/app/modelos/cursada';
 
 
 @Component({
@@ -35,12 +36,14 @@ export class AlumnosListComponent implements OnInit {
   };
 
   public alumnos = [];
+  public cursadas = [];
   public edicion: boolean = false;
   mostrarDialogoAB = false;
   mostrarDialogoBorrar: boolean = false;
   alumnoSeleccionado: Alumno = this.newAlumno();
   nombreAlumno: string = '';
   busqueda: string = "";
+  inscripcionShowed: boolean = false;
 
   textoDlgEliminar: string;
 
@@ -52,6 +55,8 @@ export class AlumnosListComponent implements OnInit {
 
   ngDoCheck(){
     console.log("alumnos", this.alumnos);
+    console.log("cursadas", this.cursadas);
+    
     
   }
 
@@ -62,6 +67,7 @@ export class AlumnosListComponent implements OnInit {
               ) { }
 
   ngOnInit() {
+    this.getCursadas();
     this._spinnerService.show();
     setTimeout(()=>{
       this.getAlumnos().then(
@@ -80,6 +86,17 @@ export class AlumnosListComponent implements OnInit {
           this.alumnos.push(alumno);
         })
         this.busqueda = undefined;
+      })
+  }
+  getCursadas(){
+    this.cursadas = [];
+    return this._cursadaService.list()
+      .toPromise().then(cursadas => {
+        cursadas.forEach(cursada => {
+          let nuevaCursada = new Cursada();
+          nuevaCursada.copiar(cursada);
+          this.cursadas.push(cursada);
+        })
       })
   }
 
@@ -164,6 +181,21 @@ export class AlumnosListComponent implements OnInit {
   private newAlumno(): Alumno{
     let alumno = new Alumno();
     return alumno;
+  }
+
+  clickCancelarNuevaInscripcion(){
+    this.inscripcionShowed = false;
+  }
+  clickInscripcionAlumno(alumno){
+    this.alumnoSeleccionado.copiar(alumno);
+    this.inscripcionShowed = true;
+  }
+  clickConfirmarInscripcion(){
+    this.inscripcionShowed = false;
+  }
+  fechaACadeana(fecha: number):  string{
+    let date = new Date(fecha);
+    return date.toLocaleDateString();
   }
 
 }

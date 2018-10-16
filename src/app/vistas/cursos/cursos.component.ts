@@ -23,6 +23,7 @@ export class CursosComponent implements OnInit, DoCheck {
   popupAreasShowed: boolean = false;
   
   
+  
   private nombreNuevoArea: string = "";
 
   _LABEL = LABEL;
