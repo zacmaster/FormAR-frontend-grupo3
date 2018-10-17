@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
+  selector: `dialogo-info`,
   template: `
   <div class="contenedor d-flex justify-content-center align-items-center justify-content-center">
     <div  class="dialogo bg-light p-1">
@@ -12,9 +13,8 @@ import { Component, OnInit } from '@angular/core';
       <div class="dialogoBody p-3 pt-3 text-center">
         <p> {{texto}} </p>
       </div>
-      <div class="dialogoFooter d-flex mx-5 mb-3 justify-content-between">
-        <span class="btn btn-danger mr-3" (click)="clickBtnIzquierdo()">{{ textoBotonIzquierdo }}</span>
-        <span class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">{{ textoBotonDerecho }}</span>
+      <div class="dialogoFooter d-flex mx-5 mb-3 justify-content-center">
+        <button class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">{{ textoBotonDerecho }}</button>
       </div>
     </div>
   </div>
@@ -32,6 +32,8 @@ styles: [
     }
     .dialogo{
       border-radius: 5px;
+      min-width: 30vw;
+      max
     }
     h5{
       margin: auto;
@@ -42,42 +44,31 @@ styles: [
       padding-bottom: 2px;
       border-bottom: 1px solid #0003;
     }
+    button{
+      width: 80px;
+    }
   `
 ]
 })
 export class DialogoInfoComponent implements OnInit {
 @Input() public titulo = '';
 @Input() public texto = '';
-@Input() textoBotonIzquierdo = 'Cancelar'; 
-@Input() textoBotonDerecho =  'Aceptar';
+textoBotonDerecho =  'Ok';
 
 
 @Output() clickBotonCerrar = new EventEmitter<boolean>();
-@Output() clickBotonIzquierdo =  new EventEmitter<boolean>();
-@Output() clickBotonDerecho =  new EventEmitter<boolean>();
+@Output() clickBotonOk =  new EventEmitter<boolean>();
 constructor() { }
 
 ngOnInit() {
 }
 
-clickBtnIzquierdo(){
-  this.clickBotonIzquierdo.emit(true);
-}
 
-clickBtnDerecho(){
-  this.clickBotonDerecho.emit(true);
+clickBtnOk(){
+  this.clickBotonOk.emit(true);
 }
 clickBtnCerrar(){
   this.clickBotonCerrar.emit(true);
 }
-
-}
-
-export class DialogoInfoComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }
