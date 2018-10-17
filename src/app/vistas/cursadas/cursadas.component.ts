@@ -8,6 +8,7 @@ import { CursoService } from '../../servicios/curso.service';
 import { log } from 'util';
 import { Cursada } from 'src/app/modelos/cursada';
 import { Curso } from 'src/app/modelos/curso';
+import { Util } from '../../utilidades/util';
 
 @Component({
   selector: 'app-cursadas',
@@ -26,6 +27,7 @@ export class CursadasComponent implements OnInit {
   mostrarDialogo = false;
   cursadas = [];
   cursos = [];
+  _Util = Util;
 
   cursadaSeleccionada: Cursada = this.newCursada();
 
@@ -136,10 +138,6 @@ export class CursadasComponent implements OnInit {
   })
   }
 
-  fechaInicioCurso(fecha: number): string{ 
-    let nuevaFecha = new Date(fecha);
-    return nuevaFecha.toLocaleDateString('en-GB');
-  }
 
 
   private newCursada(): Cursada{
@@ -147,9 +145,6 @@ export class CursadasComponent implements OnInit {
     return cursada;
   }
 
-  aFechaHumana(fecha: number): string{
-    return new Date(fecha).toLocaleDateString('en-GB');
-  }
 
   // METODOS DE CURSOS
 

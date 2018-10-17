@@ -29,8 +29,8 @@
                     <td> {{ cursada.curso.nombre }}</td>
                     <td> {{ cursada.curso.descripcion }} </td>
                     <td> {{ cursada.curso.area.nombre }} </td>
-                    <td>  {{ fechaInicioCurso(cursada.fechaInicio) }}</td>
-                    <td>  {{ fechaInicioCurso(cursada.fechaFin) }}</td>
+                    <td>  {{ _Util.convertirTimestamp(cursada.fechaInicio) }}</td>
+                    <td>  {{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
                     <td>
                       <span class="btn btn-info mr-2" >
                         <i class="fas fa-file-signature"></i>

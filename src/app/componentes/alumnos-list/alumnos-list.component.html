@@ -238,7 +238,7 @@
                       *ngFor="let cursada of cursadas"
   
                   >
-                     {{cursada.curso.nombre}} {{ fechaACadeana(cursada.fechaInicio) }}
+                     {{cursada.curso.nombre}} {{ _Util.convertirTimestamp(cursada.fechaInicio) }}
                   </option>
                 </select>
               </div>

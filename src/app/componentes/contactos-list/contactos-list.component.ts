@@ -12,6 +12,9 @@ import { Curso } from 'src/app/modelos/curso';
 import { Area } from 'src/app/modelos/area';
 import { CursoService } from 'src/app/servicios/curso.service';
 import { AreaService } from 'src/app/servicios/area.service';
+import { Util } from '../../utilidades/util';
+
+
 
 @Component({
   selector: 'app-contactos-list',
@@ -67,6 +70,7 @@ export class ContactosListComponent implements OnInit {
   _LABEL_R = LABEL_REQUIRED;
   _VALIDACION = VALIDACION;
   _PATTERN = PATTERNS;
+  _Util = Util;
 
 
   // contactos = [
@@ -237,19 +241,11 @@ export class ContactosListComponent implements OnInit {
   }
 
 
-  public fechaComoString(fecha: number): string{
-    let date = new Date(fecha);
-    return date.toLocaleDateString('en-GB');
-  }
 
   actualizarAlumnoSeleccionado(alumno: Alumno){
     this.alumnoSeleccionado.copiar(alumno);
     this.contactoNuevo.alumno.copiar(this.alumnoSeleccionado);
   }
 
-  dateACadena(date: Date): string{
-    let d = new Date(date);
-    return d.toLocaleDateString('en-GB');
-  }
 
 }

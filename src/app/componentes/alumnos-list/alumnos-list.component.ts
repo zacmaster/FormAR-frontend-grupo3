@@ -3,6 +3,8 @@ import { Alumno } from '../../modelos/alumno';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
 import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
+import { Util } from '../../utilidades/util';
+
 import { AlumnoService } from '../../servicios/alumno.service';
 
 import {DatepickerOptions} from 'ng2-datepicker';
@@ -52,6 +54,7 @@ export class AlumnosListComponent implements OnInit {
    _LABEL_R = LABEL_REQUIRED;
    _VALIDACION = VALIDACION;
    _PATTERN = PATTERNS;
+   _Util = Util;
 
   ngDoCheck(){
     console.log("alumnos", this.alumnos);
@@ -217,10 +220,5 @@ export class AlumnosListComponent implements OnInit {
   }
 
 
-
-  fechaACadeana(fecha: number):  string{
-    let date = new Date(fecha);
-    return date.toLocaleDateString('en-GB');
-  }
 
 }

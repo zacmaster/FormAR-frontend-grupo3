@@ -21,7 +21,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let contacto of contactos | search: {fecha: busqueda, nombreAlumno: busqueda, titulo: busqueda}" >
-                  <td> {{ fechaComoString(contacto.fecha) }}</td>
+                  <td> {{ _Util.convertirTimestamp(contacto.fecha) }}</td>
                   <td> {{ contacto.alumno.nombre }} {{ contacto.alumno.apellido }}</td>
                   <td> {{ contacto.asunto }} </td>
                   <td>
@@ -85,7 +85,7 @@
                         <li> {{ _LABEL.telefono }} : {{ alumnoSeleccionado.telefono }} </li>
                         <li> {{ _LABEL.email }} : {{ alumnoSeleccionado.email }} </li>
                         <li> {{ _LABEL.dni }} : {{ alumnoSeleccionado.dni }}</li>
-                        <li> {{ _LABEL.fechaNacimiento }} : {{ fechaComoString(alumnoSeleccionado.fechaNacimiento) }}</li>
+                        <li> {{ _LABEL.fechaNacimiento }} : {{ _Util.convertirTimestamp(alumnoSeleccionado.fechaNacimiento) }}</li>
                       </ul>
                   </div>
 
