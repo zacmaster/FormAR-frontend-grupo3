@@ -7,7 +7,6 @@ import {Injectable, Pipe, PipeTransform} from '@angular/core';
 @Injectable()
 export class SearchPipe implements PipeTransform{
 	  transform(items: any, filter: any, defaultFilter: boolean): any {
-      console.log("items: ",items);
       
     if (!filter){
       return items;

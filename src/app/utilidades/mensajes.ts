@@ -151,11 +151,14 @@ export var LABEL ={
         contacto: "Editar contacto"
     },
     eliminar: {
+        confirmar: {
+            contacto: "¿Seguro desea eliminar el contacto "
+        },
         contacto: "Eliminar contacto"
     },
     info: {
         contacto: "Descripción del contacto"
-    }
+    },
 }
 
 export const HVR ={
