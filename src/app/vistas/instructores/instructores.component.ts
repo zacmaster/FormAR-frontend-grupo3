@@ -11,6 +11,7 @@ import { Util } from '../../utilidades/util';
 import {SelectItem} from 'primeng/api';
 
 import { Horario } from '../../modelos/horario';
+import { Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-instructores',
@@ -46,6 +47,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   estudiosShowed: boolean =false;
   horariosShowed: boolean =false;
   areasShowed: boolean =false;
+  
 
   constructor(private fb: FormBuilder, private _areaService: AreaService,private _instructorService : InstructorService,
     private _spinnerService: Ng4LoadingSpinnerService,){ }
@@ -120,12 +122,15 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   }
  
   nuevoInstructor(){
+    this.edicion=false;
+    this.selectedAreas=[];
     this.mostrarDialogoAB=true;
   }
   ocultarDialogo(){
     this.mostrarDialogoBorrar = false;
     this.mostrarDialogoAB=false;
     this.inicializarFormHorario();
+    this.selectedAreas=[];
     this.instructorSeleccionado = this.newInstructor();
            
   }
@@ -173,7 +178,13 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           }
           
         }
-    this.agregar(this.instructorSeleccionado);
+    if(this.instructorSeleccionado.id!=0){
+      this.editar(this.instructorSeleccionado)
+    }
+    else{
+      this.agregar(this.instructorSeleccionado);
+    }
+    
   }
   agregar(instructor : Instructor){
     this._spinnerService.show();
@@ -188,6 +199,42 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           })
       }, 500)
   }
+  editar(instructor: Instructor){
+    this._instructorService.updateInstructor(instructor).
+    subscribe(r=>{
+        this.getInstructores();
+        this.instructorSeleccionado = this.newInstructor();
+        this.edicion=false;
+        this.mostrarDialogoAB=false;
+    });
+  }
+  editarInstructor(){
+     this.areas.forEach(element => {
+      this.instructorSeleccionado.areasPreferencia.forEach(element2 =>{
+        if(element.nombre == element2.nombre){
+          this.selectedAreas.push(element);
+        }
+      })
+    });
+    const horarioArray= <FormArray>this.horarioForm.controls['horario']
+    
+    // this.instructorSeleccionado.disponibilidadHoraria.forEach(element => {
+    //     horarioArray.value.forEach(element2 => {
+    //       console.log("HOLA!");
+    //       element2.dia=element.dia;
+    //       element2.horaInicio=element.horaInicio;
+    //       element2.horaFin=element.horaFin;
+    //       this.addHorarioRow();
+    //     });
+    // });  
+    console.log(horarioArray);
+    console.log(this.instructorSeleccionado.disponibilidadHoraria);
+    
+
+    this.edicion = true;
+    this.mostrarDialogoAB = true;
+    console.log(this.instructorSeleccionado);
+  }
 
   eliminar(){
     this._spinnerService.show();
@@ -198,6 +245,8 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           this.getInstructores();
           this._spinnerService.hide();
           this.instructorSeleccionado = this.newInstructor();
+          this.inicializarFormHorario();
+          this.selectedAreas=[];
         })
     }, 500)
   }
