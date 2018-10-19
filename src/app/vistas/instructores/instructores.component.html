@@ -1,46 +1,315 @@
 <div class="p-0 bg-light">
+  <!--  FILTRO + NUEVO INSTRUCTOR -->
 
-<!--  FILTRO + NUEVO INSTRUCTOR -->
-
-<div class="input-group py-4 col-5">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
+  <div class="input-group py-4 col-5">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
+    </div>
+    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
+    <div class="input-group-append">
+      <button class="btn btn-success" (click)="nuevoInstructor()"><span> {{ _LABEL.nuevoInstructor }} </span></button>
+    </div>
   </div>
-  <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
-  <div class="input-group-append">
-    <button class="btn btn-success" (click)="nuevoAlumno()"><span> {{ _LABEL.nuevoInstructor }} </span></button>
-  </div>
-</div>
 
 
 
-<!--  TABLA   -->
+  <!--  TABLA   -->
 
-<div class="table-responsive">
-  <table class="table table-hover bg-light">
-    <thead class="thead-light">
-      <tr>
-        <th>A</th>
-        <th>B</th>
-        <th>C</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td> A1</td>
-        <td> B1 </td>
-        <td>
-          <button class="btn btn-success mr-2" (click)="copiarAlumno(alumno);editarAlumno();">
-            <i class="fas fa-user-edit"></i>
+  <div class="table-responsive">
+    <table class="table table-hover bg-light">
+      <thead class="thead-light">
+        <tr>
+          <th>Instructor</th>
+          <th>Dni</th>
+          <th>Telefono</th>
+          <th>Email</th>
+          <th>Estudios</th>
+          <th>Horarios</th>
+          <th>Areas</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let instructor of instructores">
+          <td>{{ instructor.nombre }}
+            {{ instructor.apellido }}</td>
+          <td>  {{ instructor.dni }}</td>
+          <td> {{ instructor.telefono }} </td>
+          <td> {{ instructor.email }} </td>
+          
+          <td> <button class="btn btn btn-info"
+            [title]="_HVR.estudio"
+            (click)="instructorSeleccionado.copiar(instructor); mostrarEstudios()">
+            <i class="fas fa-atlas"></i>
           </button>
-          <button class="btn btn-danger" (click)="alumnoSeleccionado = alumno; mostrarDialogoEliminar()">
-            <i class="fas fa-user-times"></i>
+         </td>
+          <td>  
+            <button class="btn btn btn-info"
+            [title]="_HVR.horario"
+            (click)="instructorSeleccionado.copiar(instructor); mostrarHorarios()">
+            <i class="fas fa-calendar-check"></i>
+          </button>
+          <td> 
+            <button class="btn btn btn-info"
+            [title]="_HVR.areasPref"
+            (click)="instructorSeleccionado.copiar(instructor); mostrarAreas()">
+            <i class="fas fa-font"></i>
           </button>
         </td>
-      </tr>
-    </tbody>
-  </table>
+         
+          <td>
+            <button class="btn btn-success mr-2" (click)="copiarInstructor(instructor);editarInstructor();">
+              <i class="fas fa-user-edit"></i>
+            </button>
+            <button class="btn btn-danger" (click)="instructorSeleccionado = instructor; mostrarDialogoEliminar()">
+              <i class="fas fa-user-times"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>  
+<!-- Dialogo estudios-->
+<div class="contenedor-info"  *ngIf="estudiosShowed">
+    <div  class="dialogo bg-light p-1">
+        <div class="dialogoHeader d-flex justify-content-between">
+          <div></div>
+          <div class="titulo text-center" ><p> {{ instructorSeleccionado.nombre }} </p></div>
+          <span class="btn btn-danger" (click)="cerrarEstudios()"><i class="fas fa-times"></i></span>
+        </div>
+        <div class="dialogoBody p-3 pt-3 text-center">
+          <p> <span style="font-weight: bold">{{ _LABEL.estudios }}: </span>{{ instructorSeleccionado.estudios }} </p>
+
+        </div>
+      </div>
 </div>
-  
-  
+<!-- Dialogo horarios-->
+<div class="contenedor-info"  *ngIf="horariosShowed">
+    <div  class="dialogo bg-light p-1">
+        <div class="dialogoHeader d-flex justify-content-between">
+          <div></div>
+          <div class="titulo text-center" ><p>Horarios </p></div>
+          <span class="btn btn-danger" (click)="cerrarHorarios()"><i class="fas fa-times"></i></span>
+        </div>
+        <div class="dialogoBody p-3 pt-3 text-center">
+          <p *ngFor="let horario of instructorSeleccionado.disponibilidadHoraria"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
+           <!-- {{ horario.horaInicio }} 
+            {{ horario.horaFin }} -->
+          </p>
+
+        </div>
+      </div>
 </div>
+<!-- Dialogo Areas-->
+<div class="contenedor-info"  *ngIf="areashowed">
+    <div  class="dialogo bg-light p-1">
+        <div class="dialogoHeader d-flex justify-content-between">
+          <div></div>
+          <div class="titulo text-center" ><p> Areas de preferencia </p></div>
+          <span class="btn btn-danger" (click)="cerrarEstudios()"><i class="fas fa-times"></i></span>
+        </div>
+        <div class="dialogoBody p-3 pt-3 text-center">
+          <p> <span style="font-weight: bold">{{ _LABEL.estudios }}: </span>{{ instructorSeleccionado.estudios }} </p>
+
+        </div>
+      </div>
+</div>
+
+
+<!-- Formulario:  -->
+
+<div class="contenedor-formulario" *ngIf="mostrarDialogoAB">
+  <div class="card mt-4 w-50 mx-auto">
+      <div class="card-head d-flex  w-100 justify-content-between">
+        <div></div>
+        <div class="pt-2">
+          <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevoInstructor}}</h5>
+          <h5 *ngIf="edicion" class="">{{ _LABEL.edicionInstructor}}</h5>
+        </div>
+        <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="form-group col">
+            <label for="nombre">{{ _LABEL_REQUIRED.nombre }}</label>
+            <input
+                      #nombre = "ngModel"
+                      class="form-control"
+                      type="text"
+                      required
+                      minlength="3"
+                      maxlength="30"
+                      [(ngModel)]="instructorSeleccionado.nombre"
+                      [placeholder]="_LABEL.ingrese.nombre"
+                      [pattern]="_PATTERN.nombre"
+                      >
+            <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
+              <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>
+              <div *ngIf="nombre.errors.pattern">{{ _VALIDACION.valido.nombre }}</div>
+              <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+            </div>
+          </div>
+          <div class="form-group col">
+            <label for="apellido">{{ _LABEL_REQUIRED.apellido }}</label>
+
+            <input #apellido = "ngModel"
+                          class="form-control"
+                          type="text"
+                          required
+                          minlength="3"
+                          maxlength="30"
+                          [(ngModel)]="instructorSeleccionado.apellido"
+                          [placeholder]="_LABEL.ingrese.apellido"
+                          [pattern]="_PATTERN.nombre"
+                          >
+                  <div  *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger">
+                    <div *ngIf="apellido.errors.required">{{ _VALIDACION.requerido.apellido }}</div>
+                    <div *ngIf="apellido.errors.pattern">{{ _VALIDACION.valido.apellido }}</div>
+                    <div *ngIf="apellido.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+                  </div>
+                </div>
+        </div>
+        <div class="row">
+          <div class="form-group col">
+            <label for="dni">{{ _LABEL_REQUIRED.dni }}</label>
+              <input
+                          #dni = "ngModel"
+                          class="form-control"
+                          type="text"
+                          required
+                          minlength="6"
+                          maxlength="9"
+                          [(ngModel)]="instructorSeleccionado.dni"
+                          [placeholder]="_LABEL.ingrese.dni"
+                          [pattern]="_PATTERN.dni"
+                          >
+                  <div  *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="alert alert-danger">
+                    <div *ngIf="dni.errors.required">{{ _VALIDACION.requerido.dni }}</div>
+                    <div *ngIf="dni.errors.pattern">{{ _VALIDACION.valido.dni}}</div>
+                    <div *ngIf="dni.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
+                  </div>
+                </div>
+                <div class="form-group col">
+                  <label for="telefono">{{ _LABEL_REQUIRED.telefono }}</label>
+                  <input
+                                  #telefono="ngModel"
+                                  class="form-control"
+                                  type="text"
+                                  required
+                                  [(ngModel)]="instructorSeleccionado.telefono"
+                                  [placeholder]="_LABEL.ingrese.telefono"
+                                  [pattern]="_PATTERN.telefono"
+                                  >
+                          <div  *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
+                              <div *ngIf="telefono.errors.required">{{ _VALIDACION.requerido.telefono }}</div>
+                              <div *ngIf="telefono.errors.pattern">{{ _VALIDACION.valido.telefono }}</div>
+                          </div>
+                </div>
+        </div>
+        <div class="row">
+          <div class="form-group col">
+            <label for="email">{{ _LABEL_REQUIRED.email }}</label>
+            <input
+                            #email="ngModel"
+                            class="form-control"
+                            type="email"
+                            required
+                            [(ngModel)]="instructorSeleccionado.email"
+                            [placeholder]="_LABEL.ingrese.email"
+                            [pattern]="_PATTERN.email"
+                            >
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                        <div *ngIf="email.errors.required">{{ _VALIDACION.requerido.email }}</div>
+                        <div *ngIf="email.errors.pattern">{{ _VALIDACION.valido.email }}</div>
+                    </div>
+          </div>
+          <div class=" col-6">
+            <label >{{ _LABEL.areaPreferencia }}</label>
+            <select 
+                class="custom-select form-control"
+                [(ngModel)]="areaSeleccionada"
+            >
+            <option
+                  *ngFor="let area of areas"
+                  [ngValue]="area"
+                >
+                  {{ area.nombre }}
+                </option>
+              </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col">
+            <label for="">{{ _LABEL.estudios }}</label>
+            <textarea
+                          name=""
+                          id=""
+                          rows="4"
+                          class="form-control"
+                          maxlength="200"
+                          required
+                          [(ngModel)]="instructorSeleccionado.estudios"
+                         [placeholder]="_LABEL.ingreseEstudios"
+                ></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col">
+            <label for="">{{ _LABEL.dispHoraria }}</label>
+            <form *ngIf="horarioForm" [formGroup]="horarioForm">
+                  <table  style="border:hidden;">
+                      <thead>
+                        <tr class="text-center">
+                          <th>Dia</th>
+                          <th>Hora Inicio</th>
+                          <th>Hora Fin</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="horario">
+                        <tr *ngFor="let item of horarioForm.controls.horario.controls; let $index=index" [formGroupName]="$index">
+                            <td style="min-width: 120px">
+                            <select class="form-control" formControlName="dia">
+                              <option *ngFor="let dia of dias" [value]="dia.dia">
+                                {{ dia.dia }}
+                              </option>
+                            </select>  
+                              
+                              </td>
+                              <td style="min-width: 120px">
+                             <!-- <p-calendar formControlName="horaInicio"  [timeOnly]="true" hourFormat="24"></p-calendar>
+                               
+                              </td>
+                                <td style="min-width: 120px">
+                            <p-calendar formControlName="horaFin"  [timeOnly]="true" hourFormat="24"></p-calendar>-->
+                            
+                          </td>
+                          <td style="width: 100px">
+                            <button (click)="addHorarioRow()" class="btn btn-success btn-sm mr-1" type="button"><i class="fa fa-plus"></i></button>
+                            <button (click)="removeHorarioRow($index)" class="btn btn-danger btn-sm" type="button"><i class="fa fa-times"></i></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </form>
+          </div>
+        </div>
+
+        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid" (click)="guardar()">
+          <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+          <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+        </button>
+    </div>
+</div>
+
+
+
+<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
+                      (clickBotonCerrar)="ocultarDialogo()"
+                      (clickBotonIzquierdo)="ocultarDialogo()"
+                      (clickBotonDerecho)="eliminar()"
+                      [titulo]="dlg.titulo"
+                      [texto]="dlg.texto"
+                      >
+
+</dialogo-confirmacion>
