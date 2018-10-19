@@ -7,7 +7,7 @@
     </div>
     <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
     <div class="input-group-append">
-      <button class="btn btn-success" (click)="nuevoInstructor()"><span> {{ _LABEL.nuevoInstructor }} </span></button>
+      <button class="btn btn-success" (click)="instructorSeleccionado = instructor;nuevoInstructor()"><span> {{ _LABEL.nuevoInstructor }} </span></button>
     </div>
   </div>
 
@@ -25,7 +25,7 @@
           <th>Email</th>
           <th>Estudios</th>
           <th>Horarios</th>
-          <th>Areas</th>
+          <th>Areas Preferencia</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -75,11 +75,11 @@
     <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
-          <div class="titulo text-center" ><p> {{ instructorSeleccionado.nombre }} </p></div>
+          <div class="titulo text-center" ><h5> {{ _LABEL.estudios }}: </h5></div>
           <span class="btn btn-danger" (click)="cerrarEstudios()"><i class="fas fa-times"></i></span>
         </div>
         <div class="dialogoBody p-3 pt-3 text-center">
-          <p> <span style="font-weight: bold">{{ _LABEL.estudios }}: </span>{{ instructorSeleccionado.estudios }} </p>
+          <p> <span style="font-weight: bold"> </span>{{ instructorSeleccionado.estudios }} </p>
 
         </div>
       </div>
@@ -89,33 +89,45 @@
     <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
-          <div class="titulo text-center" ><p>Horarios </p></div>
+          <div class="titulo text-center" ><h5>Horarios </h5></div>
           <span class="btn btn-danger" (click)="cerrarHorarios()"><i class="fas fa-times"></i></span>
         </div>
         <div class="dialogoBody p-3 pt-3 text-center">
           <p *ngFor="let horario of instructorSeleccionado.disponibilidadHoraria"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
-           <!-- {{ horario.horaInicio }} 
-            {{ horario.horaFin }} -->
+            {{ _Util.convertirTime(horario.horaInicio) }} a
+            {{ _Util.convertirTime(horario.horaFin) }} 
           </p>
 
         </div>
       </div>
 </div>
 <!-- Dialogo Areas-->
-<div class="contenedor-info"  *ngIf="areashowed">
+<div class="contenedor-info"  *ngIf="areasShowed">
     <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
-          <div class="titulo text-center" ><p> Areas de preferencia </p></div>
-          <span class="btn btn-danger" (click)="cerrarEstudios()"><i class="fas fa-times"></i></span>
+          <div class="titulo text-center" ><h5> Areas de preferencia </h5></div>
+          <span class="btn btn-danger" (click)="cerrarAreas()"><i class="fas fa-times"></i></span>
         </div>
         <div class="dialogoBody p-3 pt-3 text-center">
-          <p> <span style="font-weight: bold">{{ _LABEL.estudios }}: </span>{{ instructorSeleccionado.estudios }} </p>
+          <h5 *ngFor="let area of instructorSeleccionado.areasPreferencia"> <span style="font-weight: bold"> </span>
+            {{ area.nombre }}
+          </h5>
 
         </div>
       </div>
 </div>
+<!--Dialogo eliminar-->
+<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
+                      (clickBotonCerrar)="ocultarDialogo()"
+                      (clickBotonIzquierdo)="ocultarDialogo()"
+                      (clickBotonDerecho)="eliminar()"
+                      [titulo]="dlg.titulo"
+                      [texto]="dlg.texto"
+                      >
 
+</dialogo-confirmacion>
+<ng4-loading-spinner></ng4-loading-spinner>
 
 <!-- Formulario:  -->
 
@@ -224,21 +236,13 @@
                         <div *ngIf="email.errors.pattern">{{ _VALIDACION.valido.email }}</div>
                     </div>
           </div>
-          <div class=" col-6">
-            <label >{{ _LABEL.areaPreferencia }}</label>
-            <select 
-                class="custom-select form-control"
-                [(ngModel)]="areaSeleccionada"
-            >
-            <option
-                  *ngFor="let area of areas"
-                  [ngValue]="area"
-                >
-                  {{ area.nombre }}
-                </option>
-              </select>
-          </div>
-        </div>
+          
+              <div class="form-group col">
+              <h6>{{ _LABEL.areaPreferencia }}</h6>
+              <p-multiSelect [options]="areas" [(ngModel)]="selectedAreas" optionLabel="nombre" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
+             
+             </div>
+         </div> 
         <div class="row">
           <div class="form-group col">
             <label for="">{{ _LABEL.estudios }}</label>
@@ -277,11 +281,11 @@
                               
                               </td>
                               <td style="min-width: 120px">
-                             <!-- <p-calendar formControlName="horaInicio"  [timeOnly]="true" hourFormat="24"></p-calendar>
+                              <p-calendar formControlName="horaInicio"  [timeOnly]="true" hourFormat="24"></p-calendar>
                                
                               </td>
                                 <td style="min-width: 120px">
-                            <p-calendar formControlName="horaFin"  [timeOnly]="true" hourFormat="24"></p-calendar>-->
+                            <p-calendar formControlName="horaFin"  [timeOnly]="true" hourFormat="24"></p-calendar>
                             
                           </td>
                           <td style="width: 100px">
@@ -295,7 +299,7 @@
           </div>
         </div>
 
-        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid" (click)="guardar()">
+        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid || horarioForm.invalid " (click)="guardar()">
           <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
           <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
         </button>
@@ -304,12 +308,3 @@
 
 
 
-<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
-                      (clickBotonCerrar)="ocultarDialogo()"
-                      (clickBotonIzquierdo)="ocultarDialogo()"
-                      (clickBotonDerecho)="eliminar()"
-                      [titulo]="dlg.titulo"
-                      [texto]="dlg.texto"
-                      >
-
-</dialogo-confirmacion>

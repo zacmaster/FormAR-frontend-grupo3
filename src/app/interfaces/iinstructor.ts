@@ -9,7 +9,7 @@ export interface IInstructor extends Iresource{
     dni: string,
     telefono: string,
     estudios: string,
-    areasPreferencia: Area,
+    areasPreferencia: Area[],
     disponibilidadHoraria: Horario[];
     
 }

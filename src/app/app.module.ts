@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgDatepickerModule } from 'ng2-datepicker';
 import {CalendarModule} from 'primeng/calendar';
+import {MultiSelectModule} from 'primeng/multiselect';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './vistas/login/login.component';
@@ -72,6 +73,7 @@ import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.co
     Ng4LoadingSpinnerModule.forRoot(),
     ReactiveFormsModule,
     CalendarModule,
+    MultiSelectModule
   ],
   providers: [
     AlumnoService

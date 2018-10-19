@@ -10,7 +10,7 @@ export class Instructor extends Resource implements IInstructor{
     dni: string;
     telefono: string;
     estudios: string;
-    areasPreferencia: Area;
+    areasPreferencia: Area[];
     disponibilidadHoraria: Horario[];
 
     constructor(){
