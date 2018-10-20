@@ -76,7 +76,8 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   }
 
   ngDoCheck(){
-    
+
+
   } 
   
   private fieldArray: Array<any> = [];
@@ -90,6 +91,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   deleteFieldValue(index) {
       this.fieldArray.splice(index, 1);
   }
+
 
   nuevoInstructor(){
     this.instructorSeleccionado= this.newInstructor();
@@ -135,50 +137,64 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   }
   guardar(){
     
-     
+     //es editado
     if(this.instructorSeleccionado.id!=0){
+      console.log("ENTRE AL EDITAR")
+      //vacio y vuelvo a cargar las areas
       this.instructorSeleccionado.areasPreferencia=[];
       for (let j = 0; j < this.selectedAreas.length; j++) {
         if(this.selectedAreas[j]!=null){
           this.instructorSeleccionado.areasPreferencia.push(this.selectedAreas[j]);
+         
         } 
        } 
-       if(this.fieldArray.length>0){
-        this.fieldArray.forEach(element => {
-          this.instructorSeleccionado.disponibilidadHoraria.map((item)=>{
-              if(item.id==element.id){
-                 item.copiar(element);
-              }
-              else{
-                let horario = new Horario();
-                horario.id=0;
-                horario.dia=element.dia;
-                horario.horaInicio= element.horaInicio;
-                horario.horaFin=element.horaFin;
-                this.instructorSeleccionado.disponibilidadHoraria.push(horario);
-              }
-               });
-          });
-        }
-        else{
-          this.fieldArray.forEach(element => {
-            this.instructorSeleccionado.disponibilidadHoraria.map((item)=>{
-                if(item.id==element.id){
-                   item.copiar(element);
-                }
-                else{
+       console.log("PASE LAS AREAS",this.instructorSeleccionado.areasPreferencia);
+       //vacio y vuelvo a cargar los horarios
+       this.instructorSeleccionado.disponibilidadHoraria=[];
+        for (let i = 0; i < this.fieldArray.length; i++) {
+                if(this.fieldArray[i].id==undefined){
                   let horario = new Horario();
                   horario.id=0;
-                  horario.dia=this.newAttribute.dia;
-                  horario.horaInicio=this.newAttribute.horaInicio;
-                  horario.horaFin=this.newAttribute.horaFin;
+                  horario.dia=this.fieldArray[i].dia;
+                  horario.horaInicio= this.fieldArray[i].horaInicio;
+                  horario.horaFin=this.fieldArray[i].horaFin;
                   this.instructorSeleccionado.disponibilidadHoraria.push(horario);
                 }
-                 });
-            });  
+                else{
+               
+                  let horario = new Horario();
+                  horario.id=this.fieldArray[i].id;
+                  horario.dia=this.fieldArray[i].dia;
+                  horario.horaInicio= this.fieldArray[i].horaInicio;
+                  horario.horaFin=this.fieldArray[i].horaFin;
+                  this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+            }
         }
+        //despues de sacar los del arreglo ,agarra el inidividual
+        if(this.newAttribute.id==undefined){
+          
+           let horario = new Horario();
+           horario.id=0;
+           horario.dia=this.newAttribute.dia;
+             horario.horaInicio=this.newAttribute.horaInicio;
+           horario.horaFin=this.newAttribute.horaFin;
+           this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+        }
+        else{
+          let horario = new Horario();
+          horario.id=this.newAttribute.id;
+          horario.dia=this.newAttribute.dia;
+            horario.horaInicio=this.newAttribute.horaInicio;
+          horario.horaFin=this.newAttribute.horaFin;
+          this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+        }
+
+        console.log("PASE LOS HORARIOS",this.instructorSeleccionado.disponibilidadHoraria);
+   
+        
       this.editar(this.instructorSeleccionado)
     }
+    //es nuevo
     else{
       if(this.fieldArray.length>0){
         this.fieldArray.forEach(element => {
@@ -236,7 +252,12 @@ export class InstructoresComponent  implements OnInit, DoCheck{
         this.mostrarDialogoAB=false;
     });
   }
+
+
   editarInstructor(){
+    this.selectedAreas=[];
+    this.newAttribute={};
+    this.fieldArray=[];
      this.areas.forEach(element => {
       this.instructorSeleccionado.areasPreferencia.forEach(element2 =>{
         if(element.nombre == element2.nombre){
@@ -248,12 +269,12 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     console.log(arrayAux);
        for (let index = 0; index < arrayAux.length; index++) {
          if(index==arrayAux.length-1){
-          this.newAttribute={dia:arrayAux[index].dia
+          this.newAttribute={id:arrayAux[index].id,dia:arrayAux[index].dia
             ,horaInicio:new Date(arrayAux[index].horaInicio),
             horaFin:new Date(arrayAux[index].horaFin)};
          }
          else{
-            this.fieldArray.push(this.newAttribute={dia:arrayAux[index].dia
+            this.fieldArray.push(this.newAttribute={id:arrayAux[index].id,dia:arrayAux[index].dia
               ,horaInicio:new Date(arrayAux[index].horaInicio),
               horaFin:new Date(arrayAux[index].horaFin)});
          }
