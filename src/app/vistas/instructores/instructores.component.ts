@@ -31,8 +31,6 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   busqueda: string = "";
   public edicion: boolean = false;
 
-  errorMessage : string;
-
   instructorSeleccionado: Instructor = this.newInstructor();
   areaSeleccionada: Area = this.newArea();
   areas: Area[] = [];
@@ -42,14 +40,13 @@ export class InstructoresComponent  implements OnInit, DoCheck{
 
   mostrarDialogoAB: boolean = false;
   mostrarDialogoBorrar: boolean = false;
-  horariosParsed:string[] = [];
   estudiosShowed: boolean =false;
   horariosShowed: boolean =false;
   areasShowed: boolean =false;
   
 
   constructor(private _areaService: AreaService,private _instructorService : InstructorService,
-    private _spinnerService: Ng4LoadingSpinnerService,){ }
+    private _spinnerService: Ng4LoadingSpinnerService){ }
 
 
   dlg = {
@@ -139,7 +136,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     
      //es editado
     if(this.instructorSeleccionado.id!=0){
-      console.log("ENTRE AL EDITAR")
+      
       //vacio y vuelvo a cargar las areas
       this.instructorSeleccionado.areasPreferencia=[];
       for (let j = 0; j < this.selectedAreas.length; j++) {
@@ -148,7 +145,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
          
         } 
        } 
-       console.log("PASE LAS AREAS",this.instructorSeleccionado.areasPreferencia);
+       
        //vacio y vuelvo a cargar los horarios
        this.instructorSeleccionado.disponibilidadHoraria=[];
         for (let i = 0; i < this.fieldArray.length; i++) {
@@ -189,7 +186,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           this.instructorSeleccionado.disponibilidadHoraria.push(horario);
         }
 
-        console.log("PASE LOS HORARIOS",this.instructorSeleccionado.disponibilidadHoraria);
+      
    
         
       this.editar(this.instructorSeleccionado)

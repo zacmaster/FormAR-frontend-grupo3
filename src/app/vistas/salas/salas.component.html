@@ -8,11 +8,34 @@
   </div>
   <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
   <div class="input-group-append">
-    <button class="btn btn-success" (click)="nuevoAlumno()"><span> {{ _LABEL.nuevaSala }} </span></button>
+    <button class="btn btn-success" (click)="nuevaSala()"><span> {{ _LABEL.nuevaSala }} </span></button>
   </div>
 </div>
+<!--Dialogo eliminacion-->
+<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
+                      (clickBotonCerrar)="ocultarDialogo()"
+                      (clickBotonIzquierdo)="ocultarDialogo()"
+                      (clickBotonDerecho)="eliminar()"
+                      [titulo]="dlg.titulo"
+                      [texto]="dlg.texto"
+                      >
 
+</dialogo-confirmacion>
+<dialogo-info *ngIf="mostrarDialogoErrorBorrar"
+        (clickBotonCerrar)="ocultarDialogoError()"
+        (clickBotonOk)="ocultarDialogoError()"
+        [titulo]="dlg2.titulo"
+        [texto]="dlg2.texto">
 
+</dialogo-info>
+<dialogo-info *ngIf="mostrarDialogoErrorEditar"
+        (clickBotonCerrar)="ocultarDialogoError()"
+        (clickBotonOk)="ocultarDialogoError()"
+        [titulo]="dlg2.titulo"
+        [texto]="dlg2.texto">
+
+</dialogo-info>
+<ng4-loading-spinner></ng4-loading-spinner>
 
 <!--  TABLA   -->
 
@@ -20,20 +43,24 @@
   <table class="table table-hover bg-light">
     <thead class="thead-light">
       <tr>
-        <th>A</th>
-        <th>B</th>
-        <th>C</th>
+        <th>Nombre</th>
+        <th>Capacidad</th>
+        <th>Disponibilidad</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td> A1</td>
-        <td> B1 </td>
+      <tr *ngFor="let sala of salas">
+        <td>{{ sala.nombre }}</td>
+        <td>{{ sala.capacidad }} </td>
+        <td> <button class="btn btn btn-info" (click)="calendario() ">
+            <i class="far fa-calendar-check"></i>
+          </button> </td>
         <td>
-          <button class="btn btn-success mr-2" (click)="copiarAlumno(alumno);editarAlumno();">
+          <button class="btn btn-success mr-2" (click)="salaSeleccionada.copiar(sala);editarSala();">
             <i class="fas fa-user-edit"></i>
           </button>
-          <button class="btn btn-danger" (click)="alumnoSeleccionado = alumno; mostrarDialogoEliminar()">
+          <button class="btn btn-danger" (click)="salaSeleccionada = sala; mostrarDialogoEliminar()">
             <i class="fas fa-user-times"></i>
           </button>
         </td>
@@ -41,6 +68,50 @@
     </tbody>
   </table>
 </div>
-  
+
+  <!-- Formulario-->
+  <div class="contenedor-formulario" *ngIf="mostrarDialogoAB">
+  <div class="card mt-4 w-50 mx-auto">
+      <div class="card-head d-flex  w-100 justify-content-between">
+        <div></div>
+        <div class="pt-2">
+          <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevaSala}}</h5>
+          <h5 *ngIf="edicion" class="">{{ _LABEL.edicionSala}}</h5>
+        </div>
+        <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="form-group col">
+            <label for="nombre">{{ _LABEL_REQUIRED.nombre }}</label>
+            <input
+                      #nombre = "ngModel"
+                      class="form-control"
+                      type="text"
+                      required
+                      minlength="3"
+                      maxlength="30"
+                      [(ngModel)]="salaSeleccionada.nombre"
+                      [placeholder]="_LABEL.ingrese.nombre"
+                      >
+            <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
+              <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>
+              <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+            </div>
+          </div>
+        </div>
+          <div class="row">
+            <div class="form-group col">
+                <h6>{{ _LABEL_REQUIRED.capacidad }}</h6>
+               
+                <p-spinner size="30" [(ngModel)]="salaSeleccionada.capacidad" placeholder="Ingrese la capacidad" [min]="0" [max]="300"></p-spinner>
+
+            </div>
+          </div>
+        
+        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || capacidadInvalida()" (click)="guardar()">
+          <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+          <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+        </button>
   
 </div>

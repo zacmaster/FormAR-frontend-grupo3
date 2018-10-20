@@ -10,6 +10,6 @@ export interface IInstructor extends Iresource{
     telefono: string,
     estudios: string,
     areasPreferencia: Area[],
-    disponibilidadHoraria: Horario[];
+    disponibilidadHoraria: Horario[],
     
 }
