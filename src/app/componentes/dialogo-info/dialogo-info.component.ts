@@ -14,7 +14,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
         <p> {{texto}} </p>
       </div>
       <div class="dialogoFooter d-flex mx-5 mb-3 justify-content-center">
-        <button class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">{{ textoBotonDerecho }}</button>
+        <button class="btn btn-primary ml-3"  (click)="clickBtnOk()">{{ textoBoton }}</button>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@ styles: [
 export class DialogoInfoComponent implements OnInit {
 @Input() public titulo = '';
 @Input() public texto = '';
-textoBotonDerecho =  'Ok';
+textoBoton =  'Ok';
 
 
 @Output() clickBotonCerrar = new EventEmitter<boolean>();
