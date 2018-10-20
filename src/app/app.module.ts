@@ -4,13 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+
 import { UsuarioService } from './servicios/usuario.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgDatepickerModule } from 'ng2-datepicker';
-
+import {CalendarModule} from 'primeng/calendar';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {SpinnerModule} from 'primeng/spinner';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './vistas/login/login.component';
 import { HomeComponent } from './vistas/home/home.component';
@@ -57,14 +62,20 @@ import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.co
     SearchPipe,
     DialogoInscripcionComponent,
     DialogoInfoComponent,
+   
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     NgDatepickerModule,
-    Ng4LoadingSpinnerModule.forRoot()
+    Ng4LoadingSpinnerModule.forRoot(),
+    ReactiveFormsModule,
+    CalendarModule,
+    MultiSelectModule,
+    SpinnerModule
   ],
   providers: [
     AlumnoService

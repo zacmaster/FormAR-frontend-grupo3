@@ -58,7 +58,8 @@ export const LABEL_REQUIRED ={
     descripcion: "Descripción*",
     seleccionArea: "Seleccione un área*",
     fecha: "Fecha*",
-    asunto: "Asunto*"
+    asunto: "Asunto*",
+    capacidad:"Capacidad*"
 
 }
 
@@ -79,11 +80,16 @@ export var LABEL ={
     fecha: "Fecha",
     asunto: "Asunto",
     descripcion: "Descripción",
+    estudios: "Estudios",
+    dispHoraria: "Disponibilidad Horaria",
+    ingreseEstudios: "Ingrese estudios",
     ingreseDescripcion: "Ingrese descripción",
     nuevoAlumno: "Nuevo alumno",
     nuevoInstructor: "Nuevo instructor",
+    edicionInstructor: "Edicion de instructor",
     nuevaSala: "Nueva sala",
     edicionAlumno: "Edición de alumno",
+    edicionSala: "Edicion de sala",
     nuevoContacto: "Nuevo Contacto",
     nuevoCurso: "Nuevo Curso",
     editarContacto: "Editar Contacto",
@@ -91,6 +97,7 @@ export var LABEL ={
     temario: "Temario",
     curso: "Curso",
     area: "Área",
+    areaPreferencia:"Areas de preferencia",
     agregarArea: "Nueva área",
     tituloInscipcion: "Nueva Inscripción",
     seleccionCurso: "Seleccione un Curso",
@@ -108,6 +115,8 @@ export var LABEL ={
     contacto: "Contacto",
     bajaCurso: "Eliminar curso",
     editarCurso: "Editar curso",
+    bajaInstructor:"Eliminar instructor",
+    bajaSala:"Eliminar Sala",
     seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
     ingrese: {
         nombre: "Ingrese el nombre",
@@ -166,6 +175,9 @@ export const HVR ={
     editar: "Editar",
     eliminar: "Eliminar",
     temario: "Ver tamario",
+    estudio:"Ver estudios",
+    horario:"Ver horarios",
+    areasPref:"Ver areas",
     editarCurso: "Editar curso",
     eliminarCurso: "Eliminar curso",
     inscribirAlumno: "Inscribir Alumno",
