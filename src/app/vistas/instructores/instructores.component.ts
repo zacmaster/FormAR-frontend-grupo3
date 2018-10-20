@@ -1,5 +1,4 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { HVR, LABEL, LABEL_REQUIRED, setCadena , VALIDACION } from '../../utilidades/mensajes';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
@@ -8,10 +7,10 @@ import { Area } from '../../modelos/area';
 import { AreaService } from 'src/app/servicios/area.service';
 import { InstructorService } from 'src/app/servicios/instructor.service';
 import { Util } from '../../utilidades/util';
-import {SelectItem} from 'primeng/api';
 
 import { Horario } from '../../modelos/horario';
 import { Subscriber } from 'rxjs';
+import { dashCaseToCamelCase } from '@angular/animations/browser/src/util';
 
 @Component({
   selector: 'app-instructores',
@@ -49,7 +48,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   areasShowed: boolean =false;
   
 
-  constructor(private fb: FormBuilder, private _areaService: AreaService,private _instructorService : InstructorService,
+  constructor(private _areaService: AreaService,private _instructorService : InstructorService,
     private _spinnerService: Ng4LoadingSpinnerService,){ }
 
 
@@ -66,62 +65,34 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     {dia: 'Viernes'},
     {dia: 'Sabado'}
   ];
-  horarioForm: FormGroup;
+  
 
 
   ngOnInit() {
     this.getAreas();  
     this.getInstructores();
-    this.inicializarFormHorario();
+   
    
   }
-  inicializarFormHorario(){
-    this.horarioForm = this.fb.group({
-      horario: this.fb.array([this.fb.group({
-          dia: [null, [Validators.required,Validators.minLength(3)]],
-          horaInicio : [null,[Validators.required,Validators.minLength(3)]],
-         horaFin:  [null,[Validators.required,Validators.minLength(3)]]
-        })
-      ])
-    })
-  }
-  
 
   ngDoCheck(){
-  
+    
   } 
   
-  
+  private fieldArray: Array<any> = [];
+  private newAttribute: any = {};
 
-  
-  initHorarioRow(): FormGroup {
-    return this.fb.group({
-      dia: [null, [Validators.required]],
-      horaInicio : [null,[Validators.required]],
-      horaFin:  [null,[Validators.required]]
-   });
-  }
-  
-  addHorarioRow(): void {
-    const horarioArray= 
-       <FormArray>this.horarioForm.controls['horario'];
-       horarioArray.push(this.initHorarioRow());
+  addFieldValue() {
+      this.fieldArray.push(this.newAttribute)
+      this.newAttribute = {};
   }
 
-
-  removeHorarioRow(rowIndex: number): void {
-     const horarioArray= <FormArray>this.horarioForm.controls['horario'];
-     if (horarioArray.length > 1) {
-      horarioArray.removeAt(rowIndex);
-     } else {
-      this.errorMessage = 'You cannot delete this row! form should contain at least one row!';
-     setTimeout(() => {
-       this.errorMessage = null;
-     }, 4000);
-    }
+  deleteFieldValue(index) {
+      this.fieldArray.splice(index, 1);
   }
- 
+
   nuevoInstructor(){
+    this.instructorSeleccionado= this.newInstructor();
     this.edicion=false;
     this.selectedAreas=[];
     this.mostrarDialogoAB=true;
@@ -129,8 +100,10 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   ocultarDialogo(){
     this.mostrarDialogoBorrar = false;
     this.mostrarDialogoAB=false;
-    this.inicializarFormHorario();
+  
     this.selectedAreas=[];
+    this.fieldArray=[];
+    this.newAttribute ={};
     this.instructorSeleccionado = this.newInstructor();
            
   }
@@ -161,28 +134,77 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     this.areasShowed=false;
   }
   guardar(){
-    const horarioArray= <FormArray>this.horarioForm.controls['horario']
-       for (let i = 0; i <= horarioArray.value.length; i++) {
-         let horario= new Horario();
-        if (horarioArray.value[i]!=null){
-           horario.id=0;
-           horario.dia=horarioArray.value[i].dia;
-           horario.horaInicio=horarioArray.value[i].horaInicio;
-           horario.horaFin=horarioArray.value[i].horaFin;
-           this.instructorSeleccionado.disponibilidadHoraria.push(horario);
-         }
-      }
-        for (let j = 0; j < this.selectedAreas.length; j++) {
-          if(this.selectedAreas[j]!=null){
-            this.instructorSeleccionado.areasPreferencia.push(this.selectedAreas[j]);
-          }
-          
-        }
+    
+     
     if(this.instructorSeleccionado.id!=0){
+      this.instructorSeleccionado.areasPreferencia=[];
+      for (let j = 0; j < this.selectedAreas.length; j++) {
+        if(this.selectedAreas[j]!=null){
+          this.instructorSeleccionado.areasPreferencia.push(this.selectedAreas[j]);
+        } 
+       } 
+       if(this.fieldArray.length>0){
+        this.fieldArray.forEach(element => {
+          this.instructorSeleccionado.disponibilidadHoraria.map((item)=>{
+              if(item.id==element.id){
+                 item.copiar(element);
+              }
+              else{
+                let horario = new Horario();
+                horario.id=0;
+                horario.dia=element.dia;
+                horario.horaInicio= element.horaInicio;
+                horario.horaFin=element.horaFin;
+                this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+              }
+               });
+          });
+        }
+        else{
+          this.fieldArray.forEach(element => {
+            this.instructorSeleccionado.disponibilidadHoraria.map((item)=>{
+                if(item.id==element.id){
+                   item.copiar(element);
+                }
+                else{
+                  let horario = new Horario();
+                  horario.id=0;
+                  horario.dia=this.newAttribute.dia;
+                  horario.horaInicio=this.newAttribute.horaInicio;
+                  horario.horaFin=this.newAttribute.horaFin;
+                  this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+                }
+                 });
+            });  
+        }
       this.editar(this.instructorSeleccionado)
     }
     else{
-      this.agregar(this.instructorSeleccionado);
+      if(this.fieldArray.length>0){
+        this.fieldArray.forEach(element => {
+          let horario = new Horario();
+          horario.id=0;
+          horario.dia=element.dia;
+          horario.horaInicio= element.horaInicio;
+          horario.horaFin=element.horaFin;
+          this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+          });
+        }
+        else{
+          let horario = new Horario();
+          horario.id=0;
+          horario.dia=this.newAttribute.dia;
+          horario.horaInicio=this.newAttribute.horaInicio;
+          horario.horaFin=this.newAttribute.horaFin;
+          this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+        }
+        console.log(this.instructorSeleccionado);
+          for (let j = 0; j < this.selectedAreas.length; j++) {
+            if(this.selectedAreas[j]!=null){
+              this.instructorSeleccionado.areasPreferencia.push(this.selectedAreas[j]);
+          }  
+          }
+         this.agregar(this.instructorSeleccionado);
     }
     
   }
@@ -194,6 +216,9 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           subscribe(response => {
             this.getInstructores();
             this.instructorSeleccionado = this.newInstructor();
+            this.fieldArray=[];
+            this.newAttribute ={};
+            this.selectedAreas=[];
             this.mostrarDialogoAB = false;
             this._spinnerService.hide();
           })
@@ -204,6 +229,9 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     subscribe(r=>{
         this.getInstructores();
         this.instructorSeleccionado = this.newInstructor();
+        this.fieldArray=[];
+        this.newAttribute ={};
+        this.selectedAreas=[];
         this.edicion=false;
         this.mostrarDialogoAB=false;
     });
@@ -216,21 +244,22 @@ export class InstructoresComponent  implements OnInit, DoCheck{
         }
       })
     });
-    const horarioArray= <FormArray>this.horarioForm.controls['horario']
-    
-    // this.instructorSeleccionado.disponibilidadHoraria.forEach(element => {
-    //     horarioArray.value.forEach(element2 => {
-    //       console.log("HOLA!");
-    //       element2.dia=element.dia;
-    //       element2.horaInicio=element.horaInicio;
-    //       element2.horaFin=element.horaFin;
-    //       this.addHorarioRow();
-    //     });
-    // });  
-    console.log(horarioArray);
-    console.log(this.instructorSeleccionado.disponibilidadHoraria);
-    
-
+    const arrayAux= this.instructorSeleccionado.disponibilidadHoraria;
+    console.log(arrayAux);
+       for (let index = 0; index < arrayAux.length; index++) {
+         if(index==arrayAux.length-1){
+          this.newAttribute={dia:arrayAux[index].dia
+            ,horaInicio:new Date(arrayAux[index].horaInicio),
+            horaFin:new Date(arrayAux[index].horaFin)};
+         }
+         else{
+            this.fieldArray.push(this.newAttribute={dia:arrayAux[index].dia
+              ,horaInicio:new Date(arrayAux[index].horaInicio),
+              horaFin:new Date(arrayAux[index].horaFin)});
+         }
+       
+    }
+  
     this.edicion = true;
     this.mostrarDialogoAB = true;
     console.log(this.instructorSeleccionado);
@@ -245,7 +274,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           this.getInstructores();
           this._spinnerService.hide();
           this.instructorSeleccionado = this.newInstructor();
-          this.inicializarFormHorario();
+          
           this.selectedAreas=[];
         })
     }, 500)
