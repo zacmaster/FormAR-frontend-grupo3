@@ -222,6 +222,7 @@ export class ContactosListComponent implements OnInit {
   }
 
   editarContacto(){
+    this.mostrarDialogo = true;
   }
 
   mostrarDialogoEliminar(){
