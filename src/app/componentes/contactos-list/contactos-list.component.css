@@ -21,3 +21,7 @@
     overflow-y: scroll;
     border: none;
 }
+.table-responsive{
+    overflow-y: scroll;
+    max-height: 78vh;
+}

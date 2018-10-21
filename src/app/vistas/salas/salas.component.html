@@ -38,10 +38,8 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 
 <!--  TABLA   -->
-
-<div class="table-responsive">
-  <table class="table table-hover bg-light">
-    <thead class="thead-light">
+<table class="table" style="margin-bottom: 0">
+  <thead class="thead-light">
       <tr>
         <th>Nombre</th>
         <th>Capacidad</th>
@@ -49,6 +47,9 @@
         <th>Acciones</th>
       </tr>
     </thead>
+</table>
+<div class="table-responsive">
+  <table class="table table-hover bg-light">
     <tbody>
       <tr *ngFor="let sala of salas">
         <td>{{ sala.nombre }}</td>
