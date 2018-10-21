@@ -15,9 +15,8 @@
 
   <!--  TABLA   -->
 
-  <div class="table-responsive">
-    <table class="table table-hover bg-light">
-      <thead class="thead-light">
+  <table class="table" style="margin-bottom: 0">
+    <thead class="thead-light">
         <tr>
           <th>Instructor</th>
           <th>Dni</th>
@@ -29,6 +28,9 @@
           <th>Acciones</th>
         </tr>
       </thead>
+  </table>
+  <div class="table-responsive">
+    <table class="table table-hover bg-light">
       <tbody>
         <tr *ngFor="let instructor of instructores">
           <td>{{ instructor.nombre }}
@@ -293,7 +295,7 @@
                           </tr>
                           <tr>
                               <td>
-                                  <select class="form-control" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
+                                  <select class="custom-select" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
                                       <option *ngFor="let dia of dias" [value]="dia.dia">
                                         {{ dia.dia }}
                                       </option>

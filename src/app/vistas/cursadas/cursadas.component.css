@@ -25,3 +25,7 @@
   height: 40vw;
   width: 50vw;
 }
+.table-responsive{
+  overflow-y: scroll;
+  max-height: 78vh;
+}

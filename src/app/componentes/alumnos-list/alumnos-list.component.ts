@@ -75,7 +75,7 @@ export class AlumnosListComponent implements OnInit {
     setTimeout(()=>{
       this.getAlumnos().then(
         () => this._spinnerService.hide()
-      )},600)
+      )},0)
   }
 
 

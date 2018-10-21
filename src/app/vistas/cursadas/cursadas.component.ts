@@ -112,7 +112,7 @@ export class CursadasComponent implements OnInit {
           this.mostrarDialogo = false;
           this._spinnerService.hide();
         })
-    }, 500)
+    }, 0)
     
   }
 
@@ -171,7 +171,7 @@ export class CursadasComponent implements OnInit {
           this.cursadas = r;
           this._spinnerService.hide();
         })
-    },1000)
+    },0)
     this.getCursos();
   }
 

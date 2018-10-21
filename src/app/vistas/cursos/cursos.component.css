@@ -72,3 +72,7 @@
     height: 200px;
     overflow-y: scroll;
   }
+  .table-responsive{
+    max-height: 78vh;
+    overflow-y: scroll;
+  }
