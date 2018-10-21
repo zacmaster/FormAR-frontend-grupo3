@@ -27,6 +27,7 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogo = false;
   agregandoAlumno = false;
   seEligeArea = true;
+  fechaHoraContacto: string = '';
 
 
   contactoSeleccionado: Contacto;
@@ -36,6 +37,8 @@ export class ContactosListComponent implements OnInit {
   areaSeleccionada: Area;
   cursoSeleccionado: Curso;
   mostrarDialogoBorrar: boolean = false;
+  descripcionShowed: boolean = false;
+
   textoEliminarContacto: string;
 
 
@@ -322,6 +325,17 @@ export class ContactosListComponent implements OnInit {
     this._contactoService.deleteContacto(this.contactoSeleccionado).subscribe(
       r => this.getContactos()
     )
+  }
+
+  mostrarDescripcion(contacto: Contacto){
+    console.log("Este es el contacto que recibo: ",contacto);
+    
+    this.fechaHoraContacto =  this._Util.convertirTimestamp(contacto.fecha) 
+                              +' '+this._Util.convertirTime(contacto.fecha);
+
+    this.descripcionShowed = true;
+    this.contactoSeleccionado = new Contacto();
+    this.contactoSeleccionado.copiar(contacto);
   }
 
 

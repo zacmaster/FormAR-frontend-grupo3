@@ -28,7 +28,9 @@
                   <td> {{ contacto.asunto }} </td>
                   <td>
 
-                    <button class="btn btn-warning mr-2"
+                    <button
+                            (click)="mostrarDescripcion(contacto)"
+                            class="btn btn-warning mr-2"
                             [title]="_LABEL.info.contacto">
                       <i class="fas fa-info"></i>
                     </button>
@@ -384,3 +386,14 @@
 
 </dialogo-confirmacion>
 
+<dialogo-info
+              *ngIf="descripcionShowed"
+              [titulo]="contactoSeleccionado.asunto"
+              [subtituloIzquierdo]="fechaHoraContacto"
+              [subtituloDerecho]="contactoSeleccionado.alumno.nombre"
+              [texto]="contactoSeleccionado.descripcion"
+              (clickBotonCerrar)="descripcionShowed = false"
+              (clickBotonOk)="descripcionShowed = false"
+>
+
+</dialogo-info>
