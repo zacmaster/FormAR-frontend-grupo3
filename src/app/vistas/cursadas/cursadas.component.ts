@@ -40,6 +40,9 @@ export class CursadasComponent implements OnInit {
   cupoMinimo: number;
   cupoMaximo: number;
 
+
+  sabado;
+
   cursoSeleccionado = new Curso();
 
   instructorSeleccionado = {
@@ -84,12 +87,29 @@ export class CursadasComponent implements OnInit {
     {turno: 'Noche', horario: '18 a 22'}
   ];
 
+  horas = [
+    '9:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+    '21:00',
+    '22:00'
+  ]
+
 
   clickBtnIzquierdo(){
 
   }
   guardarCursada(){
-    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
+    // this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
     this.cursadaSeleccionada.fechaInicio = + this.fechaInicio;
     this.cursadaSeleccionada.curso = this.cursoSeleccionado;
     this.agregar(this.cursadaSeleccionada);
@@ -138,13 +158,10 @@ export class CursadasComponent implements OnInit {
   })
   }
 
-
-
   private newCursada(): Cursada{
     let cursada = new Cursada();
     return cursada;
   }
-
 
   // METODOS DE CURSOS
 
@@ -158,7 +175,6 @@ export class CursadasComponent implements OnInit {
   public guardarCurso(curso){
     this.cursoSeleccionado.copiar(curso);
   }
-
 
   // METODOS DEL SISTEMA
 
@@ -176,13 +192,7 @@ export class CursadasComponent implements OnInit {
   }
 
   ngDoCheck(){
-
-    console.log("precio: ",this.cursadaSeleccionada.precioClase);
-    console.log("matricula:_" , this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100);
-    
-    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
-    // this.cursadaSeleccionada.matricula = ;
-   
+    console.log("sabado: ",this.sabado);
   }
 
 

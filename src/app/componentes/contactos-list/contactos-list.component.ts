@@ -27,11 +27,8 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogo = false;
   agregandoAlumno = false;
   seEligeArea = true;
-<<<<<<< HEAD
-  edicion:boolean=false;
-=======
   fechaHoraContacto: string = '';
->>>>>>> zacarias
+  edicion: boolean = false;
 
   contactoSeleccionado: Contacto = this.newContacto();
   
