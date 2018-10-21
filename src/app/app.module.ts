@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {DropdownModule} from 'primeng/dropdown';
 import {SpinnerModule} from 'primeng/spinner';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -75,7 +76,8 @@ import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.co
     ReactiveFormsModule,
     CalendarModule,
     MultiSelectModule,
-    SpinnerModule
+    SpinnerModule,
+    DropdownModule
   ],
   providers: [
     AlumnoService

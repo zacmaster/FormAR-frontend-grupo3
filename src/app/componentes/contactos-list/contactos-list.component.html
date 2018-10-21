@@ -35,15 +35,10 @@
 
                     <button class="btn btn-success mr-2"
                             [title]="_LABEL.editar.contacto"
-                            (click)="editarContacto(); contactoSeleccionado = contacto">
+                            (click)="contactoSeleccionado.copiar(contacto); editarContacto()"><!---->
                       <i class="fas fa-edit"></i>
                     </button>
 
-                    <button class="btn btn-danger"
-                            [title]="_LABEL.eliminar.contacto"
-                            (click)="clickEliminarContacto(contacto)">
-                      <i class="fas fa-minus-circle"></i>
-                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -62,9 +57,11 @@
       <div class="card-head d-flex  p-1 w-100 justify-content-between">
           <div></div>
           <div class="pt-2">
-            <h5 >{{ _LABEL.nuevoContacto }}</h5>
+            <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevoContacto }}</h5>
+            <h5 *ngIf="edicion" class="">{{ _LABEL.edicionContacto}}</h5>
+           
           </div>
-          <span class="btn btn-danger" (click)="mostrarDialogo = false"><i class="fas fa-times"></i></span>
+          <span class="btn btn-danger" (click)="cerrarFormulario()"><i class="fas fa-times"></i></span>
       </div>
       <div class="contenedor">
         <div class="card-body">
@@ -75,11 +72,13 @@
 
                 <!-- Alumno Seleccionado -->
                 <div class="input-group" *ngIf="!agregandoAlumno">
-                    <select class="custom-select">
-                      <option *ngFor="let alumno of alumnos" [value]="alumno" (click)="actualizarAlumnoSeleccionado(alumno)">
+                  <p-dropdown [options]="alumnos" [(ngModel)]="selectedAlumno" optionLabel="nombreApellido"[style]="{'width':'300px'}" 
+                  (onClick)="actualizarAlumnoSeleccionado(selectedAlumno)"></p-dropdown>
+                  <!--<select class="custom-select" >
+                      <option *ngFor="let alumno of alumnos" [value]="alumno"(click)="actualizarAlumnoSeleccionado(alumno)" >
                         {{ alumno.nombre }}  {{ alumno.apellido }}
                       </option>
-                    </select>
+                    </select>-->
 
                     <div class="input-group-append">
                       <button class="btn btn-success" (click)="agregarNuevoAlumno()"><span>{{ _LABEL.nuevoAlumno }}</span></button>
@@ -307,28 +306,12 @@
               </div>
               <div class="col-6 form-group">
                 <div class="input-group" *ngIf="seEligeArea">
-                  <select 
-                          class="custom-select"
-                  >
-                    <option
-                            *ngFor="let area of areas"
-                            [value]="area"
-                            (click)="actualizarAreaSeleccionada(area)"
-                    >
-                    {{ area.nombre }}</option>
-                  </select>
+                    <p-dropdown [options]="areas" [(ngModel)]="selectedArea" optionLabel="nombre"[style]="{'width':'300px'}" 
+                    ></p-dropdown>
                 </div>
                 <div class="input-group" *ngIf="!seEligeArea">
-                  <select 
-                          class="custom-select"
-                    >
-                    <option
-                            *ngFor="let curso of cursos"
-                            (click)="actualizarCursoSeleccionado(curso)"
-                            [value]="curso"
-                    
-                    >{{ curso.nombre }}</option>
-                  </select>
+                    <p-dropdown [options]="cursos" [(ngModel)]="selectedCurso" optionLabel="nombre"[style]="{'width':'300px'}" 
+                  ></p-dropdown>
                 </div>
               </div>
 
@@ -348,7 +331,8 @@
                   class="btn btn-primary float-right"
                   (click)="guardarContactoNuevo()"
             >
-                <span>{{ _LABEL.agregar }}</span>
+            <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+            <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
             </button>
             <button 
                     *ngIf="agregandoAlumno"
@@ -362,7 +346,8 @@
                                 asuntoContacto.invalid "
                     (click)="guardarContactoNuevo()"
                      >
-                <span>{{ _LABEL.agregar }}</span>
+                 <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+                  <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
             </button>
         </div>
 

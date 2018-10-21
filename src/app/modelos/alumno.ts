@@ -11,6 +11,7 @@ export class Alumno extends Resource implements IAlumno{
     fechaNacimiento: number;
     fechaRegistro: number;
     tipo: string;
+    nombreApellido: string;
 
 
 
@@ -24,6 +25,7 @@ export class Alumno extends Resource implements IAlumno{
 		this.dni = "";
 		this.telefono = "";
         this.tipo = "";
+        this.nombreApellido="";
         this.fechaRegistro = + new Date();
         this.fechaNacimiento = + new Date('2000/01/01'); //Por defecto la fecha de nacimiento es 01/01/2000
 	}

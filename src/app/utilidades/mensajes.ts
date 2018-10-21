@@ -87,6 +87,7 @@ export var LABEL ={
     nuevoAlumno: "Nuevo alumno",
     nuevoInstructor: "Nuevo instructor",
     edicionInstructor: "Edicion de instructor",
+    edicionContacto:"Edicion de contacto",
     nuevaSala: "Nueva sala",
     edicionAlumno: "Edición de alumno",
     edicionSala: "Edicion de sala",

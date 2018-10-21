@@ -9,6 +9,7 @@ export interface IAlumno extends Iresource{
     telefono: string,
     fechaNacimiento: number,
     fechaRegistro: number,
-    tipo: string
+    tipo: string,
+    nombreApellido:string 
     
 }
