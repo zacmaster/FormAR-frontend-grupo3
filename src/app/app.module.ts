@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import {AutoCompleteModule} from 'primeng/primeng'
 
 import { UsuarioService } from './servicios/usuario.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -83,7 +83,11 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
     MultiSelectModule,
     SpinnerModule,
     DropdownModule,
+<<<<<<< HEAD
     ScheduleModule
+=======
+    AutoCompleteModule
+>>>>>>> zacarias
   ],
   providers: [
     AlumnoService

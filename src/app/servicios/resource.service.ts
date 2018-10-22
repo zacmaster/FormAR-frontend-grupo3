@@ -18,7 +18,9 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
 
   public create(item: T): Observable<T>{
     var url = `${this.url}/${this.endpoint}`;
-    // console.log("url to post: ", url);
+    console.log("url to post: ", url);
+    console.log("item", item);
+    
     
     return this.httpClient
       .post<T>(url, item,this.httpOptions)

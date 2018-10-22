@@ -155,7 +155,8 @@
             
             
                     <tbody>
-                      <tr *ngFor="let alumno of alumnos | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}" >
+                      <!-- <tr *ngFor="let alumno of alumnos | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}" > -->
+                      <tr *ngFor="let alumno of alumnos " >
                         <td> {{ alumno.nombre }}  {{ alumno.apellido }}</td>
                         <td> {{ alumno.telefono }} </td>
                         <td> {{ alumno.email }} </td>
@@ -238,6 +239,7 @@
                   <option
                       value=""
                       *ngFor="let cursada of cursadas"
+                      (click)="cursadaSeleccionada.copiar(cursada)"
   
                   >
                      {{cursada.curso.nombre}} {{ _Util.convertirTimestamp(cursada.fechaInicio) }}

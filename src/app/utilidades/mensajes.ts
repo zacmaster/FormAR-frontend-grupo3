@@ -129,16 +129,20 @@ export var LABEL ={
         descripcion: "Ingrese la descripción",
         temario: "Ingrese el temario",
         cantClases: "Ingrese la cantidad de clases",
-        precioClase: "Ingrese el precio por clase",
+        cantCuotas: "Ingrese la cantidad de cuotas",
         cupoMaximo: "Ingrese el cupo máximo de personas",
-        cupoMinimo: "Ingrese el cupo mínimo de personas"
+        cupoMinimo: "Ingrese el cupo mínimo de personas",
+        importeCuota: "Ingrese el importe por cuota",
+        importeMatricula: "Ingrese el importe de la mátricula"
     },
     titulo: {
         cantClases: "Cantidad de clases",
-        precioClase: "Precio por clase",
-        matricula: "Importe de matrícula: $",
+        cantCuotas: "Cantidad de cuotas",
+        importeCuota: "Importe por cuota",
+        importeMatricula: "Importe de la mátricula",
         cupoMinimo: "Cantidad Mínima de Inscriptos",
-        cupoMaximo: "Cantidad Máxima de Inscriptos"
+        cupoMaximo: "Cantidad Máxima de Inscriptos",
+        nombreCursada: "Nombre de la cursada:"
     },
     boton: {
         inscribir:  "Inscribir",

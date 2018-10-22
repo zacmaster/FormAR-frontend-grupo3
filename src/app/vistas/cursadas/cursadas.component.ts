@@ -9,6 +9,12 @@ import { log } from 'util';
 import { Cursada } from 'src/app/modelos/cursada';
 import { Curso } from 'src/app/modelos/curso';
 import { Util } from '../../utilidades/util';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { AlumnoService } from 'src/app/servicios/alumno.service';
+import { Alumno } from 'src/app/modelos/alumno';
+
+
+
 
 @Component({
   selector: 'app-cursadas',
@@ -17,9 +23,14 @@ import { Util } from '../../utilidades/util';
 })
 export class CursadasComponent implements OnInit {
 
-  constructor(private _cursadaService: CursadaService,
+  constructor(
+    
+    private _alumnoService: AlumnoService,
+    private _cursadaService: CursadaService,
     private _cursoService: CursoService,
-    private _spinnerService: Ng4LoadingSpinnerService) { }
+    private _spinnerService: Ng4LoadingSpinnerService
+
+  ) { }
 
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
@@ -29,7 +40,10 @@ export class CursadasComponent implements OnInit {
   cursos = [];
   _Util = Util;
 
+  inscribiendo: boolean = false;
+
   cursadaSeleccionada: Cursada = this.newCursada();
+  alumnos: Alumno[];
 
   cantClases: number;
   precioClase: number;
@@ -39,6 +53,12 @@ export class CursadasComponent implements OnInit {
   turnoSeleccionado: string;
   cupoMinimo: number;
   cupoMaximo: number;
+
+  results: string[] = ['Zacarías','Jorge'];
+  alumnoSeleccionado: Alumno = new Alumno();
+
+
+  sabado;
 
   cursoSeleccionado = new Curso();
 
@@ -84,12 +104,29 @@ export class CursadasComponent implements OnInit {
     {turno: 'Noche', horario: '18 a 22'}
   ];
 
+  horas = [
+    '9:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+    '21:00',
+    '22:00'
+  ]
+
 
   clickBtnIzquierdo(){
 
   }
   guardarCursada(){
-    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
+    // this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
     this.cursadaSeleccionada.fechaInicio = + this.fechaInicio;
     this.cursadaSeleccionada.curso = this.cursoSeleccionado;
     this.agregar(this.cursadaSeleccionada);
@@ -98,7 +135,6 @@ export class CursadasComponent implements OnInit {
   // METODOS CURSADAS
   
   cargarCursadas(){
-    return this._cursadaService.list().toPromise();
   }
   
   agregar(cursada: Cursada){
@@ -138,13 +174,21 @@ export class CursadasComponent implements OnInit {
   })
   }
 
+  getAlumnos(){
+    this.alumnos = [];
+    this._alumnoService.getAlumnos()
+    .subscribe(alumnos => alumnos.forEach(alumno => {
+      let alumnoAux = new Alumno();
+      alumnoAux.copiar(alumno);
+      alumnos.push(alumnoAux);
+    }))
 
+  }
 
   private newCursada(): Cursada{
     let cursada = new Cursada();
     return cursada;
   }
-
 
   // METODOS DE CURSOS
 
@@ -159,33 +203,30 @@ export class CursadasComponent implements OnInit {
     this.cursoSeleccionado.copiar(curso);
   }
 
-
   // METODOS DEL SISTEMA
 
   ngOnInit() {
-    console.log("on init");
-    this._spinnerService.show();
-    setTimeout(() => {
-      this.cargarCursadas()
-        .then(r => {
-          this.cursadas = r;
-          this._spinnerService.hide();
-        })
-    },0)
-    this.getCursos();
+    this.getCursadas();
+    this.getAlumnos();
   }
 
   ngDoCheck(){
-
-    console.log("precio: ",this.cursadaSeleccionada.precioClase);
-    console.log("matricula:_" , this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100);
+    console.log("Cursadas: ", this.cursadas);
     
-    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
-    // this.cursadaSeleccionada.matricula = ;
-   
+    // console.log("sabado: ",this.sabado);
   }
 
+  clickInscribir(cursada: Cursada){
+    this.inscribiendo = true;
+  }
 
+  search(event){
+    console.log("Alumnos :", this.alumnos);
+    
+    // this.alumnos.forEach(alumno => {
+    //   this.results.push(alumno.nombre)
+    // })
+  }
 
 
 }
