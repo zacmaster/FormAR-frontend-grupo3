@@ -38,7 +38,6 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
     return super.read(id);
   }
 
-
   save(cursada: Cursada){
     if(cursada.id)
       return this.updateCursada(cursada)

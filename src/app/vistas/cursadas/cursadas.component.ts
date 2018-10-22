@@ -14,6 +14,7 @@ import { Curso } from 'src/app/modelos/curso';
 import { Instructor } from '../../modelos/instructor';
 import { Sala } from '../../modelos/sala';
 import { Horario } from '../../modelos/horario';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
 
 @Component({
   selector: 'app-cursadas',
@@ -34,29 +35,19 @@ export class CursadasComponent implements OnInit {
   mostrarDialogo = false;
   cursadas = [];
   cursos = [];
-  instructores: Instructor[]=[];
-  salas: Sala[]=[];
+  instructores = [];
+  salas = [];
   _Util = Util;
+  fechaInicio: number;
+
+  pruebaCurso;
 
   cursadaSeleccionada: Cursada = this.newCursada();
 
-  cantClases: number;
-  precioClase: number;
-  matricula: number;
-  fechaInicio: number;
-  fechaFin: number;
-  turnoSeleccionado: string;
-  cupoMinimo: number;
-  cupoMaximo: number;
 
   cursoSeleccionado = new Curso();
   instructorSeleccionado = new Instructor();
   salaSeleccionada = new Sala();
-
-  diasSeleccionados = {
-    id: "",
-    dia: ""
-  } 
   
     dias = [
       {dia: 'Lunes'},
@@ -73,17 +64,42 @@ export class CursadasComponent implements OnInit {
     this.cursadaSeleccionada.instructor = this.instructorSeleccionado;
     this.cursadaSeleccionada.sala = this.salaSeleccionada;
 
+    this.cursadaSeleccionada.cupoMinimo = +this.cursadaSeleccionada.cupoMinimo;
+    this.cursadaSeleccionada.cupoMaximo = +this.cursadaSeleccionada.cupoMaximo;
+    this.cursadaSeleccionada.cantidadClases = +this.cursadaSeleccionada.cantidadClases;
+    this.cursadaSeleccionada.cantidadCuotas = +this.cursadaSeleccionada.cantidadCuotas;
+    this.cursadaSeleccionada.matricula = +this.cursadaSeleccionada.matricula;
+    this.cursadaSeleccionada.precioCuota = +this.cursadaSeleccionada.precioCuota;
+
+    console.log("Horarios: ",this.fieldArray);
+
+    let nuevoHorariosCursada: Horario[] = [];
+    this.cursadaSeleccionada.fechaFin = null;
+    this.cursadaSeleccionada.diaVencCuota = null;
     if(this.fieldArray.length>0){
+      console.log("Entro en If");
       this.fieldArray.forEach(element => {
         let horario = new Horario();
+
+        console.log("Element: ",element);
+
         horario.id=0;
         horario.dia=element.dia;
         horario.horaInicio= element.horaInicio;
-        horario.horaFin=element.horaFin;
-        this.cursadaSeleccionada.horariosCursada.push(horario);
-        });
+        horario.horaFin= element.horaFin;
+
+        
+        console.log("Horario: ",horario);
+
+        nuevoHorariosCursada.push(horario);
+      
+        console.log("Cursada Horarios: ",this.cursadaSeleccionada.horariosCursada);  
+      });
+
+
       }
       else{
+        console.log("Entro en Else");
         let horario = new Horario();
         horario.id=0;
         horario.dia=this.newAttribute.dia;
@@ -91,7 +107,8 @@ export class CursadasComponent implements OnInit {
         horario.horaFin=this.newAttribute.horaFin;
         this.cursadaSeleccionada.horariosCursada.push(horario);
       }
-
+      console.log("Cursada Seleccionada: ",this.cursadaSeleccionada);
+      this.cursadaSeleccionada.horariosCursada = nuevoHorariosCursada; 
     this.agregar(this.cursadaSeleccionada);
   }
   
@@ -123,14 +140,22 @@ export class CursadasComponent implements OnInit {
       cursadas.forEach(cursada => {
         let nuevaCursada = new Cursada();
         let nuevoCurso = new Curso();
+        let nuevoInstructor = new Instructor();
+        let nuevaSala = new Sala();
+
         nuevoCurso.copiar(cursada.curso);
+        nuevoInstructor.copiar(cursada.instructor);
+        nuevaSala.copiar(cursada.sala);
         nuevaCursada.copiar(cursada);
         nuevaCursada.curso = nuevoCurso;
-        this.cursadas.push(nuevaCursada)
+        nuevaCursada.instructor = nuevoInstructor;
+        nuevaCursada.sala = nuevaSala;
+        
+        this.cursadas.push(nuevaCursada);
+
       })
       this.busqueda = undefined;
     })
-    
     
     return this._cursadaService.getCursadas()
     .toPromise().then(r => {
@@ -153,18 +178,6 @@ export class CursadasComponent implements OnInit {
       })
     }
     
-    public guardarCurso(curso){
-      this.cursoSeleccionado.copiar(curso);
-    }
-
-    public guardarInstructor(instructor){
-      this.instructorSeleccionado.copiar(instructor);
-    }
-    
-    public guardarSala(sala){
-      this.salaSeleccionada.copiar(sala);
-    }
-
     private getInstructores(){
       this._instructorService.list()
         .subscribe(r => {
@@ -178,6 +191,19 @@ export class CursadasComponent implements OnInit {
           this.salas = r
         })
     }
+
+    public guardarCurso(curso){
+      this.cursoSeleccionado.copiar(curso);
+    }
+
+    public guardarInstructor(instructor){
+      this.instructorSeleccionado.copiar(instructor);
+    }
+    
+    public guardarSala(sala){
+      this.salaSeleccionada.copiar(sala);
+    }
+
     // METODOS DEL SISTEMA
     
     ngOnInit() {
