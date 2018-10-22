@@ -83,11 +83,8 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
     MultiSelectModule,
     SpinnerModule,
     DropdownModule,
-<<<<<<< HEAD
-    ScheduleModule
-=======
+    ScheduleModule,
     AutoCompleteModule
->>>>>>> zacarias
   ],
   providers: [
     AlumnoService

@@ -60,13 +60,32 @@ export class EventService {
       }
       dateToString(fecha:Date,hora:Date):string{
         let stringAux:string;
-        let dia = fecha.toISOString();
-        let horario= hora.toISOString();
+        let dia = this.dateTolocal(fecha);
+        let horario= this.dateTolocal(hora);
         let dia2 = dia.slice(0,10);
         let horario2 = horario.slice(10,19);
         stringAux= dia2+horario2;
         return stringAux;
       }
+
+      dateTolocal(date : Date) :string{
+          var tzo = -date.getTimezoneOffset(),
+              dif = tzo >= 0 ? '+' : '-',
+              pad = function(num) {
+                  var norm = Math.floor(Math.abs(num));
+                  return (norm < 10 ? '0' : '') + norm;
+              };
+          return date.getFullYear() +
+              '-' + pad(date.getMonth() + 1) +
+              '-' + pad(date.getDate()) +
+              'T' + pad(date.getHours()) +
+              ':' + pad(date.getMinutes()) +
+              ':' + pad(date.getSeconds()) +
+              dif + pad(tzo / 60) +
+              ':' + pad(tzo % 60);
+        
+      }
+    
       pasarJson():string{
        let json= JSON.stringify(this.eventosAux);
        console.log(json);

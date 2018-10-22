@@ -283,7 +283,7 @@
                               <th>Dia</th>
                               <th>Hora Inicio</th>
                               <th>Hora Fin</th>
-                              <th>Action</th>
+                              <th>Accion</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -308,7 +308,7 @@
                           </tr>
                           <tr>
                               <td>
-                                  <select class="custom-select" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
+                                  <select class="form-control" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
                                       <option *ngFor="let dia of dias" [value]="dia.dia">
                                         {{ dia.dia }}
                                       </option>

@@ -28,15 +28,9 @@ export class ContactosListComponent implements OnInit {
   agregandoAlumno = false;
   seEligeArea = true;
   edicion:boolean=false;
-<<<<<<< HEAD
   fechaHoraContacto: string = '';
-=======
-  fechaHoraContacto: string = '';
-  edicion: boolean = false;
->>>>>>> zacarias
-=======
-  fechaHoraContacto: string = '';
->>>>>>> origin/RF3-Jorge-N
+
+
 
   contactoSeleccionado: Contacto = this.newContacto();
   
