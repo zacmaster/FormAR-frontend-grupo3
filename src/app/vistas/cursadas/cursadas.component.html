@@ -34,15 +34,15 @@
                     <td>  {{ _Util.convertirTimestamp(cursada.fechaInicio) }}</td>
                     <td>  {{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
                     <td>
-                      <span class="btn btn-info mr-2" >
+                      <button class="btn btn-info mr-2" (click)="clickInscribir(cursada)">
                         <i class="fas fa-file-signature"></i>
-                      </span>
-                      <span class="btn btn-success mr-2">
+                      </button>
+                      <button class="btn btn-success mr-2">
                         <i class="fas fa-edit"></i>
-                      </span>
-                      <span class="btn btn-danger">
+                      </button>
+                      <button class="btn btn-danger">
                         <i class="fas fa-trash"></i>
-                      </span>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -348,6 +348,30 @@
       </div>
     </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">
+    <div class="dialogo bg-light p-3 contenedor-form" style="width: 700px">
+      <div class="dialogoHeader">
+        <div class="text-center">{{ _LABEL.tituloInscipcion }}</div>
+      </div>
+      <div style="overflow-y: scroll;overflow-x: hidden; height: 65vh">
+        <p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"
+        [dropdown]="true"></p-autoComplete>
+      </div>
+    </div>
+  </div>
+
+
 
 
 

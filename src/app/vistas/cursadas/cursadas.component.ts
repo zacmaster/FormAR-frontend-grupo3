@@ -9,6 +9,12 @@ import { log } from 'util';
 import { Cursada } from 'src/app/modelos/cursada';
 import { Curso } from 'src/app/modelos/curso';
 import { Util } from '../../utilidades/util';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { AlumnoService } from 'src/app/servicios/alumno.service';
+import { Alumno } from 'src/app/modelos/alumno';
+
+
+
 
 @Component({
   selector: 'app-cursadas',
@@ -17,9 +23,14 @@ import { Util } from '../../utilidades/util';
 })
 export class CursadasComponent implements OnInit {
 
-  constructor(private _cursadaService: CursadaService,
+  constructor(
+    
+    private _alumnoService: AlumnoService,
+    private _cursadaService: CursadaService,
     private _cursoService: CursoService,
-    private _spinnerService: Ng4LoadingSpinnerService) { }
+    private _spinnerService: Ng4LoadingSpinnerService
+
+  ) { }
 
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
@@ -29,7 +40,10 @@ export class CursadasComponent implements OnInit {
   cursos = [];
   _Util = Util;
 
+  inscribiendo: boolean = false;
+
   cursadaSeleccionada: Cursada = this.newCursada();
+  alumnos: Alumno[];
 
   cantClases: number;
   precioClase: number;
@@ -39,6 +53,9 @@ export class CursadasComponent implements OnInit {
   turnoSeleccionado: string;
   cupoMinimo: number;
   cupoMaximo: number;
+
+  results: string[] = ['Zacarías','Jorge'];
+  alumnoSeleccionado: Alumno = new Alumno();
 
 
   sabado;
@@ -157,6 +174,17 @@ export class CursadasComponent implements OnInit {
   })
   }
 
+  getAlumnos(){
+    this.alumnos = [];
+    this._alumnoService.getAlumnos()
+    .subscribe(alumnos => alumnos.forEach(alumno => {
+      let alumnoAux = new Alumno();
+      alumnoAux.copiar(alumno);
+      alumnos.push(alumnoAux);
+    }))
+
+  }
+
   private newCursada(): Cursada{
     let cursada = new Cursada();
     return cursada;
@@ -179,6 +207,7 @@ export class CursadasComponent implements OnInit {
 
   ngOnInit() {
     this.getCursadas();
+    this.getAlumnos();
   }
 
   ngDoCheck(){
@@ -187,7 +216,17 @@ export class CursadasComponent implements OnInit {
     // console.log("sabado: ",this.sabado);
   }
 
+  clickInscribir(cursada: Cursada){
+    this.inscribiendo = true;
+  }
 
+  search(event){
+    console.log("Alumnos :", this.alumnos);
+    
+    // this.alumnos.forEach(alumno => {
+    //   this.results.push(alumno.nombre)
+    // })
+  }
 
 
 }
