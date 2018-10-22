@@ -118,7 +118,6 @@ export class CursadasComponent implements OnInit {
   // METODOS CURSADAS
   
   cargarCursadas(){
-    return this._cursadaService.list().toPromise();
   }
   
   agregar(cursada: Cursada){
@@ -179,20 +178,13 @@ export class CursadasComponent implements OnInit {
   // METODOS DEL SISTEMA
 
   ngOnInit() {
-    console.log("on init");
-    this._spinnerService.show();
-    setTimeout(() => {
-      this.cargarCursadas()
-        .then(r => {
-          this.cursadas = r;
-          this._spinnerService.hide();
-        })
-    },0)
-    this.getCursos();
+    this.getCursadas();
   }
 
   ngDoCheck(){
-    console.log("sabado: ",this.sabado);
+    console.log("Cursadas: ", this.cursadas);
+    
+    // console.log("sabado: ",this.sabado);
   }
 
 
