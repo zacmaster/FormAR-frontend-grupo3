@@ -43,6 +43,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   estudiosShowed: boolean =false;
   horariosShowed: boolean =false;
   areasShowed: boolean =false;
+  mostrarCalendario:boolean =false;
   
 
   constructor(private _areaService: AreaService,private _instructorService : InstructorService,
@@ -105,6 +106,13 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     this.newAttribute ={};
     this.instructorSeleccionado = this.newInstructor();
            
+  }
+  verCalendario(){
+    this.mostrarCalendario=true;
+  }
+  ocultarCalendario(){
+    this.mostrarCalendario=false;
+    this.instructorSeleccionado= this.newInstructor();
   }
   mostrarDialogoEliminar(){
 
@@ -332,8 +340,9 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           nuevoinstructor.copiar(instructor);
           this.instructores.push(instructor);
         })
-        this._spinnerService.hide();
         this.busqueda = undefined;
+        this._spinnerService.hide();
+        
       })
   }
   

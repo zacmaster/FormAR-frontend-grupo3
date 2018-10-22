@@ -11,7 +11,8 @@
             <button class="btn btn-success" (click)="nuevoContacto()"><span>{{ tituloNuevoContacto}}</span></button>
           </div>
       </div>
-      <table class="table" style="margin-bottom: 0">
+      <div class="table-responsive">
+        <table class="table table-hover bg-light">
           <thead class="thead-light">
               <tr>
                 <th>{{ _LABEL.fecha }}</th>
@@ -20,9 +21,8 @@
                 <th>{{ _LABEL.acciones }}</th>
               </tr>
             </thead>
-      </table>
-      <div class="table-responsive">
-          <table class="table table-hover bg-light">
+      
+      
               <tbody>
                 <tr *ngFor="let contacto of contactos | search: {fecha: busqueda, nombreAlumno: busqueda, titulo: busqueda}" >
                   <td> {{ _Util.convertirTimestamp(contacto.fecha) }}</td>

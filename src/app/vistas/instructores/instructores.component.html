@@ -15,7 +15,8 @@
 
   <!--  TABLA   -->
 
-  <table class="table" style="margin-bottom: 0">
+  <div class="table-responsive">
+    <table class="table table-hover bg-light">
     <thead class="thead-light">
         <tr>
           <th>Instructor</th>
@@ -25,14 +26,14 @@
           <th>Estudios</th>
           <th>Horarios</th>
           <th>Areas Preferencia</th>
+          <th>Disponibilidad</th>
           <th>Acciones</th>
         </tr>
       </thead>
-  </table>
-  <div class="table-responsive">
-    <table class="table table-hover bg-light">
+
+ 
       <tbody>
-        <tr *ngFor="let instructor of instructores">
+        <tr *ngFor="let instructor of instructores | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}">
           <td>{{ instructor.nombre }}
             {{ instructor.apellido }}</td>
           <td>  {{ instructor.dni }}</td>
@@ -58,6 +59,11 @@
             <i class="fas fa-font"></i>
           </button>
         </td>
+        <td>
+          <button class="btn btn btn-info" (click)="instructorSeleccionado.copiar(instructor); verCalendario()">
+            <i class="far fa-calendar-check"></i>
+          </button> 
+        </td>        
          
           <td>
             <button class="btn btn-success mr-2" (click)="instructorSeleccionado.copiar(instructor);editarInstructor();">
@@ -129,6 +135,13 @@
                       >
 
 </dialogo-confirmacion>
+<!--Calendario-->
+<calendario-disponibilidad *ngIf="mostrarCalendario"
+(clickBotonCerrar)="ocultarCalendario()"
+[id]= instructorSeleccionado.id
+[esSala]=false
+[esInstructor]= true
+></calendario-disponibilidad>
 <ng4-loading-spinner></ng4-loading-spinner>
 
 <!-- Formulario:  -->
