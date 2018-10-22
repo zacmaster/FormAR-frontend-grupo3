@@ -27,13 +27,16 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogo = false;
   agregandoAlumno = false;
   seEligeArea = true;
-<<<<<<< HEAD
   edicion:boolean=false;
+<<<<<<< HEAD
   fechaHoraContacto: string = '';
 =======
   fechaHoraContacto: string = '';
   edicion: boolean = false;
 >>>>>>> zacarias
+=======
+  fechaHoraContacto: string = '';
+>>>>>>> origin/RF3-Jorge-N
 
   contactoSeleccionado: Contacto = this.newContacto();
   

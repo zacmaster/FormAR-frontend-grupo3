@@ -1,31 +1,26 @@
 import { Icursada } from "../interfaces/icursada";
 import { Resource } from "../componentes/resource";
 import { Curso } from "./curso";
+import { Instructor } from "./instructor";
+import { Sala } from "./sala";
+import { Horario } from "./horario";
 
 export class Cursada extends Resource implements Icursada {
  
+    nombre: string;
     fechaInicio: number;
     fechaFin: number;
-    turno: string;
-    horario: string;
-    dias: any;
-    instructor: any;
-    sala: any;
-    precioClase: number;
-    matricula: number;
+    sala: Sala;
+    instructor: Instructor;
     cantidadClases: number;
     cupoMinimo: number;
     cupoMaximo: number;
+    precioCuota: number;
+    matricula: number;
+    cantidadCuotas: number;
+    diaVencCuota: number;
     curso: Curso;
-
-    // precioClase: number;
-    // cantidadClases: number;
-    // cupoMaximo: number;
-    // cupoMinimo: number;
-    // horarios: any;
-    // curso: Curso;
-    // instructor: any;
-    // sala: any;
+    horariosCursada: Horario[];
 
     constructor(){
         super();

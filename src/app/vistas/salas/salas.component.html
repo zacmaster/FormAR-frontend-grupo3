@@ -59,7 +59,12 @@
       <tr *ngFor="let sala of salas | search: {nombre: busqueda, capacidad: busqueda}">
         <td>{{ sala.nombre }}</td>
         <td>{{ sala.capacidad }} </td>
+<<<<<<< HEAD
         <td> <button class="btn btn btn-info" (click)="salaSeleccionada.copiar(sala); verCalendario()">
+=======
+        <td> 
+          <button class="btn btn btn-info" (click)="calendario() ">
+>>>>>>> origin/RF3-Jorge-N
             <i class="far fa-calendar-check"></i>
           </button> </td>
         <td>
@@ -70,6 +75,10 @@
             <i class="fas fa-user-times"></i>
           </button>
         </td>
+        <!-- <td>A</td>
+        <td>A</td>
+        <td>A</td>
+        <td>A</td> -->
       </tr>
     </tbody>
   </table>
