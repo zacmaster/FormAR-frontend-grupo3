@@ -94,7 +94,7 @@ export var LABEL ={
     nuevoContacto: "Nuevo Contacto",
     nuevoCurso: "Nuevo Curso",
     editarContacto: "Editar Contacto",
-    nombreCurso: "Nombre del curso",
+    nombreCurso: "Nombr e del curso",
     temario: "Temario",
     curso: "Curso",
     area: "Área",
@@ -129,16 +129,22 @@ export var LABEL ={
         descripcion: "Ingrese la descripción",
         temario: "Ingrese el temario",
         cantClases: "Ingrese la cantidad de clases",
-        precioClase: "Ingrese el precio por clase",
+        cantCuotas: "Ingrese la cantidad de cuotas",
         cupoMaximo: "Ingrese el cupo máximo de personas",
-        cupoMinimo: "Ingrese el cupo mínimo de personas"
+        cupoMinimo: "Ingrese el cupo mínimo de personas",
+        nombreCursada: "Ingrese el nombre de la cursada",
+        matricula: "Ingrese el valor de la mátricula",
+        cuota: "Ingrese el valor de la cuota"
     },
     titulo: {
         cantClases: "Cantidad de clases",
         precioClase: "Precio por clase",
-        matricula: "Importe de matrícula: $",
+        matricula: "Mátricula",
+        cuota: "Cuota",
         cupoMinimo: "Cantidad Mínima de Inscriptos",
-        cupoMaximo: "Cantidad Máxima de Inscriptos"
+        cupoMaximo: "Cantidad Máxima de Inscriptos",
+        nombreCursada: "Nombre:",
+        cantCuotas: "Cantidad de Cuotas"
     },
     boton: {
         inscribir:  "Inscribir",
