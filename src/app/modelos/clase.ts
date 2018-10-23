@@ -1,5 +1,5 @@
 import { Resource } from "../componentes/resource";
-import { IClase } from "../interfaces/iclase";
+import { IClase } from "../interfaces/Iclase";
 
 export class Clase extends Resource implements IClase{
     idCursada;
