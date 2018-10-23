@@ -194,15 +194,11 @@ export class AlumnosListComponent implements OnInit {
     this.inscripcionShowed = true;
   }
   clickConfirmarInscripcion(){
-    // let nuevaInscripcion: Inscripcion = new Inscripcion();
-    // nuevaInscripcion.idAlumno = this.alumnoSeleccionado.id;
-    // nuevaInscripcion.idCursada = 1;
-    // this._inscripcionService.addInscripcion(nuevaInscripcion);
-    this._inscripcionService.prueba({
-      "id": 0,
-      "idAlumno": 1,
-      "idCursada": 1
-    })
+    let nuevaInscripcion: Inscripcion = new Inscripcion();
+    nuevaInscripcion.idAlumno = this.alumnoSeleccionado.id;
+    nuevaInscripcion.idCursada = this.cursadaSeleccionada.id;
+    this._inscripcionService.addInscripcion(nuevaInscripcion).subscribe();
+    
     this.inscripcionShowed = false;
   }
 

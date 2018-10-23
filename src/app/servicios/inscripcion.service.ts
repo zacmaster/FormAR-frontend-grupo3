@@ -18,7 +18,4 @@ export class InscripcionService extends ResourceService<Inscripcion,IInscripcion
   addInscripcion(inscripcion: Inscripcion): Observable<Inscripcion>{
     return super.create(inscripcion);
   }
-  prueba(obj){
-    return super.create(obj);
-  }
 }
