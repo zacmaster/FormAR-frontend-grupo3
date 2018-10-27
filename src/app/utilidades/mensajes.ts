@@ -179,6 +179,9 @@ export var LABEL ={
     info: {
         contacto: "Descripción del contacto"
     },
+    error: {
+        horarioCursada: "El instructor seleccionado no se encuentra disponible en el horario elegido"
+    }
 }
 
 export const HVR ={

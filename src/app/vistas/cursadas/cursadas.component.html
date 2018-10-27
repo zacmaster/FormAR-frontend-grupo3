@@ -11,7 +11,6 @@
               <button class="btn btn-success"(click)="nuevaCursada()"><span>{{ _LABEL.nuevaCursada }}</span></button>
             </div>
         </div>
-
         <div class="table-responsive">
           <table class="table table-hover bg-light">
             <thead class="thead-light">
@@ -25,13 +24,13 @@
                   <th>{{ _LABEL.acciones }}</th>
                 </tr>
             </thead>
-                <tbody>
+                <tbody >
                   <tr *ngFor="let cursada of cursadas | search: {nombre: busqueda}" >
                     <td> {{ cursada.nombre }}</td>
                     <td> {{ cursada.curso.descripcion }} </td>
                     <td> {{ cursada.curso.nombre }} </td>
-                    <td>  {{ _Util.convertirTimestamp(cursada.fechaInicio) }}</td>
-                    <td>  {{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
+                    <td> {{ _Util.convertirTimestamp(cursada.fechaInicio) }}</td>
+                    <td> {{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
                     <td>
                       <button
                             (click)="cursadaSeleccionada.copiar(cursada);mostrarInfo()"
@@ -123,13 +122,19 @@
           <!--  SELECT INSTRUCTOR -->
           <div class="mt-3 col">
             <label for="basic-url">{{ _LABEL.seleccione.instructor  }}</label>
-            <div class="input-group">
+            <div>
               <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" optionLabel="nombre" [style]="{'width':'250px'}" ></p-dropdown>
               <p>  Disponibilidad:</p>
-              <p *ngFor="let horario of selectedInstructor.disponibilidadHoraria"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
-                {{ _Util.convertirTime(horario.horaInicio) }} a
-                {{ _Util.convertirTime(horario.horaFin) }} 
+              <!-- <div class="col"> -->
+                <!-- <br> -->
+              <p *ngFor="let horario of selectedInstructor.disponibilidadHoraria" style="line-height: 100%"> 
+                <li><span style="font-weight: bold"> {{ horario.dia }}  </span>
+                    {{ _Util.convertirTime(horario.horaInicio) }} 
+                    a 
+                    {{ _Util.convertirTime(horario.horaFin) }}
+                  </li> 
               </p>
+            <!-- </div> -->
             </div>
           </div>
           <!--  FIN SELECT INSTRUCTOR -->
@@ -139,7 +144,7 @@
               <label for="basic-url">{{ _LABEL.seleccione.sala  }}</label>
               <div class="input-group">
                   <p-dropdown [options]="salas" [(ngModel)]="selectedSala" optionLabel="nombre" [style]="{'width':'250px'}" ></p-dropdown>
-                  <p>Capacidad :{{ selectedSala.capacidad }}</p>
+                  <p>Capacidad: {{ selectedSala.capacidad }}</p>
               </div>
             </div>
             <!--  FIN SELECT SALA -->
@@ -293,7 +298,7 @@
                              
                           </tbody>
                       </table>  
-                      <p *ngIf="horarioDisponibilidad" > El instructor seleccionado no tiene disponibilidad horaria en el horario elegido</p>
+                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.disponibilidadHoraria}}}</p>
               </div>
             <!-- FIN HORARIO DE CURSADA -->
             
