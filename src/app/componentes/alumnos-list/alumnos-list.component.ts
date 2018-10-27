@@ -225,5 +225,10 @@ export class AlumnosListComponent implements OnInit {
   }
 
 
-
+  blankSpaces() {
+    if(!this.nombreAlumno.trim().length) {
+      return true;
+    }
+    return false;
+  }
 }
