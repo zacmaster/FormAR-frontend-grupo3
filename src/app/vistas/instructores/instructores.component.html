@@ -17,7 +17,7 @@
 
   <div class="table-responsive">
     <table class="table table-hover bg-light">
-      <thead class="thead-light">
+    <thead class="thead-light">
         <tr>
           <th>Instructor</th>
           <th>Dni</th>
@@ -26,11 +26,14 @@
           <th>Estudios</th>
           <th>Horarios</th>
           <th>Areas Preferencia</th>
+          <th>Disponibilidad</th>
           <th>Acciones</th>
         </tr>
       </thead>
+
+ 
       <tbody>
-        <tr *ngFor="let instructor of instructores">
+        <tr *ngFor="let instructor of instructores | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}">
           <td>{{ instructor.nombre }}
             {{ instructor.apellido }}</td>
           <td>  {{ instructor.dni }}</td>
@@ -56,6 +59,11 @@
             <i class="fas fa-font"></i>
           </button>
         </td>
+        <td>
+          <button class="btn btn btn-info" (click)="instructorSeleccionado.copiar(instructor); verCalendario()">
+            <i class="far fa-calendar-check"></i>
+          </button> 
+        </td>        
          
           <td>
             <button class="btn btn-success mr-2" (click)="instructorSeleccionado.copiar(instructor);editarInstructor();">
@@ -127,6 +135,13 @@
                       >
 
 </dialogo-confirmacion>
+<!--Calendario-->
+<calendario-disponibilidad *ngIf="mostrarCalendario"
+(clickBotonCerrar)="ocultarCalendario()"
+[id]= instructorSeleccionado.id
+[esSala]=false
+[esInstructor]= true
+></calendario-disponibilidad>
 <ng4-loading-spinner></ng4-loading-spinner>
 
 <!-- Formulario:  -->
@@ -142,178 +157,183 @@
         <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="form-group col">
-            <label for="nombre">{{ _LABEL_REQUIRED.nombre }}</label>
-            <input
-                      #nombre = "ngModel"
-                      class="form-control"
-                      type="text"
-                      required
-                      minlength="3"
-                      maxlength="30"
-                      [(ngModel)]="instructorSeleccionado.nombre"
-                      [placeholder]="_LABEL.ingrese.nombre"
-                      [pattern]="_PATTERN.nombre"
-                      >
-            <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
-              <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>
-              <div *ngIf="nombre.errors.pattern">{{ _VALIDACION.valido.nombre }}</div>
-              <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
-            </div>
-          </div>
-          <div class="form-group col">
-            <label for="apellido">{{ _LABEL_REQUIRED.apellido }}</label>
 
-            <input #apellido = "ngModel"
-                          class="form-control"
-                          type="text"
-                          required
-                          minlength="3"
-                          maxlength="30"
-                          [(ngModel)]="instructorSeleccionado.apellido"
-                          [placeholder]="_LABEL.ingrese.apellido"
-                          [pattern]="_PATTERN.nombre"
-                          >
-                  <div  *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger">
-                    <div *ngIf="apellido.errors.required">{{ _VALIDACION.requerido.apellido }}</div>
-                    <div *ngIf="apellido.errors.pattern">{{ _VALIDACION.valido.apellido }}</div>
-                    <div *ngIf="apellido.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
-                  </div>
-                </div>
-        </div>
-        <div class="row">
-          <div class="form-group col">
-            <label for="dni">{{ _LABEL_REQUIRED.dni }}</label>
-              <input
-                          #dni = "ngModel"
-                          class="form-control"
-                          type="text"
-                          required
-                          minlength="6"
-                          maxlength="9"
-                          [(ngModel)]="instructorSeleccionado.dni"
-                          [placeholder]="_LABEL.ingrese.dni"
-                          [pattern]="_PATTERN.dni"
-                          >
-                  <div  *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="alert alert-danger">
-                    <div *ngIf="dni.errors.required">{{ _VALIDACION.requerido.dni }}</div>
-                    <div *ngIf="dni.errors.pattern">{{ _VALIDACION.valido.dni}}</div>
-                    <div *ngIf="dni.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
+        <div style="max-height: 70vh; overflow-y: scroll;overflow-x: hidden;">
+            <div class="row">
+                <div class="form-group col">
+                  <label for="nombre">{{ _LABEL_REQUIRED.nombre }}</label>
+                  <input
+                            #nombre = "ngModel"
+                            class="form-control"
+                            type="text"
+                            required
+                            minlength="3"
+                            maxlength="30"
+                            [(ngModel)]="instructorSeleccionado.nombre"
+                            [placeholder]="_LABEL.ingrese.nombre"
+                            [pattern]="_PATTERN.nombre"
+                            >
+                  <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
+                    <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>
+                    <div *ngIf="nombre.errors.pattern">{{ _VALIDACION.valido.nombre }}</div>
+                    <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
                   </div>
                 </div>
                 <div class="form-group col">
-                  <label for="telefono">{{ _LABEL_REQUIRED.telefono }}</label>
+                  <label for="apellido">{{ _LABEL_REQUIRED.apellido }}</label>
+      
+                  <input #apellido = "ngModel"
+                                class="form-control"
+                                type="text"
+                                required
+                                minlength="3"
+                                maxlength="30"
+                                [(ngModel)]="instructorSeleccionado.apellido"
+                                [placeholder]="_LABEL.ingrese.apellido"
+                                [pattern]="_PATTERN.nombre"
+                                >
+                        <div  *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger">
+                          <div *ngIf="apellido.errors.required">{{ _VALIDACION.requerido.apellido }}</div>
+                          <div *ngIf="apellido.errors.pattern">{{ _VALIDACION.valido.apellido }}</div>
+                          <div *ngIf="apellido.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+                        </div>
+                      </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="dni">{{ _LABEL_REQUIRED.dni }}</label>
+                    <input
+                                #dni = "ngModel"
+                                class="form-control"
+                                type="text"
+                                required
+                                minlength="6"
+                                maxlength="9"
+                                [(ngModel)]="instructorSeleccionado.dni"
+                                [placeholder]="_LABEL.ingrese.dni"
+                                [pattern]="_PATTERN.dni"
+                                >
+                        <div  *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="alert alert-danger">
+                          <div *ngIf="dni.errors.required">{{ _VALIDACION.requerido.dni }}</div>
+                          <div *ngIf="dni.errors.pattern">{{ _VALIDACION.valido.dni}}</div>
+                          <div *ngIf="dni.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group col">
+                        <label for="telefono">{{ _LABEL_REQUIRED.telefono }}</label>
+                        <input
+                                        #telefono="ngModel"
+                                        class="form-control"
+                                        type="text"
+                                        required
+                                        [(ngModel)]="instructorSeleccionado.telefono"
+                                        [placeholder]="_LABEL.ingrese.telefono"
+                                        [pattern]="_PATTERN.telefono"
+                                        >
+                                <div  *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
+                                    <div *ngIf="telefono.errors.required">{{ _VALIDACION.requerido.telefono }}</div>
+                                    <div *ngIf="telefono.errors.pattern">{{ _VALIDACION.valido.telefono }}</div>
+                                </div>
+                      </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="email">{{ _LABEL_REQUIRED.email }}</label>
                   <input
-                                  #telefono="ngModel"
+                                  #email="ngModel"
                                   class="form-control"
-                                  type="text"
+                                  type="email"
                                   required
-                                  [(ngModel)]="instructorSeleccionado.telefono"
-                                  [placeholder]="_LABEL.ingrese.telefono"
-                                  [pattern]="_PATTERN.telefono"
+                                  [(ngModel)]="instructorSeleccionado.email"
+                                  [placeholder]="_LABEL.ingrese.email"
+                                  [pattern]="_PATTERN.email"
                                   >
-                          <div  *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
-                              <div *ngIf="telefono.errors.required">{{ _VALIDACION.requerido.telefono }}</div>
-                              <div *ngIf="telefono.errors.pattern">{{ _VALIDACION.valido.telefono }}</div>
+                          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                              <div *ngIf="email.errors.required">{{ _VALIDACION.requerido.email }}</div>
+                              <div *ngIf="email.errors.pattern">{{ _VALIDACION.valido.email }}</div>
                           </div>
                 </div>
-        </div>
-        <div class="row">
-          <div class="form-group col">
-            <label for="email">{{ _LABEL_REQUIRED.email }}</label>
-            <input
-                            #email="ngModel"
-                            class="form-control"
-                            type="email"
-                            required
-                            [(ngModel)]="instructorSeleccionado.email"
-                            [placeholder]="_LABEL.ingrese.email"
-                            [pattern]="_PATTERN.email"
-                            >
-                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-                        <div *ngIf="email.errors.required">{{ _VALIDACION.requerido.email }}</div>
-                        <div *ngIf="email.errors.pattern">{{ _VALIDACION.valido.email }}</div>
-                    </div>
-          </div>
-          
-              <div class="form-group col">
-              <h6>{{ _LABEL.areaPreferencia }}</h6>
-              <p-multiSelect [options]="areas" [(ngModel)]="selectedAreas" optionLabel="nombre" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
-             
-             </div>
-         </div> 
-        <div class="row">
-          <div class="form-group col">
-            <label for="">{{ _LABEL.estudios }}</label>
-            <textarea
-                          name=""
-                          id=""
-                          rows="4"
-                          class="form-control"
-                          maxlength="200"
-                          required
-                          [(ngModel)]="instructorSeleccionado.estudios"
-                         [placeholder]="_LABEL.ingreseEstudios"
-                ></textarea>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group col">
-            <label for="">{{ _LABEL.dispHoraria }}</label>
+                
+                    <div class="form-group col">
+                    <h6>{{ _LABEL.areaPreferencia }}</h6>
+                    <p-multiSelect [options]="areas" [(ngModel)]="selectedAreas" optionLabel="nombre" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
+                   
+                   </div>
+               </div> 
+              <div class="row">
+                <div class="form-group col">
+                  <label for="">{{ _LABEL.estudios }}</label>
+                  <textarea
+                                name=""
+                                id=""
+                                rows="2"
+                                class="form-control"
+                                maxlength="200"
+                                required
+                                [(ngModel)]="instructorSeleccionado.estudios"
+                                [placeholder]="_LABEL.ingreseEstudios"
+                      ></textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="">{{ _LABEL.dispHoraria }}</label>
+      
+                        <table  style="border:hidden;">
+                            <thead>
+                                <tr>
+                                    <th>Dia</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Fin</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let field of fieldArray; let i = index">
+                                    <td>
+                                        <select class="form-control" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
+                                            <option *ngFor="let dia of dias" [value]="dia.dia">
+                                              {{ dia.dia }}
+                                            </option>
+                                          </select>  
+                                    </td>
+                                    <td>
+                                        <p-calendar [(ngModel)]="field.horaInicio"   name="{{field.horaInicio}}" [timeOnly]="true" hourFormat="24"></p-calendar>
+                              
+                                    </td>
+                                    <td>
+                                        <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Eliminar</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
+                                            <option *ngFor="let dia of dias" [value]="dia.dia">
+                                              {{ dia.dia }}
+                                            </option>
+                                          </select>  
+                                    </td>
+                                    <td>
+                                        <p-calendar [(ngModel)]="newAttribute.horaInicio" id="newAttributehoraInicio"   name="newAttributehoraInicio" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                     
+                                    </td>
+                                    <td>
+                                        <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                       
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-default" type="button" (click)="addFieldValue()">Agregar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>  
+                </div>
+              </div>
 
-                  <table  style="border:hidden;">
-                      <thead>
-                          <tr>
-                              <th>Dia</th>
-                              <th>Hora Inicio</th>
-                              <th>Hora Fin</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr *ngFor="let field of fieldArray; let i = index">
-                              <td>
-                                  <select class="form-control" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
-                                      <option *ngFor="let dia of dias" [value]="dia.dia">
-                                        {{ dia.dia }}
-                                      </option>
-                                    </select>  
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="field.horaInicio"   name="{{field.horaInicio}}" [timeOnly]="true" hourFormat="24"></p-calendar>
-                        
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
-                              </td>
-                              <td>
-                                  <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Eliminar</button>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>
-                                  <select class="form-control" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
-                                      <option *ngFor="let dia of dias" [value]="dia.dia">
-                                        {{ dia.dia }}
-                                      </option>
-                                    </select>  
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="newAttribute.horaInicio" id="newAttributehoraInicio"   name="newAttributehoraInicio" [timeOnly]="true" hourFormat="24"></p-calendar>
-                               
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
-                                 
-                              </td>
-                              <td>
-                                  <button class="btn btn-default" type="button" (click)="addFieldValue()">Agregar</button>
-                              </td>
-                          </tr>
-                      </tbody>
-                  </table>  
-          </div>
+
         </div>
 
         <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid " (click)="guardar()">

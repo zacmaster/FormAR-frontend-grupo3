@@ -14,15 +14,17 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover bg-light">
-                <thead class="thead-light">
-                  <tr>
-                    <th>{{ _LABEL.nombreCurso }}</th>
-                    <th>{{ _LABEL.area }}</th>
-                    <th>Info</th>
-                    <th>{{ _LABEL.acciones }}</th>
-                  </tr>
-                </thead>
+          <table class="table table-hover bg-light">
+            <thead class="thead-light">
+                <tr>
+                  <th>{{ _LABEL.nombreCurso }}</th>
+                  <th>{{ _LABEL.area }}</th>
+                  <th>Info</th>
+                  <th>{{ _LABEL.acciones }}</th>
+                </tr>
+            </thead>
+      
+       
                 <tbody>
                   <!-- <tr *ngFor="let curso of cursos | search: {nombre: busqueda}" >  Deja de funcionar cuando se hace un editar-->
                   <tr *ngFor="let curso of cursos" >

@@ -142,18 +142,21 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover bg-light fixed_header table-fixed">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>{{ _LABEL.alumno }}</th>
-                        <th>{{ _LABEL.telefono }}</th>
-                        <th>{{ _LABEL.email }}</th>
-                        <th>{{ _LABEL.dni }}</th>
-                        <th>{{ _LABEL.acciones }}</th>
-                      </tr>
-                    </thead>
+              <table class="table table-hover bg-light fixed_header table-fixed">
+                <thead class="thead-light">
+                    <tr>
+                      <th>{{ _LABEL.alumno }}</th>
+                      <th>{{ _LABEL.telefono }}</th>
+                      <th>{{ _LABEL.email }}</th>
+                      <th>{{ _LABEL.dni }}</th>
+                      <th>{{ _LABEL.acciones }}</th>
+                    </tr>
+                </thead>
+            
+            
                     <tbody>
-                      <tr *ngFor="let alumno of alumnos | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}" >
+                      <!-- <tr *ngFor="let alumno of alumnos | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}" > -->
+                      <tr *ngFor="let alumno of alumnos " >
                         <td> {{ alumno.nombre }}  {{ alumno.apellido }}</td>
                         <td> {{ alumno.telefono }} </td>
                         <td> {{ alumno.email }} </td>
@@ -235,7 +238,8 @@
                 <select name="" id="" class="custom-select">
                   <option
                       value=""
-                      *ngFor="let cursada of cursadas"
+                      *ngFor="let cursada of cursadas;"
+                      (click)="cursadaSeleccionada.copiar(cursada)"
   
                   >
                      {{cursada.curso.nombre}} {{ _Util.convertirTimestamp(cursada.fechaInicio) }}
@@ -259,43 +263,3 @@
     </div>
   </div>
 </div>
-<!-- <div *ngIf="inscripcionShowed" class="dialogoEdicion">
-  <div class="card popUpInscripcion">
-    <div class="container">
-      <div class="row">
-          <div class="card-head text-center border border-dark w-100 mt-4">
-            <h3 class="mx-auto border border-dark">
-              {{ _LABEL.tituloInscipcion }}
-            </h3>
-            </div>
-            <div class="form-group w-100 text-center">
-              <select name="" id="" class="custom-select w-50">
-                <option
-                    value=""
-                    *ngFor="let alumno of alumnos"
-
-                >
-                   {{alumno.nombre}} {{alumno.apellido}}
-                </option>
-              </select>
-            </div>
-      </div>
-      <div class="row">
-        <div class="col-4"></div>
-        <div class="col-8"></div>
-      </div>
-      <div class="row">
-        <div class="d-flex w-75 justify-content-between mx-auto contenedorBotonesInscribir form-group">
-          <button class="btn btn-danger">
-            {{ _LABEL.cancelar }}
-          </button>
-          <button class="btn btn-primary">
-            {{ _LABEL.inscribir}}
-          </button>
-        </div>
-  
-      </div>
-
-    </div>
-  </div>
-</div> -->

@@ -32,6 +32,7 @@ export class SalasComponent{
   salas:Sala[]=[];
   busqueda: string = "";
 
+  mostrarCalendario:boolean = false; 
   mostrarDialogoAB:boolean=false;
   public edicion: boolean = false;
   mostrarDialogoBorrar: boolean = false;
@@ -54,9 +55,7 @@ export class SalasComponent{
     this.mostrarDialogoAB=true;
 
   }
-  calendario(){
-
-  }
+  
   editarSala(){
     if(this.salaSeleccionada.ocupado==false){
       this.edicion = true;
@@ -94,7 +93,13 @@ export class SalasComponent{
       this.mostrarDialogoErrorBorrar=false;
       this.mostrarDialogoErrorEditar=false;
   }
-
+  verCalendario(){
+    this.mostrarCalendario=true;
+  }
+  ocultarCalendario(){
+    this.mostrarCalendario=false;
+    this.salaSeleccionada=this.newSala();
+  }
   ocultarDialogo(){
     this.mostrarDialogoAB=false;
     this.mostrarDialogoBorrar=false;

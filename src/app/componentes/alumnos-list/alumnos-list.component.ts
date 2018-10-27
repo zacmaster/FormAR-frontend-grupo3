@@ -11,6 +11,8 @@ import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
 import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Cursada } from 'src/app/modelos/cursada';
+import { InscripcionService } from 'src/app/servicios/inscripcion.service';
+import { Inscripcion } from 'src/app/modelos/inscripcion';
 
 
 @Component({
@@ -42,7 +44,8 @@ export class AlumnosListComponent implements OnInit {
   public edicion: boolean = false;
   mostrarDialogoAB = false;
   mostrarDialogoBorrar: boolean = false;
-  alumnoSeleccionado: Alumno = this.newAlumno();
+  alumnoSeleccionado: Alumno = new Alumno();
+  cursadaSeleccionada: Cursada = new Cursada();
   nombreAlumno: string = '';
   busqueda: string = "";
   inscripcionShowed: boolean = false;
@@ -57,8 +60,8 @@ export class AlumnosListComponent implements OnInit {
    _Util = Util;
 
   ngDoCheck(){
-    console.log("alumnos", this.alumnos);
-    console.log("cursadas", this.cursadas);
+    // console.log("alumnos", this.alumnos);
+    // console.log("cursadas", this.cursadas);
     
     
   }
@@ -66,7 +69,8 @@ export class AlumnosListComponent implements OnInit {
   constructor(
               private _alumnoService: AlumnoService,
               private _spinnerService: Ng4LoadingSpinnerService,
-              private _cursadaService: CursadaService
+              private _cursadaService: CursadaService,
+              private _inscripcionService: InscripcionService
               ) { }
 
   ngOnInit() {
@@ -75,7 +79,7 @@ export class AlumnosListComponent implements OnInit {
     setTimeout(()=>{
       this.getAlumnos().then(
         () => this._spinnerService.hide()
-      )},600)
+      )},0)
   }
 
 
@@ -121,7 +125,7 @@ export class AlumnosListComponent implements OnInit {
         subscribe(response =>{
           this.getAlumnos();
           this._spinnerService.hide();
-          this.alumnoSeleccionado = this.newAlumno();
+          this.alumnoSeleccionado = new Alumno();
         })
     }, 500)
   }
@@ -136,7 +140,7 @@ export class AlumnosListComponent implements OnInit {
         this._alumnoService.addAlumno(alumno).
         subscribe(response => {
           this.getAlumnos();
-          this.alumnoSeleccionado = this.newAlumno();
+          this.alumnoSeleccionado = new Alumno();
           this.mostrarDialogoAB = false;
           this._spinnerService.hide();
         })
@@ -148,7 +152,7 @@ export class AlumnosListComponent implements OnInit {
     this._alumnoService.updateAlumno(alumno).
       subscribe(r => {
         this.getAlumnos();
-        this.alumnoSeleccionado = this.newAlumno();
+        this.alumnoSeleccionado = new Alumno();
         this.edicion = false;
         this.mostrarDialogoAB = false;
       })  
@@ -171,7 +175,7 @@ export class AlumnosListComponent implements OnInit {
 
   nuevoAlumno(){
     this.edicion = false;
-    this.alumnoSeleccionado = this.newAlumno();
+    this.alumnoSeleccionado = new Alumno();
     this.mostrarDialogoAB = true;
   }
 
@@ -181,10 +185,6 @@ export class AlumnosListComponent implements OnInit {
     this.dateNac = new Date(this.alumnoSeleccionado.fechaNacimiento);
   }
 
-  private newAlumno(): Alumno{
-    let alumno = new Alumno();
-    return alumno;
-  }
 
   clickCancelarNuevaInscripcion(){
     this.inscripcionShowed = false;
@@ -194,6 +194,11 @@ export class AlumnosListComponent implements OnInit {
     this.inscripcionShowed = true;
   }
   clickConfirmarInscripcion(){
+    let nuevaInscripcion: Inscripcion = new Inscripcion();
+    nuevaInscripcion.idAlumno = this.alumnoSeleccionado.id;
+    nuevaInscripcion.idCursada = this.cursadaSeleccionada.id;
+    this._inscripcionService.addInscripcion(nuevaInscripcion).subscribe();
+    
     this.inscripcionShowed = false;
   }
 

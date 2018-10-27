@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms' 
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import {AutoCompleteModule} from 'primeng/primeng'
 
 import { UsuarioService } from './servicios/usuario.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,15 +14,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {DropdownModule} from 'primeng/dropdown';
 import {SpinnerModule} from 'primeng/spinner';
-<<<<<<< Updated upstream
-=======
 
 
 import {FullCalendarModule} from 'primeng/fullcalendar';
 
 
->>>>>>> Stashed changes
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './vistas/login/login.component';
@@ -48,6 +46,7 @@ import { SearchPipe } from './pipes/search.pipe';
 import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/dialogo-inscripcion.component';
 import { AlumnoService } from './servicios/alumno.service';
 import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.component';
+import { CalendarioDisponibilidadComponent } from './componentes/calendario-disponibilidad/calendario-disponibilidad.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +69,8 @@ import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.co
     SearchPipe,
     DialogoInscripcionComponent,
     DialogoInfoComponent,
+    CalendarioDisponibilidadComponent,
+    
    
   ],
   imports: [
@@ -83,14 +84,10 @@ import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.co
     ReactiveFormsModule,
     CalendarModule,
     MultiSelectModule,
-<<<<<<< Updated upstream
-    SpinnerModule
-=======
     SpinnerModule,
     DropdownModule,
     FullCalendarModule,
     AutoCompleteModule
->>>>>>> Stashed changes
   ],
   providers: [
     AlumnoService

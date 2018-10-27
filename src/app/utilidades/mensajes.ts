@@ -87,6 +87,7 @@ export var LABEL ={
     nuevoAlumno: "Nuevo alumno",
     nuevoInstructor: "Nuevo instructor",
     edicionInstructor: "Edicion de instructor",
+    edicionContacto:"Edicion de contacto",
     nuevaSala: "Nueva sala",
     edicionAlumno: "Edición de alumno",
     edicionSala: "Edicion de sala",
@@ -129,16 +130,25 @@ export var LABEL ={
         descripcion: "Ingrese la descripción",
         temario: "Ingrese el temario",
         cantClases: "Ingrese la cantidad de clases",
-        precioClase: "Ingrese el precio por clase",
+        cantCuotas: "Ingrese la cantidad de cuotas",
         cupoMaximo: "Ingrese el cupo máximo de personas",
-        cupoMinimo: "Ingrese el cupo mínimo de personas"
+        cupoMinimo: "Ingrese el cupo mínimo de personas",
+        importeCuota: "Ingrese el importe por cuota",
+        nombreCursada:"Ingrese el nombre de la cursada",
+        importeMatricula: "Ingrese el importe de la mátricula",
+        matricula:"Ingrese la matricula",
+        cuota: "Ingrese el valor de la cuota"
     },
     titulo: {
         cantClases: "Cantidad de clases",
-        precioClase: "Precio por clase",
-        matricula: "Importe de matrícula: $",
+        cantCuotas: "Cantidad de cuotas",
+        importeCuota: "Importe por cuota",
+        importeMatricula: "Importe de la mátricula",
         cupoMinimo: "Cantidad Mínima de Inscriptos",
-        cupoMaximo: "Cantidad Máxima de Inscriptos"
+        cupoMaximo: "Cantidad Máxima de Inscriptos",
+        nombreCursada: "Ingrese el nombre de la cursada",
+        matricula: "Ingrese el valor de la mátricula",
+        cuota: "Ingrese el valor de la cuota"
     },
     boton: {
         inscribir:  "Inscribir",
@@ -161,11 +171,14 @@ export var LABEL ={
         contacto: "Editar contacto"
     },
     eliminar: {
+        confirmar: {
+            contacto: "¿Seguro desea eliminar el contacto "
+        },
         contacto: "Eliminar contacto"
     },
     info: {
         contacto: "Descripción del contacto"
-    }
+    },
 }
 
 export const HVR ={

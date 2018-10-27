@@ -26,22 +26,34 @@ export class ContactosListComponent implements OnInit {
   busqueda;
   mostrarDialogo = false;
   agregandoAlumno = false;
+  seEligeArea = true;
+  edicion:boolean=false;
+  fechaHoraContacto: string = '';
 
-  alumnoNuevo = new Alumno();
 
-  alumnoSeleccionado: Alumno = new Alumno();
 
-  contactoNuevo: Contacto = new Contacto();
+  contactoSeleccionado: Contacto = this.newContacto();
+  
+  alumnoSeleccionado: Alumno = new Alumno;
+  alumnoNuevo: Alumno = new Alumno;
+  selectedAlumno:Alumno = new Alumno;
+  selectedCurso:Curso = new Curso;
+  selectedArea: Area= new Area;
+  
+  areaSeleccionada: Area = new Area;
+  cursoSeleccionado: Curso = new Curso;
+  mostrarDialogoBorrar: boolean = false;
+  descripcionShowed: boolean = false;
+
+  textoEliminarContacto: string;
+
+
 
   public guardarAlumno(alumno){
     this.alumnoSeleccionado.copiar(alumno);
   }
 
 
-
-
-
-  dateNac;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2000,
@@ -63,7 +75,6 @@ export class ContactosListComponent implements OnInit {
   cursos: Curso[];
   areas: Area[];
 
-  fechaContactoSeleccionado: Date = new Date();
 
 
   _LABEL = LABEL;
@@ -73,19 +84,6 @@ export class ContactosListComponent implements OnInit {
   _Util = Util;
 
 
-  // contactos = [
-  //   {
-  //     fecha: "12/04/2018",
-  //     nombreAlumno: "Carlos",
-  //     titulo: "Taller de costura"
-  //   },
-  //   {
-  //     fecha: "11/10/2012",
-  //     nombreAlumno: "Jorge",
-  //     titulo: "Taller de pintura"
-  //   },
-  // ];
-
   constructor(
     
     private _alumnoService: AlumnoService,
@@ -94,23 +92,20 @@ export class ContactosListComponent implements OnInit {
     private _areaService: AreaService
 
 
-    ) {
+    ) {}
 
-  }
+    
 
   ngOnInit() {
       this.getContactos();
-      this.getAlumnos().then(() =>{
-        if(this.alumnos.length > 0)
-        this.alumnoSeleccionado.copiar(this.alumnos[0]);
-        this.contactoNuevo.alumno.copiar(this.alumnoSeleccionado);
-      })
+      this.getAlumnos();
       this.getAreas();
+      this.getCursos();
   }
 
   ngDoCheck(){
-    console.log("alumnos: ",this.alumnos);
-    console.log("contactoNuevo: ",this.contactoNuevo);
+  
+    // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
     
   }
 
@@ -149,28 +144,17 @@ export class ContactosListComponent implements OnInit {
       .toPromise()
       .then(alumnos =>  {
         this.alumnos = [];
-        alumnos.forEach(alumno => {
+          alumnos.forEach(alumno => {
           let alumno_aux = new Alumno();
+        
           alumno_aux.copiar(alumno);
+          alumno_aux.nombreApellido=alumno_aux.nombre+" "+alumno_aux.apellido;
           this.alumnos.push(alumno_aux);
         })
-        this.alumnoSeleccionado.copiar(this.alumnos[0]); 
       })
   }
 
   getCursos(){
-    return this._areaService.getAreas()
-      .toPromise()
-      .then(
-        areas => {
-          this.areas = [];
-          areas.forEach(area =>{
-            let area_aux = new Area();
-            area_aux.copiar(area);
-            this.areas.push(area_aux);
-        })
-    })
-      .then(() =>{
         return this._cursoService.getCursos()
           .toPromise()
           .then(
@@ -185,67 +169,219 @@ export class ContactosListComponent implements OnInit {
                 this.cursos.push(curso);
               })
             }
-          )
-      }) 
+          ) 
   }
 
   getAreas(){
     return this._areaService.getAreas()
       .toPromise()
-      .then(areas => areas.forEach(area=>{
+      .then(areas => {
         this.areas = [];
-        let area_aux = new Area();
-        area_aux.copiar(area);
-        this.areas.push(area);
-      }))
+        areas.forEach(area=>{
+          let area_aux = new Area();
+          area_aux.copiar(area);
+          this.areas.push(area_aux);
+        })
+      })
   }
 
+  // Click en nuevo contacto, se muestra el formulario con los campos vacíos
   nuevoContacto(){
-    this.dateNac
+    this.alumnoSeleccionado = new Alumno();
+    this.selectedAlumno=this.alumnos[0];
+    this.alumnoSeleccionado=this.selectedAlumno;
+    
+    this.seEligeArea = true;
+    this.agregandoAlumno = false; 
+    this.contactoSeleccionado = new Contacto();
+
+
+    this.areaSeleccionada = new Area();
+    this.selectedArea=this.areas[0];
+   
+
+    this.cursoSeleccionado = new Curso();
+    this.selectedCurso=this.cursos[0];
+    this.contactoSeleccionado = new Contacto();
+    
     this.mostrarDialogo = true;
+  
   }
 
   editarContacto(){
-    alert("Editando..")
-
+    this.alumnos.forEach(element => {
+      if(element.id=this.contactoSeleccionado.alumno.id){
+        this.selectedAlumno=element;
+        this.alumnoSeleccionado=element;
+      }
+    });
+    if(this.contactoSeleccionado.curso.id==0){
+     
+      this.seEligeArea=true;
+      this.areas.forEach(element => {
+          if(element.id==this.contactoSeleccionado.area.id){
+            
+            this.selectedArea=element;
+          }
+      });
+    }
+    else{
+      this.seEligeArea=false;
+      this.cursos.forEach(element => {
+        if(element.id==this.contactoSeleccionado.curso.id){
+          this.selectedCurso=element;
+        }
+      });
+    }
+    this.mostrarDialogo = true;
+    this.edicion=true;
+   
   }
 
-  mostrarDialogoEliminar(){
-    alert("Dialogo eliminar..")
-
-  }
   validarAlumno(){
     if (this.agregandoAlumno){
-       this.guardarAlumno(this.alumnoNuevo);
+       this.guardarAlumno(this.alumnoSeleccionado);
     }
   }
 
-  guardarContacto(){
-    this.contactoNuevo.area.copiar(this.areas[0]);
-    this.contactoNuevo.curso = undefined;
-    this._contactoService.addContacto(this.contactoNuevo).subscribe(() => {
+  guardarContactoNuevo(){
+   if(this.contactoSeleccionado.id==0){
+      if(!this.agregandoAlumno){
+          this.contactoSeleccionado.alumno=this.selectedAlumno;
+          if(this.seEligeArea){
+            this.contactoSeleccionado.area=this.selectedArea;
+            this.contactoSeleccionado.curso=null;
+          }
+          else{
+            this.contactoSeleccionado.curso=this.selectedCurso;
+            this.contactoSeleccionado.area=null;
+          }
+          this.guardar(this.contactoSeleccionado);  
+      }
+      else{
+         if(this.seEligeArea){
+          this.contactoSeleccionado.area=this.selectedArea;
+          this.contactoSeleccionado.curso=null;
+        }
+        else{
+          this.contactoSeleccionado.curso=this.selectedCurso;
+          this.contactoSeleccionado.area=null;
+        }
+        this.guardar(this.contactoSeleccionado);  
+      } 
+   }
+   else{
+    if(!this.agregandoAlumno){
+      this.contactoSeleccionado.alumno=this.selectedAlumno;
+      if(this.seEligeArea){
+        this.contactoSeleccionado.area=this.selectedArea;
+        this.contactoSeleccionado.curso=null;
+      }
+      else{
+        this.contactoSeleccionado.curso=this.selectedCurso;
+        this.contactoSeleccionado.area=null;
+      }
+      this.editar(this.contactoSeleccionado);  
+  }
+  else{
+     if(this.seEligeArea){
+      this.contactoSeleccionado.area=this.selectedArea;
+      this.contactoSeleccionado.curso=null;
+    }
+    else{
+      this.contactoSeleccionado.curso=this.selectedCurso;
+      this.contactoSeleccionado.area=null;
+    }
+    this.editar(this.contactoSeleccionado); 
+    } 
+
+   }
+ 
+  }
+
+  private editar(contacto:Contacto){
+    this._contactoService.updateContacto(contacto).subscribe(() => {
       this.getContactos();
+      this.getAlumnos();
+      this.getAreas();
+      this.getCursos();
       this.mostrarDialogo = false;
-      this.contactoNuevo = new Contacto();
+      this.contactoSeleccionado = new Contacto();      
     })
-    // this.validarAlumno();
-    // console.log(this.alumnoSeleccionado.id);
-    // if(this.alumnoSeleccionado.id != 0){
-    //   console.log("guardarAlumno();");
-    //   console.log("guardarContacto();");
-    // }
+  }
+  private guardar(contacto:Contacto){
+    this._contactoService.addContacto(contacto).subscribe(() => {
+      this.getContactos();
+      this.getAlumnos();
+      this.getAreas();
+      this.getCursos();
+      this.mostrarDialogo = false;
+      this.contactoSeleccionado = new Contacto();      
+    })
   }
 
-  private newAlumno(): Alumno{
-    return new Alumno()
+  agregarNuevoAlumno(){
+    this.contactoSeleccionado.alumno = new Alumno();
+    this.agregandoAlumno = true;
   }
 
 
+  elegirAlumnoLista(){
+    this.agregandoAlumno = false;
+   
 
-  actualizarAlumnoSeleccionado(alumno: Alumno){
-    this.alumnoSeleccionado.copiar(alumno);
-    this.contactoNuevo.alumno.copiar(this.alumnoSeleccionado);
   }
+  newContacto():Contacto{
+    let aux = new Contacto();
+    aux.alumno= new Alumno();
+    aux.area=new Area();
+    aux.curso=new Curso();
+    return aux;
+  }
+  
+  
+  
+
+  //Click en los radiobuttons para cambiar entre área/curso  
+  mostrarSelectArea(){
+    this.seEligeArea = true;
+    
+  }
+  mostrarSelectCurso(){
+    this.seEligeArea = false;
+    
+  }
+  
+  // Click en los selects
+   actualizarAlumnoSeleccionado(alumno: Alumno){
+    
+    this.alumnoSeleccionado=this.selectedAlumno;
+     
+   }
+
+
+  // Diálogo confirmar eliminación
+  ocultarDialogo(){
+    this.mostrarDialogoBorrar = false;
+    
+  }
+  cerrarFormulario(){
+    this.mostrarDialogo=false;
+    this.edicion=false;
+    this.selectedAlumno= new Alumno();
+  }
+
+  mostrarDescripcion(contacto: Contacto){
+    console.log("Este es el contacto que recibo: ",contacto);
+    
+    this.fechaHoraContacto =  this._Util.convertirTimestamp(contacto.fecha) 
+                              +' '+this._Util.convertirTime(contacto.fecha);
+
+    this.descripcionShowed = true;
+    this.contactoSeleccionado = new Contacto();
+    this.contactoSeleccionado.copiar(contacto);
+  }
+
 
 
 }

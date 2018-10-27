@@ -35,13 +35,19 @@
         [texto]="dlg2.texto">
 
 </dialogo-info>
+<calendario-disponibilidad *ngIf="mostrarCalendario"
+(clickBotonCerrar)="ocultarCalendario()"
+[id]= salaSeleccionada.id
+[esSala]=true
+[esInstructor]= false
+></calendario-disponibilidad>
+
 <ng4-loading-spinner></ng4-loading-spinner>
 
 <!--  TABLA   -->
-
 <div class="table-responsive">
   <table class="table table-hover bg-light">
-    <thead class="thead-light">
+  <thead class="thead-light">
       <tr>
         <th>Nombre</th>
         <th>Capacidad</th>
@@ -50,10 +56,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let sala of salas">
+      <tr *ngFor="let sala of salas | search: {nombre: busqueda, capacidad: busqueda}">
         <td>{{ sala.nombre }}</td>
         <td>{{ sala.capacidad }} </td>
-        <td> <button class="btn btn btn-info" (click)="calendario() ">
+        <td> <button class="btn btn btn-info" (click)="salaSeleccionada.copiar(sala); verCalendario()">
             <i class="far fa-calendar-check"></i>
           </button> </td>
         <td>
@@ -64,6 +70,10 @@
             <i class="fas fa-user-times"></i>
           </button>
         </td>
+        <!-- <td>A</td>
+        <td>A</td>
+        <td>A</td>
+        <td>A</td> -->
       </tr>
     </tbody>
   </table>

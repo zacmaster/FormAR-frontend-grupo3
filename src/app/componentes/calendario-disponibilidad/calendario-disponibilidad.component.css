@@ -1,0 +1,32 @@
+.contenedor-mayor{
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(104, 104, 104,0.8);
+}
+
+
+.contenedor{
+  position: absolute;
+  z-index: 6;
+  top: 30%;
+  left: 28%;
+  height: 40%;
+  width: 40%;
+  background-color: rgb(104, 104, 104,0.8);
+}
+.dialogo{
+  border-radius: 5px;
+}
+h5{
+  margin: auto;
+  padding-top: 5px;
+  font-weight: bolder;
+}
+.dialogoHeader{
+  padding-bottom: 2px;
+  border-bottom: 1px solid #0003;
+}

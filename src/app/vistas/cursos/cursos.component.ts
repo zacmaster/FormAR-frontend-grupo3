@@ -87,7 +87,7 @@ export class CursosComponent implements OnInit, DoCheck {
           this.getCursos();
           this._spinnerService.hide();
         })
-    }, 1000)
+    }, 500)
   }
 
 
@@ -285,7 +285,7 @@ export class CursosComponent implements OnInit, DoCheck {
         this.busqueda = undefined;
       })
     }
-      ,800)
+      ,0)
     
   }
 

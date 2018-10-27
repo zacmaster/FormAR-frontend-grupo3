@@ -19,6 +19,8 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
   public create(item: T): Observable<T>{
     var url = `${this.url}/${this.endpoint}`;
     console.log("url to post: ", url);
+    console.log("item", item);
+    
     
     return this.httpClient
       .post<T>(url, item,this.httpOptions)
@@ -33,11 +35,11 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
   
   public update(item: T): Observable<T>{
 
-    console.log("item:", item);
+    // console.log("item:", item);
     
     // let url = `${this.url}/${this.endpoint}/${item.id}`; //for json-server
     let url = `${this.url}/${this.endpoint}`; //for real api
-    console.log("url:::::   ",url);
+    // console.log("url:::::   ",url);
     
  
     return this.httpClient
@@ -53,7 +55,7 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
   
   public list(): Observable<I[]>{
     let url = `${this.url}/${this.endpoint}`;
-    console.log('url: ',url);
+    // console.log('url: ',url);
     
     return this.httpClient.get<I[]>(url)
   }

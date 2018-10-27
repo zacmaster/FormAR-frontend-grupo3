@@ -18,7 +18,7 @@ export class Curso extends Resource implements ICurso{
 
 
 	public copiar(curso: Curso){
-		console.log("curso a copiar: ",curso);
+		// console.log("curso a copiar: ",curso);
 		
 		super.copiar(curso)
 	}

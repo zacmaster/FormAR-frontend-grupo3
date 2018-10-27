@@ -1,22 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes';
 import {FormControl} from '@angular/forms';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-<<<<<<< Updated upstream
-=======
 import { log } from 'util';
 
 import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes';
->>>>>>> Stashed changes
 import { PATTERNS } from '../../utilidades/patterns';
+import { Util } from '../../utilidades/util';
 import { CursadaService } from 'src/app/servicios/cursada.service';
 import { CursoService } from '../../servicios/curso.service';
-import { log } from 'util';
+import { InstructorService } from 'src/app/servicios/instructor.service';
+import { SalaService } from 'src/app/servicios/sala.service';
 import { Cursada } from 'src/app/modelos/cursada';
 import { Curso } from 'src/app/modelos/curso';
-<<<<<<< Updated upstream
-import { Util } from '../../utilidades/util';
-=======
 import { Instructor } from '../../modelos/instructor';
 import { Sala } from '../../modelos/sala';
 import { Alumno } from '../../modelos/alumno';
@@ -26,7 +21,6 @@ import * as esLocale from 'date-fns/locale/es';
 import { CompileShallowModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { npost } from 'q';
 import { isTuesday } from 'date-fns';
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-cursadas',
@@ -35,26 +29,22 @@ import { isTuesday } from 'date-fns';
 })
 export class CursadasComponent implements OnInit {
 
-  constructor(private _cursadaService: CursadaService,
+  constructor(
+    
+    
+    private _cursadaService: CursadaService,
     private _cursoService: CursoService,
-<<<<<<< Updated upstream
-    private _spinnerService: Ng4LoadingSpinnerService) { }
-=======
     private _instructorService : InstructorService,
     private _salasService : SalaService,
     private _spinnerService: Ng4LoadingSpinnerService,
   ) { }
->>>>>>> Stashed changes
 
   _LABEL = LABEL;
   _LABEL_R = LABEL_REQUIRED;
-  busqueda;
+  busqueda='';
   mostrarDialogo = false;
   cursadas = [];
   cursos = [];
-<<<<<<< Updated upstream
-  _Util = Util;
-=======
   instructores = [];
   instructoresTotal=[];
   salas = [];
@@ -66,26 +56,11 @@ export class CursadasComponent implements OnInit {
   inscribiendo: boolean = false;
   infoShowed: boolean = false;
   horarioDisponibilidad: boolean = false;
->>>>>>> Stashed changes
 
   cursadaSeleccionada: Cursada = this.newCursada();
+  alumnos: Alumno[];
 
-<<<<<<< Updated upstream
-  cantClases: number;
-  precioClase: number;
-  matricula: number;
-  fechaInicio: number;
-  fechaFin: number;
-  turnoSeleccionado: string;
-  cupoMinimo: number;
-  cupoMaximo: number;
 
-  cursoSeleccionado = new Curso();
-
-  instructorSeleccionado = {
-    id: "",
-    nombre: ""
-=======
   results: string[] = ['Zacarías','Jorge'];
   alumnoSeleccionado: Alumno = new Alumno();
   edicion: boolean = false;
@@ -115,63 +90,18 @@ export class CursadasComponent implements OnInit {
     fieldId: 'my-date-picker',
     useEmptyBarTitle: false,
 
->>>>>>> Stashed changes
   };
-  salaSeleccionada = {
-    id: "",
-    sala: ""
-  };
-  diasSeleccionados = {
-    id: "",
-    dia: ""
-  } 
-
-  instructores = [
-    {id: 0, nombre: 'Pedro'},
-    {id: 1, nombre: 'Marcos'},
-    {id: 2, nombre: 'Sebastian'}
-  ];
-
-  salas = [
-    {id: 0, sala: 100},
-    {id: 1, sala: 101},
-    {id: 2, sala: 102},
-    {id: 3, sala: 103},   
-  ];
-
-  dias = [
-    // {dia: 'Domingo', id: 0},
-    {dia: 'Lunes'},
-    {dia: 'Martes'},
-    {dia: 'Miercoles'},
-    {dia: 'Jueves'},
-    {dia: 'Viernes'},
-    {dia: 'Sabado'}
-  ];
-
-  turnos = [
-    {turno: 'Mañana', horario: '8 a 12'},
-    {turno: 'Tarde', horario: '13 a 17'},
-    {turno: 'Noche', horario: '18 a 22'}
-  ];
-
-
-  clickBtnIzquierdo(){
-
-  }
+    dias = [
+      {dia: 'Lunes'},
+      {dia: 'Martes'},
+      {dia: 'Miercoles'},
+      {dia: 'Jueves'},
+      {dia: 'Viernes'},
+      {dia: 'Sabado'}
+    ];
+    
   guardarCursada(){
-    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
     this.cursadaSeleccionada.fechaInicio = + this.fechaInicio;
-<<<<<<< Updated upstream
-    this.cursadaSeleccionada.curso = this.cursoSeleccionado;
-    this.agregar(this.cursadaSeleccionada);
-  }
-
-  // METODOS CURSADAS
-  
-  cargarCursadas(){
-    return this._cursadaService.list().toPromise();
-=======
     this.cursadaSeleccionada.curso = new Curso();
     this.cursadaSeleccionada.curso = this.selectedCurso;
     this.cursadaSeleccionada.instructor = new Instructor();
@@ -337,24 +267,26 @@ export class CursadasComponent implements OnInit {
   }
   cerrarDialogo(){
     this.mostrarDialogo=false;
->>>>>>> Stashed changes
   }
   
   agregar(cursada: Cursada){
     this._spinnerService.show();
     setTimeout(() => {
-    console.log("cursada seleccionad: ",this.cursadaSeleccionada);
-        this._cursadaService.addCursada(cursada).
-        subscribe(response => {
-          this.getCursadas();
-          this.cursadaSeleccionada = this.newCursada();
-          this.mostrarDialogo = false;
-          this._spinnerService.hide();
-        })
+      console.log("cursada seleccionad: ",this.cursadaSeleccionada);
+      this._cursadaService.addCursada(cursada).
+      subscribe(response => {
+        this.getCursadas();
+        this.getSalas();
+        this.getCursos();
+        this.getInstructores();
+        this.cursadaSeleccionada = this.newCursada();
+        this.cerrarDialogo();
+        this._spinnerService.hide();
+      })
     }, 500)
     
   }
-
+  
   getCursadas(){
     this.cursadas = [];
     this._cursadaService.list()
@@ -362,42 +294,38 @@ export class CursadasComponent implements OnInit {
       cursadas.forEach(cursada => {
         let nuevaCursada = new Cursada();
         let nuevoCurso = new Curso();
+        let nuevoInstructor = new Instructor();
+        let nuevaSala = new Sala();
+
         nuevoCurso.copiar(cursada.curso);
+        nuevoInstructor.copiar(cursada.instructor);
+        nuevaSala.copiar(cursada.sala);
         nuevaCursada.copiar(cursada);
         nuevaCursada.curso = nuevoCurso;
-        this.cursadas.push(nuevaCursada)
-    })
-<<<<<<< Updated upstream
-        this.busqueda = undefined;
-    })
+        nuevaCursada.instructor = nuevoInstructor;
+        nuevaCursada.sala = nuevaSala;
+        
+        this.cursadas.push(nuevaCursada);
 
-
-    return this._cursadaService.getCursadas()
-      .toPromise().then(r => {
-    this.cursadas = r
-  })
-=======
->>>>>>> Stashed changes
+      })
+      console.log(this.cursadas);
+      this.busqueda = undefined;
+    })
   }
-
-
-
+  
   private newCursada(): Cursada{
     let cursada = new Cursada();
     return cursada;
   }
 
-
   // METODOS DE CURSOS
-
+  
   private getCursos(){
+    this.cursos=[];
     this._cursoService.list()
       .subscribe(r => {
         this.cursos = r
       })
-<<<<<<< Updated upstream
-  }
-=======
     }
     
     private getInstructores(){
@@ -435,28 +363,19 @@ export class CursadasComponent implements OnInit {
           }
         });
     }
->>>>>>> Stashed changes
 
-  public guardarCurso(curso){
-    this.cursoSeleccionado.copiar(curso);
-  }
+    public guardarCurso(curso){
+      this.cursoSeleccionado.copiar(curso);
+    }
 
+    public guardarInstructor(instructor){
+      this.instructorSeleccionado.copiar(instructor);
+    }
+    
+    public guardarSala(sala){
+      this.salaSeleccionada.copiar(sala);
+    }
 
-<<<<<<< Updated upstream
-  // METODOS DEL SISTEMA
-
-  ngOnInit() {
-    console.log("on init");
-    this._spinnerService.show();
-    setTimeout(() => {
-      this.cargarCursadas()
-        .then(r => {
-          this.cursadas = r;
-          this._spinnerService.hide();
-        })
-    },1000)
-    this.getCursos();
-=======
     public filtrarInstructores(){
       this.instructores=[];
       
@@ -490,23 +409,22 @@ export class CursadasComponent implements OnInit {
        this.getCursos();
        this.getInstructores();
        this.getSalas();
->>>>>>> Stashed changes
   }
 
   ngDoCheck(){
-
-    console.log("precio: ",this.cursadaSeleccionada.precioClase);
-    console.log("matricula:_" , this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100);
-    
-    this.cursadaSeleccionada.matricula = this.cursadaSeleccionada.precioClase * this.cursadaSeleccionada.cantidadClases * 20 / 100;
-    // this.cursadaSeleccionada.matricula = ;
-   
+    // console.log(this.selectedSala);
+    // console.log(this.selectedInstructor);
+    // console.log(this.selectedCurso);
   }
 
+  private fieldArray: Array<any> = [];
+  private newAttribute: any = {};
 
+  addFieldValue() {
+      this.fieldArray.push(this.newAttribute)
+      this.newAttribute = {};
+  }
 
-<<<<<<< Updated upstream
-=======
   deleteFieldValue(index) {
   
       this.fieldArray.splice(index, 1);
@@ -523,7 +441,6 @@ export class CursadasComponent implements OnInit {
  
   }
 
->>>>>>> Stashed changes
 
 }
 

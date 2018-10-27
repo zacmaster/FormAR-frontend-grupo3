@@ -11,6 +11,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
         <span class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
       </div>
       <div class="dialogoBody p-3 pt-3 text-center">
+        <div class="d-flex justify-content-between">
+          <div class="subtitulo">{{ subtituloIzquierdo }}</div>
+          <div class="subtitulo font-weight-bold">{{ subtituloDerecho }}</div>
+        </div>
         <p> {{texto}} </p>
       </div>
       <div class="dialogoFooter d-flex mx-5 mb-3 justify-content-center">
@@ -47,11 +51,22 @@ styles: [
     button{
       width: 80px;
     }
+    p{
+      padding: 10px;
+      margin-top: 5px;
+    }
+    .subtitulo{
+      font-style: italic;
+      font-size: 12px;
+
+    }
   `
 ]
 })
 export class DialogoInfoComponent implements OnInit {
 @Input() public titulo = '';
+@Input() public subtituloIzquierdo = '';
+@Input() public subtituloDerecho = '';
 @Input() public texto = '';
 textoBoton =  'Ok';
 

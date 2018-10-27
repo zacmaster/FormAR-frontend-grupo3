@@ -1,3 +1,5 @@
+<!-- Comienzo de tabla -->
+
 <div class="p-0">
   <div class="bg-light ">
       <div class="input-group py-4 col-5">
@@ -10,15 +12,17 @@
           </div>
       </div>
       <div class="table-responsive">
-          <table class="table table-hover bg-light">
-              <thead class="thead-light">
-                <tr>
-                  <th>{{ _LABEL.fecha }}</th>
-                  <th>{{ _LABEL.alumno }}</th>
-                  <th>{{ _LABEL.asunto }}</th>
-                  <th>{{ _LABEL.acciones }}</th>
-                </tr>
-              </thead>
+        <table class="table table-hover bg-light">
+          <thead class="thead-light">
+              <tr>
+                <th>{{ _LABEL.fecha }}</th>
+                <th>{{ _LABEL.alumno }}</th>
+                <th>{{ _LABEL.asunto }}</th>
+                <th>{{ _LABEL.acciones }}</th>
+              </tr>
+            </thead>
+      
+      
               <tbody>
                 <tr *ngFor="let contacto of contactos | search: {fecha: busqueda, nombreAlumno: busqueda, titulo: busqueda}" >
                   <td> {{ _Util.convertirTimestamp(contacto.fecha) }}</td>
@@ -26,22 +30,19 @@
                   <td> {{ contacto.asunto }} </td>
                   <td>
 
-                    <button class="btn btn-warning mr-2"
+                    <button
+                            (click)="mostrarDescripcion(contacto)"
+                            class="btn btn-warning mr-2"
                             [title]="_LABEL.info.contacto">
                       <i class="fas fa-info"></i>
                     </button>
 
                     <button class="btn btn-success mr-2"
                             [title]="_LABEL.editar.contacto"
-                            (click)="editarContacto(); contactoSeleccionado = contacto">
+                            (click)="contactoSeleccionado.copiar(contacto); editarContacto()"><!---->
                       <i class="fas fa-edit"></i>
                     </button>
 
-                    <button class="btn btn-danger"
-                            [title]="_LABEL.eliminar.contacto"
-                            (click)=" contactoSeleccionado = contacto; mostrarDialogoEliminar()">
-                      <i class="fas fa-minus-circle"></i>
-                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -50,6 +51,9 @@
     </div>
 </div>
 
+<!-- Fin de tabla -->
+
+
 
 <!-- Principio de Formulario de Contacto -->
 <div class="contenedorFormulario" *ngIf="mostrarDialogo">
@@ -57,9 +61,11 @@
       <div class="card-head d-flex  p-1 w-100 justify-content-between">
           <div></div>
           <div class="pt-2">
-            <h5 class="">{{ _LABEL.nuevoContacto }}</h5>
+            <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevoContacto }}</h5>
+            <h5 *ngIf="edicion" class="">{{ _LABEL.edicionContacto}}</h5>
+           
           </div>
-          <span class="btn btn-danger" (click)="mostrarDialogo = false"><i class="fas fa-times"></i></span>
+          <span class="btn btn-danger" (click)="cerrarFormulario()"><i class="fas fa-times"></i></span>
       </div>
       <div class="contenedor">
         <div class="card-body">
@@ -67,16 +73,19 @@
             <div class="row">
               <div class="form-group col">
                 <label for="">{{ _LABEL.alumno }}</label>
+
                 <!-- Alumno Seleccionado -->
                 <div class="input-group" *ngIf="!agregandoAlumno">
-                    <select class="custom-select">
-                      <option *ngFor="let alumno of alumnos" [value]="alumno.id" (click)="actualizarAlumnoSeleccionado(alumno)">
-                        <td> {{ alumno.nombre }}  {{ alumno.apellido }}</td>
+                  <p-dropdown [options]="alumnos" [(ngModel)]="selectedAlumno" optionLabel="nombreApellido"[style]="{'width':'300px'}" 
+                  (onClick)="actualizarAlumnoSeleccionado(selectedAlumno)"></p-dropdown>
+                  <!--<select class="custom-select" >
+                      <option *ngFor="let alumno of alumnos" [value]="alumno"(click)="actualizarAlumnoSeleccionado(alumno)" >
+                        {{ alumno.nombre }}  {{ alumno.apellido }}
                       </option>
-                    </select>
+                    </select>-->
 
                     <div class="input-group-append">
-                      <button class="btn btn-success" (click)="agregandoAlumno=true"><span>{{ _LABEL.nuevoAlumno }}</span></button>
+                      <button class="btn btn-success" (click)="agregarNuevoAlumno()"><span>{{ _LABEL.nuevoAlumno }}</span></button>
                     </div>
                 </div>
                 <div class="row">
@@ -88,8 +97,10 @@
                         <li> {{ _LABEL.fechaNacimiento }} : {{ _Util.convertirTimestamp(alumnoSeleccionado.fechaNacimiento) }}</li>
                       </ul>
                   </div>
-
                 </div>
+
+                <!-- Fin de alumno seleccionado  -->
+
                 <!-- Alumno Agregado -->
                 <div class="formularioAlumno border-top border-bottom" *ngIf="agregandoAlumno">
                   <div class="row mt-3">
@@ -102,7 +113,7 @@
                                 required
                                 minlength="3"
                                 maxlength="30"
-                                [(ngModel)]="alumnoNuevo.nombre"
+                                [(ngModel)]="contactoSeleccionado.alumno.nombre"
                                 [placeholder]="_LABEL.ingrese.nombre"
                                 [pattern]="_PATTERN.nombre"
                                 >
@@ -121,7 +132,7 @@
                                 required
                                 minlength="3"
                                 maxlength="30"
-                                [(ngModel)]="alumnoNuevo.apellido"
+                                [(ngModel)]="contactoSeleccionado.alumno.apellido"
                                 [placeholder]="_LABEL.ingrese.apellido"
                                 [pattern]="_PATTERN.nombre"
                                 >
@@ -141,7 +152,7 @@
                                 class="form-control"
                                 type="number"
                                 required
-                                [(ngModel)]="alumnoNuevo.dni"
+                                [(ngModel)]="contactoSeleccionado.alumno.dni"
                                 [placeholder]="_LABEL.ingrese.dni"
                                 [pattern]="_PATTERN.dni"
                                 >
@@ -156,7 +167,7 @@
                         <ng-datepicker
                                 style="position: relative;z-index: 10000"
                                 id="calendario"
-                                [(ngModel)]="dateNac"
+                                [(ngModel)]="contactoSeleccionado.alumno.fechaNacimiento"
                                 [options]="options"
                         ></ng-datepicker>
                       </div>
@@ -170,7 +181,7 @@
                                   class="form-control"
                                   type="email"
                                   required
-                                  [(ngModel)]="alumnoNuevo.email"
+                                  [(ngModel)]="contactoSeleccionado.alumno.email"
                                   [placeholder]="_LABEL.ingrese.email"
                                   [pattern]="_PATTERN.email"
                                   >
@@ -186,7 +197,7 @@
                                     #telefono="ngModel"
                                     class="form-control"
                                     type="text"
-                                    [(ngModel)]="alumnoNuevo.telefono"
+                                    [(ngModel)]="contactoSeleccionado.alumno.telefono"
                                     [placeholder]="_LABEL.ingrese.telefono"
                                     [pattern]="_PATTERN.telefono"
                                     >
@@ -198,7 +209,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col">
-                          <span class="btn btn-warning float-right" (click)="agregandoAlumno=false">
+                          <span class="btn btn-warning float-right" (click)="elegirAlumnoLista()">
                             {{ _LABEL.elegirAlumnoLista }} <i class="fas fa-undo"></i>
                           </span>
                         </div>
@@ -219,16 +230,11 @@
                 <label for="">{{ _LABEL_R.fecha }}</label>
                 <ng-datepicker
                                 #fechaContacto = "ngModel"
-                                [(ngModel)]="fechaContactoSeleccionado"
+                                [(ngModel)]="contactoSeleccionado.fecha"
                                 [options]="options"
                                 style="z-index: 1000; position: relative;"
-                        ></ng-datepicker>
-                <!-- <input
-                        type="date"
-                        required
-                        [(ngModel)]="contactoNuevo.fecha"
-                        [placeholder]="_LABEL.ingrese.fechaContacto"
-                        > -->
+                >
+                </ng-datepicker>
                 <div  *ngIf="fechaContacto.invalid && (fechaContacto.dirty || fechaContacto.touched)" class="alert alert-danger">
                   <div *ngIf="fechaContacto.errors.required">{{ _VALIDACION.requerido.fecha }}</div>
                 </div>
@@ -241,7 +247,7 @@
                         type="text"
                         class="form-control"
                         required
-                        [(ngModel)]="contactoNuevo.asunto"
+                        [(ngModel)]="contactoSeleccionado.asunto"
                         [placeholder]="_LABEL.ingrese.asunto"
                         >
                 <div  *ngIf="asuntoContacto.invalid && (asuntoContacto.dirty || asuntoContacto.touched)" class="alert alert-danger">
@@ -254,7 +260,7 @@
               <div class="form-group col">
                 <label for="">{{ _LABEL.descripcion }}</label>
                 <textarea
-                          [(ngModel)]="contactoNuevo.descripcion"
+                          [(ngModel)]="contactoSeleccionado.descripcion"
                           name=""
                           id=""
                           class="form-control"
@@ -262,38 +268,119 @@
                 </textarea>
               </div>
             </div>
-            <!-- Boton de Agregar Contacto CON ALUMNO SELECCIONADO-->
-            <div class="d-flex justify-content-end" *ngIf="!agregandoAlumno">
-                <button
-                      [disabled]="!alumnoSeleccionado.id ||
-                      fechaContacto.invalid ||
-                      asuntoContacto.invalid "
 
-                      class="btn btn-primary float-right"
-                      (click)="guardarContacto()"
-                >
-                    <span>{{ _LABEL.agregar }}</span>
-                </button>
+
+            <!-- Selección de curso/área -->
+            <h5>Interesado en</h5>
+            <div class="row">
+              <div class="col-6 form-group">
+                  <div class="form-check">
+                      <input  
+                              class="form-check-input"
+                              type="radio"
+                              name="exampleRadios"
+                              id="exampleRadios1"
+                              value="option1"
+                              (click)="mostrarSelectArea()"
+                              name="tipo"
+                              [checked]="seEligeArea"
+                      >
+                      <label class="form-check-label" for="exampleRadios1">
+                        Área
+                      </label>
+
+                              
+                    </div>
+                    <div class="form-check">
+                      <input 
+                              class="form-check-input"
+                              type="radio"
+                              name="exampleRadios"
+                              id="exampleRadios2"
+                              value="option2"
+                              (click)="mostrarSelectCurso()"
+                              name="tipo"
+                              [checked]="!seEligeArea"
+                      >
+                      <label class="form-check-label" for="exampleRadios2">
+                        Curso
+                      </label>
+                    </div>
+
+              </div>
+              <div class="col-6 form-group">
+                <div class="input-group" *ngIf="seEligeArea">
+                    <p-dropdown [options]="areas" [(ngModel)]="selectedArea" optionLabel="nombre"[style]="{'width':'300px'}" 
+                    ></p-dropdown>
+                </div>
+                <div class="input-group" *ngIf="!seEligeArea">
+                    <p-dropdown [options]="cursos" [(ngModel)]="selectedCurso" optionLabel="nombre"[style]="{'width':'300px'}" 
+                  ></p-dropdown>
+                </div>
+              </div>
+
             </div>
-            <!-- Boton de Agregar Contacto CON ALUMNO NUEVO-->
-            <div class="d-flex justify-content-end" *ngIf="agregandoAlumno">
-                <button class="btn btn-primary float-right "
-                        [disabled]="nombre?.invalid ||
-                                    apellido?.invalid ||
-                                    dni?.invalid ||
-                                    email?.invalid ||
-                                    telefono?.invalid ||
-                                    fechaContacto.invalid ||
-                                    asuntoContacto.invalid "
-                        (click)="guardar()"
-                         >
-                    <span>{{ _LABEL.agregar }}</span>
-                </button>
-            </div>
+            
+          </div>
         </div>
-      </div>
+        <!-- Boton de Agregar Contacto CON ALUMNO NUEVO-->
+        <!-- Boton de Agregar Contacto CON ALUMNO SELECCIONADO-->
+        <div class="d-flex justify-content-end p-3" >
+            <button
+                  *ngIf="!agregandoAlumno"
+                  [disabled]="!alumnoSeleccionado.id ||
+                  fechaContacto.invalid ||
+                  asuntoContacto.invalid "
+    
+                  class="btn btn-primary float-right"
+                  (click)="guardarContactoNuevo()"
+            >
+            <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+            <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+            </button>
+            <button 
+                    *ngIf="agregandoAlumno"
+                    class="btn btn-primary float-right "
+                    [disabled]="nombre?.invalid ||
+                                apellido?.invalid ||
+                                dni?.invalid ||
+                                email?.invalid ||
+                                telefono?.invalid ||
+                                fechaContacto.invalid ||
+                                asuntoContacto.invalid "
+                    (click)="guardarContactoNuevo()"
+                     >
+                 <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+                  <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+            </button>
+        </div>
 
     </div>
 </div>
 
+<!-- Fin del formulario -->
 
+<!-- Dialogo confirmacion eliminación -->
+<dialogo-confirmacion
+                      *ngIf="mostrarDialogoBorrar"
+                      (clickBotonCerrar)="ocultarDialogo()"
+                      (clickBotonIzquierdo)="ocultarDialogo()"
+                      (clickBotonDerecho)="eliminar()"
+                      [titulo]="_LABEL.eliminar.contacto"
+                      [texto]="textoEliminarContacto"
+
+>
+
+</dialogo-confirmacion>
+
+<dialogo-info
+              *ngIf="descripcionShowed"
+              [titulo]="contactoSeleccionado.asunto"
+              [subtituloIzquierdo]="fechaHoraContacto"
+              [subtituloDerecho]="contactoSeleccionado.alumno.nombre"
+              [texto]="contactoSeleccionado.descripcion"
+              (clickBotonCerrar)="descripcionShowed = false"
+              (clickBotonOk)="descripcionShowed = false"
+>
+
+</dialogo-info>
