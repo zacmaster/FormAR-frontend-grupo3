@@ -142,7 +142,10 @@ export var LABEL ={
         importeMatricula: "Importe de la mátricula",
         cupoMinimo: "Cantidad Mínima de Inscriptos",
         cupoMaximo: "Cantidad Máxima de Inscriptos",
-        nombreCursada: "Nombre de la cursada:"
+        nombreCursada: "Ingrese el nombre de la cursada",
+        matricula: "Ingrese el valor de la mátricula",
+        cuota: "Ingrese el valor de la cuota",
+        infoCursada: "Cursadas de"
     },
     boton: {
         inscribir:  "Inscribir",
@@ -173,6 +176,9 @@ export var LABEL ={
     info: {
         contacto: "Descripción del contacto"
     },
+    leyenda:{
+        alumnoSinCursadas: "Este alumno no tiene cursadas aún."
+    }
 }
 
 export const HVR ={

@@ -38,4 +38,8 @@
     overflow-y: auto;
 }
   
-  
+.contenedorTablaCursada{
+    height: 150px;
+    overflow-y: scroll;
+    width: 700px;
+}
