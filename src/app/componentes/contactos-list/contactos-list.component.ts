@@ -382,6 +382,13 @@ export class ContactosListComponent implements OnInit {
     this.contactoSeleccionado.copiar(contacto);
   }
 
+  blankSpaces() {
+    if (!this.contactoSeleccionado.asunto.trim().length) {
+      return true;
+    }
+    return false;
+  }
+
 
 
 }

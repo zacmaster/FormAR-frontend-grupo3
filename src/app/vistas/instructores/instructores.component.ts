@@ -345,8 +345,13 @@ export class InstructoresComponent  implements OnInit, DoCheck{
         
       })
   }
-  
 
+  blankSpaces() {
+    if (!this.instructorSeleccionado.nombre.trim().length || !this.instructorSeleccionado.apellido.trim().length) {
+      return true;
+    }
+    return false;
+  }
 }
 
 

@@ -330,7 +330,7 @@
                   *ngIf="!agregandoAlumno"
                   [disabled]="!alumnoSeleccionado.id ||
                   fechaContacto.invalid ||
-                  asuntoContacto.invalid "
+                  asuntoContacto.invalid || blankSpaces()"
     
                   class="btn btn-primary float-right"
                   (click)="guardarContactoNuevo()"
@@ -347,7 +347,7 @@
                                 email?.invalid ||
                                 telefono?.invalid ||
                                 fechaContacto.invalid ||
-                                asuntoContacto.invalid "
+                                asuntoContacto.invalid || blankSpaces()"
                     (click)="guardarContactoNuevo()"
                      >
                  <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
