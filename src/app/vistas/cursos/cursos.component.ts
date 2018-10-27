@@ -14,7 +14,7 @@ export class CursosComponent implements OnInit, DoCheck {
   
   cursos: Curso[] = [];
   areas: Area[] = [];
-  private cursoSeleccionado: Curso = this.newCurso();
+  cursoSeleccionado: Curso = this.newCurso();
   private areaSeleccionada: Area = this.newArea();
   busqueda: string = "";
   
@@ -55,7 +55,7 @@ export class CursosComponent implements OnInit, DoCheck {
   }
   ngDoCheck(){
     // console.log("area seleccionada: ",this.areaSeleccionada);
-    // console.log("curso seleccionado: ",this.cursoSeleccionado);
+     console.log("curso seleccionado: ",this.cursoSeleccionado);
     // console.log("ara de curso: ", this.cursoSeleccionado.area);
     // console.log("input: ", this.nombreNuevoArea)
     // console.log("cursos: ", this.cursos);
@@ -294,7 +294,10 @@ export class CursosComponent implements OnInit, DoCheck {
     this.cursoSeleccionado.area.copiar(this.areaSeleccionada);
   }
 
-  deshabilitarNuevaArea(): boolean{
+  deshabilitarNuevaArea(): boolean {
+    if (!this.nombreNuevoArea.trim().length) {
+      return true;
+    }
     return this.nombreNuevoArea.length < 3;
   }
 
