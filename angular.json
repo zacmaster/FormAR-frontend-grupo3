@@ -31,7 +31,13 @@
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
+<<<<<<< Updated upstream
 
+=======
+               "./node_modules/moment/min/moment.min.js",
+               "./node_modules/fullcalendar/dist/fullcalendar.js",
+               
+>>>>>>> Stashed changes
               "./node_modules/popper.js/dist/umd/popper.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js"
 

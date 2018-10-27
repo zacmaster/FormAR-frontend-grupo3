@@ -15,6 +15,14 @@ import { NgDatepickerModule } from 'ng2-datepicker';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {SpinnerModule} from 'primeng/spinner';
+<<<<<<< Updated upstream
+=======
+
+
+import {FullCalendarModule} from 'primeng/fullcalendar';
+
+
+>>>>>>> Stashed changes
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './vistas/login/login.component';
@@ -75,7 +83,14 @@ import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.co
     ReactiveFormsModule,
     CalendarModule,
     MultiSelectModule,
+<<<<<<< Updated upstream
     SpinnerModule
+=======
+    SpinnerModule,
+    DropdownModule,
+    FullCalendarModule,
+    AutoCompleteModule
+>>>>>>> Stashed changes
   ],
   providers: [
     AlumnoService

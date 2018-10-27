@@ -1,0 +1,14 @@
+<div class="contenedor-mayor">
+<div class="contenedor d-flex justify-content-center align-items-center justify-content-center">
+  <div  class="dialogo bg-light p-1">
+    <div class="dialogoHeader d-flex justify-content-between">
+      <div></div>
+      <div class="titulo text-center" ><h5> {{ titulo }} </h5></div>
+      <span class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
+    </div>
+    <div class="dialogoBody p-3 pt-3 text-center">
+      <p-fullCalendar [events]="events" [options]="options" ></p-fullCalendar>
+    </div>
+  </div>
+</div>
+</div>

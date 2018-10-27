@@ -118,6 +118,7 @@ export var LABEL ={
     bajaInstructor:"Eliminar instructor",
     bajaSala:"Eliminar Sala",
     seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
+    horarioCursada:"Horario de cursada",
     ingrese: {
         nombre: "Ingrese el nombre",
         apellido: "Ingrese el apellido",
