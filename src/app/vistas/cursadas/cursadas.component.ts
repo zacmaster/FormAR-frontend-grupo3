@@ -65,6 +65,12 @@ export class CursadasComponent implements OnInit {
   alumnoSeleccionado: Alumno = new Alumno();
   edicion: boolean = false;
 
+  //parametros calendario
+  idSeleccionado: number = 0;
+  esSala: boolean= false;
+  esInstructor: boolean = false;
+  mostrarCalendario: boolean = false;
+
   sabado;
 
   cursoSeleccionado = new Curso();
@@ -151,6 +157,29 @@ export class CursadasComponent implements OnInit {
         
          
     this.agregar(this.cursadaSeleccionada);
+  }
+  verCalendarioInstructor(){
+    if(this.selectedInstructor.id>0){
+      this.esInstructor=true;
+      this.idSeleccionado=this.selectedInstructor.id;
+      this.mostrarCalendario=true;  
+    }
+    
+  }
+  verCalendarioSala(){
+    if(this.selectedSala.id>0){
+      this.esSala=true;
+      this.idSeleccionado=this.selectedSala.id;
+      this.mostrarCalendario=true;
+    }
+    
+  }
+  
+  ocultarCalendario(){
+    this.esSala=false;
+    this.esInstructor=false;
+    this.idSeleccionado=0;
+    this.mostrarCalendario=false;
   }
 
   validacionNombre(){

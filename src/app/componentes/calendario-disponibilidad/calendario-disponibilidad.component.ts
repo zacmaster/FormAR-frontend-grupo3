@@ -41,10 +41,21 @@ export class CalendarioDisponibilidadComponent implements OnInit {
         header: {
           left: 'prev,next',
           center: 'title',
-          right: 'month,agendaWeek,agendaDay'
+          right: 'month,agendaWeek,agendaDay,list,today'
         },
-        locale: 'es'
-      
+        locale: 'es',
+        buttonText:{
+          today:    "Hoy",
+          month:    "Mes",
+          week:     "Semana",
+          day:      "Dia",
+          list:     "Lista"
+        },
+        titleFormat: { 
+          year: 'numeric', 
+        month: 'short',
+         day: 'numeric' },
+         allDayText : 'Todo el dia'
       };
      
     
