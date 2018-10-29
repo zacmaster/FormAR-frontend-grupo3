@@ -147,7 +147,7 @@
 <!-- Formulario:  -->
 
 <div class="contenedor-formulario" *ngIf="mostrarDialogoAB">
-  <div class="card mt-4 w-50 mx-auto">
+  <div class="card mt-2 w-50 mx-auto">
       <div class="card-head d-flex  w-100 justify-content-between">
         <div></div>
         <div class="pt-2">
@@ -334,7 +334,7 @@
               </div>
 
 
-                  <table  style="border:hidden;">
+                  <!-- <table  style="border:hidden;">
                       <thead>
                           <tr>
                               <th>Dia</th>
@@ -384,14 +384,20 @@
                               </td>
                           </tr>
                       </tbody>
-                  </table>  
+                  </table>   -->
           </div>
         </div>
 
-        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid " (click)="guardar()">
-          <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
-          <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
-        </button>
+        <div class="pr-4 pb-4">
+          <button
+                  class="btn btn-primary float-right "
+                  [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid "
+                  (click)="guardar()"
+          >
+            <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+            <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+          </button>
+        </div>
     </div>
 </div>
 
