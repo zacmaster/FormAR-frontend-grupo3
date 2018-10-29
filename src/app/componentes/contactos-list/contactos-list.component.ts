@@ -374,8 +374,7 @@ export class ContactosListComponent implements OnInit {
   mostrarDescripcion(contacto: Contacto){
     console.log("Este es el contacto que recibo: ",contacto);
     
-    this.fechaHoraContacto =  this._Util.convertirTimestamp(contacto.fecha) 
-                              +' '+this._Util.convertirTime(contacto.fecha);
+    this.fechaHoraContacto =  this._Util.convertirTimestamp(contacto.fecha);
 
     this.descripcionShowed = true;
     this.contactoSeleccionado = new Contacto();
