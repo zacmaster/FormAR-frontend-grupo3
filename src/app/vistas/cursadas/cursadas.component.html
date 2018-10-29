@@ -25,7 +25,8 @@
                 </tr>
             </thead>
                 <tbody >
-                  <tr *ngFor="let cursada of cursadas | search: {nombre: busqueda}" >
+                  <!-- <tr *ngFor="let cursada of cursadas | search: {nombre: busqueda}" > -->
+                  <tr *ngFor="let cursada of cursadas" >
                     <td> {{ cursada.nombre }}</td>
                     <td> {{ cursada.curso.descripcion }} </td>
                     <td> {{ cursada.curso.nombre }} </td>
@@ -304,7 +305,7 @@
                              
                           </tbody>
                       </table>  
-                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.disponibilidadHoraria}}}</p>
+                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.disponibilidadHoraria }}</p>
               </div>
               </div>
             <!-- FIN HORARIO DE CURSADA -->
@@ -329,6 +330,28 @@
 ></calendario-disponibilidad>
 <ng4-loading-spinner></ng4-loading-spinner>
   
+
+
+  <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">
+    <div class="dialogo bg-light p-3 contenedor-form" style="width: 700px">
+      <div class="dialogoHeader">
+        <div class="text-center">{{ _LABEL.tituloInscipcion }}</div>
+      </div>
+      <div style="overflow-y: scroll;overflow-x: hidden; height: 65vh">
+        <p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"
+        [dropdown]="true"></p-autoComplete>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
 
 
   <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">

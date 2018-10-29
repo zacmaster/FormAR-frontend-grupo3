@@ -141,6 +141,17 @@
                   <button class="btn btn-success" (click)="nuevoAlumno()"><span>{{ _LABEL.nuevoAlumno }}</span></button>
                 </div>
             </div>
+            <table class="table" style="margin-bottom: 0">
+                <thead class="thead-light">
+                    <tr>
+                      <th>{{ _LABEL.alumno }}</th>
+                      <th>{{ _LABEL.telefono }}</th>
+                      <th>{{ _LABEL.email }}</th>
+                      <th>{{ _LABEL.dni }}</th>
+                      <th>{{ _LABEL.acciones }}</th>
+                    </tr>
+                </thead>
+            </table>
             <div class="table-responsive">
               <table class="table table-hover bg-light fixed_header table-fixed">
                 <thead class="thead-light">
@@ -166,11 +177,11 @@
                             <i class="fas fa-file-signature"></i>
                           </button>
                           
+                          <!-- [disabled]="! tieneCursadas(alumno)" -->
                           <button
                                   class="btn btn-warning mr-2"
                                   [title]="_LABEL.boton.verCursadas"
                                   (click)="alumnoSeleccionado.copiar(alumno);mostrarCursadasAlumno();"
-                                  [disabled]="! tieneCursadas(alumno)"
                                   >
                             <i class="fas fa-book-reader"></i>
                           </button>
@@ -235,16 +246,17 @@
         </div>
         <div class="col-7">
             <div class="form-group w-100 text-center">
-                <select name="" id="" class="custom-select">
+                <p-dropdown [options]="cursadasFiltradas" [(ngModel)]="selectedCursada" optionLabel="nombre" [style]="{'width':'150px'}" ></p-dropdown>
+                <!--<select name="" id="" class="custom-select">
                   <option
                       value=""
-                      *ngFor="let cursada of cursadas;"
+                      *ngFor="let cursada of cursadas"
                       (click)="cursadaSeleccionada.copiar(cursada)"
   
                   >
                      {{cursada.curso.nombre}} {{ _Util.convertirTimestamp(cursada.fechaInicio) }}
                   </option>
-                </select>
+                </select>-->
               </div>
         </div>
       </div>
@@ -253,7 +265,7 @@
           <button class="btn btn-danger" (click)="clickCancelarNuevaInscripcion()">
             {{ _LABEL.cancelar }}
           </button>
-          <button class="btn btn-primary" (click)="clickConfirmarInscripcion()">
+          <button class="btn btn-primary" (click)="clickConfirmarInscripcion()" [disabled]="selectedCursada.id == 0">
             {{ _LABEL.inscribir}} <span><i class="fas fa-user-check"></i></span>
           </button>
         </div>
@@ -263,3 +275,43 @@
     </div>
   </div>
 </div>
+
+<!-- Dialogo que muestra la cursada a la que el alumno está inscripto -->
+
+<dialogo-info
+  [titulo]="tituloDialogoCursada"
+  [subtituloIzquierdo]="fechaDialogoCursada"
+  [texto]="textoDialogoCursada"
+  *ngIf="cursadasAlumnoShowed && alumnoTieneCursadas"
+  (clickBotonCerrar)="ocultarCursadasAlumno()"
+  (clickBotonOk)="ocultarCursadasAlumno()"
+>
+<div class="contenedorTablaCursada">
+    <table class="table table-hover bg-light w-100">
+        <thead class="thead-light">
+            <tr>
+              <th>{{ _LABEL.nombre }}</th>
+              <th>{{ _LABEL.curso }}</th>
+              <th>{{ _LABEL.fechaInicio }}</th>
+              <th>{{ _LABEL.fechaFin }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cursada of cursadasAlumnos">
+              <td>{{ cursada.nombre }}</td>
+              <td>{{ cursada.curso.nombre }}</td>
+              <td>{{ _Util.convertirTimestamp(cursada.fechaInicio)}}</td>
+              <td>{{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
+            </tr>
+        </tbody>
+      </table>
+</div>
+</dialogo-info>
+
+<dialogo-info
+*ngIf="cursadasAlumnoShowed && !alumnoTieneCursadas"
+[titulo]="tituloDialogoCursada"
+[texto]="_LABEL.leyenda.alumnoSinCursadas"
+(clickBotonCerrar)="ocultarCursadasAlumno()"
+(clickBotonOk)="ocultarCursadasAlumno()"
+></dialogo-info>

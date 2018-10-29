@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     <div  class="dialogo bg-light p-1">
       <div class="dialogoHeader d-flex justify-content-between">
         <div></div>
-        <div class="titulo text-center" ><h5> {{ titulo }} </h5></div>
+        <div class="titulo text-center" ><div> {{ titulo }} </div></div>
         <span class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
       </div>
       <div class="dialogoBody p-3 pt-3 text-center">
@@ -16,6 +16,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
           <div class="subtitulo font-weight-bold">{{ subtituloDerecho }}</div>
         </div>
         <p> {{texto}} </p>
+        <ng-content></ng-content>
       </div>
       <div class="dialogoFooter d-flex mx-5 mb-3 justify-content-center">
         <button class="btn btn-primary ml-3"  (click)="clickBtnOk()">{{ textoBoton }}</button>
@@ -39,7 +40,7 @@ styles: [
       min-width: 30vw;
       max
     }
-    h5{
+    .titulo div{
       margin: auto;
       padding-top: 5px;
       font-weight: bolder;

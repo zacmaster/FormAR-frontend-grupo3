@@ -48,7 +48,13 @@ export class AlumnosListComponent implements OnInit {
   cursadaSeleccionada: Cursada = new Cursada();
   nombreAlumno: string = '';
   busqueda: string = "";
+  cursadasAlumnos;
+  cursadasFiltradas: Cursada[];
+  selectedCursada: Cursada = new Cursada();
   inscripcionShowed: boolean = false;
+  cursadasAlumnoShowed: boolean = false;
+  alumnoTieneCursadas: boolean = false;
+
 
   textoDlgEliminar: string;
 
@@ -59,10 +65,16 @@ export class AlumnosListComponent implements OnInit {
    _PATTERN = PATTERNS;
    _Util = Util;
 
+
+   tituloDialogoCursada: string = this._LABEL.titulo.infoCursada;
+   fechaDialogoCursada: string;
+   textoDialogoCursada: string;
+
+
   ngDoCheck(){
     // console.log("alumnos", this.alumnos);
     // console.log("cursadas", this.cursadas);
-    
+    //console.log("cursada seleccionada",this.selectedCursada);
     
   }
 
@@ -182,15 +194,34 @@ export class AlumnosListComponent implements OnInit {
   editarAlumno(){
     this.edicion = true;
     this.mostrarDialogoAB = true;
+    
     this.dateNac = new Date(this.alumnoSeleccionado.fechaNacimiento);
   }
 
 
   clickCancelarNuevaInscripcion(){
+    let cursadaAux: Cursada = new Cursada();
+    cursadaAux.id=0;
+    this.selectedCursada=cursadaAux;
     this.inscripcionShowed = false;
   }
   clickInscripcionAlumno(alumno){
     this.alumnoSeleccionado.copiar(alumno);
+    let cursadasAlumno: Cursada[] = []; 
+    this._inscripcionService.getCursadasDeAlumno(this.alumnoSeleccionado.id).toPromise().then(
+      cursadas  => {
+        console.log("cursadas alumno",cursadas);
+        cursadas.forEach(element => {
+          
+            cursadasAlumno.push(element);
+            
+        });
+        this.cursadasFiltradas = this.getCursadasFiltradas(this.cursadas,cursadasAlumno);
+        if(this.cursadasFiltradas.length>0){
+          this.selectedCursada = this.cursadasFiltradas[0];
+        }
+      });
+    
     this.inscripcionShowed = true;
   }
   clickConfirmarInscripcion(){
@@ -202,28 +233,43 @@ export class AlumnosListComponent implements OnInit {
     this.inscripcionShowed = false;
   }
 
+  
   mostrarCursadasAlumno(){
-
-  }
-
-  tieneCursadas(alumno: Alumno): boolean{
     
-    // TO-DO: Agregar alumnos a cursadas(back-end)
+    this._inscripcionService.getCursadasDeAlumno(this.alumnoSeleccionado.id)
+    .toPromise()
+    .then(cursadas => {
+      this.tituloDialogoCursada = this.tituloDialogoCursada +
+                                  ` ${this.alumnoSeleccionado.nombre} ${this.alumnoSeleccionado.apellido}`;
+                                  
+      this.cursadasAlumnos = cursadas;
 
-
-    // let tieneCursada: boolean= false;
-    // if(this.cursadas.length > 0 ){
-    //   this.cursadas.forEach(cursada => {
-    //     cursada.forEach(a => {
-    //       if(a.id == alumno.id)
-    //         tieneCursada = true;
-    //     })
-    //   })
-    // }
-    // return tieneCursada
-    return false
+      console.log("cursadasAlumno",this.cursadasAlumnos);
+      if(this.cursadasAlumnos.length > 0){
+        this.alumnoTieneCursadas = true;                              
+      }
+      else{
+        this.alumnoTieneCursadas = false;                              
+      }
+      this.cursadasAlumnoShowed = true;  
+    })
   }
 
+  ocultarCursadasAlumno(){
+    this.cursadasAlumnoShowed = false;
+    this.tituloDialogoCursada = this._LABEL.titulo.infoCursada;
+  }
+
+
+  getCursadasFiltradas(cursadasTodas: Cursada[], cursadasInscriptas: Cursada[]): Cursada[]{
+    let cursadasAux = [];
+    cursadasTodas.forEach(cursada =>{
+      if(!cursadasInscriptas.some(e => e.id === cursada.id))
+        cursadasAux.push(cursada);
+    })
+    console.log("cursadasAux: ",cursadasAux);
+    return cursadasAux;
+  }
 
 
 }

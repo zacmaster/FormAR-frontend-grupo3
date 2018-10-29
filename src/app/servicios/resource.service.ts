@@ -20,28 +20,21 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
     var url = `${this.url}/${this.endpoint}`;
     console.log("url to post: ", url);
     console.log("item", item);
-    
-    
     return this.httpClient
       .post<T>(url, item,this.httpOptions)
       .pipe(catchError(this.handleError))
   }
+
   public read(id: number): Observable<I>{
     return this.httpClient
       .get<I>(`${this.url}/${this.endpoint}/${id}`)
       .pipe(catchError(this.handleError))
   }
 
-  
   public update(item: T): Observable<T>{
-
     // console.log("item:", item);
-    
     // let url = `${this.url}/${this.endpoint}/${item.id}`; //for json-server
     let url = `${this.url}/${this.endpoint}`; //for real api
-    // console.log("url:::::   ",url);
-    
- 
     return this.httpClient
     .put<T>(url, item,this.httpOptions)
     .pipe(catchError(this.handleError))
@@ -60,6 +53,10 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
     return this.httpClient.get<I[]>(url)
   }
 
+  public listURL(url): Observable<I[]>{
+    return this.httpClient.get<I[]>(url);
+  }
+  
 
 
   private handleError(error: HttpErrorResponse) {

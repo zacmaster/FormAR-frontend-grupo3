@@ -21,6 +21,8 @@ import * as esLocale from 'date-fns/locale/es';
 import { CompileShallowModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { npost } from 'q';
 import { isTuesday } from 'date-fns';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { AlumnoService } from 'src/app/servicios/alumno.service';
 
 @Component({
   selector: 'app-cursadas',
@@ -34,6 +36,7 @@ export class CursadasComponent implements OnInit {
     
     private _cursadaService: CursadaService,
     private _cursoService: CursoService,
+    private _alumnoService: AlumnoService,
     private _instructorService : InstructorService,
     private _salasService : SalaService,
     private _spinnerService: Ng4LoadingSpinnerService,
@@ -56,6 +59,7 @@ export class CursadasComponent implements OnInit {
   inscribiendo: boolean = false;
   infoShowed: boolean = false;
   horarioDisponibilidad: boolean = false;
+
 
   cursadaSeleccionada: Cursada = this.newCursada();
   alumnos: Alumno[];
@@ -341,7 +345,18 @@ export class CursadasComponent implements OnInit {
       this.busqueda = undefined;
     })
   }
-  
+
+  getAlumnos(){
+    this.alumnos = [];
+    this._alumnoService.getAlumnos()
+    .subscribe(alumnos => alumnos.forEach(alumno => {
+      let alumnoAux = new Alumno();
+      alumnoAux.copiar(alumno);
+      alumnos.push(alumnoAux);
+    }))
+
+  }
+
   private newCursada(): Cursada{
     let cursada = new Cursada();
     return cursada;
@@ -440,11 +455,6 @@ export class CursadasComponent implements OnInit {
        this.getSalas();
   }
 
-  ngDoCheck(){
-    // console.log(this.selectedSala);
-    // console.log(this.selectedInstructor);
-    // console.log(this.selectedCurso);
-  }
 
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
@@ -469,7 +479,27 @@ export class CursadasComponent implements OnInit {
     }
  
   }
+  // METODOS DEL SISTEMA
 
+  
+
+  clickInscribir(cursada: Cursada){
+    this.inscribiendo = true;
+  }
+
+  search(event){
+    console.log("Alumnos :", this.alumnos);
+    
+    // this.alumnos.forEach(alumno => {
+    //   this.results.push(alumno.nombre)
+    // })
+  }
+
+  ngDoCheck(){
+    console.log("Cursadas: ", this.cursadas);
+    
+    // console.log("sabado: ",this.sabado);
+  }
 
 }
 
