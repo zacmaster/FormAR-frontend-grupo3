@@ -7,7 +7,12 @@
       <span class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
     </div>
     <div class="dialogoBody p-3 pt-3 text-center">
-      <p-fullCalendar [events]="events" [options]="options" ></p-fullCalendar>
+      <div id='calendar'></div>
+      <!--<p-fullCalendar [events]="events" [options]="options" ></p-fullCalendar>-->
+    </div>
+    <div class="dialogoFooter" >
+      <div style="padding:5px;background-color:#0B610B;width: 80px;"> Tentativo </div>
+      <div style="padding:5px;background-color:#FF0000;width: 80px;"> Definitivo </div> 
     </div>
   </div>
 </div>

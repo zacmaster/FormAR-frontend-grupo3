@@ -17,6 +17,9 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {DropdownModule} from 'primeng/dropdown';
 import {SpinnerModule} from 'primeng/spinner';
 
+import {CheckboxModule} from 'primeng/checkbox';
+
+
 
 import {FullCalendarModule} from 'primeng/fullcalendar';
 
@@ -47,6 +50,9 @@ import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/d
 import { AlumnoService } from './servicios/alumno.service';
 import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.component';
 import { CalendarioDisponibilidadComponent } from './componentes/calendario-disponibilidad/calendario-disponibilidad.component';
+import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
+import { AsistenciaComponent } from './vistas/asistencia/asistencia.component';
+import { NotasComponent } from './vistas/notas/notas.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +76,9 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
     DialogoInscripcionComponent,
     DialogoInfoComponent,
     CalendarioDisponibilidadComponent,
+    InstructorHomeComponent,
+    AsistenciaComponent,
+    NotasComponent,
     
    
   ],
@@ -87,7 +96,8 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
     SpinnerModule,
     DropdownModule,
     FullCalendarModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    CheckboxModule
   ],
   providers: [
     AlumnoService

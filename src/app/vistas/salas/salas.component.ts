@@ -47,7 +47,7 @@ export class SalasComponent{
     }
   
     ngDoCheck(){
-      console.log(this.salaSeleccionada);
+     
   
     } 
 

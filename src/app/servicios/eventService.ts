@@ -21,14 +21,18 @@ export class EventService {
                   let clase = new MyEvent();
                  
                   if(aux.ocupacionTentativa=true){
-                    clase.title= auxiliar.nombreCursada+"-" + "Tentativo" ;
+                    clase.title= auxiliar.nombreCursada ;
+                    clase.backgroundColor="green";
                   }
                   else{
-                    clase.title= auxiliar.nombreCursada+"-" + "Definitivo";
+                    clase.title= auxiliar.nombreCursada;
+                    clase.backgroundColor="red";
                   }
                   clase.start= this.dateToString(new Date(horario.fecha),new Date(horario.horaInicio));
                   
                   clase.end = this.dateToString(new Date(horario.fecha),new Date(horario.horaFin));
+                  
+                  clase.backgroundColor="red";
                   this.eventosAux.push(clase);
               })
             })
@@ -45,13 +49,18 @@ export class EventService {
               aux.clases.forEach(horario=>{
                   let clase = new MyEvent();
                   if(aux.ocupacionTentativa=true){
-                    clase.title= auxiliar.nombreCursada+"-" + "Tentativo" ;
+                    clase.title= auxiliar.nombreCursada ;
+                    clase.backgroundColor="green";
+
                   }
                   else{
-                    clase.title= auxiliar.nombreCursada+"-" + "Definitivo";
+                    clase.title= auxiliar.nombreCursada;
+                    clase.backgroundColor="red";
                   }
                   clase.start= this.dateToString(new Date(horario.fecha),new Date(horario.horaInicio));
                   clase.end = this.dateToString(new Date(horario.fecha),new Date(horario.horaFin));
+                 
+                
                   this.eventosAux.push(clase);
               })
             })
@@ -100,5 +109,7 @@ export class EventService {
       title: string;
       start: string;
       end: string;
+      backgroundColor: string;
+      eventClick: Function ;
      
     }
