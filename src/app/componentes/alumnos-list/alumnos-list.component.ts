@@ -206,6 +206,7 @@ export class AlumnosListComponent implements OnInit {
     this.inscripcionShowed = false;
   }
   clickInscripcionAlumno(alumno){
+    this.alumnoSeleccionado = new Alumno();
     this.alumnoSeleccionado.copiar(alumno);
     let cursadasAlumno: Cursada[] = []; 
     this._inscripcionService.getCursadasDeAlumno(this.alumnoSeleccionado.id).toPromise().then(
@@ -217,7 +218,7 @@ export class AlumnosListComponent implements OnInit {
             
         });
         this.cursadasFiltradas = this.getCursadasFiltradas(this.cursadas,cursadasAlumno);
-        if(this.cursadasFiltradas.length>0){
+        if(this.cursadasFiltradas.length > 0){
           this.selectedCursada = this.cursadasFiltradas[0];
         }
       });
@@ -227,7 +228,7 @@ export class AlumnosListComponent implements OnInit {
   clickConfirmarInscripcion(){
     let nuevaInscripcion: Inscripcion = new Inscripcion();
     nuevaInscripcion.idAlumno = this.alumnoSeleccionado.id;
-    nuevaInscripcion.idCursada = this.cursadaSeleccionada.id;
+    nuevaInscripcion.idCursada = this.selectedCursada.id;
     this._inscripcionService.addInscripcion(nuevaInscripcion).subscribe();
     
     this.inscripcionShowed = false;

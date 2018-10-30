@@ -149,7 +149,8 @@ export var LABEL ={
         nombreCursada: "Ingrese el nombre de la cursada",
         matricula: "Ingrese el valor de la mátricula",
         cuota: "Ingrese el valor de la cuota",
-        infoCursada: "Cursadas de"
+        infoCursada: "Cursadas de",
+        inscripcion: "Nueva inscripción"
     },
     boton: {
         inscribir:  "Inscribir",
@@ -178,7 +179,9 @@ export var LABEL ={
         contacto: "Eliminar contacto"
     },
     info: {
-        contacto: "Descripción del contacto"
+        contacto: "Descripción del contacto",
+        cursada: "Detalles de la cursada",
+        alumnosEnCursada: "Ver los alumnos inscriptos en la cursada",
     },
     error: {
         horarioCursada: "El instructor seleccionado no se encuentra disponible en el horario elegido"

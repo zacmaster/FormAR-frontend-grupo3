@@ -235,17 +235,13 @@
         </div>
         <div class="col-7">
             <div class="form-group w-100 text-center">
-                <p-dropdown [options]="cursadasFiltradas" [(ngModel)]="selectedCursada" optionLabel="nombre" [style]="{'width':'150px'}" ></p-dropdown>
-                <!--<select name="" id="" class="custom-select">
-                  <option
-                      value=""
-                      *ngFor="let cursada of cursadas"
-                      (click)="cursadaSeleccionada.copiar(cursada)"
-  
-                  >
-                     {{cursada.curso.nombre}} {{ _Util.convertirTimestamp(cursada.fechaInicio) }}
-                  </option>
-                </select>-->
+                <p-dropdown
+                            [options]="cursadasFiltradas"
+                            [(ngModel)]="selectedCursada"
+                            optionLabel="nombre"
+                            [filter]="true"
+                            [style]="{'width':'150px'}" >
+                </p-dropdown>
               </div>
         </div>
       </div>

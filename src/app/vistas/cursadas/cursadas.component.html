@@ -1,3 +1,71 @@
+<dialogo-confirmacion
+                      *ngIf="inscribiendo"
+                      [titulo]="_LABEL.titulo.inscripcion"
+                      [botonCerrar]="false"
+                      (clickBotonIzquierdo)="cerrarDialogoInscripcion()"
+                      (clickBotonDerecho)="clickConfirmarInscripcion()"
+                      [textoBotonIzquierdo]="_LABEL.cancelar"
+                      [textoBotonDerecho]="_LABEL.inscribir"
+                      texto="Seleccione un alumno"
+>
+
+    <p-dropdown
+                [options]="alumnosFiltrados"
+                [(ngModel)]="selectedAlumno"
+                optionLabel="nombreApellido"
+                [filter]="true"
+                [style]="{'width':'300px'}" 
+    ></p-dropdown>
+    <table class="table bg-light table-hover" style="width: 400px; margin: 20px 0;">
+      <thead class="thead-light">
+        <tr>
+          <th>{{ _LABEL.nombre }}</th>
+          <th>{{ _LABEL.apellido }}</th>
+          <th>{{ _LABEL.dni }}</th>
+        </tr>
+      </thead>
+      <tbody class="border border-light">
+        <tr>
+          <td>{{ selectedAlumno.nombre }}</td>
+          <td>{{ selectedAlumno.apellido }}</td>
+          <td>{{ selectedAlumno.dni}}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    
+  </dialogo-confirmacion>
+  
+  
+  
+  <dialogo-info
+    *ngIf="mostrandoAlumnosInscriptos"
+    titulo="Alumnos inscriptos en la cursada"
+    [texto]="cursadaSeleccionada.nombre"
+    (clickBotonCerrar)="mostrandoAlumnosInscriptos = false"
+    (clickBotonOk)="mostrandoAlumnosInscriptos = false"
+  >
+  <div style="max-height: 400px; overflow-y: scroll;">
+    <table class="table bg-light table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>{{ _LABEL.nombre }}</th>
+          <th>{{ _LABEL.apellido }}</th>
+          <th>{{ _LABEL.dni }}</th>
+        </tr>
+    </thead>
+      <tbody>
+        <tr *ngFor="let alumno of alumnosEnCursada">
+          <td>{{ alumno.nombre }}</td>
+          <td>{{ alumno.apellido }}</td>
+          <td>{{ alumno.dni }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</dialogo-info>
+
+
 <div class="p-0">
     <div class="bg-light">
         <div class="input-group py-4 col-5">
@@ -36,9 +104,17 @@
                       <button
                             (click)="cursadaSeleccionada.copiar(cursada);mostrarInfo()"
                             class="btn btn-warning mr-2"
-                            [title]="_LABEL.info.contacto">
+                            [title]="_LABEL.info.cursada"
+                            style="margin-right: 20px;"
+                            >
                       <i class="fas fa-info"></i>
                     </button>
+                      <button
+                            (click)="mostrarAlumnosEnCursada(cursada)"
+                            class="btn btn-warning mr-2"
+                            [title]="_LABEL.info.alumnosEnCursada"
+                      > 
+                      <i class="fas fa-users"></i></button>
                     </td>
                     <td>
                       <button class="btn btn-info mr-2" (click)="clickInscribir(cursada)">
@@ -263,7 +339,7 @@
                           <tbody>
                               <tr *ngFor="let field of fieldArray; let i = index">
                                   <td>
-                                      <select class="form-control" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
+                                      <select class="custom-select" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
                                           <option *ngFor="let dia of dias" [value]="dia.dia">
                                             {{ dia.dia }}
                                           </option>
@@ -283,7 +359,7 @@
                               </tr>
                               <tr>
                                   <td>
-                                      <select class="form-control" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
+                                      <select class="custom-select" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
                                           <option *ngFor="let dia of dias" [value]="dia.dia">
                                             {{ dia.dia }}
                                           </option>
@@ -322,17 +398,18 @@
       </div>
   </div>
   <!--Calendario-->
-  <calendario-disponibilidad *ngIf="mostrarCalendario"
-  (clickBotonCerrar)="ocultarCalendario()"
-  [id]= idSeleccionado
-  [esSala]=esSala
-  [esInstructor]= esInstructor
+  <calendario-disponibilidad 
+                              *ngIf="mostrarCalendario"
+                              (clickBotonCerrar)="ocultarCalendario()"
+                              [id]= idSeleccionado
+                              [esSala]=esSala
+                              [esInstructor]= esInstructor
 ></calendario-disponibilidad>
-<ng4-loading-spinner></ng4-loading-spinner>
   
 
 
-  <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">
+
+  <!-- <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">
     <div class="dialogo bg-light p-3 contenedor-form" style="width: 700px">
       <div class="dialogoHeader">
         <div class="text-center">{{ _LABEL.tituloInscipcion }}</div>
@@ -342,29 +419,7 @@
         [dropdown]="true"></p-autoComplete>
       </div>
     </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-  <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">
-    <div class="dialogo bg-light p-3 contenedor-form" style="width: 700px">
-      <div class="dialogoHeader">
-        <div class="text-center">{{ _LABEL.tituloInscipcion }}</div>
-      </div>
-      <div style="overflow-y: scroll;overflow-x: hidden; height: 65vh">
-        <p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"
-        [dropdown]="true"></p-autoComplete>
-      </div>
-    </div>
-  </div>
+  </div> -->
 
 
 
@@ -372,15 +427,12 @@
 
 
 <!-- 
-<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
-                      (clickBotonCerrar)="ocultarDialogo()"
-                      (clickBotonIzquierdo)="ocultarDialogo()"
-                      (clickBotonDerecho)="eliminar()"
-                      [titulo]="dlg.titulo"
-                      [texto]="dlg.texto"
+<dialogo-confirmacion *ngIf="inscribiendo"
                       >
+                      
 
-</dialogo-confirmacion>
- -->
+</dialogo-confirmacion> -->
+
+
 
 <ng4-loading-spinner></ng4-loading-spinner>

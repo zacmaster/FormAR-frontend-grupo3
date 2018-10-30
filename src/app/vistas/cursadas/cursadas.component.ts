@@ -23,6 +23,8 @@ import { npost } from 'q';
 import { isTuesday } from 'date-fns';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { AlumnoService } from 'src/app/servicios/alumno.service';
+import { Inscripcion } from '../../modelos/inscripcion'
+import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 
 @Component({
   selector: 'app-cursadas',
@@ -40,6 +42,7 @@ export class CursadasComponent implements OnInit {
     private _instructorService : InstructorService,
     private _salasService : SalaService,
     private _spinnerService: Ng4LoadingSpinnerService,
+    private _inscripcionService: InscripcionService
   ) { }
 
   _LABEL = LABEL;
@@ -53,18 +56,24 @@ export class CursadasComponent implements OnInit {
   salas = [];
   _Util = Util;
   fechaInicio: number;
-
+  
   pruebaCurso;
-
+  
   inscribiendo: boolean = false;
   infoShowed: boolean = false;
   horarioDisponibilidad: boolean = false;
-
-
+  
+  
+  
+  
   cursadaSeleccionada: Cursada = this.newCursada();
   alumnos: Alumno[];
+  alumnosEnCursada: Alumno[];
 
 
+
+  alumnosFiltrados: Alumno[];
+  selectedAlumno: Alumno = new Alumno();
   results: string[] = ['Zacarías','Jorge'];
   alumnoSeleccionado: Alumno = new Alumno();
   edicion: boolean = false;
@@ -74,6 +83,8 @@ export class CursadasComponent implements OnInit {
   esSala: boolean= false;
   esInstructor: boolean = false;
   mostrarCalendario: boolean = false;
+  mostrandoAlumnosInscriptos: boolean = false;
+
 
   sabado;
 
@@ -349,12 +360,15 @@ export class CursadasComponent implements OnInit {
   getAlumnos(){
     this.alumnos = [];
     this._alumnoService.getAlumnos()
-    .subscribe(alumnos => alumnos.forEach(alumno => {
-      let alumnoAux = new Alumno();
-      alumnoAux.copiar(alumno);
-      alumnos.push(alumnoAux);
-    }))
-
+    .subscribe(alumnos => {
+      alumnos.forEach(alumno =>{
+        let alumnoAux = new Alumno();
+        alumnoAux.copiar(alumno);
+        this.alumnos.push(alumnoAux)
+      })
+      console.log("alumnos: ",this.alumnos);
+    }) 
+      
   }
 
   private newCursada(): Cursada{
@@ -440,6 +454,7 @@ export class CursadasComponent implements OnInit {
     // METODOS DEL SISTEMA
     
     ngOnInit() {
+      this.getAlumnos();
       this.getCursadas();
       // console.log("on init");
       // this._spinnerService.show();
@@ -481,10 +496,37 @@ export class CursadasComponent implements OnInit {
   }
   // METODOS DEL SISTEMA
 
+
+  cerrarDialogoInscripcion(){
+    this.inscribiendo = false;
+  }
   
 
+  clickConfirmarInscripcion(){
+    let nuevaInscripcion: Inscripcion = new Inscripcion();
+    nuevaInscripcion.idAlumno = this.selectedAlumno.id;
+    nuevaInscripcion.idCursada = this.cursadaSeleccionada.id;
+    this._inscripcionService.addInscripcion(nuevaInscripcion).subscribe();
+    
+    this.inscribiendo = false;
+  }
   clickInscribir(cursada: Cursada){
-    this.inscribiendo = true;
+    this.cursadaSeleccionada.copiar(cursada);
+    let alumnosCursada: Alumno[] = [];
+    this._inscripcionService.getAlumnosCursada(this.cursadaSeleccionada.id)
+      .toPromise()
+      .then(
+        alumnos => {
+          alumnos.forEach(alumno => {
+            alumnosCursada.push(alumno);
+
+          });
+          this.alumnosFiltrados = this.getAlumnosFiltrados(this.alumnos, alumnosCursada);
+          if(this.alumnosFiltrados.length > 0){
+            this.selectedAlumno = this.alumnosFiltrados[0];
+          }
+          this.inscribiendo = true;
+        });
   }
 
   search(event){
@@ -496,10 +538,43 @@ export class CursadasComponent implements OnInit {
   }
 
   ngDoCheck(){
-    console.log("Cursadas: ", this.cursadas);
+    // console.log("Cursadas: ", this.cursadas);
+    console.log('alumnosFiltrados: ',this.alumnosFiltrados
+    )
+    // console.log("Alumnos: ",this.alumnos);
     
     // console.log("sabado: ",this.sabado);
   }
+
+
+  mostrarAlumnosEnCursada(cursada: Cursada){
+    this.cursadaSeleccionada.copiar(cursada);
+    this._inscripcionService.getAlumnosCursada(cursada.id)
+        .toPromise()
+        .then(alumnos => {
+          this.alumnosEnCursada = [];
+          alumnos.forEach(alumno => {
+            let alumnoAux = new Alumno();
+            alumnoAux.copiar(alumno);
+            this.alumnosEnCursada.push(alumno);
+          })
+          this.mostrandoAlumnosInscriptos = true;
+        });
+  }
+
+  getAlumnosFiltrados(alumnosTodos: Alumno[], alumnosInscriptos: Alumno[]): Alumno[]{
+    let alumnosAux = [];
+    alumnosTodos.forEach(alumno =>{
+      if(!alumnosInscriptos.some(e => e.id === alumno.id)){
+        alumno.nombreApellido = `${alumno.nombre} ${alumno.apellido}`; 
+        alumnosAux.push(alumno);
+      }
+    })
+    console.log("alumnosAux: ",alumnosAux);
+    return alumnosAux;
+  }
+
+
 
 }
 

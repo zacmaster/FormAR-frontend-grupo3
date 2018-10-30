@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       <div class="dialogoHeader d-flex justify-content-between">
         <div></div>
         <div class="titulo text-center" ><div> {{ titulo }} </div></div>
-        <span class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
+        <span *ngIf="botonCerrar" class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
       </div>
       <div class="dialogoBody p-3 pt-3 text-center">
         <div class="d-flex justify-content-between">
@@ -69,6 +69,7 @@ export class DialogoInfoComponent implements OnInit {
 @Input() public subtituloIzquierdo = '';
 @Input() public subtituloDerecho = '';
 @Input() public texto = '';
+@Input() public botonCerrar: boolean = true;
 textoBoton =  'Ok';
 
 

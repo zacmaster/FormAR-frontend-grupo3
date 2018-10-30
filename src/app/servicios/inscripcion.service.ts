@@ -7,6 +7,7 @@ import { GLOBAL } from './global';
 import { Observable } from 'rxjs';
 import { Cursada } from '../modelos/cursada';
 import { CursadaService } from './cursada.service';
+import { AlumnoService } from './alumno.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class InscripcionService extends ResourceService<Inscripcion,IInscripcion
   
   constructor(
                 private _http: HttpClient,
-                private _cursadaService: CursadaService
+                private _cursadaService: CursadaService,
+                private _alumnoService: AlumnoService
             ) {
     super(_http, GLOBAL.url + 'inscripciones','');
   }
@@ -28,5 +30,10 @@ export class InscripcionService extends ResourceService<Inscripcion,IInscripcion
   getCursadasDeAlumno(alumnoId: number){
     let url = GLOBAL.url + 'inscripciones/alumnos/' + alumnoId;
     return this._cursadaService.listURL(url);
+  }
+
+  getAlumnosCursada(cursadaId: number){
+    let url = GLOBAL.url + 'inscripciones/cursadas/' + cursadaId;
+    return this._alumnoService.listURL(url);
   }
 }
