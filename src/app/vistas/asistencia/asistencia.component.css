@@ -1,23 +1,41 @@
 .contenedor-mayor{
-    position: absolute;
-    z-index: 20;
-    top: 0;
-    left: 0;
-    height: 100%;
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(104, 104, 104,0.8);
+}
+ .table{
+  display: block;
+  overflow: scroll;
+  height: 97%;
+}
+
+.dialogo{
+  position: absolute;
+  z-index: 10;
+  top: 7%;
+  left: 26%;
+  height: 62%;
+  width: 50%;
+  background-color: rgb(104, 104, 104,0.8);
+  border-radius: 5px;
+}
+  .dialogoBody{
+    height: 80%;
     width: 100%;
-    background-color: rgb(104, 104, 104,0.8);
-  }
-  .contenedor{
-    position: absolute;
-    z-index: 10;
-    top: 30%;
-    left: 35%;
-    
-    background-color: rgb(104, 104, 104,0.8);
-  }
-  .dialogo{
-    border-radius: 5px;
-  }
+  
+  } 
+  .zui-sticky-col {
+    left: 0;
+    position: sticky;
+    top: auto;
+    width: 120px;
+    z-index: 50;
+    background: rgb(255, 255, 255);
+}
   h5{
     margin: auto;
     padding-top: 5px;

@@ -28,7 +28,7 @@ export class InstructorHomeComponent implements OnInit {
     this.getInstructores();
   }
   ngDoCheck(){ 
-    console.log(this.instructores);
+    //console.log(this.instructores);
   }
   verAsistencia(){
     this.mostrarAsistencia=true;

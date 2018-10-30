@@ -13,30 +13,24 @@ export class NotasComponent implements OnInit {
   @Input() public nombreCursada;
   examenes: Examen[] = [];
   value1:any;
-  value2:any;
-  value3:any;
-
   valueA1:any;
-  valueA2:any;
-  valueA3:any;
- 
+  
   valueB1:any;
-  valueB2:any;
-  valueB3:any;
- 
+  
   valueC1:any;
-  valueC2:any;
-  valueC3:any;
-
+  
   valueD1:any;
-  valueD2:any;
-  valueD3:any;
+
+  valueE1: any;
+
+  valueF1:any;
+  
 
 
 
 
   ngDoCheck(){ 
-    console.log(this.nombreCursada);
+    
   }
   
   clickBtnCerrar(){
@@ -56,6 +50,15 @@ export class NotasComponent implements OnInit {
     let numero = this.examenes[this.examenes.length-1].nro;
     numero++;
     this.examenes.push(new Examen(numero));
+  }
+  clickBorrarExamen(nro:number){
+    this.examenes = this.examenes.filter(function(dato){
+      if(dato.nro == nro){
+          return false;
+      }else{
+          return true;
+      }
+  }); 
   }
 
 }

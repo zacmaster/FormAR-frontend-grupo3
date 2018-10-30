@@ -48,10 +48,15 @@ export class AsistenciaComponent implements OnInit {
 
   ngOnInit() {
 
-    this.clases.push(new Clases("10/10/2018"));
-    this.clases.push(new Clases("15/10/2018"));
-    this.clases.push(new Clases("17/10/2018"));
-    this.clases.push(new Clases("20/10/2018"));
+    this.clases.push(new Clases("02/10/2018"));
+    this.clases.push(new Clases("05/10/2018"));
+    this.clases.push(new Clases("09/10/2018"));
+    this.clases.push(new Clases("12/10/2018"));
+    this.clases.push(new Clases("16/10/2018"));
+    this.clases.push(new Clases("19/10/2018"));
+    this.clases.push(new Clases("23/10/2018"));
+    this.clases.push(new Clases("26/10/2018"));
+    this.clases.push(new Clases("30/10/2018"));
     
   }
 

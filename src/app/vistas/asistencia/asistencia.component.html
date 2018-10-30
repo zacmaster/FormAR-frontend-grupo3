@@ -1,5 +1,4 @@
 <div class="contenedor-mayor">
-    <div class="contenedor d-flex justify-content-center align-items-center justify-content-center">
       <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
@@ -7,76 +6,41 @@
           <span class="" ></span>
         </div>
         <div class="dialogoBody p-3 pt-3 text-center">
-            <table class="table table-hover bg-light" style="overflow: scroll;overflow: auto; " >
+            <table class="table table-hover bg-light"  >
                 <thead class="thead-light">
                     <tr>
-                      <th>Alumnos</th>
+                      <th class="zui-sticky-col">Alumnos</th>
                       <th *ngFor="let fecha of clases" >{{fecha.fecha}}</th>
                     </tr>
                 </thead>
                     <tbody >
                       <tr>
-                        <td>Jorge Rearte</td>
-                        <td><p-checkbox [(ngModel)]="value1" binary="true"></p-checkbox>
-                        </td>
-                        <td><p-checkbox [(ngModel)]="value2" binary="true"></p-checkbox>
-                        </td>
-                        <td><p-checkbox [(ngModel)]="value3" binary="true"></p-checkbox>
-                        </td>
-                        <td>
-                            <p-checkbox [(ngModel)]="value4" binary="true"></p-checkbox>
+                        <td class="zui-sticky-col">Jorge Rearte</td>
+                        <td *ngFor="let fecha of clases" ><p-checkbox [(ngModel)]="value1" binary="true"></p-checkbox>
                         </td>
                         
                       </tr>
                       <tr>
-                          <td>Zacarias Samaniego</td>
-                          <td><p-checkbox [(ngModel)]="valueA1" binary="true"></p-checkbox>
-                          </td>
-                          <td><p-checkbox [(ngModel)]="valueA2" binary="true"></p-checkbox>
-                          </td>
-                          <td><p-checkbox [(ngModel)]="valueA3" binary="true"></p-checkbox>
-                          </td>
-                          <td>
-                              <p-checkbox [(ngModel)]="valueA4" binary="true"></p-checkbox>
+                          <td class="zui-sticky-col">Zacarias Samaniego</td>
+                          <td *ngFor="let fecha of clases" ><p-checkbox [(ngModel)]="valueA1" binary="true"></p-checkbox>
                           </td>
                          
                         </tr>
                         <tr>
-                            <td>Marcelo Cuevas</td>
-                            <td><p-checkbox [(ngModel)]="valueB1" binary="true"></p-checkbox>
-                            </td>
-                            <td><p-checkbox [(ngModel)]="valueB2" binary="true"></p-checkbox>
-                            </td>
-                            <td><p-checkbox [(ngModel)]="valueB3" binary="true"></p-checkbox>
-                            </td>
-                            <td>
-                                <p-checkbox [(ngModel)]="valueB4" binary="true"></p-checkbox>
+                            <td class="zui-sticky-col">Marcelo Cuevas</td>
+                            <td *ngFor="let fecha of clases" ><p-checkbox [(ngModel)]="valueB1" binary="true"></p-checkbox>
                             </td>
                             
                           </tr>
                           <tr>
-                              <td>Gonzalo Cardoso</td>
-                              <td><p-checkbox [(ngModel)]="valueC1" binary="true"></p-checkbox>
-                              </td>
-                              <td><p-checkbox [(ngModel)]="valueC2" binary="true"></p-checkbox>
-                              </td>
-                              <td><p-checkbox [(ngModel)]="valueC3" binary="true"></p-checkbox>
-                              </td>
-                              <td>
-                                  <p-checkbox [(ngModel)]="valueC4" binary="true"></p-checkbox>
+                              <td class="zui-sticky-col">Gonzalo Cardoso</td>
+                              <td *ngFor="let fecha of clases" ><p-checkbox [(ngModel)]="valueC1" binary="true"></p-checkbox>
                               </td>
                               
                             </tr>
                             <tr>
-                                <td>Juan Moyano</td>
-                                <td><p-checkbox [(ngModel)]="valueD1" binary="true"></p-checkbox>
-                                </td>
-                                <td><p-checkbox [(ngModel)]="valueD2" binary="true"></p-checkbox>
-                                </td>
-                                <td><p-checkbox [(ngModel)]="valueD3" binary="true"></p-checkbox>
-                                </td>
-                                <td>
-                                    <p-checkbox [(ngModel)]="valueD4" binary="true"></p-checkbox>
+                                <td class="zui-sticky-col">Juan Moyano</td>
+                                <td *ngFor="let fecha of clases" ><p-checkbox [(ngModel)]="valueD1" binary="true"></p-checkbox>
                                 </td>
                                 
                               </tr>
@@ -84,11 +48,10 @@
                     </tbody>
                   </table>
         </div>
-        <div class="dialogoFooter" >
+        
             <button class="btn btn-primary float-right " (click)="clickBtnCerrar()">
                 <span >Guardar</span>
               </button>
-        </div>
+        
       </div>
-    </div>
     </div>

@@ -5,77 +5,77 @@
           <div class="titulo text-center" ><h5> Nombre cursada: Laboratorio</h5></div>
           <span class="" ></span>
         </div>
-        <div class="dialogoBody p-3 pt-3 text-center"  >
+         <div class="dialogoBody p-3 pt-3 text-center"  >
             <table class="table table-hover bg-light" >
                 <thead class="thead-light">
                     <tr>
-                      <th>Alumnos</th>
-                      <th *ngFor="let examen of examenes" > Examen {{examen.nro}}</th>
+                      <th class="zui-sticky-col">Alumnos</th>
+                      <th *ngFor="let examen of examenes" > Examen {{examen.nro}} <button class="btn-danger" *ngIf= "examen.nro>3" (click)="clickBorrarExamen(examen.nro)" ><i class="fas fa-times"></i></button></th>
+                      
                     </tr>
                 </thead>
                     <tbody >
                       <tr>
-                        <td>Jorge Rearte</td>
+                        <td class="zui-sticky-col">Jorge Rearte</td>
 
-                        <td>
+                        <td *ngFor="let examen of examenes">
                             <p-spinner size="10" [(ngModel)]="value1" [min]="1" [max]="10"></p-spinner>
                           
                         </td>
-                        <td><p-spinner size="10" [(ngModel)]="value2" [min]="1" [max]="10"></p-spinner>
-                        </td>
-                        <td><p-spinner size="10" [(ngModel)]="value3" [min]="1" [max]="10"></p-spinner>
-                        </td>
-                        
-                        
+                       
                       </tr>
                       <tr>
-                          <td>Zacarias Samaniego</td>
-                          <td><p-spinner size="10" [(ngModel)]="valueA1" [min]="1" [max]="10"></p-spinner>
-                          </td>
-                          <td><p-spinner size="10" [(ngModel)]="valueA2" [min]="1" [max]="10"></p-spinner>
-                          </td>
-                          <td><p-spinner size="10" [(ngModel)]="valueA3" [min]="1" [max]="10"></p-spinner>
-                          </td>
+                          <td class="zui-sticky-col">Zacarias Samaniego</td>
+                          <td *ngFor="let examen of examenes">
+                            <p-spinner size="10" [(ngModel)]="valueA1" [min]="1" [max]="10"></p-spinner>
+                          
+                        </td>
                           
                          
                         </tr>
                         <tr>
-                            <td>Marcelo Cuevas</td>
-                            <td><p-spinner size="10" [(ngModel)]="valueB1" [min]="1" [max]="10"></p-spinner>
-                            </td>
-                            <td><p-spinner size="10" [(ngModel)]="valueB2" [min]="1" [max]="10"></p-spinner>
-                            </td>
-                            <td><p-spinner size="10" [(ngModel)]="valueB3" [min]="1" [max]="10"></p-spinner>
-                            </td>
+                            <td class="zui-sticky-col">Marcelo Cuevas</td>
+                            <td *ngFor="let examen of examenes">
+                              <p-spinner size="10" [(ngModel)]="valueB1" [min]="1" [max]="10"></p-spinner>
+                            
+                          </td>
                             
                             
                           </tr>
                           <tr>
-                              <td>Gonzalo Cardoso</td>
-                              <td><p-spinner size="10" [(ngModel)]="valueC1" [min]="1" [max]="10"></p-spinner>
-                              </td>
-                              <td><p-spinner size="10" [(ngModel)]="valueC2" [min]="1" [max]="10"></p-spinner>
-                              </td>
-                              <td><p-spinner size="10" [(ngModel)]="valueC3" [min]="1" [max]="10"></p-spinner>
-                              </td>
+                              <td class="zui-sticky-col">Gonzalo Cardoso</td>
+                              <td *ngFor="let examen of examenes">
+                                <p-spinner size="10" [(ngModel)]="valueC1" [min]="1" [max]="10"></p-spinner>
+                              
+                            </td>
                              
                               
                             </tr>
                             <tr>
-                                <td>Juan Moyano</td>
-                                <td><p-spinner size="10" [(ngModel)]="valueD1" [min]="1" [max]="10"></p-spinner>
-                                </td>
-                                <td><p-spinner size="10" [(ngModel)]="valueD2" [min]="1" [max]="10"></p-spinner>
-                                </td>
-                                <td><p-spinner size="10" [(ngModel)]="valueD3" [min]="1" [max]="10"></p-spinner>
-                                </td>
+                                <td class="zui-sticky-col">Juan Moyano</td>
+                                <td *ngFor="let examen of examenes">
+                                  <p-spinner size="10" [(ngModel)]="valueD1" [min]="1" [max]="10"></p-spinner>
                                 
+                              </td>
+                              </tr>
+                              <tr>
+                                <td class="zui-sticky-col">Alumno 6</td>
+                                <td *ngFor="let examen of examenes">
+                                  <p-spinner size="10" [(ngModel)]="valueE1" [min]="1" [max]="10"></p-spinner>
                                 
+                              </td>
+                              </tr>
+                              <tr>
+                                <td class="zui-sticky-col">Alumno 7</td>
+                                <td *ngFor="let examen of examenes">
+                                  <p-spinner size="10" [(ngModel)]="valueF1" [min]="1" [max]="10"></p-spinner>
+                                
+                              </td>
                               </tr>
         
                     </tbody>
                   </table>
-        </div>
+        </div> 
         <div class="dialogoFooter" >
             <button class="btn btn-primary float-right " (click)="clickBtnCerrar()">
                 <span >Guardar</span>

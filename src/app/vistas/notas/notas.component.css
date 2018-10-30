@@ -7,7 +7,7 @@
     width: 100%;
     background-color: rgb(104, 104, 104,0.8);
   }
-  .table{
+   .table{
     display: block;
     overflow: scroll;
     height: 97%;
@@ -27,7 +27,16 @@
     height: 80%;
     width: 100%;
   
-  }
+  } 
+
+.zui-sticky-col {
+    left: 0;
+    position: sticky;
+    top: auto;
+    width: 120px;
+    z-index: 50;
+    background: rgb(255, 255, 255);
+}
   h5{
     margin: auto;
     padding-top: 5px;
