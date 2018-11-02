@@ -10,6 +10,8 @@ export class Cursada extends Resource implements Icursada {
     nombre: string;
     fechaInicio: number;
     fechaFin: number;
+    fechaInicioString: string;
+    fechaFinString: string;
     sala: Sala;
     instructor: Instructor;
     cantidadClases: number;

@@ -17,10 +17,12 @@ export class AsistenciaComponent implements OnInit {
   value2:any;
   value3:any;
   value4:any;
+  valueDes: boolean = true;
   valueA1:any;
   valueA2:any;
   valueA3:any;
   valueA4:any;
+  valueDesA: boolean = false;
   valueB1:any;
   valueB2:any;
   valueB3:any;

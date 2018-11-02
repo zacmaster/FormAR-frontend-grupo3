@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 
 
+
 @Component({
   selector: 'app-notas',
   templateUrl: './notas.component.html',
@@ -10,7 +11,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class NotasComponent implements OnInit {
   @Output() clickBotonCerrar = new EventEmitter<boolean>();
-  @Input() public nombreCursada;
+  @Input() public cursadaSeleccionada ;
   examenes: Examen[] = [];
   value1:any;
   valueA1:any;
@@ -30,7 +31,7 @@ export class NotasComponent implements OnInit {
 
 
   ngDoCheck(){ 
-    
+    console.log("cursada que llego",this.cursadaSeleccionada);
   }
   
   clickBtnCerrar(){

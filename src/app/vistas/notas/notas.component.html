@@ -2,7 +2,7 @@
    <div  class="dialogo bg-light p-1" >
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
-          <div class="titulo text-center" ><h5> Nombre cursada: Laboratorio</h5></div>
+          <div class="titulo text-center" ><h5> Nombre cursada: {{cursadaSeleccionada.nombre}}</h5></div>
           <span class="" ></span>
         </div>
          <div class="dialogoBody p-3 pt-3 text-center"  >
@@ -10,68 +10,26 @@
                 <thead class="thead-light">
                     <tr>
                       <th class="zui-sticky-col">Alumnos</th>
+
+                   
                       <th *ngFor="let examen of examenes" > Examen {{examen.nro}} <button class="btn-danger" *ngIf= "examen.nro>3" (click)="clickBorrarExamen(examen.nro)" ><i class="fas fa-times"></i></button></th>
-                      
+                      <th >Promedio
+                      </th>
                     </tr>
                 </thead>
                     <tbody >
                       <tr>
                         <td class="zui-sticky-col">Jorge Rearte</td>
-
+                        
                         <td *ngFor="let examen of examenes">
-                            <p-spinner size="10" [(ngModel)]="value1" [min]="1" [max]="10"></p-spinner>
-                          
+                            <input type="number" min="0" max="10" step="0.25">
+                            <!-- <p-spinner size="10" [(ngModel)]="value1" [min]="0" [max]="10" [step]="0.25" ></p-spinner> -->
+
                         </td>
+                        <td >10</td>
                        
                       </tr>
-                      <tr>
-                          <td class="zui-sticky-col">Zacarias Samaniego</td>
-                          <td *ngFor="let examen of examenes">
-                            <p-spinner size="10" [(ngModel)]="valueA1" [min]="1" [max]="10"></p-spinner>
-                          
-                        </td>
-                          
-                         
-                        </tr>
-                        <tr>
-                            <td class="zui-sticky-col">Marcelo Cuevas</td>
-                            <td *ngFor="let examen of examenes">
-                              <p-spinner size="10" [(ngModel)]="valueB1" [min]="1" [max]="10"></p-spinner>
-                            
-                          </td>
-                            
-                            
-                          </tr>
-                          <tr>
-                              <td class="zui-sticky-col">Gonzalo Cardoso</td>
-                              <td *ngFor="let examen of examenes">
-                                <p-spinner size="10" [(ngModel)]="valueC1" [min]="1" [max]="10"></p-spinner>
-                              
-                            </td>
-                             
-                              
-                            </tr>
-                            <tr>
-                                <td class="zui-sticky-col">Juan Moyano</td>
-                                <td *ngFor="let examen of examenes">
-                                  <p-spinner size="10" [(ngModel)]="valueD1" [min]="1" [max]="10"></p-spinner>
-                                
-                              </td>
-                              </tr>
-                              <tr>
-                                <td class="zui-sticky-col">Alumno 6</td>
-                                <td *ngFor="let examen of examenes">
-                                  <p-spinner size="10" [(ngModel)]="valueE1" [min]="1" [max]="10"></p-spinner>
-                                
-                              </td>
-                              </tr>
-                              <tr>
-                                <td class="zui-sticky-col">Alumno 7</td>
-                                <td *ngFor="let examen of examenes">
-                                  <p-spinner size="10" [(ngModel)]="valueF1" [min]="1" [max]="10"></p-spinner>
-                                
-                              </td>
-                              </tr>
+                      
         
                     </tbody>
                   </table>

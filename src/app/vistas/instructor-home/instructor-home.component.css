@@ -1,9 +1,9 @@
 header{
-background-color: #20272a;
+
 box-sizing: border-box;
 display: block;
 padding: 0;
-height: 70px;
+height: 110px;
 box-sizing: border-box;
 
 top: 0;
@@ -11,4 +11,22 @@ left: 0;
 width: 100%;
 
 box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
+}
+
+.logo{
+  height: 100px;
+  margin-left: 20px;
+}
+
+.example-container {
+    height: 500px;
+    overflow: auto;
+}
+   
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+table {
+    width: 100%;
 }

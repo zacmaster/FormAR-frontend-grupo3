@@ -33,8 +33,12 @@ import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.co
 import { AlumnosListComponent } from './componentes/alumnos-list/alumnos-list.component';
 import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
 import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
-
+import {MatTableModule} from '@angular/material/table';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+
+import {TableModule} from 'primeng/table';
+
+
 
 
 
@@ -53,6 +57,10 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
 import { AsistenciaComponent } from './vistas/asistencia/asistencia.component';
 import { NotasComponent } from './vistas/notas/notas.component';
+import { MatSortModule,} from '@angular/material';
+
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkTreeModule} from '@angular/cdk/tree';
 
 @NgModule({
   declarations: [
@@ -97,8 +105,14 @@ import { NotasComponent } from './vistas/notas/notas.component';
     DropdownModule,
     FullCalendarModule,
     AutoCompleteModule,
-    CheckboxModule
-  ],
+    CheckboxModule,
+    TableModule,
+    MatTableModule,
+
+    CdkTableModule,
+    CdkTreeModule,
+    MatSortModule
+  ], 
   providers: [
     AlumnoService
   ],
