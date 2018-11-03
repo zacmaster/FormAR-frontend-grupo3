@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AutoCompleteModule} from 'primeng/primeng'
+import {AutoCompleteModule,  PaginatorModule} from 'primeng/primeng'
 
-import { UsuarioService } from './servicios/usuario.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +15,8 @@ import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {DropdownModule} from 'primeng/dropdown';
 import {SpinnerModule} from 'primeng/spinner';
+
+
 
 
 import {FullCalendarModule} from 'primeng/fullcalendar';
@@ -33,7 +34,7 @@ import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion
 
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
-
+import {TableModule} from 'primeng/table';
 
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
@@ -87,7 +88,9 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
     SpinnerModule,
     DropdownModule,
     FullCalendarModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    TableModule,
+    PaginatorModule
   ],
   providers: [
     AlumnoService

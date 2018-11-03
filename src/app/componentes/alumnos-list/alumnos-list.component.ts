@@ -39,6 +39,12 @@ export class AlumnosListComponent implements OnInit {
     useEmptyBarTitle: false,
   };
 
+
+  
+
+
+
+
   public alumnos = [];
   public cursadas = [];
   public edicion: boolean = false;
@@ -55,6 +61,8 @@ export class AlumnosListComponent implements OnInit {
   cursadasAlumnoShowed: boolean = false;
   alumnoTieneCursadas: boolean = false;
 
+
+  cols: any = [];
 
   textoDlgEliminar: string;
 
@@ -86,6 +94,9 @@ export class AlumnosListComponent implements OnInit {
               ) { }
 
   ngOnInit() {
+    this.prepararTabla();
+
+
     this.getCursadas();
     this._spinnerService.show();
     setTimeout(()=>{
@@ -120,10 +131,12 @@ export class AlumnosListComponent implements OnInit {
   }
 
 
-  mostrarDialogoEliminar(){
+  mostrarDialogoEliminar(alumno: any){
+    this.alumnoSeleccionado = new Alumno();
+    this.alumnoSeleccionado.copiar(alumno);
+    this.alumnoSeleccionado.nombreApellido = `${this.alumnoSeleccionado.nombre} ${this.alumnoSeleccionado.apellido}` 
     this.textoDlgEliminar =  `¿Está seguro que desea dar de baja a
-                      ${ this.alumnoSeleccionado.nombre }
-                      ${ this.alumnoSeleccionado.apellido } ?`
+                      ${ this.alumnoSeleccionado.nombreApellido }?`
 
     this.mostrarDialogoBorrar = true;
     
@@ -191,7 +204,9 @@ export class AlumnosListComponent implements OnInit {
     this.mostrarDialogoAB = true;
   }
 
-  editarAlumno(){
+  editarAlumno(alumno: any){
+    this.alumnoSeleccionado = new Alumno();
+    this.alumnoSeleccionado.copiar(alumno);
     this.edicion = true;
     this.mostrarDialogoAB = true;
     
@@ -235,8 +250,9 @@ export class AlumnosListComponent implements OnInit {
   }
 
   
-  mostrarCursadasAlumno(){
-    
+  mostrarCursadasAlumno(alumno: any){
+    this.alumnoSeleccionado = new Alumno();
+    this.alumnoSeleccionado.copiar(alumno);
     this._inscripcionService.getCursadasDeAlumno(this.alumnoSeleccionado.id)
     .toPromise()
     .then(cursadas => {
@@ -271,6 +287,21 @@ export class AlumnosListComponent implements OnInit {
     console.log("cursadasAux: ",cursadasAux);
     return cursadasAux;
   }
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'nombre', header: 'Nombre' },
+      { field: 'telefono', header: 'Telefono' },
+      { field: 'email', header: 'Email' },
+      { field: 'dni', header: 'DNI' },
+      { field: 'acciones', header: 'Acciones' }
+    ];
+  }
+
+  private prepararTabla(){
+    this.cargarCampos();
+  }
+
 
 
 }
