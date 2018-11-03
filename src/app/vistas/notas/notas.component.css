@@ -37,6 +37,14 @@
     z-index: 50;
     background: rgb(255, 255, 255);
 }
+.zui-sticky-row {
+  left: 0;
+  position: sticky;
+  top: auto;
+  width: 120px;
+  z-index: 50;
+  background: rgb(255, 255, 255);
+}
 
 
   h5{
