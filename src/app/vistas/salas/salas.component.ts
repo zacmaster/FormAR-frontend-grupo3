@@ -31,6 +31,7 @@ export class SalasComponent{
   salaSeleccionada: Sala = this.newSala();
   salas:Sala[]=[];
   busqueda: string = "";
+  cols: any[];
 
   mostrarCalendario:boolean = false; 
   mostrarDialogoAB:boolean=false;
@@ -43,6 +44,7 @@ export class SalasComponent{
     private _spinnerService: Ng4LoadingSpinnerService){ }
 
     ngOnInit() {
+      this.cargarCampos();
       this.getSalas();
     }
   
@@ -56,7 +58,9 @@ export class SalasComponent{
 
   }
   
-  editarSala(){
+  editarSala(sala){
+    this.salaSeleccionada = new Sala();
+    this.salaSeleccionada.copiar(sala);
     if(this.salaSeleccionada.ocupado==false){
       this.edicion = true;
       this.mostrarDialogoAB = true;
@@ -66,8 +70,9 @@ export class SalasComponent{
     }
    
   }
-  mostrarDialogoEliminar(){
-
+  mostrarDialogoEliminar(sala){
+    this.salaSeleccionada = new Sala();
+    this.salaSeleccionada.copiar(sala);
     if(this.salaSeleccionada.ocupado==false){
       this.dlg.texto =  `¿Está seguro que desea dar de baja la sala
       ${ this.salaSeleccionada.nombre } ?`;
@@ -93,7 +98,10 @@ export class SalasComponent{
       this.mostrarDialogoErrorBorrar=false;
       this.mostrarDialogoErrorEditar=false;
   }
-  verCalendario(){
+  verCalendario(sala){
+    this.salaSeleccionada = new Sala();
+    this.salaSeleccionada.copiar(sala);
+
     this.mostrarCalendario=true;
   }
   ocultarCalendario(){
@@ -174,6 +182,15 @@ export class SalasComponent{
         this._spinnerService.hide();
         this.busqueda = undefined;
       })
+  }
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'nombre', header: 'Nombre'},
+      { field: 'capacidad', header:'Capacidad'},
+      { field: 'disponibilidad', header:'Disponibilidad'},
+      { field: 'acciones', header:'Acciones'},
+    ];
   }
 
 }
