@@ -1,83 +1,107 @@
-<div class="p-0 bg-light">
-  <!--  FILTRO + NUEVO INSTRUCTOR -->
 
-  <div class="input-group py-4 col-5">
-    <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
-    </div>
-    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
-    <div class="input-group-append">
-      <button class="btn btn-success" (click)="nuevoInstructor()"><span> {{ _LABEL.nuevoInstructor }} </span></button>
-    </div>
-  </div>
-
-
-
-  <!--  TABLA   -->
-
-  <div class="table-responsive">
-    <table class="table table-hover bg-light">
-    <thead class="thead-light">
-        <tr>
-          <th>Instructor</th>
-          <th>Dni</th>
-          <th>Telefono</th>
-          <th>Email</th>
-          <th>Estudios</th>
-          <th>Horarios</th>
-          <th>Areas Preferencia</th>
-          <th>Disponibilidad</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-
- 
-      <tbody>
-        <tr *ngFor="let instructor of instructores | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}">
-          <td>{{ instructor.nombre }}
-            {{ instructor.apellido }}</td>
-          <td>  {{ instructor.dni }}</td>
-          <td> {{ instructor.telefono }} </td>
-          <td> {{ instructor.email }} </td>
+<!-- Comienzo de tabla -->
+<div class="content-section implementation ui-fluid">
+    <p-table #dt [columns]="cols" [value]="instructores" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              <button class="btn btn-success"
+                      (click)="nuevoInstructor()">
+                      <span>{{ _LABEL.nuevoInstructor }}</span>
+              </button>
+            </div>
+          </ng-template>
           
-          <td> <button class="btn btn btn-info"
-            [title]="_HVR.estudio"
-            (click)="instructorSeleccionado.copiar(instructor); mostrarEstudios()">
-            <i class="fas fa-atlas"></i>
-          </button>
-         </td>
-          <td>  
-            <button class="btn btn btn-info"
-            [title]="_HVR.horario"
-            (click)="instructorSeleccionado.copiar(instructor); mostrarHorarios()">
-            <i class="fas fa-calendar-check"></i>
-          </button>
-          <td> 
-            <button class="btn btn btn-info"
-            [title]="_HVR.areasPref"
-            (click)="instructorSeleccionado.copiar(instructor); mostrarAreas()">
-            <i class="fas fa-font"></i>
-          </button>
-        </td>
-        <td>
-          <button class="btn btn btn-info" (click)="instructorSeleccionado.copiar(instructor); verCalendario()">
-            <i class="far fa-calendar-check"></i>
-          </button> 
-        </td>        
-         
-          <td>
-            <button class="btn btn-success mr-2" (click)="instructorSeleccionado.copiar(instructor);editarInstructor();">
-              <i class="fas fa-user-edit"></i>
-            </button>
-            <button class="btn btn-danger" (click)="instructorSeleccionado = instructor; mostrarDialogoEliminar()">
-              <i class="fas fa-user-times"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" pResizableColumn>
+                {{col.header}}
+              </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+                <span *ngSwitchCase="'instructor'">
+                    {{ rowData.nombre }}
+                </span>
+                <span *ngSwitchCase="'dni'">
+                    {{ rowData.dni }}
+                </span>
+                <span *ngSwitchCase="'telefono'">
+                    {{ rowData.telefono }}
+                </span>
+                <span *ngSwitchCase="'email'">
+                    {{ rowData.email }}
+                </span>
+                <span *ngSwitchCase="'estudios'">
+                    <button class="btn btn btn-info"
+                    [title]="_HVR.estudio"
+                    (click)="mostrarEstudios(rowData)">
+                    <i class="fas fa-atlas"></i>
+                  </button>
+                </span>
+                <span *ngSwitchCase="'horarios'">
+                    <button class="btn btn btn-info"
+                    [title]="_HVR.horario"
+                    (click)="mostrarHorarios(rowData)">
+                    <i class="fas fa-calendar-check"></i>
+                  </button>
+                </span>
+                <span *ngSwitchCase="'areasPreferencia'">
+                    <button class="btn btn btn-info"
+                    [title]="_HVR.areasPref"
+                    (click)="mostrarAreas(rowData)">
+                    <i class="fas fa-font"></i>
+                  </button>
+                </span>
+                <span *ngSwitchCase="'disponibilidad'">
+                    <button class="btn btn btn-info" (click)="verCalendario(rowData)">
+                        <i class="far fa-calendar-check"></i>
+                      </button> 
+                </span>
+                <span *ngSwitchCase="'acciones'">
+                    <button class="btn btn-success mr-2" (click)="editarInstructor(rowData);">
+                        <i class="fas fa-user-edit"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="mostrarDialogoEliminar(rowData)">
+                        <i class="fas fa-user-times"></i>
+                      </button>
+                </span>
+            </td>
+          </tr>
+        </ng-template>
+  
+    </p-table>
   </div>
-</div>  
+  
+  <!-- Fin de tabla -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Dialogo estudios-->
 <div class="contenedor-info"  *ngIf="estudiosShowed">
     <div  class="dialogo bg-light p-1">
