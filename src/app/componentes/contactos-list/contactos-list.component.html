@@ -1,55 +1,68 @@
 <!-- Comienzo de tabla -->
+<div class="content-section implementation ui-fluid">
+    <p-table #dt [columns]="cols" [value]="contactos" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+              <button class="btn btn-success" (click)="nuevoContacto()"><span>{{ tituloNuevoContacto}}</span></button>
+            </div>
+          </ng-template>
+          
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" pResizableColumn>
+                {{col.header}}
+              </th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <span *ngSwitchCase="'alumno'">
+                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                        <input  pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    </span>
+                    
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
 
-<div class="p-0">
-  <div class="bg-light ">
-      <div class="input-group py-4 col-5">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-default">Filtrar</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
-          <div class="input-group-append">
-            <button class="btn btn-success" (click)="nuevoContacto()"><span>{{ tituloNuevoContacto}}</span></button>
-          </div>
-      </div>
-      <div class="table-responsive">
-        <table class="table table-hover bg-light" style="margin-bottom: 0">
-          <thead class="thead-light">
-              <tr>
-                <th>{{ _LABEL.fecha }}</th>
-                <th>{{ _LABEL.alumno }}</th>
-                <th>{{ _LABEL.asunto }}</th>
-                <th>{{ _LABEL.acciones }}</th>
-              </tr>
-            </thead>
-      
-      
-              <tbody>
-                <tr *ngFor="let contacto of contactos | search: {fecha: busqueda, nombreAlumno: busqueda, titulo: busqueda}" >
-                  <td> {{ _Util.convertirTimestamp(contacto.fecha) }}</td>
-                  <td> {{ contacto.alumno.nombre }} {{ contacto.alumno.apellido }}</td>
-                  <td> {{ contacto.asunto }} </td>
-                  <td>
+                    <span *ngSwitchCase="'fecha'">
+                      {{ _Util.convertirTimestamp(rowData.fecha) }}
+                    </span>
+                    <span *ngSwitchCase="'alumno'">
+                      {{ rowData.alumno.nombre }} {{ rowData.alumno.apellido }}
+                    </span>
+                    <span *ngSwitchCase="'asunto'">
+                      {{ rowData.asunto }}
+                    </span>
+                    <span *ngSwitchCase="'acciones'">
+                        <button
+                          (click)="mostrarDescripcion(rowData)"
+                          class="btn btn-warning mr-2"
+                          [title]="_LABEL.info.contacto">
+                          <i class="fas fa-info"></i>
+                        </button>
 
-                    <button
-                            (click)="mostrarDescripcion(contacto)"
-                            class="btn btn-warning mr-2"
-                            [title]="_LABEL.info.contacto">
-                      <i class="fas fa-info"></i>
-                    </button>
-
-                    <button class="btn btn-success mr-2"
-                            [title]="_LABEL.editar.contacto"
-                            (click)="contactoSeleccionado.copiar(contacto); editarContacto()"><!---->
-                      <i class="fas fa-edit"></i>
-                    </button>
-
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-      </div>
-    </div>
-</div>
+                        <button 
+                                class="btn btn-success mr-2"
+                                [title]="_LABEL.editar.contacto"
+                                (click)="editarContacto(rowData)"
+                          >
+                          <i class="fas fa-edit"></i>
+                        </button>
+                    </span>
+                </td>
+            </tr>
+        </ng-template>
+  
+    </p-table>
+  </div>
 
 <!-- Fin de tabla -->
 

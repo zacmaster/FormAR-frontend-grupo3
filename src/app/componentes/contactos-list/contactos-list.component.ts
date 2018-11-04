@@ -29,6 +29,7 @@ export class ContactosListComponent implements OnInit {
   seEligeArea = true;
   edicion:boolean=false;
   fechaHoraContacto: string = '';
+  cols: any[];
 
 
 
@@ -97,6 +98,7 @@ export class ContactosListComponent implements OnInit {
     
 
   ngOnInit() {
+      this.cargarCampos();
       this.getContactos();
       this.getAlumnos();
       this.getAreas();
@@ -104,7 +106,6 @@ export class ContactosListComponent implements OnInit {
   }
 
   ngDoCheck(){
-  
     // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
     
   }
@@ -208,7 +209,9 @@ export class ContactosListComponent implements OnInit {
   
   }
 
-  editarContacto(){
+  editarContacto(contacto: any){
+    this.contactoSeleccionado = new Contacto();
+    this.contactoSeleccionado.copiar(contacto);
     this.alumnos.forEach(element => {
       if(element.id=this.contactoSeleccionado.alumno.id){
         this.selectedAlumno=element;
@@ -371,16 +374,25 @@ export class ContactosListComponent implements OnInit {
     this.selectedAlumno= new Alumno();
   }
 
-  mostrarDescripcion(contacto: Contacto){
-    console.log("Este es el contacto que recibo: ",contacto);
-    
-    this.fechaHoraContacto =  this._Util.convertirTimestamp(contacto.fecha);
-
-    this.descripcionShowed = true;
+  mostrarDescripcion(contacto: any){
     this.contactoSeleccionado = new Contacto();
     this.contactoSeleccionado.copiar(contacto);
+    
+    this.fechaHoraContacto =  this._Util.convertirTimestamp(this.contactoSeleccionado.fecha);
+
+    this.descripcionShowed = true;
   }
 
 
+
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'fecha', header: 'Fecha' },
+      { field: 'alumno', header: 'Alumno' },
+      { field: 'asunto', header: 'Asunto' },
+      { field: 'acciones', header: 'Acciones' }
+    ];
+  }
 
 }
