@@ -66,58 +66,66 @@
 </dialogo-info>
 
 
-<div class="p-0">
-    <div class="bg-light">
-        <div class="input-group py-4 col-5">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
-            </div>
-            
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
 
-            <div class="input-group-append">
-              <button class="btn btn-success"(click)="nuevaCursada()"><span>{{ _LABEL.nuevaCursada }}</span></button>
+<!-- Comienzo de tabla -->
+<div class="content-section implementation ui-fluid">
+    <p-table #dt [columns]="cols" [value]="cursadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              <button class="btn btn-success"
+                      (click)="nuevaCursada()">
+                      <span>{{ _LABEL.nuevaCursada }}</span>
+              </button>
             </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-hover bg-light">
-            <thead class="thead-light">
-                <tr>
-                  <th>{{ _LABEL.nombre }}</th>
-                  <th>{{ _LABEL.descripcion }}</th>
-                  <th>{{ _LABEL.curso }}</th>
-                  <th>{{ _LABEL.fechaInicio }}</th>
-                  <th>{{ _LABEL.fechaFin }}</th>
-                  <th>Info</th>
-                  <th>{{ _LABEL.acciones }}</th>
-                </tr>
-            </thead>
-                <tbody >
-                  <!-- <tr *ngFor="let cursada of cursadas | search: {nombre: busqueda}" > -->
-                  <tr *ngFor="let cursada of cursadas" >
-                    <td> {{ cursada.nombre }}</td>
-                    <td> {{ cursada.curso.descripcion }} </td>
-                    <td> {{ cursada.curso.nombre }} </td>
-                    <td> {{ _Util.convertirTimestamp(cursada.fechaInicio) }}</td>
-                    <td> {{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
-                    <td>
-                      <button
-                            (click)="cursadaSeleccionada.copiar(cursada);mostrarInfo()"
-                            class="btn btn-warning mr-2"
+          </ng-template>
+          
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" pResizableColumn>
+                {{col.header}}
+              </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+                <span *ngSwitchCase="'nombre'">
+                    {{ rowData.nombre }}
+                </span>
+                <span *ngSwitchCase="'descripcion'">
+                    {{ rowData.curso.descripcion }}
+                </span>
+                <span *ngSwitchCase="'curso'">
+                    {{ rowData.curso.nombre }}
+                </span>
+                <span *ngSwitchCase="'fechaInicio'">
+                    {{ _Util.convertirTimestamp(rowData.fechaInicio) }}
+                </span>
+                <span *ngSwitchCase="'fechaFin'">
+                    {{ _Util.convertirTimestamp(rowData.fechaFin) }}
+                </span>
+                <span *ngSwitchCase="'info'">
+                    <button class="btn btn-warning mr-2"
                             [title]="_LABEL.info.cursada"
-                            style="margin-right: 20px;"
-                            >
-                      <i class="fas fa-info"></i>
+                            (click)="mostrarInfo(rowData)">
+                            <i class="fas fa-info"></i>
                     </button>
-                      <button
-                            (click)="mostrarAlumnosEnCursada(cursada)"
+                    <button
+                            (click)="mostrarAlumnosEnCursada(rowData)"
                             class="btn btn-warning mr-2"
                             [title]="_LABEL.info.alumnosEnCursada"
                       > 
                       <i class="fas fa-users"></i></button>
-                    </td>
-                    <td>
-                      <button class="btn btn-info mr-2" (click)="clickInscribir(cursada)">
+                </span>
+                <span *ngSwitchCase="'acciones'">
+                    <button class="btn btn-info mr-2" (click)="clickInscribir(rowData)">
                         <i class="fas fa-file-signature"></i>
                       </button>
                       <button class="btn btn-success mr-2">
@@ -126,12 +134,46 @@
                       <button class="btn btn-danger">
                         <i class="fas fa-trash"></i>
                       </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-        </div>
-</div>
+                </span>
+            </td>
+          </tr>
+        </ng-template>
+  
+    </p-table>
+  </div>
+
+
+
+
+
+<!-- Fin de tabla -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  <!--Dialogo info-->
 <div class="contenedor-info"  *ngIf="infoShowed">
   <div  class="dialogo bg-light p-1">

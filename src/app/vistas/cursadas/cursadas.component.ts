@@ -56,6 +56,7 @@ export class CursadasComponent implements OnInit {
   salas = [];
   _Util = Util;
   fechaInicio: number;
+  cols: any[];
   
   pruebaCurso;
   
@@ -286,7 +287,9 @@ export class CursadasComponent implements OnInit {
  
     
   
-  mostrarInfo(){
+  mostrarInfo(cursada: any){
+    this.cursadaSeleccionada = new Cursada();
+    this.cursadaSeleccionada.copiar(cursada);
     this.infoShowed=true;
   }
   cerrarInfo(){
@@ -454,6 +457,7 @@ export class CursadasComponent implements OnInit {
     // METODOS DEL SISTEMA
     
     ngOnInit() {
+      this.cargarCampos();
       this.getAlumnos();
       this.getCursadas();
       // console.log("on init");
@@ -547,7 +551,8 @@ export class CursadasComponent implements OnInit {
   }
 
 
-  mostrarAlumnosEnCursada(cursada: Cursada){
+  mostrarAlumnosEnCursada(cursada){
+    this.cursadaSeleccionada = new Cursada();
     this.cursadaSeleccionada.copiar(cursada);
     this._inscripcionService.getAlumnosCursada(cursada.id)
         .toPromise()
@@ -574,6 +579,18 @@ export class CursadasComponent implements OnInit {
     return alumnosAux;
   }
 
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'nombre', header: 'Nombre' },
+      { field: 'descripcion', header: 'Descripción' },
+      { field: 'curso', header: 'Curso' },
+      { field: 'fechaInicio', header: 'Fecha de Inicio' },
+      { field: 'fechaFin', header: 'Fecha de Fin' },
+      { field: 'info', header: 'Info' },
+      { field: 'acciones', header: 'Acciones' }
+    ];
+  }
 
 
 }
