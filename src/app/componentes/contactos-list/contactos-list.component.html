@@ -14,29 +14,29 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th *ngFor="let col of columns" pResizableColumn>
+              <th *ngFor="let col of columns" pResizableColumn  [ngSwitch]="col.field" [pSortableColumn]="col.field">
                 {{col.header}}
+                <span *ngSwitchCase="'fecha'">
+                    <p-sortIcon [field]="fecha" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                </span>
               </th>
             </tr>
             <tr>
               <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                    <span *ngSwitchCase="'alumno'">
-                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                        <input  pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
-                    </span>
-                    
-                </th>
+                <input *ngSwitchCase="'alumno'" pInputText type="text" (input)="dt.filter($event.target.value, 'alumno.nombreApellido', 'contains')">
+              </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-                <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+                <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field" >
 
-                    <span *ngSwitchCase="'fecha'">
+                    <span *ngSwitchCase="'fecha'" >
                       {{ _Util.convertirTimestamp(rowData.fecha) }}
+                      
                     </span>
                     <span *ngSwitchCase="'alumno'">
-                      {{ rowData.alumno.nombre }} {{ rowData.alumno.apellido }}
+                      {{ rowData.alumno.nombreApellido }}
                     </span>
                     <span *ngSwitchCase="'asunto'">
                       {{ rowData.asunto }}

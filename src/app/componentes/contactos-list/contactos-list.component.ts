@@ -107,7 +107,7 @@ export class ContactosListComponent implements OnInit {
 
   ngDoCheck(){
     // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
-    
+    console.log(this.contactos)
   }
 
 
@@ -126,6 +126,8 @@ export class ContactosListComponent implements OnInit {
 
       area_aux.copiar(contacto.area);
       alumno_aux.copiar(contacto.alumno);
+      alumno_aux.nombreApellido = contacto.alumno.nombre + " " + contacto.alumno.apellido;
+      console.log("alumnoAux: ",  alumno_aux)
       curso_aux.copiar(contacto.curso);
 
       contacto_aux.copiar(contacto);
