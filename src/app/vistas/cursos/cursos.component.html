@@ -1,60 +1,70 @@
-<div class="p-0">
-    <div class="bg-light">
-        <div class="input-group py-4 col-5">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
-            </div>
-            
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
-
-            <div class="input-group-append" (click)="nuevoCurso()">
-              <button class="btn btn-success" >
-                <span >{{ _LABEL.nuevoCurso }}</span>
+<!-- Comienzo de tabla -->
+<div class="content-section implementation ui-fluid">
+  <p-table #dt [columns]="cols" [value]="cursos" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+      <ng-template pTemplate="caption">
+        <div style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            <button class="btn btn-success"
+                    (click)="nuevoCurso()">
+                    <span>{{ _LABEL.nuevoCurso }}</span>
             </button>
-            </div>
-        </div>
-        <div>
-          <table class="table table-hover bg-light">
-            <thead class="thead-light">
-                <tr>
-                  <th>{{ _LABEL.nombreCurso }}</th>
-                  <th>{{ _LABEL.area }}</th>
-                  <th>Info</th>
-                  <th>{{ _LABEL.acciones }}</th>
-                </tr>
-            </thead>
-      
-       
-                <tbody>
-                  <!-- <tr *ngFor="let curso of cursos | search: {nombre: busqueda}" >  Deja de funcionar cuando se hace un editar-->
-                  <tr *ngFor="let curso of cursos" >
-                    <td> {{ curso.nombre }}</td>
-                    <td> {{ curso.area.nombre }} </td>
-                    <td> 
-                      <button class="btn btn-warning"
-                            [title]="_HVR.temario"
-                            (click)="cursoSeleccionado.copiar(curso); mostrarTemario()">
-                            <i class="fas fa-info"></i>
-                      </button>
-                    </td>
-                    <td>
-                      <span class="btn btn-success mr-2"
+          </div>
+        </ng-template>
+        
+        <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col *ngFor="let col of columns" [style.width]="col.width">
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" pResizableColumn>
+              {{col.header}}
+            </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+              <span *ngSwitchCase="'nombre'">
+                  {{ rowData.nombre }}
+              </span>
+              <span *ngSwitchCase="'area'">
+                  {{ rowData.area.nombre }}
+              </span>
+              <span *ngSwitchCase="'info'">
+                  <button class="btn btn-warning"
+                          [title]="_HVR.temario"
+                          (click)="mostrarTemario(rowData)">
+                          <i class="fas fa-info"></i>
+                  </button>
+              </span>
+              <span *ngSwitchCase="'acciones'">
+                  <button class="btn btn-success mr-2"
                             [title]="_HVR.editarCurso"
-                            (click)="cursoSeleccionado.copiar(curso); editarCurso()">
+                            (click)="editarCurso(rowData)">
                         <i class="fas fa-edit"></i>
 
-                      </span>
-                      <span class="btn btn-danger"
-                            [title]="_HVR.eliminarCurso"
-                            (click)="cursoSeleccionado = curso; mostrarDialogoEliminar()">
-                        <i class="fas fa-trash"></i>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-        </div>
+                  </button>
+                  <button class="btn btn-danger"
+                        [title]="_HVR.eliminarCurso"
+                        (click)="mostrarDialogoEliminar(rowData)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+              </span>
+          </td>
+        </tr>
+      </ng-template>
+
+  </p-table>
 </div>
+
+<!-- Fin de tabla -->
+
+
+
+
 
 
 

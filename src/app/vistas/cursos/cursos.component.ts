@@ -14,6 +14,8 @@ export class CursosComponent implements OnInit, DoCheck {
   
   cursos: Curso[] = [];
   areas: Area[] = [];
+
+  cols = [];
   private cursoSeleccionado: Curso = this.newCurso();
   private areaSeleccionada: Area = this.newArea();
   busqueda: string = "";
@@ -52,6 +54,7 @@ export class CursosComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.getAreas();
     this.getCursos();
+    this.cargarCampos();
   }
   ngDoCheck(){
     // console.log("area seleccionada: ",this.areaSeleccionada);
@@ -138,8 +141,9 @@ export class CursosComponent implements OnInit, DoCheck {
     this.mostrarDialogoAB = false;
   }
 
-  editarCurso(){
-    console.log("editarCurso()",this.cursoSeleccionado);
+  editarCurso(curso: any){
+    this.cursoSeleccionado = new Curso();
+    this.cursoSeleccionado.copiar(curso);
     this.areaSeleccionada.copiar(this.areas[0])
     this.edicion = true;
     this.seleccionAreaAlEditar();
@@ -168,7 +172,9 @@ export class CursosComponent implements OnInit, DoCheck {
       this.agregar(this.cursoSeleccionado);
   }
 
-  mostrarTemario(){
+  mostrarTemario(curso: any){
+    this.cursoSeleccionado = new Curso();
+    this.cursoSeleccionado.copiar(curso);
     this.temarioShowed = true;
   }
 
@@ -238,8 +244,9 @@ export class CursosComponent implements OnInit, DoCheck {
         }
       })
   }
-  mostrarDialogoEliminar(){
-
+  mostrarDialogoEliminar(curso: any){
+    this.cursoSeleccionado = new Curso();
+    this.cursoSeleccionado.copiar(curso);
     this.dlg.texto =  `¿Está seguro que desea dar de baja el curso
     ${ this.cursoSeleccionado.nombre } ?`;
     this.mostrarDialogoBorrar = true;
@@ -307,6 +314,17 @@ export class CursosComponent implements OnInit, DoCheck {
       })
     } 
     return enUso;
+  }
+
+
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'nombre', header: 'Nombre del curso' },
+      { field: 'area', header: 'Área' },
+      { field: 'info', header: 'Info' },
+      { field: 'acciones', header: 'Acciones' }
+    ];
   }
 
 }
