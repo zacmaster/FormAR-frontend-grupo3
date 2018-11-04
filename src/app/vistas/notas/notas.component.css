@@ -12,19 +12,18 @@
     overflow: scroll;
     height: 97%;
   }
-  
   .dialogo{
     position: absolute;
     z-index: 10;
     top: 7%;
     left: 26%;
-    height: 62%;
+    height: 480px;
     width: 50%;
     background-color: rgb(104, 104, 104,0.8);
     border-radius: 5px;
   }
   .dialogoBody{
-    height: 80%;
+    height: 83%;
     width: 100%;
   
   } 
@@ -34,7 +33,7 @@
     position: sticky;
     top: auto;
     width: 120px;
-    z-index: 50;
+    z-index: 55;
     background: rgb(255, 255, 255);
 }
 .zui-sticky-row {

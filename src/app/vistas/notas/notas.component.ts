@@ -5,7 +5,7 @@ import { Cursada } from 'src/app/modelos/cursada';
 import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import { ExamenService } from 'src/app/servicios/examen.service';
 import { Examen } from 'src/app/modelos/examen';
-import { log } from 'fullcalendar';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 
 
@@ -25,6 +25,7 @@ export class NotasComponent implements OnInit {
   notasActuales: Nota[]=[];
   alumnosEnCursada: Alumno[] ;  
   calificaciones: Calificacion[];
+  examenesGuardar :Examen[];
 
 
   ngDoCheck(){ 
@@ -34,11 +35,9 @@ export class NotasComponent implements OnInit {
     
   }
   
-  clickBtnCerrar(){
-    this.clickBotonCerrar.emit(true);
-  }
   
-  constructor( private _inscripcionService: InscripcionService, private _examenService: ExamenService) { }
+  
+  constructor( private _inscripcionService: InscripcionService, private _examenService: ExamenService,private _spinnerService: Ng4LoadingSpinnerService) { }
  
   ngOnInit() {
     this.obtenerDatos();
@@ -47,6 +46,50 @@ export class NotasComponent implements OnInit {
     
     
   }
+  clickBtnCerrar(){
+    this.clickBotonCerrar.emit(true);
+  }
+  guardar(nro: number){
+      let examenAux = new Examen();
+      examenAux.id=this.examenesDeCursada[nro].id; 
+      examenAux.idCursada=this.examenesDeCursada[nro].idCursada;
+      examenAux.nroExamen=this.examenesDeCursada[nro].nroExamen;
+      let notasAux: Nota[] = [];
+      for (let z = 0; z < this.filas.length; z++) {
+        if(this.filas[z].notas[nro].nota=="Ausente" || this.filas[z].notas[nro].nota==undefined ){
+          this.filas[z].notas[nro].nota=0;
+        }
+        notasAux.push(this.filas[z].notas[nro]);
+      
+      examenAux.notas=notasAux;
+      }
+      if(examenAux.id==0){
+        this.agregar(examenAux);
+      }
+      else{
+        this.editar(examenAux);
+      }
+    }
+    agregar(examen: Examen){
+      this._spinnerService.show();
+      setTimeout(() => {
+        this._examenService.addExamen(examen).
+        subscribe(response => {
+          this.obtenerDatos();
+          this._spinnerService.hide();
+        })
+        }, 500)
+    }
+    editar(examen:Examen){
+      this._spinnerService.show();
+      setTimeout(() => {
+        this._examenService.updateExamen(examen).
+        subscribe(response => {
+          this.obtenerDatos();
+          this._spinnerService.hide();
+        })
+        }, 500)
+    }
   agregarExamen(){
      let numero = this.examenesDeCursada[this.examenesDeCursada.length-1].nroExamen;
      numero++;
@@ -88,6 +131,7 @@ export class NotasComponent implements OnInit {
     
   }
   obtenerDatos(){
+    this._spinnerService.show();
     this._inscripcionService.getAlumnosCursada(this.cursadaSeleccionada.id)
         .toPromise()
         .then(alumnos => {
@@ -98,7 +142,7 @@ export class NotasComponent implements OnInit {
             alumnoAux.nombreApellido= alumnoAux.nombre+" "+alumnoAux.apellido;
             this.alumnosEnCursada.push(alumnoAux);
           })
-          console.log("termine los alumnos",this.alumnosEnCursada);
+          this.alumnosEnCursada=this.ordenarLista(this.alumnosEnCursada);
           
           this._examenService.getExamenes(this.cursadaSeleccionada.id).toPromise().then(examenes=>{
             this.examenesDeCursada=[];
@@ -112,7 +156,12 @@ export class NotasComponent implements OnInit {
               
             }
             this.examenesDeCursada= this.ordenarLista(this.examenesDeCursada);
+            this.examenesDeCursada.forEach(element => {
+                  element.notas=this.ordenarNotas(element.notas);          
+            });
+            
             this.getFilas();
+            this._spinnerService.hide();
           
           });
         });
@@ -142,11 +191,24 @@ export class NotasComponent implements OnInit {
       if (n1.id < n2.id) {
           return -1;
       }
-  
       return 0;
   });
     return aux;
   }
+  ordenarNotas(dato:any[]):any[]{
+    let aux= dato.sort((n1,n2) => {
+      if (n1.idAlumno > n2.idAlumno) {
+          return 1;
+      }
+  
+      if (n1.idAlumno < n2.idAlumno) {
+          return -1;
+      }
+      return 0;
+  });
+    return aux;
+  }
+  
 getFilas(){
   this.filas=[];
   this.calificaciones=[];
@@ -192,6 +254,7 @@ getFilas(){
         this.filas[i].notas[nro].deshabilitado=true;
         
       }  
+      this.guardar(nro);
     }
     
   }
