@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AutoCompleteModule} from 'primeng/primeng'
+import {AutoCompleteModule,  PaginatorModule} from 'primeng/primeng'
 
-import { UsuarioService } from './servicios/usuario.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +17,8 @@ import {DropdownModule} from 'primeng/dropdown';
 import {SpinnerModule} from 'primeng/spinner';
 
 import {CheckboxModule} from 'primeng/checkbox';
+
+
 
 
 
@@ -37,10 +38,6 @@ import {MatTableModule} from '@angular/material/table';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import {TableModule} from 'primeng/table';
-
-
-
-
 
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
@@ -111,7 +108,8 @@ import {CdkTreeModule} from '@angular/cdk/tree';
 
     CdkTableModule,
     CdkTreeModule,
-    MatSortModule
+    MatSortModule, 
+    PaginatorModule
   ], 
   providers: [
     AlumnoService

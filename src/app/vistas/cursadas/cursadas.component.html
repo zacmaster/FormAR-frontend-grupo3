@@ -1,46 +1,131 @@
-<div class="p-0">
-    <div class="bg-light">
-        <div class="input-group py-4 col-5">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
-            </div>
-            
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
+<dialogo-confirmacion
+                      *ngIf="inscribiendo"
+                      [titulo]="_LABEL.titulo.inscripcion"
+                      [botonCerrar]="false"
+                      (clickBotonIzquierdo)="cerrarDialogoInscripcion()"
+                      (clickBotonDerecho)="clickConfirmarInscripcion()"
+                      [textoBotonIzquierdo]="_LABEL.cancelar"
+                      [textoBotonDerecho]="_LABEL.inscribir"
+                      texto="Seleccione un alumno"
+>
 
-            <div class="input-group-append">
-              <button class="btn btn-success"(click)="nuevaCursada()"><span>{{ _LABEL.nuevaCursada }}</span></button>
+    <p-dropdown
+                [options]="alumnosFiltrados"
+                [(ngModel)]="selectedAlumno"
+                optionLabel="nombreApellido"
+                [filter]="true"
+                [style]="{'width':'300px'}" 
+    ></p-dropdown>
+    <table class="table bg-light table-hover" style="width: 400px; margin: 20px 0;">
+      <thead class="thead-light">
+        <tr>
+          <th>{{ _LABEL.nombre }}</th>
+          <th>{{ _LABEL.apellido }}</th>
+          <th>{{ _LABEL.dni }}</th>
+        </tr>
+      </thead>
+      <tbody class="border border-light">
+        <tr>
+          <td>{{ selectedAlumno.nombre }}</td>
+          <td>{{ selectedAlumno.apellido }}</td>
+          <td>{{ selectedAlumno.dni}}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    
+  </dialogo-confirmacion>
+  
+  
+  
+  <dialogo-info
+    *ngIf="mostrandoAlumnosInscriptos"
+    titulo="Alumnos inscriptos en la cursada"
+    [texto]="cursadaSeleccionada.nombre"
+    (clickBotonCerrar)="mostrandoAlumnosInscriptos = false"
+    (clickBotonOk)="mostrandoAlumnosInscriptos = false"
+  >
+  <div style="max-height: 400px; overflow-y: scroll;">
+    <table class="table bg-light table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>{{ _LABEL.nombre }}</th>
+          <th>{{ _LABEL.apellido }}</th>
+          <th>{{ _LABEL.dni }}</th>
+        </tr>
+    </thead>
+      <tbody>
+        <tr *ngFor="let alumno of alumnosEnCursada">
+          <td>{{ alumno.nombre }}</td>
+          <td>{{ alumno.apellido }}</td>
+          <td>{{ alumno.dni }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</dialogo-info>
+
+
+
+<!-- Comienzo de tabla -->
+<div class="content-section implementation ui-fluid">
+    <p-table #dt [columns]="cols" [value]="cursadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              <button class="btn btn-success"
+                      (click)="nuevaCursada()">
+                      <span>{{ _LABEL.nuevaCursada }}</span>
+              </button>
             </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-hover bg-light">
-            <thead class="thead-light">
-                <tr>
-                  <th>{{ _LABEL.nombre }}</th>
-                  <th>{{ _LABEL.descripcion }}</th>
-                  <th>{{ _LABEL.curso }}</th>
-                  <th>{{ _LABEL.fechaInicio }}</th>
-                  <th>{{ _LABEL.fechaFin }}</th>
-                  <th>Info</th>
-                  <th>{{ _LABEL.acciones }}</th>
-                </tr>
-            </thead>
-                <tbody >
-                  <tr *ngFor="let cursada of cursadas | search: {nombre: busqueda}" >
-                    <td> {{ cursada.nombre }}</td>
-                    <td> {{ cursada.curso.descripcion }} </td>
-                    <td> {{ cursada.curso.nombre }} </td>
-                    <td> {{ _Util.convertirTimestamp(cursada.fechaInicio) }}</td>
-                    <td> {{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
-                    <td>
-                      <button
-                            (click)="cursadaSeleccionada.copiar(cursada);mostrarInfo()"
-                            class="btn btn-warning mr-2"
-                            [title]="_LABEL.info.contacto">
-                      <i class="fas fa-info"></i>
+          </ng-template>
+          
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" pResizableColumn>
+                {{col.header}}
+              </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+                <span *ngSwitchCase="'nombre'">
+                    {{ rowData.nombre }}
+                </span>
+                <span *ngSwitchCase="'descripcion'">
+                    {{ rowData.curso.descripcion }}
+                </span>
+                <span *ngSwitchCase="'curso'">
+                    {{ rowData.curso.nombre }}
+                </span>
+                <span *ngSwitchCase="'fechaInicio'">
+                    {{ _Util.convertirTimestamp(rowData.fechaInicio) }}
+                </span>
+                <span *ngSwitchCase="'fechaFin'">
+                    {{ _Util.convertirTimestamp(rowData.fechaFin) }}
+                </span>
+                <span *ngSwitchCase="'info'">
+                    <button class="btn btn-warning mr-2"
+                            [title]="_LABEL.info.cursada"
+                            (click)="mostrarInfo(rowData)">
+                            <i class="fas fa-info"></i>
                     </button>
-                    </td>
-                    <td>
-                      <button class="btn btn-info mr-2" (click)="clickInscribir(cursada)">
+                    <button
+                            (click)="mostrarAlumnosEnCursada(rowData)"
+                            class="btn btn-warning mr-2"
+                            [title]="_LABEL.info.alumnosEnCursada"
+                      > 
+                      <i class="fas fa-users"></i></button>
+                </span>
+                <span *ngSwitchCase="'acciones'">
+                    <button class="btn btn-info mr-2" (click)="clickInscribir(rowData)">
                         <i class="fas fa-file-signature"></i>
                       </button>
                       <button class="btn btn-success mr-2">
@@ -49,12 +134,46 @@
                       <button class="btn btn-danger">
                         <i class="fas fa-trash"></i>
                       </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-        </div>
-</div>
+                </span>
+            </td>
+          </tr>
+        </ng-template>
+  
+    </p-table>
+  </div>
+
+
+
+
+
+<!-- Fin de tabla -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  <!--Dialogo info-->
 <div class="contenedor-info"  *ngIf="infoShowed">
   <div  class="dialogo bg-light p-1">
@@ -262,7 +381,7 @@
                           <tbody>
                               <tr *ngFor="let field of fieldArray; let i = index">
                                   <td>
-                                      <select class="form-control" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
+                                      <select class="custom-select" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
                                           <option *ngFor="let dia of dias" [value]="dia.dia">
                                             {{ dia.dia }}
                                           </option>
@@ -282,7 +401,7 @@
                               </tr>
                               <tr>
                                   <td>
-                                      <select class="form-control" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
+                                      <select class="custom-select" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
                                           <option *ngFor="let dia of dias" [value]="dia.dia">
                                             {{ dia.dia }}
                                           </option>
@@ -304,7 +423,7 @@
                              
                           </tbody>
                       </table>  
-                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.disponibilidadHoraria}}}</p>
+                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.disponibilidadHoraria }}</p>
               </div>
               </div>
             <!-- FIN HORARIO DE CURSADA -->
@@ -321,17 +440,18 @@
       </div>
   </div>
   <!--Calendario-->
-  <calendario-disponibilidad *ngIf="mostrarCalendario"
-  (clickBotonCerrar)="ocultarCalendario()"
-  [id]= idSeleccionado
-  [esSala]=esSala
-  [esInstructor]= esInstructor
+  <calendario-disponibilidad 
+                              *ngIf="mostrarCalendario"
+                              (clickBotonCerrar)="ocultarCalendario()"
+                              [id]= idSeleccionado
+                              [esSala]=esSala
+                              [esInstructor]= esInstructor
 ></calendario-disponibilidad>
-<ng4-loading-spinner></ng4-loading-spinner>
   
 
 
-  <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">
+
+  <!-- <div class="contenedor d-flex justify-content-center align-items-center " *ngIf="inscribiendo">
     <div class="dialogo bg-light p-3 contenedor-form" style="width: 700px">
       <div class="dialogoHeader">
         <div class="text-center">{{ _LABEL.tituloInscipcion }}</div>
@@ -341,7 +461,7 @@
         [dropdown]="true"></p-autoComplete>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
 
@@ -349,15 +469,12 @@
 
 
 <!-- 
-<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
-                      (clickBotonCerrar)="ocultarDialogo()"
-                      (clickBotonIzquierdo)="ocultarDialogo()"
-                      (clickBotonDerecho)="eliminar()"
-                      [titulo]="dlg.titulo"
-                      [texto]="dlg.texto"
+<dialogo-confirmacion *ngIf="inscribiendo"
                       >
+                      
 
-</dialogo-confirmacion>
- -->
+</dialogo-confirmacion> -->
+
+
 
 <ng4-loading-spinner></ng4-loading-spinner>

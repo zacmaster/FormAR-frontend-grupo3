@@ -17,7 +17,13 @@ import { Alumno } from '../../modelos/alumno';
 import { Horario } from '../../modelos/horario';
 import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
-
+import { CompileShallowModuleMetadata, ThrowStmt } from '@angular/compiler';
+import { npost } from 'q';
+import { isTuesday } from 'date-fns';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { AlumnoService } from 'src/app/servicios/alumno.service';
+import { Inscripcion } from '../../modelos/inscripcion'
+import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 
 @Component({
   selector: 'app-cursadas',
@@ -31,9 +37,11 @@ export class CursadasComponent implements OnInit {
     
     private _cursadaService: CursadaService,
     private _cursoService: CursoService,
+    private _alumnoService: AlumnoService,
     private _instructorService : InstructorService,
     private _salasService : SalaService,
     private _spinnerService: Ng4LoadingSpinnerService,
+    private _inscripcionService: InscripcionService
   ) { }
 
   _LABEL = LABEL;
@@ -47,17 +55,22 @@ export class CursadasComponent implements OnInit {
   salas = [];
   _Util = Util;
   fechaInicio: number;
-
+  cols: any[];
+  
   pruebaCurso;
-
+  
   inscribiendo: boolean = false;
   infoShowed: boolean = false;
   horarioDisponibilidad: boolean = false;
-
+  
   cursadaSeleccionada: Cursada = this.newCursada();
   alumnos: Alumno[];
+  alumnosEnCursada: Alumno[];
 
 
+
+  alumnosFiltrados: Alumno[];
+  selectedAlumno: Alumno = new Alumno();
   results: string[] = ['Zacarías','Jorge'];
   alumnoSeleccionado: Alumno = new Alumno();
   edicion: boolean = false;
@@ -67,6 +80,8 @@ export class CursadasComponent implements OnInit {
   esSala: boolean= false;
   esInstructor: boolean = false;
   mostrarCalendario: boolean = false;
+  mostrandoAlumnosInscriptos: boolean = false;
+
 
   sabado;
 
@@ -268,7 +283,9 @@ export class CursadasComponent implements OnInit {
  
     
   
-  mostrarInfo(){
+  mostrarInfo(cursada: any){
+    this.cursadaSeleccionada = new Cursada();
+    this.cursadaSeleccionada.copiar(cursada);
     this.infoShowed=true;
   }
   cerrarInfo(){
@@ -338,7 +355,21 @@ export class CursadasComponent implements OnInit {
       this.busqueda = undefined;
     })
   }
-  
+
+  getAlumnos(){
+    this.alumnos = [];
+    this._alumnoService.getAlumnos()
+    .subscribe(alumnos => {
+      alumnos.forEach(alumno =>{
+        let alumnoAux = new Alumno();
+        alumnoAux.copiar(alumno);
+        this.alumnos.push(alumnoAux)
+      })
+      console.log("alumnos: ",this.alumnos);
+    }) 
+      
+  }
+
   private newCursada(): Cursada{
     let cursada = new Cursada();
     return cursada;
@@ -422,6 +453,8 @@ export class CursadasComponent implements OnInit {
     // METODOS DEL SISTEMA
     
     ngOnInit() {
+      this.cargarCampos();
+      this.getAlumnos();
       this.getCursadas();
       // console.log("on init");
       // this._spinnerService.show();
@@ -437,11 +470,6 @@ export class CursadasComponent implements OnInit {
        this.getSalas();
   }
 
-  ngDoCheck(){
-    // console.log(this.selectedSala);
-    // console.log(this.selectedInstructor);
-    // console.log(this.selectedCurso);
-  }
 
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
@@ -461,9 +489,100 @@ export class CursadasComponent implements OnInit {
     }
  
   }
-  deleteFieldValue(index) {
-      this.fieldArray.splice(index, 1);
+  // METODOS DEL SISTEMA
+
+
+  cerrarDialogoInscripcion(){
+    this.inscribiendo = false;
   }
+  
+
+  clickConfirmarInscripcion(){
+    let nuevaInscripcion: Inscripcion = new Inscripcion();
+    nuevaInscripcion.idAlumno = this.selectedAlumno.id;
+    nuevaInscripcion.idCursada = this.cursadaSeleccionada.id;
+    this._inscripcionService.addInscripcion(nuevaInscripcion).subscribe();
+    
+    this.inscribiendo = false;
+  }
+  clickInscribir(cursada: Cursada){
+    this.cursadaSeleccionada.copiar(cursada);
+    let alumnosCursada: Alumno[] = [];
+    this._inscripcionService.getAlumnosCursada(this.cursadaSeleccionada.id)
+      .toPromise()
+      .then(
+        alumnos => {
+          alumnos.forEach(alumno => {
+            alumnosCursada.push(alumno);
+
+          });
+          this.alumnosFiltrados = this.getAlumnosFiltrados(this.alumnos, alumnosCursada);
+          if(this.alumnosFiltrados.length > 0){
+            this.selectedAlumno = this.alumnosFiltrados[0];
+          }
+          this.inscribiendo = true;
+        });
+  }
+
+  search(event){
+    console.log("Alumnos :", this.alumnos);
+    
+    // this.alumnos.forEach(alumno => {
+    //   this.results.push(alumno.nombre)
+    // })
+  }
+
+  ngDoCheck(){
+    // console.log("Cursadas: ", this.cursadas);
+    console.log('alumnosFiltrados: ',this.alumnosFiltrados
+    )
+    // console.log("Alumnos: ",this.alumnos);
+    
+    // console.log("sabado: ",this.sabado);
+  }
+
+
+  mostrarAlumnosEnCursada(cursada){
+    this.cursadaSeleccionada = new Cursada();
+    this.cursadaSeleccionada.copiar(cursada);
+    this._inscripcionService.getAlumnosCursada(cursada.id)
+        .toPromise()
+        .then(alumnos => {
+          this.alumnosEnCursada = [];
+          alumnos.forEach(alumno => {
+            let alumnoAux = new Alumno();
+            alumnoAux.copiar(alumno);
+            this.alumnosEnCursada.push(alumno);
+          })
+          this.mostrandoAlumnosInscriptos = true;
+        });
+  }
+
+  getAlumnosFiltrados(alumnosTodos: Alumno[], alumnosInscriptos: Alumno[]): Alumno[]{
+    let alumnosAux = [];
+    alumnosTodos.forEach(alumno =>{
+      if(!alumnosInscriptos.some(e => e.id === alumno.id)){
+        alumno.nombreApellido = `${alumno.nombre} ${alumno.apellido}`; 
+        alumnosAux.push(alumno);
+      }
+    })
+    console.log("alumnosAux: ",alumnosAux);
+    return alumnosAux;
+  }
+
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'nombre', header: 'Nombre' },
+      { field: 'descripcion', header: 'Descripción' },
+      { field: 'curso', header: 'Curso' },
+      { field: 'fechaInicio', header: 'Fecha de Inicio' },
+      { field: 'fechaFin', header: 'Fecha de Fin' },
+      { field: 'info', header: 'Info' },
+      { field: 'acciones', header: 'Acciones' }
+    ];
+  }
+
 
 }
 

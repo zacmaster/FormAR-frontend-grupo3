@@ -29,6 +29,7 @@ export class ContactosListComponent implements OnInit {
   seEligeArea = true;
   edicion:boolean=false;
   fechaHoraContacto: string = '';
+  cols: any[];
 
 
 
@@ -97,6 +98,7 @@ export class ContactosListComponent implements OnInit {
     
 
   ngOnInit() {
+      this.cargarCampos();
       this.getContactos();
       this.getAlumnos();
       this.getAreas();
@@ -104,9 +106,8 @@ export class ContactosListComponent implements OnInit {
   }
 
   ngDoCheck(){
-  
     // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
-    
+    console.log(this.contactos)
   }
 
 
@@ -125,6 +126,8 @@ export class ContactosListComponent implements OnInit {
 
       area_aux.copiar(contacto.area);
       alumno_aux.copiar(contacto.alumno);
+      alumno_aux.nombreApellido = contacto.alumno.nombre + " " + contacto.alumno.apellido;
+      console.log("alumnoAux: ",  alumno_aux)
       curso_aux.copiar(contacto.curso);
 
       contacto_aux.copiar(contacto);
@@ -208,7 +211,9 @@ export class ContactosListComponent implements OnInit {
   
   }
 
-  editarContacto(){
+  editarContacto(contacto: any){
+    this.contactoSeleccionado = new Contacto();
+    this.contactoSeleccionado.copiar(contacto);
     this.alumnos.forEach(element => {
       if(element.id=this.contactoSeleccionado.alumno.id){
         this.selectedAlumno=element;
@@ -372,15 +377,13 @@ export class ContactosListComponent implements OnInit {
     this.selectedAlumno= new Alumno();
   }
 
-  mostrarDescripcion(contacto: Contacto){
-    console.log("Este es el contacto que recibo: ",contacto);
-    
-    this.fechaHoraContacto =  this._Util.convertirTimestamp(contacto.fecha) 
-                              +' '+this._Util.convertirTime(contacto.fecha);
-
-    this.descripcionShowed = true;
+  mostrarDescripcion(contacto: any){
     this.contactoSeleccionado = new Contacto();
     this.contactoSeleccionado.copiar(contacto);
+    
+    this.fechaHoraContacto =  this._Util.convertirTimestamp(this.contactoSeleccionado.fecha);
+
+    this.descripcionShowed = true;
   }
 
   blankSpaces() {
@@ -388,6 +391,16 @@ export class ContactosListComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'fecha', header: 'Fecha' },
+      { field: 'alumno', header: 'Alumno' },
+      { field: 'asunto', header: 'Asunto' },
+      { field: 'acciones', header: 'Acciones' }
+    ];
   }
 
 }

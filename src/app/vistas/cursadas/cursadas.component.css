@@ -31,7 +31,7 @@
     width: 500px;
     height: auto;
     margin: auto;
-    margin-top: 15vh;
+    margin-top: 5vh;
   }
   
   .dialogoHeader{
@@ -46,5 +46,5 @@
 }
 .table-responsive{
   overflow-y: scroll;
-  max-height: 78vh;
+  max-height: 75vh;
 }
