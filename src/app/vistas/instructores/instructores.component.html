@@ -336,7 +336,7 @@
 
         </div>
 
-        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid " (click)="guardar()">
+        <button class="btn btn-primary float-right " [disabled]="blankSpaces() || nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid " (click)="guardar()">
           <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
           <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
         </button>

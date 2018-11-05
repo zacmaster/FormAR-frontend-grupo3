@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { log } from 'util';
-
 import { VALIDACION, LABEL, LABEL_REQUIRED} from '../../utilidades/mensajes';
 import { PATTERNS } from '../../utilidades/patterns';
 import { Util } from '../../utilidades/util';
@@ -18,9 +17,7 @@ import { Alumno } from '../../modelos/alumno';
 import { Horario } from '../../modelos/horario';
 import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
-import { CompileShallowModuleMetadata, ThrowStmt } from '@angular/compiler';
-import { npost } from 'q';
-import { isTuesday } from 'date-fns';
+
 
 @Component({
   selector: 'app-cursadas',
@@ -453,11 +450,6 @@ export class CursadasComponent implements OnInit {
       this.fieldArray.push(this.newAttribute)
       this.newAttribute = {};
   }
-
-  deleteFieldValue(index) {
-  
-      this.fieldArray.splice(index, 1);
-  }
   deleteAtributteValue(){
     //pasar el ultimo de arreglo a new atribute
     if(this.fieldArray.length>0){
@@ -469,7 +461,9 @@ export class CursadasComponent implements OnInit {
     }
  
   }
-
+  deleteFieldValue(index) {
+      this.fieldArray.splice(index, 1);
+  }
 
 }
 

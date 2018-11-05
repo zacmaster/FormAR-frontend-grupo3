@@ -17,6 +17,15 @@
     width: 100%;
     background-color: rgb(104, 104, 104,0.8);
   }
+  .contenedor-info{
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(104, 104, 104,0.8);
+  }
   .dialogo{
     border-radius: 5px;
     width: 500px;

@@ -83,36 +83,6 @@ export class CalendarioDisponibilidadComponent implements OnInit {
           calendar.addEvent(e);
         });
       });
-      
-      // this.options = {
-      //   header: {
-      //     left: 'prev,next',
-      //     center: 'title',
-      //     right: 'month,agendaWeek,agendaDay,list,today'
-      //   },
-      //   locale: 'es',
-      //   buttonText:{
-      //     today:    "Hoy",
-      //     month:    "Mes",
-      //     week:     "Semana",
-      //     day:      "Dia",
-      //     list:     "Lista"
-      //   },
-      //   titleFormat: { 
-      //     year: 'numeric', 
-      //   month: 'short',
-      //    day: 'numeric' },
-      //    allDayText : 'Todo el dia',
-      //    navLinks : true,
-      //    navLinkDayClick: function(date, jsEvent) {
-           
-      //     console.log('day', date.toISOString());
-      //     console.log('coords', jsEvent.pageX, jsEvent.pageY);
-          
-      //   }
-         
-         
-      // };
      
     
   }

@@ -113,7 +113,7 @@
             <div class="row">
               <div class="form-group col">
                 <label for="">{{ _LABEL_REQUIRED.descripcion }}</label>
-                <input  
+                <input
                       type="text"
                       class="form-control"
                       [(ngModel)]="cursoSeleccionado.descripcion"
@@ -171,7 +171,7 @@
                           *ngIf="!edicion"
                           class="btn btn-primary float-right"
                           (click)="guardar(cursoSeleccionado)"
-                          [disabled]="areas.length == 0"
+                          [disabled]="cursoSeleccionado.nombre == 0 || cursoSeleccionado.descripcion == 0 || cursoSeleccionado.temario == 0"
                   
                   >{{ _LABEL.agregar }}</button>
                   <button
@@ -182,7 +182,6 @@
                   >{{ _LABEL.guardar }}</button>
                 </div>
               </div>
-
         </div>
       </div>
         

@@ -242,7 +242,8 @@ export class ContactosListComponent implements OnInit {
     if (this.agregandoAlumno){
        this.guardarAlumno(this.alumnoSeleccionado);
     }
-  }
+    this.editar(this.contactoSeleccionado); 
+    } 
 
   guardarContactoNuevo(){
    if(this.contactoSeleccionado.id==0){
@@ -382,6 +383,14 @@ export class ContactosListComponent implements OnInit {
     this.contactoSeleccionado.copiar(contacto);
   }
 
-
+  blankSpaces() {
+    if (!this.contactoSeleccionado.asunto.trim().length) {
+      return true;
+    }
+    return false;
+  }
 
 }
+
+
+
