@@ -22,26 +22,22 @@ export class NotasComponent implements OnInit {
  
   examenesDeCursada: Examen[] ;
   filas: Fila[]=[];
-  notasActuales: Nota[]=[];
   alumnosEnCursada: Alumno[] ;  
   calificaciones: Calificacion[];
   examenesGuardar :Examen[];
 
 
   ngDoCheck(){ 
-    //  console.log("alumnos",this.alumnosEnCursada);
-    //  console.log("examenes",this.examenesDeCursada);
-    //console.log("contador",this.contador);
+   
     
   }
-  
-  
+
   
   constructor( private _inscripcionService: InscripcionService, private _examenService: ExamenService,private _spinnerService: Ng4LoadingSpinnerService) { }
  
   ngOnInit() {
     this.obtenerDatos();
- //  Promise.all([this.getAlumnosDeCursada(),this.getExamenesCursada()]).then(value => console.log("Hola ,termine"));
+ 
     
     
     
@@ -139,10 +135,12 @@ export class NotasComponent implements OnInit {
           alumnos.forEach(alumno => {
             let alumnoAux = new Alumno();
             alumnoAux.copiar(alumno);
-            alumnoAux.nombreApellido= alumnoAux.nombre+" "+alumnoAux.apellido;
+            alumnoAux.nombreApellido= alumnoAux.apellido+", "+alumnoAux.nombre;
             this.alumnosEnCursada.push(alumnoAux);
           })
-          this.alumnosEnCursada=this.ordenarLista(this.alumnosEnCursada);
+          this.alumnosEnCursada=this.ordenarAlfabeticamente(this.alumnosEnCursada);
+          //console.log("Alumnos ordenados",this.alumnosEnCursada);
+          
           
           this._examenService.getExamenes(this.cursadaSeleccionada.id).toPromise().then(examenes=>{
             this.examenesDeCursada=[];
@@ -151,14 +149,14 @@ export class NotasComponent implements OnInit {
                 examenAux.copiar(examen);
                 this.examenesDeCursada.push(examenAux);
             });
-            if(this.examenesDeCursada.length==0){
-              this.generarPrimerExamen();
-              
-            }
+            // if(this.examenesDeCursada.length==0){
+            //   this.generarPrimerExamen();
+            // }
             this.examenesDeCursada= this.ordenarLista(this.examenesDeCursada);
             this.examenesDeCursada.forEach(element => {
                   element.notas=this.ordenarNotas(element.notas);          
             });
+            //console.log("examenes ordenados",this.examenesDeCursada);
             
             this.getFilas();
             this._spinnerService.hide();
@@ -166,22 +164,22 @@ export class NotasComponent implements OnInit {
           });
         });
   }
-  generarPrimerExamen(){
-    let examenAux = new Examen();
-    examenAux.id=0;
-    examenAux.idCursada=this.cursadaSeleccionada.id;
-    examenAux.nroExamen=1;
-    examenAux.notas=[];
-    this.alumnosEnCursada.forEach(element => {
-          let notaAux = new Nota();
-          notaAux.id=0;
-          notaAux.idAlumno=element.id;
-          notaAux.nombreAlumno=element.nombreApellido;
-          notaAux.ausente=false;
-          examenAux.notas.push(notaAux);
-    });
-    this.examenesDeCursada.push(examenAux);
-  }
+  // generarPrimerExamen(){
+  //   let examenAux = new Examen();
+  //   examenAux.id=0;
+  //   examenAux.idCursada=this.cursadaSeleccionada.id;
+  //   examenAux.nroExamen=1;
+  //   examenAux.notas=[];
+  //   this.alumnosEnCursada.forEach(element => {
+  //         let notaAux = new Nota();
+  //         notaAux.id=0;
+  //         notaAux.idAlumno=element.id;
+  //         notaAux.nombreAlumno=element.nombreApellido;
+  //         notaAux.ausente=false;
+  //         examenAux.notas.push(notaAux);
+  //   });
+  //   this.examenesDeCursada.push(examenAux);
+  // }
   ordenarLista(dato:any[]):any[]{
     let aux= dato.sort((n1,n2) => {
       if (n1.id > n2.id) {
@@ -195,13 +193,26 @@ export class NotasComponent implements OnInit {
   });
     return aux;
   }
-  ordenarNotas(dato:any[]):any[]{
+  ordenarAlfabeticamente(dato:any[]):any[]{
     let aux= dato.sort((n1,n2) => {
-      if (n1.idAlumno > n2.idAlumno) {
+      if (n1.nombreApellido > n2.nombreApellido) {
           return 1;
       }
   
-      if (n1.idAlumno < n2.idAlumno) {
+      if (n1.nombreApellido < n2.nombreApellido) {
+          return -1;
+      }
+      return 0;
+  });
+    return aux;
+  }
+  ordenarNotas(dato:any[]):any[]{
+    let aux= dato.sort((n1,n2) => {
+      if (n1.nombreAlumno > n2.nombreAlumno) {
+          return 1;
+      }
+  
+      if (n1.nombreAlumno < n2.nombreAlumno) {
           return -1;
       }
       return 0;
@@ -237,7 +248,7 @@ getFilas(){
       this.examenesDeCursada.forEach(element => {
         this.calificaciones.push({deshabilitado:true,calificar:false})
       });
-      console.log("filas",this.filas);
+      //console.log("filas",this.filas);
       
   }
   habilitarColumna(nro : number){

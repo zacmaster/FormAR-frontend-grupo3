@@ -65,13 +65,7 @@ export class CalendarioDisponibilidadComponent implements OnInit {
         },
         events:this.events,
         showNonCurrentDates :false,
-        eventClick: function(info) {
-          alert('Event: ' + info.event.title+info.event.start+info.event.end);
-          
-      
-          // change the border color just for fun
-          info.el.style.borderColor = 'red';
-        }
+       
         
       });
 

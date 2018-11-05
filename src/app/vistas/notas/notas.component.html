@@ -10,8 +10,8 @@
          <div class="dialogoBody pt-3 text-center"  >
              <table class="table table-hover bg-light" >
                 <thead class="thead-light">
-                    <tr class="zui-sticky-row">
-                      <th class="zui-sticky-col">Alumnos</th>
+                    <tr class="zui-sticky-row" >
+                      <th class="zui-sticky-col" >Alumnos</th>
                       <th *ngFor="let examen of examenesDeCursada" > Examen {{examen.nroExamen}} <button class="btn-danger" *ngIf= "esUltimoExamen(examen.nroExamen)" (click)="clickBorrarExamen()" ><i class="fas fa-times"></i></button></th>
                       <th style="width: 150px">Promedio 
                       </th>
@@ -49,57 +49,4 @@
       </div>
     </div>
     <ng4-loading-spinner></ng4-loading-spinner>
-    <!-- FORMULARIO
-    <div class="contenedor">
-      <div class="card mt-4 w-50 mx-auto">
-        <div class="card-head d-flex  w-100 justify-content-between">
-          <div></div>
-          <div class="pt-2">
-            <h5 class="">Nombre cursada: {{cursadaSeleccionada.nombre}}</h5>
-          </div>
-        </div>
-        <div class="card-body">
-        <div>
-          <table class="table table-hover bg-light" >
-            <thead class="thead-light">
-                <tr class="zui-sticky-row">
-                  <th class="zui-sticky-col">Alumnos</th>
-                  <th *ngFor="let examen of examenesDeCursada" > Examen {{examen.nroExamen}} <button class="btn-danger" *ngIf= "esUltimoExamen(examen.nroExamen)" (click)="clickBorrarExamen()" ><i class="fas fa-times"></i></button></th>
-                  <th style="width: 150px">Promedio 
-                  </th>
-                </tr>
-            </thead>
-                <tbody >
-                  <tr *ngFor="let fila of filas;">
-                    <td class="zui-sticky-col">{{fila.nombreAlumno}}</td>
-                    <td *ngFor="let notaE of fila.notas;"  >
-                       <p-spinner size="10" [(ngModel)]="notaE.nota" [min]="0" [max]="10" [step]="0.25" [disabled]="notaE.deshabilitado" ></p-spinner> 
-                      
-                    </td>
-                    <td >{{calcularPromedio(fila)}}</td>
-                   
-                  </tr>
-                  <tr >
-                    <td class="zui-sticky-col"></td>
-                    <td *ngFor="let cali of calificaciones; let i=index">
-                        <button class="btn btn-primary float-left " (click)="habilitarColumna(i)" >
-                            <span *ngIf="!cali.calificar" >Calificar </span>
-                            <span *ngIf="cali.calificar" >Aceptar </span>
-                      </button>
-                    </td>
-                    <td ></td>
-                   
-                  </tr>
-                </tbody>
-              </table> 
-                  </div>
-                <div class="d-flex justify-content-end p-3" >
-                  <button class="btn btn-primary float-right " (click)="clickBtnCerrar()">
-                    <span >Guardar</span>
-                  </button>
-                <button class="btn btn-primary float-left " (click)="agregarExamen()">
-                      <span >Agregar examen </span>
-                </button>
-               </div>  
-          </div>
-      </div> -->
+  

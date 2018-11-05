@@ -18,10 +18,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Nombre Instructor</span>
                   </div>
-                  <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructores" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}"  ></p-dropdown>
-  
-      
-                  
+                  <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
               </div>
               <div class="example-container mat-elevation-z8">
                 <p-table [columns]="cols" [value]="cursadas"[scrollable]="true" scrollHeight="450px"  >
@@ -30,6 +27,9 @@
                           <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                               {{col.header}}
                               <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                          </th>
+                          <th>
+                            Info
                           </th>
                           <th >
                             Acciones
@@ -42,7 +42,14 @@
                           {{rowData[col.field]&#125;&#125;
                       </td>
                       <td>
-                        <button class="btn btn-success mr-2"(click)="verAsistencia()">
+                        <button
+                              (click)="mostrarInfo(rowData)"
+                              class="btn btn-warning mr-2"
+                              [title]="_LABEL.info.contacto">
+                        <i class="fas fa-info"></i>
+                      </button>
+                      <td>
+                        <button class="btn btn-success mr-2"(click)="verAsistencia(rowData)">
                             <i class="fas fa-clipboard-list"></i>
                         </button>
                         <button class="btn btn-info mr-2"(click)="verNotas(rowData)">
@@ -53,43 +60,33 @@
                   </ng-template>
               </p-table>
             </div>
-
-              <!-- <div class="table-responsive">
-                <table class="table table-hover bg-light">
-                  <thead class="thead-light">
-                      <tr>
-                        <th>Nombre de Cursada</th>
-                        <th>Cantidad de Alumnos</th>
-                        <th>Principio de cursada</th>
-                        <th>Fin de cursada</th>
-                        <th>{{ _LABEL.acciones }}</th>
-                      </tr>
-                  </thead>
-                      <tbody >
-                        <tr>
-                          <td>Laboratorio</td>
-                          <td>40</td>
-                          <td>02/10/2018</td>
-                          <td>19/10/2018</td>
-                          <td>
-                            <button class="btn btn-success mr-2"(click)="verAsistencia()">
-                                <i class="fas fa-clipboard-list"></i>
-                            </button>
-                            <button class="btn btn-info mr-2"(click)="verNotas()">
-                                <i class="far fa-edit"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-              </div> -->
       </div>
   </div>
+  <div class="contenedor-info"  *ngIf="infoShowed">
+    <div  class="dialogo bg-light p-1">
+        <div class="dialogoHeader d-flex justify-content-between">
+          <div></div>
+          <div class="titulo text-center" ><h5> Info Cursada </h5></div>
+          <span class="btn btn-danger" (click)="cerrarInfo()"><i class="fas fa-times"></i></span>
+        </div>
+        <div class="dialogoBody p-3 pt-3 text-center">
+          <p> <span style="font-weight: bold"> Sala: </span>{{ cursadaSeleccionada.sala.nombre}} </p>
+          <p> <span style="font-weight: bold"> Horarios de Cursada: </span></p>
+          <p *ngFor="let horario of cursadaSeleccionada.horariosCursada"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
+            {{ _Util.convertirTime(horario.horaInicio) }} a
+            {{ _Util.convertirTime(horario.horaFin) }} 
+          </p>
+          <p> <span style="font-weight: bold"> Cantidad de Clases: </span>{{ cursadaSeleccionada.cantidadClases }} </p>
   
+        </div>
+      </div>
+  </div>
 </div>
+
 <!--Asistencia-->
 <app-asistencia *ngIf="mostrarAsistencia"
 (clickBotonCerrar)="ocultarAsistencia()"
+        [cursadaSeleccionada]="cursadaSeleccionada"
 
 ></app-asistencia>
 <!--Notas-->

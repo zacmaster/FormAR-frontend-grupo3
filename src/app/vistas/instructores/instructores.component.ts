@@ -219,7 +219,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
           horario.horaFin=this.newAttribute.horaFin;
           this.instructorSeleccionado.disponibilidadHoraria.push(horario);
         }
-        console.log(this.instructorSeleccionado);
+        //console.log(this.instructorSeleccionado);
           for (let j = 0; j < this.selectedAreas.length; j++) {
             if(this.selectedAreas[j]!=null){
               this.instructorSeleccionado.areasPreferencia.push(this.selectedAreas[j]);
@@ -232,7 +232,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   agregar(instructor : Instructor){
     this._spinnerService.show();
     setTimeout(() => {
-      console.log("instructor seleccionado: ",this.instructorSeleccionado);
+      //console.log("instructor seleccionado: ",this.instructorSeleccionado);
           this._instructorService.addInstructor(instructor).
           subscribe(response => {
             this.getInstructores();
@@ -271,7 +271,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
       })
     });
     const arrayAux= this.instructorSeleccionado.disponibilidadHoraria;
-    console.log(arrayAux);
+   // console.log(arrayAux);
        for (let index = 0; index < arrayAux.length; index++) {
          if(index==arrayAux.length-1){
           this.newAttribute={id:arrayAux[index].id,dia:arrayAux[index].dia
@@ -288,7 +288,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   
     this.edicion = true;
     this.mostrarDialogoAB = true;
-    console.log(this.instructorSeleccionado);
+    //console.log(this.instructorSeleccionado);
   }
 
   eliminar(){

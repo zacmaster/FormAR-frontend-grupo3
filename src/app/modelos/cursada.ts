@@ -23,6 +23,7 @@ export class Cursada extends Resource implements Icursada {
     diaVencCuota: number;
     curso: Curso;
     horariosCursada: Horario[];
+    inscriptos:number;
 
     constructor(){
         super();

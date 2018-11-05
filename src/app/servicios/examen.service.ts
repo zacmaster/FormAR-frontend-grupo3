@@ -45,14 +45,4 @@ export class ExamenService extends ResourceService<Examen, IExamen>{
     else
       return this.addExamen(examen)
   }
-
-
-
-
-
-
-
-
-
-
 }

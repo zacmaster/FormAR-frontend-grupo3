@@ -1,4 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ClaseCursada } from 'src/app/modelos/clasecursada';
+import { Asistencia } from 'src/app/modelos/asistencia';
+import { Alumno } from 'src/app/modelos/alumno';
+import { InscripcionService } from 'src/app/servicios/inscripcion.service';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { ClaseService } from 'src/app/servicios/clase.service';
+import { Util } from '../../utilidades/util';
 
 
 
@@ -11,63 +18,215 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class AsistenciaComponent implements OnInit {
   @Output() clickBotonCerrar = new EventEmitter<boolean>();
-  @Input() public nombreCursada;
-  clases: Clases[] = [];
-  value1:any;
-  value2:any;
-  value3:any;
-  value4:any;
-  valueDes: boolean = true;
-  valueA1:any;
-  valueA2:any;
-  valueA3:any;
-  valueA4:any;
-  valueDesA: boolean = false;
-  valueB1:any;
-  valueB2:any;
-  valueB3:any;
-  valueB4:any;
-  valueC1:any;
-  valueC2:any;
-  valueC3:any;
-  valueC4:any;
-  valueD1:any;
-  valueD2:any;
-  valueD3:any;
-  valueD4:any;
+  @Input() public cursadaSeleccionada;
+  clasesCursada: ClaseCursada[] ;
+  botonAsistencia: Boton[]=[];
+  filas: Fila[];
+  alumnosEnCursada: Alumno[] ; 
+  limiteFaltas:number; 
+  _Util = Util;
 
+  opcAsistencia=[{opc:"Pendiente"},
+                  {opc:"Presente"},
+                  {opc:"Ausente"}];
 
 
   ngDoCheck(){ 
-    console.log(this.nombreCursada);
+  
   }
   
   clickBtnCerrar(){
     this.clickBotonCerrar.emit(true);
   }
   
-  constructor() { }
+  constructor(private _inscripcionService: InscripcionService, private _claseService: ClaseService,private _spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
-
-    this.clases.push(new Clases("02/10/2018"));
-    this.clases.push(new Clases("05/10/2018"));
-    this.clases.push(new Clases("09/10/2018"));
-    this.clases.push(new Clases("12/10/2018"));
-    this.clases.push(new Clases("16/10/2018"));
-    this.clases.push(new Clases("19/10/2018"));
-    this.clases.push(new Clases("23/10/2018"));
-    this.clases.push(new Clases("26/10/2018"));
-    this.clases.push(new Clases("30/10/2018"));
+    this.obtenerDatos();
+  }
+  guardar(nro:number){
+    let claseAux = new ClaseCursada();
+    claseAux.id=this.clasesCursada[nro].id; 
+    claseAux.idCursada=this.clasesCursada[nro].idCursada;
+    claseAux.fecha=this.clasesCursada[nro].fecha;
+    let asistAux: Asistencia[] = [];
+    for (let z = 0; z < this.filas.length; z++) {
+      let asistencia= new Asistencia;
+      asistencia.id=this.filas[z].asistencia[nro].id;
+      asistencia.idAlumno=this.filas[z].asistencia[nro].idAlumno;
+      asistencia.estado=this.filas[z].asistencia[nro].estado.opc;
+      asistAux.push(asistencia);
+    }
+    claseAux.asistencias=asistAux;
+    //console.log("clase a guardar", claseAux);
     
+    this.editar(claseAux);
+  }
+  
+  editar(clase:ClaseCursada){
+    this._spinnerService.show();
+    setTimeout(() => {
+      this._claseService.updateClase(clase).
+      subscribe(response => {
+        this.obtenerDatos();
+        this._spinnerService.hide();
+      })
+      }, 500)
+  }
+
+  habilitarColumna(nro:number){
+    if(!this.botonAsistencia[nro].tomarAsistencia){
+      this.botonAsistencia[nro].tomarAsistencia=true;;
+      for (let i = 0; i < this.filas.length; i++) {
+        this.filas[i].asistencia[nro].deshabilitado=false;
+        
+      }  
+    }
+    else{
+      this.botonAsistencia[nro].tomarAsistencia=false;
+      for (let i = 0; i < this.filas.length; i++) {
+        this.filas[i].asistencia[nro].deshabilitado=true;
+      }  
+      this.guardar(nro);
+    } 
+  }
+  
+  obtenerDatos(){
+    this._spinnerService.show();
+    this._inscripcionService.getAlumnosCursada(this.cursadaSeleccionada.id)
+        .toPromise()
+        .then(alumnos => {
+          this.alumnosEnCursada = [];
+          alumnos.forEach(alumno => {
+            let alumnoAux = new Alumno();
+            alumnoAux.copiar(alumno);
+            alumnoAux.nombreApellido= alumnoAux.apellido+", "+alumnoAux.nombre;
+            this.alumnosEnCursada.push(alumnoAux);
+          })
+          this.alumnosEnCursada=this.ordenarAlfabeticamente(this.alumnosEnCursada);
+          //console.log("Alumnos ordenados",this.alumnosEnCursada);
+          
+          
+          this._claseService.getClases(this.cursadaSeleccionada.id).toPromise().then(clases=>{
+            this.clasesCursada=[];
+            clases.forEach(clase=>{
+                let claseAux = new ClaseCursada();
+                claseAux.copiar(clase);
+                this.clasesCursada.push(claseAux);
+            });
+            
+            this.clasesCursada= this.ordenarLista(this.clasesCursada);
+            this.clasesCursada.forEach(element => {
+                  element.asistencias=this.ordenarAsistencias(element.asistencias);          
+            });
+            //console.log("clases ordenadas",this.clasesCursada);
+            
+            this.getFilas();
+            this._spinnerService.hide();
+          
+          });
+        });
+  }
+  ordenarLista(dato:any[]):any[]{
+    let aux= dato.sort((n1,n2) => {
+      if (n1.fecha > n2.fecha) {
+          return 1;
+      }
+  
+      if (n1.fecha < n2.fecha) {
+          return -1;
+      }
+      return 0;
+  });
+    return aux;
+  }
+  ordenarAlfabeticamente(dato:any[]):any[]{
+    let aux= dato.sort((n1,n2) => {
+      if (n1.nombreApellido > n2.nombreApellido) {
+          return 1;
+      }
+  
+      if (n1.nombreApellido < n2.nombreApellido) {
+          return -1;
+      }
+      return 0;
+  });
+    return aux;
+  }
+  ordenarAsistencias(dato:any[]):any[]{
+    let aux= dato.sort((n1,n2) => {
+      if (n1.nombreAlumno > n2.nombreAlumno) {
+          return 1;
+      }
+  
+      if (n1.nombreAlumno < n2.nombreAlumno) {
+          return -1;
+      }
+      return 0;
+  });
+    return aux;
+  }
+  
+getFilas(){
+  this.filas=[];
+  this.botonAsistencia=[];
+      for (let i = 0; i < this.alumnosEnCursada.length; i++) {
+        let filaAux= new Fila();
+        filaAux.idAlumno= this.alumnosEnCursada[i].id;
+        filaAux.nombreAlumno= this.alumnosEnCursada[i].nombreApellido;
+        let asistenciasAux: Asistencia[]=[]
+        for (let z = 0; z < this.clasesCursada.length; z++) {
+            let asistAux = new Asistencia();
+            asistAux.id=this.clasesCursada[z].asistencias[i].id;
+            asistAux.idAlumno=this.clasesCursada[z].asistencias[i].idAlumno;
+            if(this.clasesCursada[z].asistencias[i].estado=="Pendiente"){
+              asistAux.estado= this.opcAsistencia[0];
+            }
+            else if(this.clasesCursada[z].asistencias[i].estado=="Presente"){
+              asistAux.estado= this.opcAsistencia[1];
+            }
+            else{
+              asistAux.estado= this.opcAsistencia[2];
+            }
+            asistAux.deshabilitado=true;
+            asistenciasAux.push(asistAux);
+            
+        }  
+        filaAux.asistencia=asistenciasAux;
+        this.filas.push(filaAux); 
+      }
+      this.clasesCursada.forEach(element => {
+        this.botonAsistencia.push({tomarAsistencia:false})
+      });
+      //console.log("filas",this.filas);
+      
+  }
+  calcularFaltas(fila: Fila): number{
+    let faltas= 0;
+
+    fila.asistencia.forEach(asistencia => {
+      if(asistencia.estado.opc=="Ausente"){
+        faltas++;
+      }
+    });
+    if(faltas==this.limiteFaltas){
+      //generar tarea 
+    }
+
+    return faltas;
   }
 
 }
-export class Clases {
-  fecha: string;
-  constructor(fecha : string) {
-    this.fecha=fecha;
+export class Fila {
+  nombreAlumno:string;
+  idAlumno:number;
+  asistencia:Asistencia[];
+  
+  constructor() {
   }
   
  
+}
+export interface Boton {
+  tomarAsistencia:boolean,
 }

@@ -11,6 +11,8 @@ import { Cursada } from 'src/app/modelos/cursada';
 import { Curso } from 'src/app/modelos/curso';
 import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Sala } from '../../modelos/sala';
+import { InscripcionService } from 'src/app/servicios/inscripcion.service';
+import {SelectItem} from 'primeng/api';
 
 @Component({
   selector: 'app-instructor-home',
@@ -26,25 +28,27 @@ export class InstructorHomeComponent implements OnInit {
   _PATTERN = PATTERNS;
   _Util = Util;
 
-  selectedInstructores: Instructor ;
-  instructores: Instructor[];
+  selectedInstructor: Instructor;
+  instructores: SelectItem[];
   mostrarAsistencia:boolean =false;
   mostrarNotas: boolean = false;
   cursadas: Cursada[];
   public idCursadaFila:number;
   cursadaSeleccionada: Cursada;
+  infoShowed:boolean=false;
 
 
     cols: any[];
 
-    constructor(private _cursadaService: CursadaService) { }
+    constructor(private _cursadaService: CursadaService,private _inscripcionService: InscripcionService,
+      private _instructorService : InstructorService,private _spinnerService: Ng4LoadingSpinnerService) { }
 
     ngOnInit() {
         this.getInstructores();
-        this.getCursadas();
+        
         this.cols = [
-            { field: 'id', header: 'Id' },
-            { field: 'nombre', header: 'Nombre' },
+            { field: 'nombre', header: 'Nombre de cursada' },
+            {field: 'inscriptos', header: 'Cant. Inscriptos'},
             { field: 'fechaInicioString', header: 'Fecha de inicio' },
             { field: 'fechaFinString', header: 'Fecha de fin' },
             
@@ -72,37 +76,62 @@ export class InstructorHomeComponent implements OnInit {
             return (event.order * result);
         });
     }
- // constructor(private _instructorService : InstructorService) { }
+ // constructor() { }
   
  
   ngDoCheck(){ 
    // console.log(this.cursadas);
     
   }
-  verAsistencia(){
+  verAsistencia(data:Cursada){
+    this.cursadaSeleccionada=data;
     this.mostrarAsistencia=true;
   }
   verNotas(data:Cursada){
-      this.cursadaSeleccionada=data;
+    this.cursadaSeleccionada=data;
     this.mostrarNotas=true;
+  }
+  mostrarInfo(data:Cursada){
+    this.cursadaSeleccionada=data;
+    this.infoShowed=true;
   }
   ocultarAsistencia(){
     this.mostrarAsistencia=false;
   }
   ocultarNotas(){
-
     this.mostrarNotas=false;
+  }
+  cerrarInfo(){
+    this.infoShowed=false;
   }
   private getInstructores(){
     this.instructores = [];
-    let instr = new Instructor();
-    instr.nombre= "Carlitos"
-    this.instructores.push(instr);
+    this._spinnerService.show();
+    return this._instructorService.getInstructores()
+      .toPromise().then(instructores => {
+        instructores.forEach(instructor => {
+          let nuevoinstructor =  new Instructor();
+          nuevoinstructor.copiar(instructor);
+          this.instructores.push({label:nuevoinstructor.nombre+" "+nuevoinstructor.apellido,value:nuevoinstructor});
+        })
+        this.selectedInstructor=this.instructores[0].value;
+        this._spinnerService.hide();
+        console.log("instructor seleccionado",this.selectedInstructor);
+        console.log("instructores",this.instructores);
+        
+        this.getCursadas();
+        
+      })
    
+  }
+  refrescarCursadas(){  
+    if(this.selectedInstructor!=undefined){
+      this.getCursadas();
+    }
   }
   getCursadas(){
     this.cursadas = [];
-    this._cursadaService.list()
+    this._cursadaService.getCursadasInstructor(this.selectedInstructor.id)
     .subscribe(cursadas => {
       cursadas.forEach(cursada => {
         let nuevaCursada = new Cursada();
@@ -119,22 +148,16 @@ export class InstructorHomeComponent implements OnInit {
         nuevaCursada.sala = nuevaSala;
         nuevaCursada.fechaInicioString=this._Util.convertirTimestamp(nuevaCursada.fechaInicio);
         nuevaCursada.fechaFinString=this._Util.convertirTimestamp(nuevaCursada.fechaFin);
-        
+        this._inscripcionService.getAlumnosCursada(nuevaCursada.id)
+        .toPromise()
+        .then(alumnos => {
+          nuevaCursada.inscriptos=alumnos.length;
+        });
         this.cursadas.push(nuevaCursada);
-      
-        
-
       })
-      console.log(this.cursadas);
+      //console.log(this.cursadas);
     
     })
   }
 }
-export interface Car {
-  vin?;
-  year?;
-  brand?;
-  color?;
-  price?;
-  saleDate?;
-}
+
