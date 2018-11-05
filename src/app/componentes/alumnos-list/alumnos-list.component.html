@@ -31,7 +31,7 @@
                     {{rowData.apellido}}
                   </span>
                   <span *ngSwitchCase="'acciones'">
-                      <button class="btn btn-info mr-2" [title]="_LABEL.boton.inscribir" (click)="clickInscripcionAlumno(alumno)">
+                      <button class="btn btn-info mr-2" [title]="_LABEL.boton.inscribir" (click)="clickInscripcionAlumno(rowData)">
                           <i class="fas fa-file-signature"></i>
                         </button>
                         

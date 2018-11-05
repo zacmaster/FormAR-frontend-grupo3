@@ -84,13 +84,23 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   private newAttribute: any = {};
 
   addFieldValue() {
-      this.fieldArray.push(this.newAttribute)
-      this.newAttribute = {};
+    this.fieldArray.push(this.newAttribute)
+    this.newAttribute = {};
+}
+deleteFieldValue(index){
+  this.fieldArray.splice(index,1);
+}
+deleteAtributteValue(){
+  //pasar el ultimo de arreglo a new atribute
+  if(this.fieldArray.length>0){
+    this.newAttribute = {};
+    this.newAttribute.dia=this.fieldArray[this.fieldArray.length-1].dia;
+    this.newAttribute.horaInicio=this.fieldArray[this.fieldArray.length-1].horaInicio;
+    this.newAttribute.horaFin=this.fieldArray[this.fieldArray.length-1].horaFin;
+    this.fieldArray.splice(this.fieldArray.length-1, 1);
   }
 
-  deleteFieldValue(index) {
-      this.fieldArray.splice(index, 1);
-  }
+}
 
 
   nuevoInstructor(){
@@ -109,7 +119,9 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     this.instructorSeleccionado = this.newInstructor();
            
   }
-  verCalendario(){
+  verCalendario(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
     this.mostrarCalendario=true;
   }
   ocultarCalendario(){
@@ -142,7 +154,9 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   cerrarHorarios(){
     this.horariosShowed=false;
   }
-  mostrarAreas(){
+  mostrarAreas(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
     this.areasShowed=true;
   }
   cerrarAreas(){

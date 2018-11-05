@@ -228,9 +228,7 @@ export class AlumnosListComponent implements OnInit {
       cursadas  => {
         console.log("cursadas alumno",cursadas);
         cursadas.forEach(element => {
-            let cursada = new Cursada;
-            cursada.copiar(element);
-            cursadasAlumno.push(cursada);
+            cursadasAlumno.push(element);
             
         });
         this.cursadasFiltradas = this.getCursadasFiltradas(this.cursadas,cursadasAlumno);

@@ -144,7 +144,7 @@ export class CursadasComponent implements OnInit {
     // this.cursadaSeleccionada.cantidadCuotas = +this.cursadaSeleccionada.cantidadCuotas;
     // this.cursadaSeleccionada.matricula = +this.cursadaSeleccionada.matricula;
     // this.cursadaSeleccionada.precioCuota = +this.cursadaSeleccionada.precioCuota;
-    console.log("Horarios: ",this.fieldArray);
+    //console.log("Horarios: ",this.fieldArray);
     this.cursadaSeleccionada.horariosCursada=[];
     this.cursadaSeleccionada.fechaFin = null;
 
@@ -216,9 +216,9 @@ export class CursadasComponent implements OnInit {
             if(this.fieldArray.length>0){
                 this.fieldArray.forEach(hora=>{
                   if(element.dia==hora.dia){
-                    console.log("mismo dia");
+                   
                     if(this.compararHora(new Date(element.horaInicio),hora.horaInicio,new Date(element.horaFin),hora.horaFin)){
-                      console.log("horario Correcto")  
+                      
                       valido++;
                        
                     }
@@ -226,9 +226,9 @@ export class CursadasComponent implements OnInit {
                 });
             }
             if(element.dia==this.newAttribute.dia){
-              console.log("mismo dia");
+              
               if(this.compararHora(new Date(element.horaInicio),this.newAttribute.horaInicio,new Date(element.horaFin),this.newAttribute.horaFin)){
-                console.log("horario Correcto")  
+                  
                 valido++;
                  
               }
@@ -351,7 +351,7 @@ export class CursadasComponent implements OnInit {
         this.cursadas.push(nuevaCursada);
 
       })
-      console.log(this.cursadas);
+      //console.log(this.cursadas);
       this.busqueda = undefined;
     })
   }
@@ -365,7 +365,7 @@ export class CursadasComponent implements OnInit {
         alumnoAux.copiar(alumno);
         this.alumnos.push(alumnoAux)
       })
-      console.log("alumnos: ",this.alumnos);
+      //console.log("alumnos: ",this.alumnos);
     }) 
       
   }
@@ -397,7 +397,7 @@ export class CursadasComponent implements OnInit {
           if(this.instructoresTotal.length!==0){
              this.instructorSeleccionado= this. instructoresTotal[0];
           }
-          console.log(this.instructoresTotal);
+          //console.log(this.instructoresTotal);
       })
     }
     
@@ -478,6 +478,9 @@ export class CursadasComponent implements OnInit {
       this.fieldArray.push(this.newAttribute)
       this.newAttribute = {};
   }
+  deleteFieldValue(index){
+    this.fieldArray.splice(index,1);
+  }
   deleteAtributteValue(){
     //pasar el ultimo de arreglo a new atribute
     if(this.fieldArray.length>0){
@@ -501,8 +504,9 @@ export class CursadasComponent implements OnInit {
     let nuevaInscripcion: Inscripcion = new Inscripcion();
     nuevaInscripcion.idAlumno = this.selectedAlumno.id;
     nuevaInscripcion.idCursada = this.cursadaSeleccionada.id;
-    this._inscripcionService.addInscripcion(nuevaInscripcion).subscribe();
-    
+    if(nuevaInscripcion.idAlumno!=0){
+      this._inscripcionService.addInscripcion(nuevaInscripcion).subscribe();
+    }
     this.inscribiendo = false;
   }
   clickInscribir(cursada: Cursada){
@@ -525,7 +529,7 @@ export class CursadasComponent implements OnInit {
   }
 
   search(event){
-    console.log("Alumnos :", this.alumnos);
+    //console.log("Alumnos :", this.alumnos);
     
     // this.alumnos.forEach(alumno => {
     //   this.results.push(alumno.nombre)
@@ -534,8 +538,8 @@ export class CursadasComponent implements OnInit {
 
   ngDoCheck(){
     // console.log("Cursadas: ", this.cursadas);
-    console.log('alumnosFiltrados: ',this.alumnosFiltrados
-    )
+    //console.log('alumnosFiltrados: ',this.alumnosFiltrados
+    
     // console.log("Alumnos: ",this.alumnos);
     
     // console.log("sabado: ",this.sabado);
@@ -566,7 +570,7 @@ export class CursadasComponent implements OnInit {
         alumnosAux.push(alumno);
       }
     })
-    console.log("alumnosAux: ",alumnosAux);
+   // console.log("alumnosAux: ",alumnosAux);
     return alumnosAux;
   }
 

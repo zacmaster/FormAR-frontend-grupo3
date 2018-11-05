@@ -279,8 +279,71 @@
                       ></textarea>
                 </div>
               </div>
-              <div class="row">
-                <div class="form-group col">
+              <div class="row"><div class="form-group col">
+                <label for="">{{ _LABEL.horarioCursada }} &nbsp; </label>
+                
+                <label for=""><button class="btn btn-success " type="button" (click)="addFieldValue()"> <i class="fas fa-plus"></i></button>
+                </label>
+                
+                
+               
+                      <table  style="border:hidden;">
+                          <thead>
+                              <tr>
+                                  <th>Dia</th>
+                                  <th>Hora Inicio</th>
+                                  <th>Hora Fin</th>
+                                  <th> </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let field of fieldArray; let i = index">
+                                  <td>
+                                      <select class="custom-select" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
+                                          <option *ngFor="let dia of dias" [value]="dia.dia">
+                                            {{ dia.dia }}
+                                          </option>
+                                        </select>  
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="field.horaInicio"   name="{{field.horaInicio}}" [timeOnly]="true" hourFormat="24"></p-calendar>
+                            
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                  </td>
+                                  <td>
+
+                                      <button class="btn btn-danger"  type="button" (click)="deleteFieldValue(i)"><i class="fas fa-minus"></i></button>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <select class="custom-select" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
+                                          <option *ngFor="let dia of dias" [value]="dia.dia">
+                                            {{ dia.dia }}
+                                          </option>
+                                        </select>  
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="newAttribute.horaInicio" id="newAttributehoraInicio"   name="newAttributehoraInicio" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                   
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                     
+                                  </td>
+                                 
+                                  <td>
+                                      <button class="btn btn-danger"  type="button" (click)="deleteAtributteValue()"><i class="fas fa-minus"></i></button>
+                                  </td>
+                              </tr>
+                             
+                          </tbody>
+                      </table>  
+              </div>
+              </div>
+                <!-- <div class="form-group col">
                   <label for="">{{ _LABEL.dispHoraria }}</label>
       
                         <table  style="border:hidden;">
@@ -336,59 +399,8 @@
                         </table>  
                 </div>
               </div>
+ -->
 
-
-                  <!-- <table  style="border:hidden;">
-                      <thead>
-                          <tr>
-                              <th>Dia</th>
-                              <th>Hora Inicio</th>
-                              <th>Hora Fin</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr *ngFor="let field of fieldArray; let i = index">
-                              <td>
-                                  <select class="form-control" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
-                                      <option *ngFor="let dia of dias" [value]="dia.dia">
-                                        {{ dia.dia }}
-                                      </option>
-                                    </select>  
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="field.horaInicio"   name="{{field.horaInicio}}" [timeOnly]="true" hourFormat="24"></p-calendar>
-                        
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
-                              </td>
-                              <td>
-                                  <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Eliminar</button>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>
-                                  <select class="custom-select" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
-                                      <option *ngFor="let dia of dias" [value]="dia.dia">
-                                        {{ dia.dia }}
-                                      </option>
-                                    </select>  
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="newAttribute.horaInicio" id="newAttributehoraInicio"   name="newAttributehoraInicio" [timeOnly]="true" hourFormat="24"></p-calendar>
-                               
-                              </td>
-                              <td>
-                                  <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
-                                 
-                              </td>
-                              <td>
-                                  <button class="btn btn-default" type="button" (click)="addFieldValue()">Agregar</button>
-                              </td>
-                          </tr>
-                      </tbody>
-                  </table>   -->
           </div>
         </div>
 

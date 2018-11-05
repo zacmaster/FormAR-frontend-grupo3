@@ -58,7 +58,7 @@ export class CursosComponent implements OnInit, DoCheck {
   }
   ngDoCheck(){
     // console.log("area seleccionada: ",this.areaSeleccionada);
-     console.log("curso seleccionado: ",this.cursoSeleccionado);
+    // console.log("curso seleccionado: ",this.cursoSeleccionado);
     // console.log("ara de curso: ", this.cursoSeleccionado.area);
     // console.log("input: ", this.nombreNuevoArea)
     // console.log("cursos: ", this.cursos);
@@ -125,8 +125,7 @@ export class CursosComponent implements OnInit, DoCheck {
     this.edicion = false;
     this.cursoSeleccionado = this.newCurso();
     this.cursoSeleccionado.area = this.newArea(); //Método seguro para el copiado
-    console.log("nuevoCurso(). cursoSeleccionado: ",this.cursoSeleccionado
-    );
+    //console.log("nuevoCurso(). cursoSeleccionado: ",this.cursoSeleccionado);
     
     if(this.areas[0] != undefined ){
       this.areaSeleccionada.copiar(this.areas[0]);
@@ -281,7 +280,7 @@ export class CursosComponent implements OnInit, DoCheck {
           let nuevaArea = new Area();
 
           nuevaArea.copiar(curso.area); //work-around por serialización
-          console.log("este es el curso que me llega: ",curso);
+          //console.log("este es el curso que me llega: ",curso);
           
           nuevoCurso.copiar(curso);
 

@@ -3,6 +3,8 @@
     <p-table #dt [columns]="cols" [value]="contactos" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
         <ng-template pTemplate="caption">
           <div style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input pInputText type="text" [placeholder]="_LABEL.buscar" (input)="dt.filter($event.target.value, 'alumno.nombreApellido', 'contains')">
               <button class="btn btn-success" (click)="nuevoContacto()"><span>{{ tituloNuevoContacto}}</span></button>
             </div>
           </ng-template>
@@ -19,11 +21,6 @@
                 <span *ngSwitchCase="'fecha'">
                     <p-sortIcon [field]="fecha" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </span>
-              </th>
-            </tr>
-            <tr>
-              <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                <input *ngSwitchCase="'alumno'" pInputText type="text" (input)="dt.filter($event.target.value, 'alumno.nombreApellido', 'contains')">
               </th>
             </tr>
         </ng-template>
@@ -287,48 +284,18 @@
             <h5>Interesado en</h5>
             <div class="row">
               <div class="col-6 form-group">
-                  <div class="form-check">
-                      <input  
-                              class="form-check-input"
-                              type="radio"
-                              name="exampleRadios"
-                              id="exampleRadios1"
-                              value="option1"
-                              (click)="mostrarSelectArea()"
-                              name="tipo"
-                              [checked]="seEligeArea"
-                      >
-                      <label class="form-check-label" for="exampleRadios1">
-                        Área
-                      </label>
-
-                              
-                    </div>
-                    <div class="form-check">
-                      <input 
-                              class="form-check-input"
-                              type="radio"
-                              name="exampleRadios"
-                              id="exampleRadios2"
-                              value="option2"
-                              (click)="mostrarSelectCurso()"
-                              name="tipo"
-                              [checked]="!seEligeArea"
-                      >
-                      <label class="form-check-label" for="exampleRadios2">
-                        Curso
-                      </label>
-                    </div>
-
-              </div>
-              <div class="col-6 form-group">
-                <div class="input-group" *ngIf="seEligeArea">
+                <div class="input-group" >
+                  <h6> Area :&nbsp;</h6>
+                  <div></div>
                     <p-dropdown [options]="areas" [(ngModel)]="selectedArea" optionLabel="nombre"[style]="{'width':'300px'}" 
-                    ></p-dropdown>
+                    (onChange)="verificarArea()"></p-dropdown>
                 </div>
-                <div class="input-group" *ngIf="!seEligeArea">
-                    <p-dropdown [options]="cursos" [(ngModel)]="selectedCurso" optionLabel="nombre"[style]="{'width':'300px'}" 
-                  ></p-dropdown>
+                <br>
+                <div class="input-group" >
+                    <h6>Curso:&nbsp;</h6>
+                    <div></div>
+                    <p-dropdown [options]="cursosFiltrados" [(ngModel)]="selectedCurso" optionLabel="nombre"[style]="{'width':'300px'}" 
+                  [disabled]="seEligeArea"></p-dropdown>
                 </div>
               </div>
 

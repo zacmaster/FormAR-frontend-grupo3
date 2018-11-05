@@ -13,7 +13,7 @@ import { Area } from 'src/app/modelos/area';
 import { CursoService } from 'src/app/servicios/curso.service';
 import { AreaService } from 'src/app/servicios/area.service';
 import { Util } from '../../utilidades/util';
-
+import { SortEvent } from 'primeng/components/common/api';
 
 
 @Component({
@@ -74,6 +74,7 @@ export class ContactosListComponent implements OnInit {
   alumnos: Alumno[];
   contactos:  Contacto[];
   cursos: Curso[];
+  cursosFiltrados: Curso[];
   areas: Area[];
 
 
@@ -107,9 +108,28 @@ export class ContactosListComponent implements OnInit {
 
   ngDoCheck(){
     // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
-    console.log(this.contactos)
+   // console.log(this.contactos)
   }
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
 
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+        return (event.order * result);
+    });
+}
 
   getContactos(){
     return this._contactoService.getContactos()
@@ -163,6 +183,10 @@ export class ContactosListComponent implements OnInit {
           .then(
             cursos => {
               this.cursos = [];
+              let aux= new Curso();
+              aux.id=0;
+              aux.nombre="Sin especificar";
+              this.cursos.push(aux);
               cursos.forEach(curso =>{
                 let area_aux = new Area();
                 let curso_aux = new Curso();
@@ -180,6 +204,10 @@ export class ContactosListComponent implements OnInit {
       .toPromise()
       .then(areas => {
         this.areas = [];
+        let aux = new Area();
+        aux.id=0;
+        aux.nombre="Sin especificar"
+        this.areas.push(aux);
         areas.forEach(area=>{
           let area_aux = new Area();
           area_aux.copiar(area);
@@ -187,6 +215,32 @@ export class ContactosListComponent implements OnInit {
         })
       })
   }
+  verificarArea(){
+    console.log("verifico el area",this.selectedArea);
+    
+    if(this.selectedArea.id>0){
+      this.seEligeArea=false;
+      this.filtrarCursos();
+    }
+  }
+
+  filtrarCursos(){
+      let cursosAux=[];
+      let aux= new Curso();
+      aux.id=0;
+      aux.nombre="Sin especificar";
+      cursosAux.push(aux);
+      this.cursos.forEach(element => {
+        console.log("comparo",element,this.selectedArea);
+        
+         if(element.id!=0 && element.area.id==this.selectedArea.id){
+            cursosAux.push(element);
+         }
+      });
+      this.cursosFiltrados=cursosAux;
+      this.selectedCurso= this.cursosFiltrados[0];
+  }
+
 
   // Click en nuevo contacto, se muestra el formulario con los campos vacíos
   nuevoContacto(){
@@ -215,28 +269,50 @@ export class ContactosListComponent implements OnInit {
     this.contactoSeleccionado = new Contacto();
     this.contactoSeleccionado.copiar(contacto);
     this.alumnos.forEach(element => {
-      if(element.id=this.contactoSeleccionado.alumno.id){
+      if(element.id==this.contactoSeleccionado.alumno.id){
+        console.log("este es el alumno al editar",element);
+        
         this.selectedAlumno=element;
         this.alumnoSeleccionado=element;
       }
     });
+    console.log("contactoSeleccionado",this.contactoSeleccionado);
+    
     if(this.contactoSeleccionado.curso.id==0){
      
       this.seEligeArea=true;
-      this.areas.forEach(element => {
+      this.selectedCurso=this.cursos[0];
+      if(this.contactoSeleccionado.area.id!=0){
+        this.areas.forEach(element => {
           if(element.id==this.contactoSeleccionado.area.id){
             
             this.selectedArea=element;
           }
       });
+      this.filtrarCursos();
+        this.seEligeArea=false;
+      }
+      else{
+        this.selectedArea=this.areas[0];
+      }
+      
+      
     }
     else{
       this.seEligeArea=false;
+      this.areas.forEach(element => {
+        if(element.id==this.contactoSeleccionado.area.id){
+          
+          this.selectedArea=element;
+        }
+      });
+      this.filtrarCursos();
       this.cursos.forEach(element => {
         if(element.id==this.contactoSeleccionado.curso.id){
           this.selectedCurso=element;
         }
       });
+      
     }
     this.mostrarDialogo = true;
     this.edicion=true;
@@ -254,24 +330,33 @@ export class ContactosListComponent implements OnInit {
    if(this.contactoSeleccionado.id==0){
       if(!this.agregandoAlumno){
           this.contactoSeleccionado.alumno=this.selectedAlumno;
-          if(this.seEligeArea){
+          if(this.selectedArea.id==0){
+            this.contactoSeleccionado.area=null;
+          }
+          else{
             this.contactoSeleccionado.area=this.selectedArea;
+          }
+          if(this.selectedCurso.id==0){
             this.contactoSeleccionado.curso=null;
           }
           else{
             this.contactoSeleccionado.curso=this.selectedCurso;
-            this.contactoSeleccionado.area=null;
           }
+
           this.guardar(this.contactoSeleccionado);  
       }
       else{
-         if(this.seEligeArea){
+        if(this.selectedArea.id==0){
+          this.contactoSeleccionado.area=null;
+        }
+        else{
           this.contactoSeleccionado.area=this.selectedArea;
+        }
+        if(this.selectedCurso.id==0){
           this.contactoSeleccionado.curso=null;
         }
         else{
           this.contactoSeleccionado.curso=this.selectedCurso;
-          this.contactoSeleccionado.area=null;
         }
         this.guardar(this.contactoSeleccionado);  
       } 
@@ -279,24 +364,32 @@ export class ContactosListComponent implements OnInit {
    else{
     if(!this.agregandoAlumno){
       this.contactoSeleccionado.alumno=this.selectedAlumno;
-      if(this.seEligeArea){
+      if(this.selectedArea.id==0){
+        this.contactoSeleccionado.area=null;
+      }
+      else{
         this.contactoSeleccionado.area=this.selectedArea;
+      }
+      if(this.selectedCurso.id==0){
         this.contactoSeleccionado.curso=null;
       }
       else{
         this.contactoSeleccionado.curso=this.selectedCurso;
-        this.contactoSeleccionado.area=null;
       }
       this.editar(this.contactoSeleccionado);  
   }
   else{
-     if(this.seEligeArea){
+    if(this.selectedArea.id==0){
+      this.contactoSeleccionado.area=null;
+    }
+    else{
       this.contactoSeleccionado.area=this.selectedArea;
+    }
+    if(this.selectedCurso.id==0){
       this.contactoSeleccionado.curso=null;
     }
     else{
       this.contactoSeleccionado.curso=this.selectedCurso;
-      this.contactoSeleccionado.area=null;
     }
     this.editar(this.contactoSeleccionado); 
     } 

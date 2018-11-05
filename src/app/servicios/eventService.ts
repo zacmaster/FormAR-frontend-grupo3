@@ -20,7 +20,7 @@ export class EventService {
               aux.clases.forEach(horario=>{
                   let clase = new MyEvent();
                  
-                  if(aux.ocupacionTentativa=true){
+                  if(aux.ocupacionTentativa==true){
                     clase.title= auxiliar.nombreCursada ;
                     clase.backgroundColor="green";
                   }
@@ -48,7 +48,7 @@ export class EventService {
               console.log(auxiliar);
               aux.clases.forEach(horario=>{
                   let clase = new MyEvent();
-                  if(aux.ocupacionTentativa=true){
+                  if(aux.ocupacionTentativa==true){
                     clase.title= auxiliar.nombreCursada ;
                     clase.backgroundColor="green";
 
