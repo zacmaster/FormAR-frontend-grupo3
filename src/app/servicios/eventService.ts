@@ -31,8 +31,6 @@ export class EventService {
                   clase.start= this.dateToString(new Date(horario.fecha),new Date(horario.horaInicio));
                   
                   clase.end = this.dateToString(new Date(horario.fecha),new Date(horario.horaFin));
-                  
-                  clase.backgroundColor="red";
                   this.eventosAux.push(clase);
               })
             })

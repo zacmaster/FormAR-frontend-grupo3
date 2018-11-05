@@ -4,7 +4,7 @@
         <ng-template pTemplate="caption">
           <div style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-              <input pInputText type="text" [placeholder]="_LABEL.buscar" (input)="dt.filter($event.target.value, 'alumno.nombreApellido', 'contains')">
+              <input pInputText type="text" size="50" [placeholder]="_LABEL.buscar" (input)="dt.filter($event.target.value, 'alumno.nombreApellido', 'contains')">
               <button class="btn btn-success" (click)="nuevoContacto()"><span>{{ tituloNuevoContacto}}</span></button>
             </div>
           </ng-template>
