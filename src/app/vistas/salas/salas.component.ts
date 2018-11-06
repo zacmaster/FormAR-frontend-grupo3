@@ -43,15 +43,13 @@ export class SalasComponent{
   constructor(private _salaService: SalaService,
     private _spinnerService: Ng4LoadingSpinnerService){ }
 
-    ngOnInit() {
-      this.cargarCampos();
-      this.getSalas();
-    }
+  ngOnInit() {
+    this.cargarCampos();
+    this.getSalas();
+  }
   
-    ngDoCheck(){
-     
-  
-    } 
+  ngDoCheck(){
+  } 
 
   nuevaSala(){
     this.mostrarDialogoAB=true;

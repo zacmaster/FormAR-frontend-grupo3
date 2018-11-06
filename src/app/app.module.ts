@@ -54,6 +54,7 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
 import { AsistenciaComponent } from './vistas/asistencia/asistencia.component';
 import { NotasComponent } from './vistas/notas/notas.component';
+import { TareasComponent } from './vistas/tareas/tareas.component';
 import { MatSortModule,} from '@angular/material';
 
 import {CdkTableModule} from '@angular/cdk/table';
@@ -84,7 +85,7 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     InstructorHomeComponent,
     AsistenciaComponent,
     NotasComponent,
-    
+    TareasComponent
    
   ],
   imports: [

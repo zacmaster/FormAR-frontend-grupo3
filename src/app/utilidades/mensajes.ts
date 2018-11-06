@@ -121,6 +121,7 @@ export var LABEL ={
     bajaSala:"Eliminar Sala",
     seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
     horarioCursada:"Horario de cursada",
+    nuevaTarea: "Nueva tarea",
     ingrese: {
         nombre: "Ingrese el nombre",
         apellido: "Ingrese el apellido",
