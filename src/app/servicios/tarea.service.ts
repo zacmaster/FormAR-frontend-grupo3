@@ -37,6 +37,10 @@ export class TareaService extends ResourceService<Tarea, ITarea>{
   getTarea(id: number): Observable<ITarea> {
     return super.read(id);
   }
+  getTareasAdmin(id:number):Observable<ITarea[]>{
+    let url = GLOBAL.url + 'tareas/administrativo/' + id;
+    return super.listURL(url); 
+  }
 
   save(tarea: Tarea){
     if(tarea.id)

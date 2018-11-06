@@ -1,12 +1,12 @@
 <!-- Comienzo de tabla -->
 <div class="content-section implementation ui-fluid">
-  <p-table #dt [columns]="cols" [value]="tareas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+  <p-table #dt [columns]="cols" [value]="tareasPendientes" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
       <ng-template pTemplate="caption">
           <div class="input-group py-4 col-5">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">Nombre Administrativo</span>
               </div>
-              <p-dropdown [options]="administrativos" [(ngModel)]="selectedAdministrativo" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
+              <p-dropdown [options]="administrativos" [(ngModel)]="selectedAdministrativo" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarTareas()" ></p-dropdown>
           </div>
         <div style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -62,3 +62,59 @@
 </div>
 
 <!-- Fin de tabla -->
+
+<!-- Formulario:  -->
+
+<div class="contenedorFormulario" *ngIf="mostrarFormulario">
+    <div class="card mt-2 w-50 mx-auto">
+        <div class="card-head d-flex  w-100 justify-content-between">
+          <div></div>
+          <div class="pt-2">
+            <h5  class="">{{ _LABEL.nuevaTarea}}</h5>
+          </div>
+          <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
+        </div>
+        <div class="card-body">
+          <div style="max-height: 70vh; overflow-y: scroll;overflow-x: hidden;">
+              <div class="row">
+                  <div class="form-group col">
+                    <label>Titulo</label>
+                    <input
+                              #nombre = "ngModel"
+                              type="text"
+                              required
+                              minlength="3"
+                              maxlength="30"
+                              [(ngModel)]="tareaSeleccionada.titulo"
+                              >
+              
+                  </div>
+              </div>
+                  <div class="row form-group">
+                      <!-- Seccions de Fecha  -->
+                      <div class="col-4 ">
+                        <label for="">Fecha estimada</label>
+                        <ng-datepicker
+                                        #fechaContacto = "ngModel"
+                                        [(ngModel)]="tareaSeleccionada.fechaEstimada"
+                                        [options]="options"
+                                        style="z-index: 1000; position: relative;"
+                        >
+                        </ng-datepicker>
+                      </div>
+              </div>
+  
+          
+        </div>
+        <div class="pr-4 pb-4">
+            <button
+                    class="btn btn-primary float-right "
+                    [disabled]="blankSpaces() "
+                    (click)="guardar()"
+            ><span>{{ _LABEL.guardar }}</span>
+              
+            </button>
+          </div>
+      </div>
+  </div>
+  </div>

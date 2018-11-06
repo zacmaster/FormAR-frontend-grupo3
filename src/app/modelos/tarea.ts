@@ -13,5 +13,7 @@ export class Tarea extends Resource implements ITarea{
     
     constructor(){
         super();
+        this.titulo="";
+        this.descripcion="";
     }
 }
