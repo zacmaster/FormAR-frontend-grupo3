@@ -10,6 +10,7 @@ import { TareaService } from 'src/app/servicios/tarea.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { DatepickerOptions } from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
+import { ContactoService } from 'src/app/servicios/contacto.service';
 
 @Component({
   selector: 'app-tareas',
@@ -45,15 +46,26 @@ export class TareasComponent implements OnInit {
   tareaSeleccionada: Tarea;
   cols: any[];
   administrativos: Administrativo[];
-  selectedAdministrativo: Administrativo;
+  selectedAdministrativo: Administrativo = new Administrativo();
   mostrarFormulario= false;
 
-  constructor(private _tareasService:TareaService, private _administrativoService:AdministrativoService,
-    private _spinnerService: Ng4LoadingSpinnerService) { }
+  constructor(
+    private _tareasService:TareaService,
+    private _administrativoService:AdministrativoService,
+    private _spinnerService: Ng4LoadingSpinnerService,
+    private _contactoService: ContactoService
+    
+    ) { 
+      this.getAdministrativos();
+    }
 
   ngOnInit() {
     this.cargarCampos();
-    this.getAdministrativos();
+  }
+
+
+  ngDoCheck(){
+    console.log("administrativo: ",this.selectedAdministrativo);
   }
 
   nuevaTarea(){
@@ -70,45 +82,46 @@ export class TareasComponent implements OnInit {
 
   }
   refrescarTareas(){
-    if(this.selectedAdministrativo!=undefined){
+    if(this.selectedAdministrativo != undefined){
       this.getTareas();
     }
   }
   getAdministrativos(){
     this._spinnerService.show();
-    this.administrativos = [];
     return this._administrativoService.getAdministrativos()
       .toPromise().then(administrativos => {
+        this.administrativos = [];
         administrativos.forEach(admin => {
           let nuevoAdmin =  new Administrativo();
           nuevoAdmin.copiar(admin);
           this.administrativos.push(nuevoAdmin);
         })
-        this.selectedAdministrativo=this.administrativos[0];
-        this._spinnerService.hide();
-        this.getTareas();
+        this.selectedAdministrativo = this.administrativos[0];
+        // this.getTareas();
       })
+  }
+  onChange(e){
   }
   getTareas(){
     this._spinnerService.show();
-    this.tareas = [];
     return this._tareasService.getTareasAdmin(this.selectedAdministrativo.id)
       .toPromise().then(tareas => {
-       tareas.forEach(tarea => {
+        this.tareas = [];
+        tareas.forEach(tarea => {
           let tareaAux =  new Tarea();
           let adminAux = new Administrativo();
           let contactoAux = new Contacto();
           tareaAux.copiar(tarea);
           adminAux.copiar(tarea.administrativo);
           tareaAux.administrativo=adminAux;
-          if(tarea.contacto!=undefined){
+          if(tarea.contacto != undefined){
             contactoAux.copiar(tarea.contacto);
-            tareaAux.contacto=contactoAux;
+            tareaAux.contacto = contactoAux;
           }
           this.tareas.push(tareaAux);
-        })
-        this.filtrarTareas();
-        this._spinnerService.hide();
+          })
+          this.filtrarTareas();
+          this._spinnerService.hide();
       })
   }
   filtrarTareas(){
