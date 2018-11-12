@@ -15,5 +15,8 @@ export class Tarea extends Resource implements ITarea{
         super();
         this.titulo="";
         this.descripcion="";
+        this.fechaEstimada = + new Date();
+        this.pendiente = true;
+        this.administrativo = new Administrativo();
     }
 }

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AutoCompleteModule,  PaginatorModule} from 'primeng/primeng'
+import {AutoCompleteModule,  PaginatorModule, InputSwitchModule} from 'primeng/primeng'
 
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
@@ -104,6 +104,7 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     FullCalendarModule,
     AutoCompleteModule,
     CheckboxModule,
+    InputSwitchModule,
     TableModule,
     MatTableModule,
 

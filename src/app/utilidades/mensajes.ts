@@ -59,7 +59,8 @@ export const LABEL_REQUIRED ={
     seleccionArea: "Seleccione un área*",
     fecha: "Fecha*",
     asunto: "Asunto*",
-    capacidad:"Capacidad*"
+    capacidad:"Capacidad*",
+    titulo: "Título*"
 
 }
 
@@ -122,6 +123,7 @@ export var LABEL ={
     seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
     horarioCursada:"Horario de cursada",
     nuevaTarea: "Nueva tarea",
+    sinTareas: "Sin tareas..",
     ingrese: {
         nombre: "Ingrese el nombre",
         apellido: "Ingrese el apellido",

@@ -14,6 +14,10 @@ import { CursoService } from 'src/app/servicios/curso.service';
 import { AreaService } from 'src/app/servicios/area.service';
 import { Util } from '../../utilidades/util';
 import { SortEvent } from 'primeng/components/common/api';
+import { Tarea } from 'src/app/modelos/tarea';
+import { AdministrativoService } from 'src/app/servicios/administrativo.service';
+import { TareaService } from 'src/app/servicios/tarea.service';
+import { Administrativo } from 'src/app/modelos/administrativo';
 
 
 @Component({
@@ -35,16 +39,20 @@ export class ContactosListComponent implements OnInit {
 
   contactoSeleccionado: Contacto = this.newContacto();
   
-  alumnoSeleccionado: Alumno = new Alumno;
-  alumnoNuevo: Alumno = new Alumno;
-  selectedAlumno:Alumno = new Alumno;
-  selectedCurso:Curso = new Curso;
-  selectedArea: Area= new Area;
-  
+  alumnoSeleccionado: Alumno = new Alumno();
+  alumnoNuevo: Alumno = new Alumno();
+  selectedAlumno:Alumno = new Alumno();
+  selectedCurso:Curso = new Curso();
+  selectedArea: Area= new Area();
+
+  tareaSeleccionada:Tarea = new Tarea();
+
   areaSeleccionada: Area = new Area;
   cursoSeleccionado: Curso = new Curso;
   mostrarDialogoBorrar: boolean = false;
   descripcionShowed: boolean = false;
+
+  generarTarea: boolean = false;
 
   textoEliminarContacto: string;
 
@@ -91,7 +99,9 @@ export class ContactosListComponent implements OnInit {
     private _alumnoService: AlumnoService,
     private _contactoService : ContactoService,
     private _cursoService: CursoService,
-    private _areaService: AreaService
+    private _areaService: AreaService,
+    private _administrativoService: AdministrativoService,
+    private _tareaService: TareaService
 
 
     ) {}
@@ -147,7 +157,6 @@ export class ContactosListComponent implements OnInit {
       area_aux.copiar(contacto.area);
       alumno_aux.copiar(contacto.alumno);
       alumno_aux.nombreApellido = contacto.alumno.nombre + " " + contacto.alumno.apellido;
-      console.log("alumnoAux: ",  alumno_aux)
       curso_aux.copiar(contacto.curso);
 
       contacto_aux.copiar(contacto);
@@ -409,14 +418,49 @@ export class ContactosListComponent implements OnInit {
     })
   }
   private guardar(contacto:Contacto){
-    this._contactoService.addContacto(contacto).subscribe(() => {
-      this.getContactos();
-      this.getAlumnos();
-      this.getAreas();
-      this.getCursos();
-      this.mostrarDialogo = false;
-      this.contactoSeleccionado = new Contacto();      
-    })
+    this._contactoService.addContacto(contacto)
+        .toPromise()
+        .then(() => 
+          this.getContactos()
+            .then(() => {
+              if(this.tareaSeleccionada != undefined && this.tareaSeleccionada.titulo != ''){
+                this.contactos.forEach(c => {
+                  let date1 = new Date(contacto.fecha);
+                  let date2 = new Date(c.fecha);
+
+                  console.log('date1',date1);
+                  console.log('date2',date2);
+                  if(Util.esMismoTiempo(date1,date2)){
+                    this.tareaSeleccionada.contacto = new Contacto();
+                    this.tareaSeleccionada.contacto.copiar(c);
+                  }
+                });
+                
+                let administrativoAux = new Administrativo();
+                administrativoAux.id = 2;
+                administrativoAux.nombre = "Eduardo Feinman";
+    
+                this.tareaSeleccionada.administrativo = administrativoAux;
+    
+                this._tareaService.addTarea(this.tareaSeleccionada).subscribe();
+              }
+            })
+          
+        )
+        .then(() =>{
+            this.getAlumnos();
+            this.getAreas();
+            this.getCursos();
+            this.contactoSeleccionado = new Contacto();
+            this.tareaSeleccionada = new Tarea();      
+            this.mostrarDialogo = false;
+
+        })
+    
+    
+    // () => {
+
+    // })
   }
 
   agregarNuevoAlumno(){
@@ -436,7 +480,7 @@ export class ContactosListComponent implements OnInit {
     aux.area=new Area();
     aux.curso=new Curso();
     return aux;
-  }
+  }1
   
   
   
@@ -485,6 +529,11 @@ export class ContactosListComponent implements OnInit {
     }
     return false;
   }
+
+  agregarTarea(){
+    this.tareaSeleccionada = new Tarea();
+  }
+
 
 
   private cargarCampos(){

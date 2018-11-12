@@ -19,7 +19,7 @@ import { ContactoService } from 'src/app/servicios/contacto.service';
 })
 export class TareasComponent implements OnInit {
   _LABEL = LABEL;
-  _LABEL_REQUIRED = LABEL_REQUIRED;
+  _LABEL_R = LABEL_REQUIRED;
   _HVR = HVR;
   _VALIDACION = VALIDACION;
   _PATTERN = PATTERNS;
@@ -42,12 +42,20 @@ export class TareasComponent implements OnInit {
   };
 
   tareas: Tarea[];
-  tareasPendientes: Tarea[];
+
+  mostrarDialogoNuevaTarea: boolean = false;
+
+  tareasPersonalesParaHoy: Tarea[] = [];
+  tareasPersonalesPendientes: Tarea[] = [];
+  tareasPersonalesCompletadas: Tarea[] = [];
+
+  tareasPendientes: Tarea[] = [];
+
   tareaSeleccionada: Tarea;
   cols: any[];
   administrativos: Administrativo[];
+  contactos: Contacto[];
   selectedAdministrativo: Administrativo = new Administrativo();
-  mostrarFormulario= false;
 
   constructor(
     private _tareasService:TareaService,
@@ -55,26 +63,107 @@ export class TareasComponent implements OnInit {
     private _spinnerService: Ng4LoadingSpinnerService,
     private _contactoService: ContactoService
     
-    ) { 
-      this.getAdministrativos();
+    ) {
+      this.cargarCampos();
+      this.bajarDatos();
+      // this.getAdministrativos();
     }
 
   ngOnInit() {
-    this.cargarCampos();
+    console.log(this.tareasPendientes)
+    // this.cargarCampos();
+    // this.getTareas();
+  }
+
+  bajarDatos(){
+    Promise.all([
+      this._administrativoService.getAdministrativos().toPromise(),
+      this._tareasService.getTareas().toPromise(),
+      this._contactoService.getContactos().toPromise()
+    ]).then(values =>{
+      this.administrativos = [];
+      this.tareas = [];
+      this.contactos = [];
+      values[0].forEach(administrativo => {
+        let adminAux = new Administrativo();
+        adminAux.copiar(administrativo);
+        this.administrativos.push(adminAux);
+      });
+      values[1].forEach(tarea =>{
+        let tareaAux = new Tarea();
+        tareaAux.copiar(tarea);
+        this.tareas.push(tareaAux);
+      });
+      values[2].forEach(contacto =>{
+        let contactoAux = new Contacto();
+        contactoAux.copiar(contacto);
+        this.contactos.push(contacto);
+      })
+
+    }).then(() => {
+      this.selectedAdministrativo = this.administrativos[0];
+      this.llenarTablas();
+      // console.log('contactos', this.contactos);
+      // console.log('administrativos', this.administrativos);
+      // let nuevaTarea = new Tarea();
+      // nuevaTarea.administrativo = this.administrativos[1];
+      // nuevaTarea.contacto = this.contactos[0];
+      // nuevaTarea.pendiente = true;
+      // nuevaTarea.titulo = "Consulta por talleres de nodejs"
+      // nuevaTarea.descripcion = "Llamarlo de nuevo para convencerlo"
+      // nuevaTarea.fechaEstimada = + new Date();
+      // this._tareasService.addTarea(nuevaTarea).subscribe();
+      // console.log('tareas', this.tareas);
+
+    })
+  }
+
+  llenarTablas(){
+    this.tareas.forEach(tarea => {
+      if(tarea.pendiente){
+        this.tareasPendientes.push(tarea);
+        if(tarea.administrativo.id == this.selectedAdministrativo.id){
+          this.tareasPersonalesPendientes.push(tarea);
+          if(this.esTareaAdministrativoHoy(tarea)){
+            this.tareasPersonalesParaHoy.push(tarea)
+          }
+        }
+
+      }
+      else{
+        if(tarea.administrativo.id == this.selectedAdministrativo.id)
+          this.tareasPersonalesCompletadas.push(tarea);
+      }
+
+
+    })
+  }
+  ngDoCheck(){
+    console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
+    
+    // console.log("administrativo: ",this.selectedAdministrativo);
   }
 
 
-  ngDoCheck(){
-    console.log("administrativo: ",this.selectedAdministrativo);
+  esTareaAdministrativoHoy(tarea: Tarea): boolean{
+    return  tarea.pendiente &&
+            tarea.administrativo.id == this.selectedAdministrativo.id &&
+            Util.esHoy(tarea.fechaEstimada)
   }
 
   nuevaTarea(){
+    this.mostrarDialogoNuevaTarea = true;
     this.tareaSeleccionada=new Tarea();
-    this.mostrarFormulario=true;
   }
   ocultarDialogo(){
-    this.mostrarFormulario=false;
+    this.mostrarDialogoNuevaTarea = false;
   }
+  guardarTarea(){
+    console.log('guardando..')
+    this.mostrarDialogoNuevaTarea = false;
+  }
+
+
   finalizarTarea(tarea){
 
   }
@@ -101,28 +190,72 @@ export class TareasComponent implements OnInit {
       })
   }
   onChange(e){
+    let auxAdministrativo = new Administrativo();
+    auxAdministrativo.copiar(this.selectedAdministrativo);
+    this.llenarTablasAdministrativo(auxAdministrativo);
+  }
+
+
+
+  llenarTablasAdministrativo(administrativo: Administrativo){
+    this.tareasPersonalesCompletadas = [];
+    this.tareasPersonalesParaHoy = [];
+    this.tareasPersonalesPendientes = [];
+
+    this.tareas.forEach(tarea => {
+      if(tarea.administrativo.id == administrativo.id){
+        if(tarea.pendiente){
+          this.tareasPersonalesPendientes.push(tarea);
+          if(this.esTareaAdministrativoHoy(tarea)){
+            this.tareasPersonalesParaHoy.push(tarea);
+          }
+        }else{
+          this.tareasPersonalesCompletadas.push(tarea);
+        }
+      }
+    })
+  }
+
+  cargarTareasPersonalesParaHoy(){
+
+  }
+  cargarTareasPersonalesPendientes(){
+
+  }
+
+  cargarTareasCompletadas(){
+
   }
   getTareas(){
-    this._spinnerService.show();
-    return this._tareasService.getTareasAdmin(this.selectedAdministrativo.id)
+    return this._tareasService.getTareas()
       .toPromise().then(tareas => {
         this.tareas = [];
         tareas.forEach(tarea => {
-          let tareaAux =  new Tarea();
-          let adminAux = new Administrativo();
-          let contactoAux = new Contacto();
-          tareaAux.copiar(tarea);
-          adminAux.copiar(tarea.administrativo);
-          tareaAux.administrativo=adminAux;
-          if(tarea.contacto != undefined){
-            contactoAux.copiar(tarea.contacto);
-            tareaAux.contacto = contactoAux;
-          }
-          this.tareas.push(tareaAux);
-          })
-          this.filtrarTareas();
-          this._spinnerService.hide();
+           let tareaAux = new Tarea();
+           tareaAux.copiar(tarea);
+           this.tareas.push(tarea);
+        })
       })
+    // this._spinnerService.show();
+    // return this._tareasService.getTareasAdmin(this.selectedAdministrativo.id)
+    //   .toPromise().then(tareas => {
+    //     this.tareas = [];
+    //     tareas.forEach(tarea => {
+    //       let tareaAux =  new Tarea();
+    //       let adminAux = new Administrativo();
+    //       let contactoAux = new Contacto();
+    //       tareaAux.copiar(tarea);
+    //       adminAux.copiar(tarea.administrativo);
+    //       tareaAux.administrativo=adminAux;
+    //       if(tarea.contacto != undefined){
+    //         contactoAux.copiar(tarea.contacto);
+    //         tareaAux.contacto = contactoAux;
+    //       }
+    //       this.tareas.push(tareaAux);
+    //       })
+    //       this.filtrarTareas();
+    //       this._spinnerService.hide();
+    //   })
   }
   filtrarTareas(){
     this.tareasPendientes = [];
@@ -140,6 +273,32 @@ export class TareasComponent implements OnInit {
     return false;
   }
 
+
+
+
+
+
+
+
+  hayTareasPersonalesPendientes(){
+    return this.tareasPersonalesPendientes.length > 0;
+  }
+  hayTareasPersonalesParaHoy(){
+    return this.tareasPersonalesParaHoy.length > 0;
+  }
+  hayTareasPersonalesCompletadas(){
+    return this.tareasPersonalesCompletadas.length > 0;
+  }
+  hayTareasPendientes(){
+    return this.tareasPendientes.length > 0;
+  }
+
+
+
+
+
+
+
   private cargarCampos(){
     this.cols = [
       { field: 'fechaEstimada', header: 'Fecha estimada a realizar'},
@@ -150,3 +309,6 @@ export class TareasComponent implements OnInit {
     ];
   }
 }
+
+
+
