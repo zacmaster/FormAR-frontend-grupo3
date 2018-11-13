@@ -113,6 +113,8 @@ export var LABEL ={
     inscribirAlumno: "Inscribir alumno",
     nuevaCursada: "Nueva cursada",
     crear: "Crear",
+    marcarComoPendiente: "Marcar tarea como pendiente",
+    marcarComoResuelta: "Marcar tarea como resuelta",
     bajaAlumno: "Baja de Alumno",
     elegirAlumnoLista: "Elegir alumno de la lista",
     contacto: "Contacto",

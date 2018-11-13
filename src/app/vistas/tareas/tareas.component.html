@@ -46,7 +46,11 @@
                   </button>
               </span>
               <span *ngSwitchCase="'acciones'">
-                  <button class="btn btn-success mr-2" (click)="finalizarTarea(rowData);">
+                  <button
+                            class="btn btn-success mr-2"
+                            (click)="finalizarTarea(rowData);"
+                            [title]="_LABEL.marcarComoResuelta"
+                            >
                     <i class="fas fa-clipboard-check"></i>
                   </button>
               </span>
@@ -94,7 +98,11 @@
                   </button>
               </span>
               <span *ngSwitchCase="'acciones'">
-                  <button class="btn btn-success mr-2" (click)="finalizarTarea(rowData);">
+                  <button
+                            class="btn btn-success mr-2"
+                            (click)="finalizarTarea(rowData);"
+                            [title]="_LABEL.marcarComoResuelta"
+                            >
                     <i class="fas fa-clipboard-check"></i>
                   </button>
               </span>
@@ -146,8 +154,12 @@
                 </button>
             </span>
             <span *ngSwitchCase="'acciones'">
-                <button class="btn btn-success mr-2" (click)="finalizarTarea(rowData);">
-                  <i class="fas fa-clipboard-check"></i>
+                <button
+                    class="btn btn-danger mr-2"
+                    (click)="restaurarTarea(rowData);"
+                    [title]="_LABEL.marcarComoPendiente"
+                    >
+                  <i class="fas fa-angle-double-left"></i>
                 </button>
             </span>
         </td>
@@ -189,7 +201,11 @@
                         </button>
                     </span>
                 <span *ngSwitchCase="'acciones'">
-                    <button class="btn btn-success mr-2" (click)="finalizarTarea(rowData);">
+                    <button
+                        class="btn btn-success mr-2"
+                        (click)="finalizarTarea(rowData);"
+                        [title]="_LABEL.marcarComoResuelta"
+                        >
                         <i class="fas fa-clipboard-check"></i>
                     </button>
                 </span>

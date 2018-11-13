@@ -118,7 +118,31 @@ export class TareasComponent implements OnInit {
     })
   }
 
+  actualizarTareas(){
+    Promise.all([
+      this._tareasService.getTareas().toPromise(),
+      this._contactoService.getContactos().toPromise()])
+      .then(values => {
+        this.tareas = [];
+        this.contactos = [];
+        values[0].forEach(tarea =>{
+          let tareaAux = new Tarea();
+          tareaAux.copiar(tarea);
+          this.tareas.push(tareaAux);
+        });
+        values[1].forEach(contacto =>{
+          let contactoAux = new Contacto();
+          contactoAux.copiar(contacto);
+          this.contactos.push(contactoAux);
+        })
+      }).then(() => this.llenarTablas());
+  }
+
   llenarTablas(){
+    this.tareasPendientes = [];
+    this.tareasPersonalesPendientes = [];
+    this.tareasPersonalesCompletadas = [];
+    this.tareasPersonalesParaHoy = [];
     this.tareas.forEach(tarea => {
       if(tarea.pendiente){
         this.tareasPendientes.push(tarea);
@@ -139,7 +163,7 @@ export class TareasComponent implements OnInit {
     })
   }
   ngDoCheck(){
-    console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
+    // console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
     
     // console.log("administrativo: ",this.selectedAdministrativo);
   }
@@ -165,8 +189,23 @@ export class TareasComponent implements OnInit {
 
 
   finalizarTarea(tarea){
-
+    this.modificarEstadoTarea(tarea, false);
   }
+  
+  restaurarTarea(tarea){
+    this.modificarEstadoTarea(tarea, true);
+  }
+
+
+  private modificarEstadoTarea(tarea, pendiente: boolean){
+    this.tareaSeleccionada = new Tarea();
+    this.tareaSeleccionada.copiar(tarea);
+    this.tareaSeleccionada.pendiente = pendiente;
+    this._tareasService.updateTarea(this.tareaSeleccionada)
+      .toPromise()
+      .then(() => this.actualizarTareas());
+  }
+
   mostrarContacto(tarea){
 
   }
@@ -292,6 +331,7 @@ export class TareasComponent implements OnInit {
   hayTareasPendientes(){
     return this.tareasPendientes.length > 0;
   }
+  
 
 
 
