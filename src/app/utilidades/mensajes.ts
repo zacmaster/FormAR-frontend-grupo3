@@ -115,6 +115,7 @@ export var LABEL ={
     crear: "Crear",
     marcarComoPendiente: "Marcar tarea como pendiente",
     marcarComoResuelta: "Marcar tarea como resuelta",
+    detalleTarea: "Ver detalle de tarea",
     bajaAlumno: "Baja de Alumno",
     elegirAlumnoLista: "Elegir alumno de la lista",
     contacto: "Contacto",

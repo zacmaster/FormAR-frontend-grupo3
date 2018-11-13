@@ -43,6 +43,10 @@ export class TareasComponent implements OnInit {
 
   tareas: Tarea[];
 
+  fechaTarea = + new Date();
+
+
+  mostrandoDetalleTarea: boolean = false;
   mostrarDialogoNuevaTarea: boolean = false;
 
   tareasPersonalesParaHoy: Tarea[] = [];
@@ -176,15 +180,24 @@ export class TareasComponent implements OnInit {
   }
 
   nuevaTarea(){
+    this.tareaSeleccionada = new Tarea();
     this.mostrarDialogoNuevaTarea = true;
-    this.tareaSeleccionada=new Tarea();
   }
   ocultarDialogo(){
     this.mostrarDialogoNuevaTarea = false;
   }
   guardarTarea(){
-    console.log('guardando..')
-    this.mostrarDialogoNuevaTarea = false;
+    let auxAdministrativo = new Administrativo();
+    auxAdministrativo.copiar(this.selectedAdministrativo);
+    this.tareaSeleccionada.administrativo.copiar(auxAdministrativo);
+    this.tareaSeleccionada.fechaEstimada = this.fechaTarea;
+    this._tareasService.addTarea(this.tareaSeleccionada)
+      .toPromise()
+      .then(()=>  this.actualizarTareas())
+      .then(() =>{
+        this.tareaSeleccionada = new Tarea();
+        this.mostrarDialogoNuevaTarea = false;
+      })
   }
 
 
@@ -206,7 +219,10 @@ export class TareasComponent implements OnInit {
       .then(() => this.actualizarTareas());
   }
 
-  mostrarContacto(tarea){
+  mostrarDetalleTarea(tarea){
+    this.tareaSeleccionada = new Tarea();
+    this.tareaSeleccionada.copiar(tarea);
+    this.mostrandoDetalleTarea = true;
 
   }
   refrescarTareas(){
@@ -265,6 +281,10 @@ export class TareasComponent implements OnInit {
   cargarTareasCompletadas(){
 
   }
+
+  ocultarDetalleTarea(){
+    this.mostrandoDetalleTarea = false;
+  }
   getTareas(){
     return this._tareasService.getTareas()
       .toPromise().then(tareas => {
@@ -313,6 +333,7 @@ export class TareasComponent implements OnInit {
   }
 
 
+  
 
 
 
@@ -343,8 +364,7 @@ export class TareasComponent implements OnInit {
     this.cols = [
       { field: 'fechaEstimada', header: 'Fecha estimada a realizar'},
       { field: 'titulo', header:'Titulo'},
-      { field: 'descripcion', header:'Descripcion'},
-      { field: 'contacto', header:'Contacto'},
+      { field: 'info', header:'Info'},
       { field: 'acciones', header:'Acciones'}
     ];
   }

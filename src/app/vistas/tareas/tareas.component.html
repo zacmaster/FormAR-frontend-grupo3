@@ -36,12 +36,9 @@
               <span *ngSwitchCase="'titulo'">
                   {{ rowData.titulo}}
               </span>
-              <span *ngSwitchCase="'descripcion'">
-                  {{ rowData.descripcion }}
-              </span>
-              <span *ngSwitchCase="'contacto'">
+              <span *ngSwitchCase="'info'">
                   <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
-                          (click)="mostrarContacto(rowData)">
+                          (click)="mostrarDetalleTarea(rowData)">
                           <i class="fas fa-info"></i>
                   </button>
               </span>
@@ -88,12 +85,9 @@
               <span *ngSwitchCase="'titulo'">
                   {{ rowData.titulo}}
               </span>
-              <span *ngSwitchCase="'descripcion'">
-                  {{ rowData.descripcion }}
-              </span>
-              <span *ngSwitchCase="'contacto'">
-                  <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
-                          (click)="mostrarContacto(rowData)">
+              <span *ngSwitchCase="'info'">
+                  <button class="btn btn-warning mr-2"
+                          (click)="mostrarDetalleTarea(rowData)">
                           <i class="fas fa-info"></i>
                   </button>
               </span>
@@ -144,12 +138,9 @@
             <span *ngSwitchCase="'titulo'">
                 {{ rowData.titulo}}
             </span>
-            <span *ngSwitchCase="'descripcion'">
-                {{ rowData.descripcion }}
-            </span>
-            <span *ngSwitchCase="'contacto'">
+            <span *ngSwitchCase="'info'">
                 <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
-                        (click)="mostrarContacto(rowData)">
+                        (click)="mostrarDetalleTarea(rowData)">
                         <i class="fas fa-info"></i>
                 </button>
             </span>
@@ -194,12 +185,12 @@
                 <span *ngSwitchCase="'fechaEstimada'">
                         {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
                 </span>
-                <span *ngSwitchCase="'contacto'">
-                        <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
-                                (click)="mostrarContacto(rowData)">
-                                <i class="fas fa-info"></i>
-                        </button>
-                    </span>
+                <span *ngSwitchCase="'info'">
+                    <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
+                            (click)="mostrarDetalleTarea(rowData)">
+                            <i class="fas fa-info"></i>
+                    </button>
+                </span>
                 <span *ngSwitchCase="'acciones'">
                     <button
                         class="btn btn-success mr-2"
@@ -264,10 +255,6 @@
 
 
 
-
-
-
-
 <!-- Formulario para crear una tarea nueva  -->
 <dialogo-confirmacion
     *ngIf="mostrarDialogoNuevaTarea"
@@ -284,19 +271,35 @@
             <label class="d-flex">{{ _LABEL_R.fecha}}</label>
             <ng-datepicker
             [options]="options"
+            [(ngModel)]="fechaTarea"
             style="z-index: 1000; position: relative;"
             >
             </ng-datepicker>
         </div>
         <div class="col">
           <label class="d-flex">{{ _LABEL_R.titulo }}</label>
-          <input type="text" class="form-control">
+          <input
+                    type="text"
+                    class="form-control"
+                    #titulo="ngModel"
+                    required
+                    [(ngModel)]="tareaSeleccionada.titulo"
+                    [placeholder]="_LABEL.ingrese.asunto    "
+                    >
         </div>
     </div>
     <div class="row">
         <div class="form-group col">
           <label class="d-flex">{{ _LABEL.descripcion }}</label>
-          <textarea  class="form-control" rows="2"></textarea>
+          <textarea
+                    class="form-control"
+                    rows="2"
+                    #descripcion="ngModel"
+                    required
+                    [(ngModel)]="tareaSeleccionada.descripcion"
+                    [placeholder]="_LABEL.ingrese.descripcion"
+                    
+        ></textarea>
         </div>
     </div>
     <div class="row">
@@ -315,68 +318,15 @@
 
 
 
+<dialogo-info
+    *ngIf="mostrandoDetalleTarea"
+    (clickBotonCerrar)="ocultarDetalleTarea()"
+    (clickBotonOk)="ocultarDetalleTarea()"
+    [title]="_LABEL.detalleTarea"
+    titulo="Detalle de tarea"
+    [subtituloIzquierdo]="_UTIL.convertirTimestamp(tareaSeleccionada.fechaEstimada)"
+    [subtituloDerecho]="tareaSeleccionada.titulo"
+    [texto]="tareaSeleccionada.descripcion"                        
+>
 
-
-
-
-
-
-
-
-
-
-
-
-<div class="contenedorFormulario" *ngIf="mostrarFormulario">
-    <div class="card mt-2 w-50 mx-auto">
-        <div class="card-head d-flex  w-100 justify-content-between">
-          <div></div>
-          <div class="pt-2">
-            <h5  class="">{{ _LABEL.nuevaTarea}}</h5>
-          </div>
-          <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
-        </div>
-        <div class="card-body">
-          <div style="max-height: 70vh; overflow-y: scroll;overflow-x: hidden;">
-              <div class="row">
-                  <div class="form-group col">
-                    <label>Titulo</label>
-                    <input
-                              #nombre = "ngModel"
-                              type="text"
-                              required
-                              minlength="3"
-                              maxlength="30"
-                              [(ngModel)]="tareaSeleccionada.titulo"
-                              >
-              
-                  </div>
-              </div>
-                  <div class="row form-group">
-                      <!-- Seccions de Fecha  -->
-                      <div class="col-4 ">
-                        <label for="">Fecha estimada</label>
-                        <ng-datepicker
-                                        #fechaContacto = "ngModel"
-                                        [(ngModel)]="tareaSeleccionada.fechaEstimada"
-                                        [options]="options"
-                                        style="z-index: 1000; position: relative;"
-                        >
-                        </ng-datepicker>
-                      </div>
-              </div>
-  
-          
-        </div>
-        <div class="pr-4 pb-4">
-            <button
-                    class="btn btn-primary float-right "
-                    [disabled]="blankSpaces() "
-                    (click)="guardar()"
-            ><span>{{ _LABEL.guardar }}</span>
-              
-            </button>
-          </div>
-      </div>
-  </div>
-  </div>
+</dialogo-info>
