@@ -108,14 +108,14 @@ export class NotasComponent implements OnInit {
     }
   agregarExamen(){
     this.nuevoExamen=false;
-     let numero = this.examenesDeCursada[this.examenesDeCursada.length-1].nroExamen;
+     let numero = this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen;
      numero++;
      let examenAux = new Examen;
      examenAux.id=0;
      examenAux.idCursada=this.cursadaSeleccionada.id;
      examenAux.nombreExamen=this.nombreNuevoExamen;
      examenAux.nroExamen=numero;
-     this.examenesDeCursada.push(examenAux);
+     this.examenesDeCursada.splice(this.examenesDeCursada.length-1,0,examenAux)
      this.agregarColumnaAFila();
   }
   agregarColumnaAFila(){
@@ -125,21 +125,26 @@ export class NotasComponent implements OnInit {
       notaAux.idAlumno=fila.idAlumno;
       notaAux.ausente=false;
       notaAux.deshabilitado=true;
-      fila.notas.push(notaAux)
+      fila.notas.splice(fila.notas.length-1,0,notaAux);
+      // fila.notas.push(notaAux)
     });
-    this.calificaciones.push({deshabilitado:true,calificar:false})
+    this.calificaciones.splice(this.calificaciones.length-1,0,{deshabilitado:true,calificar:false})
+    // this.calificaciones.push({deshabilitado:true,calificar:false})
   }
   clickBorrarExamen(){
-     this.examenesDeCursada.pop();
+    this.examenesDeCursada.splice(this.examenesDeCursada.length-2,1)
+    //  this.examenesDeCursada.pop();
      for (let i = 0; i < this.filas.length; i++) {
-       this.filas[i].notas.pop();
+       this.filas[i].notas.splice(this.filas[i].notas.length-2,1)
+      // this.filas[i].notas.pop();
        
      }
-     this.calificaciones.pop();
+     this.calificaciones.splice(this.calificaciones.length-2,1);
+     //this.calificaciones.pop();
   }
   esUltimoExamen(nro:number):boolean{
-    if(nro==this.examenesDeCursada[this.examenesDeCursada.length-1].nroExamen){
-      if(this.examenesDeCursada[this.examenesDeCursada.length-1].id==0 && this.examenesDeCursada.length>1 ){
+    if(nro==this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen){
+      if(this.examenesDeCursada[this.examenesDeCursada.length-2].id==0 && this.examenesDeCursada.length>1 ){
         return true;
       }
     }
@@ -197,6 +202,8 @@ export class NotasComponent implements OnInit {
       }
       return 0;
   });
+    aux.push(aux[0]);
+    aux.splice(0,1);
     return aux;
   }
   ordenarAlfabeticamente(dato:any[]):any[]{
