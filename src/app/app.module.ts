@@ -28,7 +28,7 @@ import {FullCalendarModule} from 'primeng/fullcalendar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './vistas/login/login.component';
-import { HomeComponent } from './vistas/home/home.component';
+import { AdministrativoHomeComponent } from './vistas/administrativo-home/administrativo-home.component';
 import { RegisterComponent } from './vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
 import { AlumnosListComponent } from './componentes/alumnos-list/alumnos-list.component';
@@ -59,13 +59,14 @@ import { MatSortModule,} from '@angular/material';
 
 import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
+import { SupervisorHomeComponent } from './vistas/supervisor-home/supervisor-home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UsuariosListComponent,
-    HomeComponent,
+    AdministrativoHomeComponent,
     RegisterComponent,
     PageNotFoundComponent,
     AlumnosListComponent,
@@ -85,7 +86,8 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     InstructorHomeComponent,
     AsistenciaComponent,
     NotasComponent,
-    TareasComponent
+    TareasComponent,
+    SupervisorHomeComponent
    
   ],
   imports: [

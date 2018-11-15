@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from '../app/vistas/home/home.component';
+import { AdministrativoHomeComponent } from '../app/vistas/administrativo-home/administrativo-home.component';
 import { LoginComponent } from '../app/vistas/login/login.component';
 import { RegisterComponent } from '../app/vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
@@ -13,14 +13,15 @@ import { InstructoresComponent } from './vistas/instructores/instructores.compon
 import { SalasComponent } from './vistas/salas/salas.component';
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
 import { TareasComponent } from './vistas/tareas/tareas.component';
+import {SupervisorHomeComponent} from './vistas/supervisor-home/supervisor-home.component'
 
 const routes: Routes = [
-    { path: '', redirectTo: '/home/alumnos', pathMatch: 'full' },
+    { path: '', redirectTo: '/administrativo/alumnos', pathMatch: 'full' },
     { 
-        path: 'home',
-        component:  HomeComponent,
+        path: 'administrativo',
+        component:  AdministrativoHomeComponent,
         children:[
-            { path: '', redirectTo: '/home/alumnos', pathMatch: 'full'},
+            { path: '', redirectTo: '/administrativo/alumnos', pathMatch: 'full'},
             { path: 'alumnos', component: AbmAlumnosComponent},
             { path: 'contactos', component: ContactosListComponent},
             { path: 'cursos', component: CursosComponent},
@@ -33,7 +34,16 @@ const routes: Routes = [
     { path: 'login', component:  LoginComponent},
     { path: 'register', component: RegisterComponent},
     { path: 'instructor', component: InstructorHomeComponent},
+    { path:'supervisor', component:SupervisorHomeComponent,
+        children:[
+        { path: '', redirectTo: '/supervisor/tareas', pathMatch: 'full'},
+        { path: 'tareas', component: TareasComponent},
+        { path: 'cursadas', component: CursadasComponent},
+        { path: 'usuarios', component: InstructoresComponent}
+        
+    ]},
     { path: '**', component: PageNotFoundComponent}
+    
   
 ];
 

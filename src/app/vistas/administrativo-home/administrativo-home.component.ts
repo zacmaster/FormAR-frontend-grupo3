@@ -2,46 +2,46 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './administrativo-home.component.html',
+  styleUrls: ['./administrativo-home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class AdministrativoHomeComponent implements OnInit {
 
   linksNavegacion = [
     {
       name: 'Alumnos',
       active: true,
-      url: '/home/alumnos'
+      url: '/administrativo/alumnos'
     },
     {
       name: 'Contactos',
       active: false,
-      url: '/home/contactos'
+      url: '/administrativo/contactos'
     },
     {
       name: 'Cursos',
       active: false,
-      url: '/home/cursos'
+      url: '/administrativo/cursos'
     },
     {
       name: 'Cursadas',
       active: false,
-      url: '/home/cursadas'
+      url: '/administrativo/cursadas'
     },
     {
       name: 'Instructores',
       active: false,
-      url: '/home/instructores'
+      url: '/administrativo/instructores'
     },
     {
       name: 'Salas',
       active: false,
-      url: '/home/salas'
+      url: '/administrativo/salas'
     },
     {
       name: 'Tareas',
       active: false,
-      url: '/home/tareas'
+      url: '/administrativo/tareas'
     }
   ]
 
