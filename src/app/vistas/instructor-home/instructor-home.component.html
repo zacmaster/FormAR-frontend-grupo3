@@ -1,67 +1,63 @@
 
-<div><header>
-  <img version="1.1"
-  baseProfile="full"
-  width="500" height="300"
-  xmlns="http://www.w3.org/2000/svg" 
-  src="src/logoFormar.svg" class="logo">
-    
-  </header>
-</div>
-<!--<div class="container-fluid bg-inactive pt-3">-->
-    
-  
-  <div class="container-fluid">
-      <div class="p-0">
-          <div class="bg-light">
-              <div class="input-group py-4 col-5">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Nombre Instructor</span>
-                  </div>
-                  <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
+<div class="content-section implementation ui-fluid">
+    <p-table #dt [columns]="cols" [value]="cursadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Nombre Instructor</span>
               </div>
-              <div class="example-container mat-elevation-z8">
-                <p-table [columns]="cols" [value]="cursadas"[scrollable]="true" scrollHeight="450px"  >
-                  <ng-template pTemplate="header" let-columns>
-                      <tr>
-                          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                              {{col.header}}
-                              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
-                          </th>
-                          <th>
-                            Info
-                          </th>
-                          <th >
-                            Acciones
-                        </th>
-                      </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-rowData let-columns="columns">
-                    <tr>
-                      <td *ngFor="let col of columns">
-                          {{rowData[col.field]&#125;&#125;
-                      </td>
-                      <td>
+              <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
+              </div>
+          </ng-template>
+          <ng-template pTemplate="colgroup" let-columns>
+              <colgroup>
+                  <col *ngFor="let col of columns" [style.width]="col.width">
+              </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+              <tr>
+                  <th *ngFor="let col of columns" pResizableColumn>
+                      {{col.header}}
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                  <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+                      <span *ngSwitchCase="'nombre'">
+                        {{ rowData.nombre }}
+                      </span>
+                      <span *ngSwitchCase="'inscriptos'">
+                        {{ rowData.inscriptos }}
+                      </span>
+                      <span *ngSwitchCase="'fechaInicio'">
+                        {{ _Util.convertirTimestamp(rowData.fechaInicio)}}
+                      </span>
+                      <span *ngSwitchCase="'fechaFin'">
+                        {{ _Util.convertirTimestamp(rowData.fechaFin)}}
+                      </span>
+                      <span *ngSwitchCase="'info'">
                         <button
-                              (click)="mostrarInfo(rowData)"
-                              class="btn btn-warning mr-2"
-                              [title]="_LABEL.info.contacto">
-                        <i class="fas fa-info"></i>
+                        (click)="mostrarInfo(rowData)"
+                        class="btn btn-warning mr-2"
+                        [title]="_LABEL.info.contacto">
+                         <i class="fas fa-info"></i>
                       </button>
-                      <td>
-                        <button class="btn btn-success mr-2"(click)="verAsistencia(rowData)">
-                            <i class="fas fa-clipboard-list"></i>
-                        </button>
-                        <button class="btn btn-info mr-2"(click)="verNotas(rowData)">
-                            <i class="far fa-edit"></i>
-                        </button>
-                      </td>
-                  </tr>
-                  </ng-template>
-              </p-table>
-            </div>
-      </div>
-  </div>
+                      </span>
+                      <span *ngSwitchCase="'acciones'">
+                          <button class="btn btn-success mr-2"(click)="verAsistencia(rowData)">
+                              <i class="fas fa-clipboard-list"></i>
+                          </button>
+                          <button class="btn btn-info mr-2"(click)="verNotas(rowData)">
+                              <i class="far fa-edit"></i>
+                          </button>
+                      </span>
+                  </td>
+              </tr>
+          </ng-template>
+    
+      </p-table>
+</div>
   <div class="contenedor-info"  *ngIf="infoShowed">
     <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
@@ -81,7 +77,7 @@
         </div>
       </div>
   </div>
-</div>
+
 
 <!--Asistencia-->
 <app-asistencia *ngIf="mostrarAsistencia"

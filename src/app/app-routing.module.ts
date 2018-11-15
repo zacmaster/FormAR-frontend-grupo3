@@ -12,6 +12,7 @@ import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
 import { SalasComponent } from './vistas/salas/salas.component';
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
+import { TareasComponent } from './vistas/tareas/tareas.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home/alumnos', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
             { path: 'cursadas', component: CursadasComponent},
             { path: 'instructores', component: InstructoresComponent},
             { path: 'salas', component: SalasComponent},
+            { path: 'tareas', component: TareasComponent}
         ]
     },
     { path: 'login', component:  LoginComponent},

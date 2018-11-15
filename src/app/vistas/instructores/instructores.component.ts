@@ -28,6 +28,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
    _Util = Util;
 
   public instructor = [];
+  cols: any[];
   busqueda: string = "";
   public edicion: boolean = false;
 
@@ -67,6 +68,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
 
 
   ngOnInit() {
+    this.cargarCampos();
     this.getAreas();  
     this.getInstructores();
    
@@ -82,13 +84,23 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   private newAttribute: any = {};
 
   addFieldValue() {
-      this.fieldArray.push(this.newAttribute)
-      this.newAttribute = {};
+    this.fieldArray.push(this.newAttribute)
+    this.newAttribute = {};
+}
+deleteFieldValue(index){
+  this.fieldArray.splice(index,1);
+}
+deleteAtributteValue(){
+  //pasar el ultimo de arreglo a new atribute
+  if(this.fieldArray.length>0){
+    this.newAttribute = {};
+    this.newAttribute.dia=this.fieldArray[this.fieldArray.length-1].dia;
+    this.newAttribute.horaInicio=this.fieldArray[this.fieldArray.length-1].horaInicio;
+    this.newAttribute.horaFin=this.fieldArray[this.fieldArray.length-1].horaFin;
+    this.fieldArray.splice(this.fieldArray.length-1, 1);
   }
 
-  deleteFieldValue(index) {
-      this.fieldArray.splice(index, 1);
-  }
+}
 
 
   nuevoInstructor(){
@@ -107,14 +119,18 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     this.instructorSeleccionado = this.newInstructor();
            
   }
-  verCalendario(){
+  verCalendario(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
     this.mostrarCalendario=true;
   }
   ocultarCalendario(){
     this.mostrarCalendario=false;
     this.instructorSeleccionado= this.newInstructor();
   }
-  mostrarDialogoEliminar(){
+  mostrarDialogoEliminar(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
 
     this.dlg.texto =  `¿Está seguro que desea dar de baja el instructor
              ${ this.instructorSeleccionado.nombre }
@@ -122,19 +138,25 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     this.mostrarDialogoBorrar = true;
     
   }
-  mostrarEstudios(){
+  mostrarEstudios(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
     this.estudiosShowed=true;
   }
   cerrarEstudios(){
     this.estudiosShowed=false;
   }
-  mostrarHorarios(){
+  mostrarHorarios(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
     this.horariosShowed=true;
   }
   cerrarHorarios(){
     this.horariosShowed=false;
   }
-  mostrarAreas(){
+  mostrarAreas(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
     this.areasShowed=true;
   }
   cerrarAreas(){
@@ -259,7 +281,9 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   }
 
 
-  editarInstructor(){
+  editarInstructor(instructor){
+    this.instructorSeleccionado = new Instructor();
+    this.instructorSeleccionado.copiar(instructor);
     this.selectedAreas=[];
     this.newAttribute={};
     this.fieldArray=[];
@@ -345,8 +369,29 @@ export class InstructoresComponent  implements OnInit, DoCheck{
         
       })
   }
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'instructor', header: 'Instructor' },
+      { field: 'dni', header: 'DNI' },
+      { field: 'telefono', header: 'Teléfono' },
+      { field: 'email', header: 'Email' },
+      { field: 'estudios', header: 'Estudios' },
+      { field: 'horarios', header: 'Horarios' },
+      { field: 'areasPreferencia', header: 'Áreas de preferencia' },
+      { field: 'disponibilidad', header: 'Disponibilidad' },
+      { field: 'acciones', header: 'Acciones' },
+
+    ];
+  }
   
 
+  blankSpaces() {
+    if (!this.instructorSeleccionado.nombre.trim().length || !this.instructorSeleccionado.apellido.trim().length) {
+      return true;
+    }
+    return false;
+  }
 }
 
 

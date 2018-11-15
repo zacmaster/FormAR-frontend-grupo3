@@ -20,7 +20,7 @@ export class EventService {
               aux.clases.forEach(horario=>{
                   let clase = new MyEvent();
                  
-                  if(aux.ocupacionTentativa=true){
+                  if(aux.ocupacionTentativa==true){
                     clase.title= auxiliar.nombreCursada ;
                     clase.backgroundColor="green";
                   }
@@ -31,8 +31,6 @@ export class EventService {
                   clase.start= this.dateToString(new Date(horario.fecha),new Date(horario.horaInicio));
                   
                   clase.end = this.dateToString(new Date(horario.fecha),new Date(horario.horaFin));
-                  
-                  clase.backgroundColor="red";
                   this.eventosAux.push(clase);
               })
             })
@@ -48,7 +46,7 @@ export class EventService {
               console.log(auxiliar);
               aux.clases.forEach(horario=>{
                   let clase = new MyEvent();
-                  if(aux.ocupacionTentativa=true){
+                  if(aux.ocupacionTentativa==true){
                     clase.title= auxiliar.nombreCursada ;
                     clase.backgroundColor="green";
 

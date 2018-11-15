@@ -14,6 +14,8 @@ export class CursosComponent implements OnInit, DoCheck {
   
   cursos: Curso[] = [];
   areas: Area[] = [];
+
+  cols = [];
   private cursoSeleccionado: Curso = this.newCurso();
   private areaSeleccionada: Area = this.newArea();
   busqueda: string = "";
@@ -52,6 +54,7 @@ export class CursosComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.getAreas();
     this.getCursos();
+    this.cargarCampos();
   }
   ngDoCheck(){
     // console.log("area seleccionada: ",this.areaSeleccionada);
@@ -122,8 +125,7 @@ export class CursosComponent implements OnInit, DoCheck {
     this.edicion = false;
     this.cursoSeleccionado = this.newCurso();
     this.cursoSeleccionado.area = this.newArea(); //Método seguro para el copiado
-    console.log("nuevoCurso(). cursoSeleccionado: ",this.cursoSeleccionado
-    );
+    //console.log("nuevoCurso(). cursoSeleccionado: ",this.cursoSeleccionado);
     
     if(this.areas[0] != undefined ){
       this.areaSeleccionada.copiar(this.areas[0]);
@@ -138,8 +140,9 @@ export class CursosComponent implements OnInit, DoCheck {
     this.mostrarDialogoAB = false;
   }
 
-  editarCurso(){
-    console.log("editarCurso()",this.cursoSeleccionado);
+  editarCurso(curso: any){
+    this.cursoSeleccionado = new Curso();
+    this.cursoSeleccionado.copiar(curso);
     this.areaSeleccionada.copiar(this.areas[0])
     this.edicion = true;
     this.seleccionAreaAlEditar();
@@ -168,7 +171,9 @@ export class CursosComponent implements OnInit, DoCheck {
       this.agregar(this.cursoSeleccionado);
   }
 
-  mostrarTemario(){
+  mostrarTemario(curso: any){
+    this.cursoSeleccionado = new Curso();
+    this.cursoSeleccionado.copiar(curso);
     this.temarioShowed = true;
   }
 
@@ -238,8 +243,9 @@ export class CursosComponent implements OnInit, DoCheck {
         }
       })
   }
-  mostrarDialogoEliminar(){
-
+  mostrarDialogoEliminar(curso: any){
+    this.cursoSeleccionado = new Curso();
+    this.cursoSeleccionado.copiar(curso);
     this.dlg.texto =  `¿Está seguro que desea dar de baja el curso
     ${ this.cursoSeleccionado.nombre } ?`;
     this.mostrarDialogoBorrar = true;
@@ -274,7 +280,7 @@ export class CursosComponent implements OnInit, DoCheck {
           let nuevaArea = new Area();
 
           nuevaArea.copiar(curso.area); //work-around por serialización
-          console.log("este es el curso que me llega: ",curso);
+          //console.log("este es el curso que me llega: ",curso);
           
           nuevoCurso.copiar(curso);
 
@@ -294,7 +300,10 @@ export class CursosComponent implements OnInit, DoCheck {
     this.cursoSeleccionado.area.copiar(this.areaSeleccionada);
   }
 
-  deshabilitarNuevaArea(): boolean{
+  deshabilitarNuevaArea(): boolean {
+    if (!this.nombreNuevoArea.trim().length) {
+      return true;
+    }
     return this.nombreNuevoArea.length < 3;
   }
 
@@ -307,6 +316,17 @@ export class CursosComponent implements OnInit, DoCheck {
       })
     } 
     return enUso;
+  }
+
+
+
+  private cargarCampos(){
+    this.cols = [
+      { field: 'nombre', header: 'Nombre del curso' },
+      { field: 'area', header: 'Área' },
+      { field: 'info', header: 'Info' },
+      { field: 'acciones', header: 'Acciones' }
+    ];
   }
 
 }

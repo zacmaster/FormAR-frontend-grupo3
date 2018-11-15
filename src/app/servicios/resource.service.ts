@@ -53,8 +53,8 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
     return this.httpClient.get<I[]>(url)
   }
 
-  public listURL(url): Observable<I[]>{
-    return this.httpClient.get<I[]>(url);
+  public listURL(url): Observable<T[]>{
+    return this.httpClient.get<T[]>(url);
   }
   
 

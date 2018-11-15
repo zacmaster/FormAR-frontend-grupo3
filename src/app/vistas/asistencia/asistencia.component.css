@@ -28,13 +28,21 @@
     width: 100%;
   
   } 
-  .zui-sticky-col {
-    left: 0;
+  .col {
+    left: 0em;
     position: sticky;
     top: auto;
-    width: 120px;
-    z-index: 50;
-    background: rgb(255, 255, 255);
+    width: 10em;
+     z-index: 50;
+    background: rgb(255, 255, 255); 
+}
+.col2 {
+  left: 6.8em;
+  position: sticky;
+  top: auto;
+  width: 5em;
+  z-index: 50;
+  background: rgb(255, 255, 255); 
 }
   h5{
     margin: auto;

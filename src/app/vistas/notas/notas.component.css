@@ -27,6 +27,7 @@
     width: 100%;
   
   } 
+  
 
 .zui-sticky-col {
     left: 0;
@@ -44,7 +45,32 @@
   z-index: 50;
   background: rgb(255, 255, 255);
 }
-
+.contenedor-info{
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(104, 104, 104,0.8);
+}
+.infoBody{
+  height: 73%;
+  width: 100%;
+}
+.info{
+  position: absolute;
+  z-index: 10;
+  top: 28%;
+  left: 34%;
+  height: 10em;
+  width: 40em;
+  border-radius: 5px;
+}
+.infoHeader{
+  padding-bottom: 2px;
+  border-bottom: 1px solid #0003;
+}
 
   h5{
     margin: auto;

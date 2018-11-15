@@ -1,4 +1,5 @@
-<div class="contenedor-mayor">
+
+ <div class="contenedor-mayor">
       <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
@@ -9,24 +10,22 @@
             <table class="table table-hover bg-light"  >
                 <thead class="thead-light">
                     <tr>
-                      <th class="zui-sticky-col">Alumnos</th>
+                      <th class="col">Alumnos</th>
+                      <th class="col2">Total Inasistencia </th>
                       <th *ngFor="let clase of clasesCursada" >{{ _Util.convertirTimestamp(clase.fecha)}}</th>
-                      <th style="width: 150px">Total Inasistencia 
-                      </th>
                     </tr>
                 </thead>
                     <tbody >
                       <tr *ngFor="let fila of filas;">
-                        <td class="zui-sticky-col">{{fila.nombreAlumno}}</td>
+                        <td class="col">{{fila.nombreAlumno}}</td>
+                        <td class="col2">{{calcularFaltas(fila)}}</td>
                         <td *ngFor="let asist of fila.asistencia;"  >
                           <p-dropdown [options]="opcAsistencia" [(ngModel)]="asist.estado" optionLabel="opc" [disabled]="asist.deshabilitado"></p-dropdown>
-                          
-                        </td>
-                        <td >{{calcularFaltas(fila)}}</td>
-                       
+                        </td>     
                       </tr>
                       <tr >
-                        <td class="zui-sticky-col"></td>
+                        <td class="col"></td>
+                        <td class="col2"></td>
                         <td *ngFor="let asistBtn of botonAsistencia; let i=index">
                             <button class="btn btn-primary float-left " (click)="habilitarColumna(i)" >
                                 <span *ngIf="!asistBtn.tomarAsistencia" >Tomar Asistencia </span>
@@ -40,5 +39,5 @@
                   </table>
              </div>    
       </div>
-    </div>
+    </div> 
     <ng4-loading-spinner></ng4-loading-spinner>

@@ -59,11 +59,13 @@ export const LABEL_REQUIRED ={
     seleccionArea: "Seleccione un área*",
     fecha: "Fecha*",
     asunto: "Asunto*",
-    capacidad:"Capacidad*"
+    capacidad:"Capacidad*",
+    titulo: "Título*"
 
 }
 
 export var LABEL ={
+    buscar: "Buscar",
     guardar: "Guardar",
     cancelar: "Cancelar",
     aceptar: "Aceptar",
@@ -120,6 +122,8 @@ export var LABEL ={
     bajaSala:"Eliminar Sala",
     seguroEliminarCurso: "¿Seguro quiere eliminar el curso " + cadena + "?",
     horarioCursada:"Horario de cursada",
+    nuevaTarea: "Nueva tarea",
+    sinTareas: "Sin tareas..",
     ingrese: {
         nombre: "Ingrese el nombre",
         apellido: "Ingrese el apellido",
@@ -135,7 +139,7 @@ export var LABEL ={
         cupoMinimo: "Ingrese el cupo mínimo de personas",
         importeCuota: "Ingrese el importe por cuota",
         nombreCursada:"Ingrese el nombre de la cursada",
-        importeMatricula: "Ingrese el importe de la mátricula",
+        importeMatricula: "Ingrese el importe de la matrícula",
         matricula:"Ingrese la matricula",
         cuota: "Ingrese el valor de la cuota"
     },
@@ -148,13 +152,16 @@ export var LABEL ={
         cupoMaximo: "Cantidad Máxima de Inscriptos",
         nombreCursada: "Ingrese el nombre de la cursada",
         matricula: "Ingrese el valor de la mátricula",
-        cuota: "Ingrese el valor de la cuota"
+        cuota: "Ingrese el valor de la cuota",
+        infoCursada: "Cursadas de",
+        inscripcion: "Nueva inscripción"
     },
     boton: {
         inscribir:  "Inscribir",
         editar:     "Editar",
         eliminar:   "Eliminar",
-        verCursadas: "Ver cursadas del alumno"
+        verCursadas: "Ver cursadas del alumno",
+        analitico:"Obtener analitico"
     },
     seleccione: {
         area: "Seleccione un area",
@@ -177,10 +184,15 @@ export var LABEL ={
         contacto: "Eliminar contacto"
     },
     info: {
-        contacto: "Descripción del contacto"
+        contacto: "Descripción del contacto",
+        cursada: "Detalles de la cursada",
+        alumnosEnCursada: "Ver los alumnos inscriptos en la cursada",
     },
     error: {
         horarioCursada: "El instructor seleccionado no se encuentra disponible en el horario elegido"
+    },
+    leyenda:{
+        alumnoSinCursadas: "Este alumno no tiene cursadas aún."
     }
 }
 

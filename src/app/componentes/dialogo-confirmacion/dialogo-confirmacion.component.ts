@@ -7,15 +7,18 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       <div  class="dialogo bg-light p-1">
         <div class="dialogoHeader d-flex justify-content-between">
           <div></div>
-          <div class="titulo text-center" ><h5> {{ titulo }} </h5></div>
-          <span class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
+          <div class="titulo text-center" ><p> {{ titulo }} </p></div>
+          <div>
+            <span *ngIf="botonCerrar" class="btn btn-danger" (click)="clickBtnCerrar()"><i class="fas fa-times"></i></span>
+          </div>
         </div>
         <div class="dialogoBody p-3 pt-3 text-center">
           <p> {{texto}} </p>
+          <ng-content></ng-content>
         </div>
         <div class="dialogoFooter d-flex mx-5 mb-3 justify-content-between">
-          <span class="btn btn-danger mr-3" (click)="clickBtnIzquierdo()">{{ textoBotonIzquierdo }}</span>
-          <span class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">{{ textoBotonDerecho }}</span>
+          <button *ngIf="botonCancelar" class="btn btn-danger mr-3" (click)="clickBtnIzquierdo()">{{ textoBotonIzquierdo }}</button>
+          <button *ngIf="botonAceptar" class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">{{ textoBotonDerecho }}</button>
         </div>
       </div>
     </div>
@@ -34,7 +37,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       .dialogo{
         border-radius: 5px;
       }
-      h5{
+      .titulo p{
         margin: auto;
         padding-top: 5px;
         font-weight: bolder;
@@ -51,7 +54,9 @@ export class DialogoConfirmacionComponent implements OnInit {
   @Input() public texto = '';
   @Input() textoBotonIzquierdo = 'Cancelar'; 
   @Input() textoBotonDerecho =  'Aceptar';
-  
+  @Input() public botonCancelar: boolean = true;
+  @Input() public botonAceptar: boolean = true;
+  @Input() public botonCerrar: boolean = true;
 
   @Output() clickBotonCerrar = new EventEmitter<boolean>();
   @Output() clickBotonIzquierdo =  new EventEmitter<boolean>();

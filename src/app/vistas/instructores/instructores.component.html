@@ -1,83 +1,87 @@
-<div class="p-0 bg-light">
-  <!--  FILTRO + NUEVO INSTRUCTOR -->
 
-  <div class="input-group py-4 col-5">
-    <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-default">{{ _LABEL.filtrar }}</span>
-    </div>
-    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" [(ngModel)]="busqueda">
-    <div class="input-group-append">
-      <button class="btn btn-success" (click)="nuevoInstructor()"><span> {{ _LABEL.nuevoInstructor }} </span></button>
-    </div>
-  </div>
-
-
-
-  <!--  TABLA   -->
-
-  <div class="table-responsive">
-    <table class="table table-hover bg-light">
-    <thead class="thead-light">
-        <tr>
-          <th>Instructor</th>
-          <th>Dni</th>
-          <th>Telefono</th>
-          <th>Email</th>
-          <th>Estudios</th>
-          <th>Horarios</th>
-          <th>Areas Preferencia</th>
-          <th>Disponibilidad</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-
- 
-      <tbody>
-        <tr *ngFor="let instructor of instructores | search: {nombre: busqueda, apellido: busqueda, dni: busqueda}">
-          <td>{{ instructor.nombre }}
-            {{ instructor.apellido }}</td>
-          <td>  {{ instructor.dni }}</td>
-          <td> {{ instructor.telefono }} </td>
-          <td> {{ instructor.email }} </td>
+<!-- Comienzo de tabla -->
+<div class="content-section implementation ui-fluid">
+    <p-table #dt [columns]="cols" [value]="instructores" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              <button class="btn btn-success"
+                      (click)="nuevoInstructor()">
+                      <span>{{ _LABEL.nuevoInstructor }}</span>
+              </button>
+            </div>
+          </ng-template>
           
-          <td> <button class="btn btn btn-info"
-            [title]="_HVR.estudio"
-            (click)="instructorSeleccionado.copiar(instructor); mostrarEstudios()">
-            <i class="fas fa-atlas"></i>
-          </button>
-         </td>
-          <td>  
-            <button class="btn btn btn-info"
-            [title]="_HVR.horario"
-            (click)="instructorSeleccionado.copiar(instructor); mostrarHorarios()">
-            <i class="fas fa-calendar-check"></i>
-          </button>
-          <td> 
-            <button class="btn btn btn-info"
-            [title]="_HVR.areasPref"
-            (click)="instructorSeleccionado.copiar(instructor); mostrarAreas()">
-            <i class="fas fa-font"></i>
-          </button>
-        </td>
-        <td>
-          <button class="btn btn btn-info" (click)="instructorSeleccionado.copiar(instructor); verCalendario()">
-            <i class="far fa-calendar-check"></i>
-          </button> 
-        </td>        
-         
-          <td>
-            <button class="btn btn-success mr-2" (click)="instructorSeleccionado.copiar(instructor);editarInstructor();">
-              <i class="fas fa-user-edit"></i>
-            </button>
-            <button class="btn btn-danger" (click)="instructorSeleccionado = instructor; mostrarDialogoEliminar()">
-              <i class="fas fa-user-times"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" pResizableColumn>
+                {{col.header}}
+              </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+                <span *ngSwitchCase="'instructor'">
+                    {{ rowData.nombre }}
+                </span>
+                <span *ngSwitchCase="'dni'">
+                    {{ rowData.dni }}
+                </span>
+                <span *ngSwitchCase="'telefono'">
+                    {{ rowData.telefono }}
+                </span>
+                <span *ngSwitchCase="'email'">
+                    {{ rowData.email }}
+                </span>
+                <span *ngSwitchCase="'estudios'">
+                    <button class="btn btn btn-info"
+                    [title]="_HVR.estudio"
+                    (click)="mostrarEstudios(rowData)">
+                    <i class="fas fa-atlas"></i>
+                  </button>
+                </span>
+                <span *ngSwitchCase="'horarios'">
+                    <button class="btn btn btn-info"
+                    [title]="_HVR.horario"
+                    (click)="mostrarHorarios(rowData)">
+                    <i class="fas fa-calendar-check"></i>
+                  </button>
+                </span>
+                <span *ngSwitchCase="'areasPreferencia'">
+                    <button class="btn btn btn-info"
+                    [title]="_HVR.areasPref"
+                    (click)="mostrarAreas(rowData)">
+                    <i class="fas fa-font"></i>
+                  </button>
+                </span>
+                <span *ngSwitchCase="'disponibilidad'">
+                    <button class="btn btn btn-info" (click)="verCalendario(rowData)">
+                        <i class="far fa-calendar-check"></i>
+                      </button> 
+                </span>
+                <span *ngSwitchCase="'acciones'">
+                    <button class="btn btn-success mr-2" (click)="editarInstructor(rowData);">
+                        <i class="fas fa-user-edit"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="mostrarDialogoEliminar(rowData)">
+                        <i class="fas fa-user-times"></i>
+                      </button>
+                </span>
+            </td>
+          </tr>
+        </ng-template>
+  
+    </p-table>
   </div>
-</div>  
+  
+  <!-- Fin de tabla -->
 <!-- Dialogo estudios-->
 <div class="contenedor-info"  *ngIf="estudiosShowed">
     <div  class="dialogo bg-light p-1">
@@ -147,7 +151,7 @@
 <!-- Formulario:  -->
 
 <div class="contenedor-formulario" *ngIf="mostrarDialogoAB">
-  <div class="card mt-4 w-50 mx-auto">
+  <div class="card mt-2 w-50 mx-auto">
       <div class="card-head d-flex  w-100 justify-content-between">
         <div></div>
         <div class="pt-2">
@@ -275,8 +279,71 @@
                       ></textarea>
                 </div>
               </div>
-              <div class="row">
-                <div class="form-group col">
+              <div class="row"><div class="form-group col">
+                <label for="">{{ _LABEL.horarioCursada }} &nbsp; </label>
+                
+                <label for=""><button class="btn btn-success " type="button" (click)="addFieldValue()"> <i class="fas fa-plus"></i></button>
+                </label>
+                
+                
+               
+                      <table  style="border:hidden;">
+                          <thead>
+                              <tr>
+                                  <th>Dia</th>
+                                  <th>Hora Inicio</th>
+                                  <th>Hora Fin</th>
+                                  <th> </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let field of fieldArray; let i = index">
+                                  <td>
+                                      <select class="custom-select" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
+                                          <option *ngFor="let dia of dias" [value]="dia.dia">
+                                            {{ dia.dia }}
+                                          </option>
+                                        </select>  
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="field.horaInicio"   name="{{field.horaInicio}}" [timeOnly]="true" hourFormat="24"></p-calendar>
+                            
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                  </td>
+                                  <td>
+
+                                      <button class="btn btn-danger"  type="button" (click)="deleteFieldValue(i)"><i class="fas fa-minus"></i></button>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <select class="custom-select" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
+                                          <option *ngFor="let dia of dias" [value]="dia.dia">
+                                            {{ dia.dia }}
+                                          </option>
+                                        </select>  
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="newAttribute.horaInicio" id="newAttributehoraInicio"   name="newAttributehoraInicio" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                   
+                                  </td>
+                                  <td>
+                                      <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
+                                     
+                                  </td>
+                                 
+                                  <td>
+                                      <button class="btn btn-danger"  type="button" (click)="deleteAtributteValue()"><i class="fas fa-minus"></i></button>
+                                  </td>
+                              </tr>
+                             
+                          </tbody>
+                      </table>  
+              </div>
+              </div>
+                <!-- <div class="form-group col">
                   <label for="">{{ _LABEL.dispHoraria }}</label>
       
                         <table  style="border:hidden;">
@@ -332,14 +399,21 @@
                         </table>  
                 </div>
               </div>
+ -->
 
-
+          </div>
         </div>
 
-        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid " (click)="guardar()">
-          <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
-          <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
-        </button>
+        <div class="pr-4 pb-4">
+          <button
+                  class="btn btn-primary float-right "
+                  [disabled]="blankSpaces() || nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid "
+                  (click)="guardar()"
+          >
+            <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+            <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+          </button>
+        </div>
     </div>
 </div>
 

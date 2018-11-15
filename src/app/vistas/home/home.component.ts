@@ -37,6 +37,11 @@ export class HomeComponent implements OnInit {
       name: 'Salas',
       active: false,
       url: '/home/salas'
+    },
+    {
+      name: 'Tareas',
+      active: false,
+      url: '/home/tareas'
     }
   ]
 

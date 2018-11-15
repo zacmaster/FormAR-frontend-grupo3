@@ -48,9 +48,11 @@ export class InstructorHomeComponent implements OnInit {
         
         this.cols = [
             { field: 'nombre', header: 'Nombre de cursada' },
-            {field: 'inscriptos', header: 'Cant. Inscriptos'},
-            { field: 'fechaInicioString', header: 'Fecha de inicio' },
-            { field: 'fechaFinString', header: 'Fecha de fin' },
+            { field: 'inscriptos', header: 'Cant. Inscriptos'},
+            { field: 'fechaInicio', header: 'Fecha de inicio' },
+            { field: 'fechaFin', header: 'Fecha de fin' },
+            { field: 'info', header: 'Info' },
+            { field: 'acciones', header: 'Acciones' }
             
           
         ];

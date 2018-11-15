@@ -6,6 +6,9 @@ import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import { ExamenService } from 'src/app/servicios/examen.service';
 import { Examen } from 'src/app/modelos/examen';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { PATTERNS } from '../../utilidades/patterns';
+import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
+import { Util } from '../../utilidades/util';
 
 
 
@@ -25,7 +28,15 @@ export class NotasComponent implements OnInit {
   alumnosEnCursada: Alumno[] ;  
   calificaciones: Calificacion[];
   examenesGuardar :Examen[];
+  nuevoExamen:boolean = false;
+  nombreNuevoExamen:string;
 
+
+  _LABEL = LABEL;
+   _LABEL_R = LABEL_REQUIRED;
+   _VALIDACION = VALIDACION;
+   _PATTERN = PATTERNS;
+   _Util = Util;
 
   ngDoCheck(){ 
    
@@ -50,6 +61,7 @@ export class NotasComponent implements OnInit {
       examenAux.id=this.examenesDeCursada[nro].id; 
       examenAux.idCursada=this.examenesDeCursada[nro].idCursada;
       examenAux.nroExamen=this.examenesDeCursada[nro].nroExamen;
+      examenAux.nombreExamen= this.examenesDeCursada[nro].nombreExamen;
       let notasAux: Nota[] = [];
       for (let z = 0; z < this.filas.length; z++) {
         if(this.filas[z].notas[nro].nota=="Ausente" || this.filas[z].notas[nro].nota==undefined ){
@@ -86,12 +98,22 @@ export class NotasComponent implements OnInit {
         })
         }, 500)
     }
+    nuevoExamenCursada() {
+      this.nombreNuevoExamen="";
+      this.nuevoExamen=true;
+    }
+    cerrarInfo(){
+      this.nuevoExamen=false;
+      this.nombreNuevoExamen="";
+    }
   agregarExamen(){
+    this.nuevoExamen=false;
      let numero = this.examenesDeCursada[this.examenesDeCursada.length-1].nroExamen;
      numero++;
      let examenAux = new Examen;
      examenAux.id=0;
      examenAux.idCursada=this.cursadaSeleccionada.id;
+     examenAux.nombreExamen=this.nombreNuevoExamen;
      examenAux.nroExamen=numero;
      this.examenesDeCursada.push(examenAux);
      this.agregarColumnaAFila();
@@ -164,29 +186,13 @@ export class NotasComponent implements OnInit {
           });
         });
   }
-  // generarPrimerExamen(){
-  //   let examenAux = new Examen();
-  //   examenAux.id=0;
-  //   examenAux.idCursada=this.cursadaSeleccionada.id;
-  //   examenAux.nroExamen=1;
-  //   examenAux.notas=[];
-  //   this.alumnosEnCursada.forEach(element => {
-  //         let notaAux = new Nota();
-  //         notaAux.id=0;
-  //         notaAux.idAlumno=element.id;
-  //         notaAux.nombreAlumno=element.nombreApellido;
-  //         notaAux.ausente=false;
-  //         examenAux.notas.push(notaAux);
-  //   });
-  //   this.examenesDeCursada.push(examenAux);
-  // }
   ordenarLista(dato:any[]):any[]{
     let aux= dato.sort((n1,n2) => {
-      if (n1.id > n2.id) {
+      if (n1.nroExamen > n2.nroExamen) {
           return 1;
       }
   
-      if (n1.id < n2.id) {
+      if (n1.nroExamen < n2.nroExamen) {
           return -1;
       }
       return 0;
@@ -297,6 +303,7 @@ export class Fila {
   nombreAlumno: string;
   idAlumno: number;
   notas: Nota[];
+
 
   constructor() { 
   }

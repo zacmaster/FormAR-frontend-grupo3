@@ -4,11 +4,13 @@ import { Nota } from "../modelos/nota";
 
 export class Examen extends Resource implements IExamen{
     nroExamen:number;
+    nombreExamen: string;
 	idCursada:number;
 	notas : Nota[];
 
     constructor(){
         super();
+        this.nombreExamen="";
        
     }
 }

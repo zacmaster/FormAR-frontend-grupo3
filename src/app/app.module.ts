@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AutoCompleteModule} from 'primeng/primeng'
+import {AutoCompleteModule,  PaginatorModule, InputSwitchModule} from 'primeng/primeng'
 
-import { UsuarioService } from './servicios/usuario.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +17,8 @@ import {DropdownModule} from 'primeng/dropdown';
 import {SpinnerModule} from 'primeng/spinner';
 
 import {CheckboxModule} from 'primeng/checkbox';
+
+
 
 
 
@@ -38,10 +39,6 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import {TableModule} from 'primeng/table';
 
-
-
-
-
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
@@ -57,6 +54,7 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
 import { AsistenciaComponent } from './vistas/asistencia/asistencia.component';
 import { NotasComponent } from './vistas/notas/notas.component';
+import { TareasComponent } from './vistas/tareas/tareas.component';
 import { MatSortModule,} from '@angular/material';
 
 import {CdkTableModule} from '@angular/cdk/table';
@@ -87,7 +85,7 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     InstructorHomeComponent,
     AsistenciaComponent,
     NotasComponent,
-    
+    TareasComponent
    
   ],
   imports: [
@@ -106,12 +104,14 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     FullCalendarModule,
     AutoCompleteModule,
     CheckboxModule,
+    InputSwitchModule,
     TableModule,
     MatTableModule,
 
     CdkTableModule,
     CdkTreeModule,
-    MatSortModule
+    MatSortModule, 
+    PaginatorModule
   ], 
   providers: [
     AlumnoService
