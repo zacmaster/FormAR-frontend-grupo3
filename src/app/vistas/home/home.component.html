@@ -1,14 +1,22 @@
-<div class="container-fluid bg-inactive pt-3">
-  <ul class="nav nav-tabs">
-    <li class="nav-item"
-    *ngFor="let link of linksNavegacion">
-    <a  class="nav-link"
-        [routerLinkActive]="['active']"
-        [routerLink]="link.url"
-          > {{ link.name }} </a>
-    </li>
-  </ul>
+<div *ngIf="info.token; else loggedOut">
+
+  <div class="container-fluid bg-inactive pt-3">
+    <ul class="nav nav-tabs">
+      <li class="nav-item"
+      *ngFor="let link of linksNavegacion">
+      <a  class="nav-link"
+          [routerLinkActive]="['active']"
+          [routerLink]="link.url"
+            > {{ link.name }} </a>
+      </li>
+    </ul>
+  </div>
+  <div class="container-fluid">
+    <router-outlet></router-outlet>
+  </div>
+
 </div>
-<div class="container-fluid">
-  <router-outlet></router-outlet>
-</div>
+
+<ng-template #loggedOut>
+  Please login.
+</ng-template>

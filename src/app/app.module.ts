@@ -27,9 +27,7 @@ import {FullCalendarModule} from 'primeng/fullcalendar';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import { LoginComponent } from './vistas/login/login.component';
 import { HomeComponent } from './vistas/home/home.component';
-import { RegisterComponent } from './vistas/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
 import { AlumnosListComponent } from './componentes/alumnos-list/alumnos-list.component';
 import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
@@ -39,6 +37,9 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import {TableModule} from 'primeng/table';
 
+
+import { LoginComponent} from './componentes/auth/login/login.component';
+import { RegisterComponent} from './componentes/auth/register/register.component';
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
@@ -59,10 +60,13 @@ import { MatSortModule,} from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
 
+import { httpInterceptorProviders} from './auth/auth-interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    RegisterComponent,
     UsuariosListComponent,
     HomeComponent,
     RegisterComponent,
@@ -84,8 +88,8 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     InstructorHomeComponent,
     AsistenciaComponent,
     NotasComponent,
-    
-   
+
+
   ],
   imports: [
     BrowserModule,
@@ -108,11 +112,11 @@ import {CdkTreeModule} from '@angular/cdk/tree';
 
     CdkTableModule,
     CdkTreeModule,
-    MatSortModule, 
+    MatSortModule,
     PaginatorModule
-  ], 
+  ],
   providers: [
-    AlumnoService
+    AlumnoService, httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

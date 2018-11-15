@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from '../app/vistas/home/home.component';
-import { LoginComponent } from '../app/vistas/login/login.component';
-import { RegisterComponent } from '../app/vistas/register/register.component';
+import { LoginComponent} from './componentes/auth/login/login.component';
+import { RegisterComponent} from './componentes/auth/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
 import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
@@ -15,7 +15,7 @@ import { InstructorHomeComponent } from './vistas/instructor-home/instructor-hom
 
 const routes: Routes = [
     { path: '', redirectTo: '/home/alumnos', pathMatch: 'full' },
-    { 
+    {
         path: 'home',
         component:  HomeComponent,
         children:[
@@ -28,11 +28,11 @@ const routes: Routes = [
             { path: 'salas', component: SalasComponent},
         ]
     },
-    { path: 'login', component:  LoginComponent},
-    { path: 'register', component: RegisterComponent},
+    { path: 'auth/login', component:  LoginComponent},
+    { path: 'signup', component: RegisterComponent},
     { path: 'instructor', component: InstructorHomeComponent},
     { path: '**', component: PageNotFoundComponent}
-  
+
 ];
 
 @NgModule({
