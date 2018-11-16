@@ -52,7 +52,7 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogoBorrar: boolean = false;
   descripcionShowed: boolean = false;
 
-  generarTarea: boolean = false;
+  generarTarea: boolean = true;
 
   textoEliminarContacto: string;
 
