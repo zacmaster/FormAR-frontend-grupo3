@@ -7,21 +7,21 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private userUrl = 'http://localhost:3000/api/test/user';
-  private pmUrl = 'http://localhost:3000/api/test/pm';
-  private adminUrl = 'http://localhost:3000/api/test/admin';
+  private administrativoURL = 'http://localhost:3000/api/test/administrativo';
+  private instructorURL = 'http://localhost:3000/api/test/instructor';
+  private supervisorURL = 'http://localhost:3000/api/test/supervisor';
 
   constructor(private http: HttpClient) { }
 
-  getUserBoard(): Observable<string> {
-    return this.http.get(this.userUrl, { responseType: 'text' });
+  getAdministrativoBoard(): Observable<string> {
+    return this.http.get(this.administrativoURL, { responseType: 'text' });
   }
 
-  getPMBoard(): Observable<string> {
-    return this.http.get(this.pmUrl, { responseType: 'text' });
+  getInstructorBoard(): Observable<string> {
+    return this.http.get(this.instructorURL, { responseType: 'text' });
   }
 
-  getAdminBoard(): Observable<string> {
-    return this.http.get(this.adminUrl, { responseType: 'text' });
+  getSupervisorBoard(): Observable<string> {
+    return this.http.get(this.supervisorURL, { responseType: 'text' });
   }
 }
