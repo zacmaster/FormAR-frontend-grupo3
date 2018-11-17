@@ -60,6 +60,7 @@ export class AlumnosListComponent implements OnInit {
   inscripcionShowed: boolean = false;
   cursadasAlumnoShowed: boolean = false;
   alumnoTieneCursadas: boolean = false;
+  generarReporte: boolean = false;
 
   cols: any = [];
 
@@ -295,11 +296,16 @@ export class AlumnosListComponent implements OnInit {
       { field: 'acciones', header: 'Acciones' }
     ];
   }
-  buscarAnalitico(alumno){
+  mensajeReportes(alumno){
     this.alumnoSeleccionado = new Alumno();
     this.alumnoSeleccionado.copiar(alumno);
-    
-     this._alumnoService.getAnalitico(this.alumnoSeleccionado.id).
+    this.generarReporte=true;
+  }
+  cerrarInfo(){
+    this.generarReporte=false;
+  }
+  buscarHistorial(){
+     this._alumnoService.getHistorial(this.alumnoSeleccionado.id).
        subscribe(res => {
          console.log('start download:',res);
          var url = window.URL.createObjectURL(res);
@@ -307,12 +313,27 @@ export class AlumnosListComponent implements OnInit {
          document.body.appendChild(a);
          a.setAttribute('style', 'display: none');
          a.href = url;
-         a.download = "HistorialAcademico-"+this.alumnoSeleccionado.apellido;
+         a.download = "HistorialAcademico-"+this.alumnoSeleccionado.apellido+new Date().toLocaleDateString('en-GB');
          a.click();
          window.URL.revokeObjectURL(url);
          a.remove(); // remove the element
        })  
   }
+  buscarAnalitico(){
+    this._alumnoService.getAnalitico(this.alumnoSeleccionado.id).
+      subscribe(res => {
+        console.log('start download:',res);
+        var url = window.URL.createObjectURL(res);
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.href = url;
+        a.download = "Analitico-"+this.alumnoSeleccionado.apellido+new Date().toLocaleDateString('en-GB');
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove(); // remove the element
+      })  
+ }
 
   private prepararTabla(){
     this.cargarCampos();

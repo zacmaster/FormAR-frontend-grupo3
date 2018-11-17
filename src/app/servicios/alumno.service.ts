@@ -46,6 +46,14 @@ export class AlumnoService extends ResourceService<Alumno, IAlumno>{
     return this._http.get(url, { headers: headers, responseType: 'blob' });
    
   }
+  getHistorial(id: number){
+    let url = GLOBAL.url + 'alumnos/historialacademico/' + id;
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this._http.get(url, { headers: headers, responseType: 'blob' });
+   
+  }
+
 
   save(alumno: Alumno){
     if(alumno.id)

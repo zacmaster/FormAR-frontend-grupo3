@@ -161,7 +161,9 @@ export var LABEL ={
         editar:     "Editar",
         eliminar:   "Eliminar",
         verCursadas: "Ver cursadas del alumno",
-        analitico:"Obtener analitico"
+        analitico:"Obtener analitico",
+        reporte:"Obtener reporte",
+        historial:"Obtener historial academico"
     },
     seleccione: {
         area: "Seleccione un area",

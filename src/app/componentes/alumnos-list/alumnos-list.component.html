@@ -44,7 +44,7 @@
                                 <!-- (click)="alumnoSeleccionado.copiar(alumno);mostrarCursadasAlumno();" -->
                             <i class="fas fa-book-reader"></i>
                         </button>
-                        <button class="btn btn-info mr-2" [title]="_LABEL.boton.analitico" (click)="buscarAnalitico(rowData)">
+                        <button class="btn btn-info mr-2" [title]="_LABEL.boton.reporte" (click)="mensajeReportes(rowData)">
                           <i class="far fa-file-alt"></i>
                         </button>
                         <button class="btn btn-success mr-2" [title]="_LABEL.boton.editar" (click)="editarAlumno(rowData);">
@@ -322,4 +322,22 @@
     </div>
 </div>
 
+</div>
+
+<div class="contenedor-info"  *ngIf="generarReporte">
+  <div  class="info bg-light p-1">
+      <div class="infoHeader d-flex justify-content-between">
+        <div></div>
+        <div class="titulo text-center" ><h5> Generar reporte </h5></div>
+        <span class="btn btn-danger" (click)="cerrarInfo()"><i class="fas fa-times"></i></span>
+      </div>
+      <div class="infoBody p-3  text-center">   
+        <button class="btn btn-primary float-left "[title]="_LABEL.boton.historial"(click)="buscarHistorial()">
+            <span >Historial Academico</span>      
+          </button>
+          <button class="btn btn-primary float-right "[title]="_LABEL.boton.analitico"(click)="buscarAnalitico()">
+            <span >Analitico</span>      
+          </button>
+      </div>
+    </div>
 </div>

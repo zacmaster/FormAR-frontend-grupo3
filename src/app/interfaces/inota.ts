@@ -7,5 +7,6 @@ export interface INota extends Iresource{
 	ausente:boolean,
 	idAlumno:number,
 	nombreAlumno:string,
+	pendiente: boolean;
 	
 }

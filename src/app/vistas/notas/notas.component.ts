@@ -64,13 +64,19 @@ export class NotasComponent implements OnInit {
       examenAux.nombreExamen= this.examenesDeCursada[nro].nombreExamen;
       let notasAux: Nota[] = [];
       for (let z = 0; z < this.filas.length; z++) {
-        if(this.filas[z].notas[nro].nota=="Ausente" || this.filas[z].notas[nro].nota==undefined ){
+        if(this.filas[z].notas[nro].nota=="Ausente" || this.filas[z].notas[nro].nota==0){
           this.filas[z].notas[nro].nota=0;
+          this.filas[z].notas[nro].ausente=true;
+          this.filas[z].notas[nro].pendiente=false;
         }
+        else if(this.filas[z].notas[nro].nota==undefined ){
+          this.filas[z].notas[nro].ausente=false;
+          this.filas[z].notas[nro].pendiente=true;
+        }
+
         notasAux.push(this.filas[z].notas[nro]);
-      
-      examenAux.notas=notasAux;
       }
+      examenAux.notas=notasAux;
       if(examenAux.id==0){
         this.agregar(examenAux);
       }
@@ -143,7 +149,7 @@ export class NotasComponent implements OnInit {
      //this.calificaciones.pop();
   }
   esUltimoExamen(nro:number):boolean{
-    if(nro==this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen){
+    if(this.examenesDeCursada.length>2 && nro==this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen){
       if(this.examenesDeCursada[this.examenesDeCursada.length-2].id==0 && this.examenesDeCursada.length>1 ){
         return true;
       }
@@ -162,7 +168,8 @@ export class NotasComponent implements OnInit {
           alumnos.forEach(alumno => {
             let alumnoAux = new Alumno();
             alumnoAux.copiar(alumno);
-            alumnoAux.nombreApellido= alumnoAux.apellido+", "+alumnoAux.nombre;
+            let nombreAux= alumnoAux.apellido+", "+alumnoAux.nombre
+            alumnoAux.nombreApellido= nombreAux;
             this.alumnosEnCursada.push(alumnoAux);
           })
           this.alumnosEnCursada=this.ordenarAlfabeticamente(this.alumnosEnCursada);
@@ -183,7 +190,7 @@ export class NotasComponent implements OnInit {
             this.examenesDeCursada.forEach(element => {
                   element.notas=this.ordenarNotas(element.notas);          
             });
-            //console.log("examenes ordenados",this.examenesDeCursada);
+            console.log("examenes ordenados",this.examenesDeCursada);
             
             this.getFilas();
             this._spinnerService.hide();
@@ -247,6 +254,9 @@ getFilas(){
             notaAux.idAlumno=this.examenesDeCursada[z].notas[i].idAlumno;
             if(this.examenesDeCursada[z].notas[i].ausente){
               notaAux.nota= "Ausente";
+            }
+            else if(this.examenesDeCursada[z].notas[i].pendiente){
+              notaAux.nota=undefined;
             }
             else{
               notaAux.nota=this.examenesDeCursada[z].notas[i].nota;

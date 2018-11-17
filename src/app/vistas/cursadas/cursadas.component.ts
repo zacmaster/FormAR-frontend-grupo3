@@ -537,7 +537,7 @@ export class CursadasComponent implements OnInit {
   }
 
   ngDoCheck(){
-    // console.log("Cursadas: ", this.cursadas);
+     console.log("Cursadas: ", this.cursadas);
     //console.log('alumnosFiltrados: ',this.alumnosFiltrados
     
     // console.log("Alumnos: ",this.alumnos);
@@ -583,6 +583,7 @@ export class CursadasComponent implements OnInit {
       { field: 'fechaInicio', header: 'Fecha de Inicio' },
       { field: 'fechaFin', header: 'Fecha de Fin' },
       { field: 'info', header: 'Info' },
+      {field: 'iniciada',header: 'Estado'},
       { field: 'acciones', header: 'Acciones' }
     ];
   }
