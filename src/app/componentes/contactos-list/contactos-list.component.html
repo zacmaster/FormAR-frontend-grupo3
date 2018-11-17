@@ -32,7 +32,7 @@
                 <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field" >
 
                     <span *ngSwitchCase="'fecha'" >
-                      {{ _Util.convertirTimestamp(rowData.fecha) }}
+                      {{ _Util.convertirTimestampConHora(rowData.fecha) }}
                       
                     </span>
                     <span *ngSwitchCase="'alumno'">
@@ -254,7 +254,13 @@
               </div>
               <!-- Seccions de Asunto  -->
               <div class="col-8 ">
-                <label for="">{{ _LABEL_R.asunto }}</label>
+                  <label>{{ _LABEL.hora }}</label>
+                  <p-calendar class="estilo-reloj"  [(ngModel)]="horaContacto"  name="Hora" [timeOnly]="true" hourFormat="24"></p-calendar>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col">
+                  <label for="">{{ _LABEL_R.asunto }}</label>
                 <input
                         #asuntoContacto = "ngModel"
                         type="text"

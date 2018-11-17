@@ -65,6 +65,7 @@ export const LABEL_REQUIRED ={
 }
 
 export var LABEL ={
+    hora: "Hora",
     buscar: "Buscar",
     guardar: "Guardar",
     cancelar: "Cancelar",

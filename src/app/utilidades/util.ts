@@ -3,6 +3,11 @@ export class Util {
         let date = new Date(timestamp);
         return date.toLocaleDateString('en-GB');
     } 
+    static convertirTimestampConHora(timestamp: number): string{
+        let date = new Date(timestamp);
+        return date.toLocaleDateString('en-GB') + ' ' + date.toLocaleTimeString('en-GB').match(/\d{2}:\d{2}|[AMP]+/g).join(' '); 
+
+    }
     
     static convertirTime(timestamp: number): string{
         let date = new Date(timestamp);

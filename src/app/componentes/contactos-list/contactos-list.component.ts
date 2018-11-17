@@ -56,6 +56,8 @@ export class ContactosListComponent implements OnInit {
 
   textoEliminarContacto: string;
 
+  horaContacto: Date;
+
 
 
   public guardarAlumno(alumno){
@@ -253,6 +255,7 @@ export class ContactosListComponent implements OnInit {
 
   // Click en nuevo contacto, se muestra el formulario con los campos vacíos
   nuevoContacto(){
+    this.horaContacto = new Date();
     this.alumnoSeleccionado = new Alumno();
     this.selectedAlumno=this.alumnos[0];
     this.alumnoSeleccionado=this.selectedAlumno;
@@ -277,6 +280,7 @@ export class ContactosListComponent implements OnInit {
   editarContacto(contacto: any){
     this.contactoSeleccionado = new Contacto();
     this.contactoSeleccionado.copiar(contacto);
+    this.horaContacto = new Date(this.contactoSeleccionado.fecha);
     this.alumnos.forEach(element => {
       if(element.id==this.contactoSeleccionado.alumno.id){
         console.log("este es el alumno al editar",element);
@@ -352,6 +356,10 @@ export class ContactosListComponent implements OnInit {
             this.contactoSeleccionado.curso=this.selectedCurso;
           }
 
+          let fechaTemp: Date = new Date(this.contactoSeleccionado.fecha)
+          fechaTemp.setHours(this.horaContacto.getHours());
+          fechaTemp.setMinutes(this.horaContacto.getMinutes());
+          this.contactoSeleccionado.fecha = + fechaTemp;
           this.guardar(this.contactoSeleccionado);  
       }
       else{
@@ -408,6 +416,9 @@ export class ContactosListComponent implements OnInit {
   }
 
   private editar(contacto:Contacto){
+    let fechaAux = new Date(contacto.fecha);
+    fechaAux.setTime(this.horaContacto.getTime());
+    contacto.fecha = + fechaAux;
     this._contactoService.updateContacto(contacto).subscribe(() => {
       this.getContactos();
       this.getAlumnos();
@@ -518,7 +529,7 @@ export class ContactosListComponent implements OnInit {
     this.contactoSeleccionado = new Contacto();
     this.contactoSeleccionado.copiar(contacto);
     
-    this.fechaHoraContacto =  this._Util.convertirTimestamp(this.contactoSeleccionado.fecha);
+    this.fechaHoraContacto =  this._Util.convertirTimestampConHora(this.contactoSeleccionado.fecha);
 
     this.descripcionShowed = true;
   }
