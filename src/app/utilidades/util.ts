@@ -3,6 +3,11 @@ export class Util {
         let date = new Date(timestamp);
         return date.toLocaleDateString('en-GB');
     } 
+    static convertirDate(date: Date): string{
+        console.log('el date que me pasaron:',date)
+        return date.toLocaleDateString('en-GB');
+    }
+
     static convertirTimestampConHora(timestamp: number): string{
         let date = new Date(timestamp);
         return date.toLocaleDateString('en-GB') + ' ' + date.toLocaleTimeString('en-GB').match(/\d{2}:\d{2}|[AMP]+/g).join(' '); 
@@ -38,4 +43,10 @@ export class Util {
                 d1.getMinutes() ==  d2.getMinutes() &&
                 d1.getSeconds() ==  d2.getSeconds();
     }
+
+    static postergarPorDias(days) {
+        var result = new Date();
+        result.setDate(result.getDate() + days);
+        return result;
+      }
 }

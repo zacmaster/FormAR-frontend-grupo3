@@ -14,6 +14,7 @@ import { CursoService } from 'src/app/servicios/curso.service';
 import { AreaService } from 'src/app/servicios/area.service';
 import { Util } from '../../utilidades/util';
 import { SortEvent } from 'primeng/components/common/api';
+import {SelectItem} from 'primeng/api';
 import { Tarea } from 'src/app/modelos/tarea';
 import { AdministrativoService } from 'src/app/servicios/administrativo.service';
 import { TareaService } from 'src/app/servicios/tarea.service';
@@ -32,6 +33,8 @@ export class ContactosListComponent implements OnInit {
   agregandoAlumno = false;
   seEligeArea = true;
   edicion:boolean=false;
+  fechaContacto: Date;
+  fechaPorDia: Date = new Date();
   fechaHoraContacto: string = '';
   cols: any[];
 
@@ -52,6 +55,16 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogoBorrar: boolean = false;
   descripcionShowed: boolean = false;
 
+  porFecha: boolean = true;
+  cantidadDias: number = 1;
+
+
+  
+  types: SelectItem[] = [ {label: 'por Fecha', value: 'porFecha'},
+                                  {label: 'por Días', value: 'porDías'}]; 
+
+
+  selectedType: string = this.types[0].value;                                  
   generarTarea: boolean = true;
 
   textoEliminarContacto: string;
@@ -119,6 +132,7 @@ export class ContactosListComponent implements OnInit {
   }
 
   ngDoCheck(){
+    console.log('fechaContacto', this.fechaContacto);
     // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
    // console.log(this.contactos)
   }
@@ -450,7 +464,10 @@ export class ContactosListComponent implements OnInit {
                 let administrativoAux = new Administrativo();
                 administrativoAux.id = 2;
                 administrativoAux.nombre = "Eduardo Feinman";
-    
+                
+                if(!this.porFecha){
+                  this.tareaSeleccionada.fechaEstimada = + this.fechaPorDia; 
+                }
                 this.tareaSeleccionada.administrativo = administrativoAux;
     
                 this._tareaService.addTarea(this.tareaSeleccionada).subscribe();
@@ -546,6 +563,22 @@ export class ContactosListComponent implements OnInit {
   }
 
 
+  togglePorFechaPorDia(){
+    if( this.selectedType == 'porFecha'){
+      this.porFecha = true;
+    }else{
+      this.porFecha = false;
+      this.fechaPorDia = this._Util.postergarPorDias(this.cantidadDias);
+      // this.fechaContacto = this._Util.postergarPorDias(this.cantidadDias);
+    }
+  }
+
+  sumarDias(){
+    this.fechaPorDia = this._Util.postergarPorDias(this.cantidadDias);
+  }
+
+
+
 
   private cargarCampos(){
     this.cols = [
@@ -555,6 +588,8 @@ export class ContactosListComponent implements OnInit {
       { field: 'acciones', header: 'Acciones' }
     ];
   }
+
+
 
 }
 
