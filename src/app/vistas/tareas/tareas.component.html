@@ -333,3 +333,29 @@
 >
 
 </dialogo-info>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dialogo-confirmacion
+    *ngIf="mostrandoDialogoOfrecerContacto"
+    (clickBotonCerrar)="ocultarDialogo()"
+    titulo="Usted ha resuleto una tarea"
+    texto="¿Desea crear un nuevo contacto?"
+    (clickBotonCerrar)="ocultarDialogoOfrecerContacto()"
+    (clickBotonIzquierdo)="ocultarDialogoOfrecerContacto()"
+    (clickBotonDerecho)="generarNuevoContacto()"
+>
+
+</dialogo-confirmacion>

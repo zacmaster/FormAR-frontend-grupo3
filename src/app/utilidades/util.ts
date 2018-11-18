@@ -28,9 +28,16 @@ export class Util {
                 d1.getMonth() == d2.getMonth() &&
                 d1.getDay() == d2.getDay();
     }
+
+    static yaPaso(dia1: number): boolean{
+        let d1: Date = new Date(dia1);
+        return d1  < new Date();
+    }
+    
     static esHoy(dia: number): boolean{
         return this.esMismoDia(dia, + new Date())
     }
+
 
     static esMismoTiempo(fecha1, fecha2){
         let d1: Date = new Date(fecha1) ;

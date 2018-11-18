@@ -49,6 +49,10 @@ export class TareasComponent implements OnInit {
   mostrandoDetalleTarea: boolean = false;
   mostrarDialogoNuevaTarea: boolean = false;
 
+  mostrandoDialogoOfrecerContacto: boolean = false;
+
+
+
   tareasPersonalesParaHoy: Tarea[] = [];
   tareasPersonalesPendientes: Tarea[] = [];
   tareasPersonalesCompletadas: Tarea[] = [];
@@ -149,7 +153,7 @@ export class TareasComponent implements OnInit {
     this.tareasPersonalesCompletadas = [];
     this.tareasPersonalesParaHoy = [];
     this.tareas.forEach(tarea => {
-      if(tarea.pendiente){
+      if(tarea.pendiente && this._UTIL.yaPaso(tarea.fechaEstimada)){
         this.tareasPendientes.push(tarea);
         if(tarea.administrativo.id == this.selectedAdministrativo.id){
           this.tareasPersonalesPendientes.push(tarea);
@@ -214,10 +218,14 @@ export class TareasComponent implements OnInit {
   private modificarEstadoTarea(tarea, pendiente: boolean){
     this.tareaSeleccionada = new Tarea();
     this.tareaSeleccionada.copiar(tarea);
+    this.tareaSeleccionada.administrativo = this.selectedAdministrativo;
     this.tareaSeleccionada.pendiente = pendiente;
     this._tareasService.updateTarea(this.tareaSeleccionada)
       .toPromise()
-      .then(() => this.actualizarTareas());
+      .then(() => {
+        this.actualizarTareas();
+        this.mostrarDialogoOfrecerContacto();
+      });
   }
 
   mostrarDetalleTarea(tarea){
@@ -355,6 +363,17 @@ export class TareasComponent implements OnInit {
   }
   
 
+
+  mostrarDialogoOfrecerContacto(){
+    this.mostrandoDialogoOfrecerContacto = true;
+  }
+  ocultarDialogoOfrecerContacto(){
+    this.mostrandoDialogoOfrecerContacto = false;
+  }
+
+  generarNuevoContacto(){
+
+  }
 
 
 
