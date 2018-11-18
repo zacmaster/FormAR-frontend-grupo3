@@ -57,6 +57,7 @@ export class TareasComponent implements OnInit {
 
   tareaSeleccionada: Tarea;
   cols: any[];
+  colsTodas: any[];
   administrativos: Administrativo[];
   contactos: Contacto[];
   selectedAdministrativo: Administrativo = new Administrativo();
@@ -367,6 +368,13 @@ export class TareasComponent implements OnInit {
       { field: 'info', header:'Info'},
       { field: 'acciones', header:'Acciones'}
     ];
+    this.colsTodas = [
+      { field: 'fechaEstimada', header: 'Fecha'},
+      { field: 'administrativo', header: 'Administrativo'},
+      { field: 'titulo', header: 'Título'},
+      { field: 'info', header: 'Info'},
+      { field: 'acciones', header: 'Acciones'}
+    ]
   }
 }
 
