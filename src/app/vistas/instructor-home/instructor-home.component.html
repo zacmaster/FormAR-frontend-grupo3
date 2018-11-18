@@ -7,6 +7,7 @@
                 <span class="input-group-text" id="inputGroup-sizing-default">Nombre Instructor</span>
               </div>
               <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
+              <p-dropdown [options]="cursadasTipo" [(ngModel)]="selectedTipoCursada" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarTipoCursadas()" ></p-dropdown>
               </div>
           </ng-template>
           <ng-template pTemplate="colgroup" let-columns>

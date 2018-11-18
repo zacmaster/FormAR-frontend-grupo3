@@ -124,6 +124,7 @@ export var LABEL ={
     horarioCursada:"Horario de cursada",
     nuevaTarea: "Nueva tarea",
     sinTareas: "Sin tareas..",
+    bajaCursada: "Baja de cursada",
     ingrese: {
         nombre: "Ingrese el nombre",
         apellido: "Ingrese el apellido",

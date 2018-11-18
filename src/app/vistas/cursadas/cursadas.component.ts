@@ -81,7 +81,8 @@ export class CursadasComponent implements OnInit {
   esInstructor: boolean = false;
   mostrarCalendario: boolean = false;
   mostrandoAlumnosInscriptos: boolean = false;
-
+  mostrarDialogoBorrar:boolean=false;
+  textoDlgEliminar: string;
 
   sabado;
 
@@ -294,7 +295,70 @@ export class CursadasComponent implements OnInit {
   }
   // METODOS CURSADAS
   
-  cargarCursadas(){
+  editarCursada(cursada){
+    this.cursadaSeleccionada=this.newCursada();
+    this.cursadaSeleccionada.copiar(cursada);
+    for (let i = 0; i < this.cursos.length; i++) {
+     if(this.cursos[i].id==this.cursadaSeleccionada.curso.id){
+        this.selectedCurso=this.cursos[i];
+        this.filtrarInstructores();
+     }
+     
+    }
+    this.selectedInstructor=this.cursadaSeleccionada.instructor;
+    this.selectedSala=this.cursadaSeleccionada.sala;
+    this.fechaInicio=this.cursadaSeleccionada.fechaInicio;
+    this.newAttribute={};
+    this.fieldArray=[];
+    const arrayAux= this.cursadaSeleccionada.horariosCursada;
+    for (let index = 0; index < arrayAux.length; index++) {
+      if(index==arrayAux.length-1){
+       this.newAttribute={id:arrayAux[index].id,dia:arrayAux[index].dia
+         ,horaInicio:new Date(arrayAux[index].horaInicio),
+         horaFin:new Date(arrayAux[index].horaFin)};
+      }
+      else{
+         this.fieldArray.push(this.newAttribute={id:arrayAux[index].id,dia:arrayAux[index].dia
+           ,horaInicio:new Date(arrayAux[index].horaInicio),
+           horaFin:new Date(arrayAux[index].horaFin)});
+      }
+    }
+    this.edicion=true;
+    this.mostrarDialogo=true;
+  }
+  eliminarCursada(cursada){
+    this.cursadaSeleccionada = this.newCursada();
+    this.cursadaSeleccionada.copiar(cursada);
+    if(this.cursadaSeleccionada.iniciada){
+      this.textoDlgEliminar =  `¿Está seguro que desea dar de baja la cursada
+      ${ this.cursadaSeleccionada.nombre },ya iniciada? \n (Se generaran tareas para avisar a los inscriptos)`
+    }
+    else{
+      this.textoDlgEliminar =  `¿Está seguro que desea dar de baja la cursada
+      ${ this.cursadaSeleccionada.nombre }?`
+    }
+    this.mostrarDialogoBorrar = true;
+    
+  }
+ 
+  ocultarDialogoEliminar(){
+    this.mostrarDialogoBorrar=false;
+  }
+  eliminar(){
+    this._spinnerService.show();
+    setTimeout(() => {
+     
+      this._cursadaService.deleteCursada(this.cursadaSeleccionada).
+        subscribe(response =>{
+          this.getCursadas();
+        this.getSalas();
+        this.getCursos();
+        this.getInstructores();
+        this.cursadaSeleccionada = this.newCursada();
+        this.ocultarDialogoEliminar();
+        this._spinnerService.hide();;
+        })
+    }, 500)
   }
   nuevaCursada(){
     this.cursadaSeleccionada= this.newCursada();
@@ -310,6 +374,7 @@ export class CursadasComponent implements OnInit {
   }
   cerrarDialogo(){
     this.mostrarDialogo=false;
+    this.cursadaSeleccionada=this.newCursada();
   }
   
   agregar(cursada: Cursada){
@@ -537,7 +602,7 @@ export class CursadasComponent implements OnInit {
   }
 
   ngDoCheck(){
-     console.log("Cursadas: ", this.cursadas);
+     //console.log("Cursadas: ", this.cursadas);
     //console.log('alumnosFiltrados: ',this.alumnosFiltrados
     
     // console.log("Alumnos: ",this.alumnos);
