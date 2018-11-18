@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Alumno } from '../../modelos/alumno';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
@@ -13,7 +13,8 @@ import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Cursada } from 'src/app/modelos/cursada';
 import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import { Inscripcion } from 'src/app/modelos/inscripcion';
-
+import * as jspdf from 'jspdf'; 
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'alumnos-list',
@@ -39,7 +40,27 @@ export class AlumnosListComponent implements OnInit {
     useEmptyBarTitle: false,
   };
 
+// EJEMPLO DE PDF
 
+@ViewChild('content') content: ElementRef;
+public captureScreen() {  
+  let doc = new jspdf();
+  let specialElementHandlers = {
+    '#editor': function(elemento, renderer) {
+      return true;
+    }
+  };
+
+  let content = this.content.nativeElement;
+
+  doc.fromHTML(content.innerHTML, 15, 15, {
+    'width':190,
+    'elementHandlers': specialElementHandlers
+  });
+  doc.save('test.pdf');
+}  
+
+// FIN PDF
   
 
 
@@ -50,6 +71,8 @@ export class AlumnosListComponent implements OnInit {
   public edicion: boolean = false;
   mostrarDialogoAB = false;
   mostrarDialogoBorrar: boolean = false;
+  mostrarPagosInicio: boolean = false;
+  mostrarPagosPagar: boolean = false;
   alumnoSeleccionado: Alumno = new Alumno();
   cursadaSeleccionada: Cursada = new Cursada();
   nombreAlumno: string = '';
@@ -60,7 +83,7 @@ export class AlumnosListComponent implements OnInit {
   inscripcionShowed: boolean = false;
   cursadasAlumnoShowed: boolean = false;
   alumnoTieneCursadas: boolean = false;
-
+  mostrarRecibo = false;
 
   cols: any = [];
 
@@ -141,6 +164,43 @@ export class AlumnosListComponent implements OnInit {
     this.mostrarDialogoBorrar = true;
     
   }
+  
+  clickPagos(alumno: any){
+    this.alumnoSeleccionado = new Alumno();
+    this.alumnoSeleccionado.copiar(alumno);
+    let cursadasAlumno: Cursada[] = []; 
+    this._inscripcionService.getCursadasDeAlumno(this.alumnoSeleccionado.id).toPromise().then(
+      cursadas  => {
+        console.log("cursadas alumno",cursadas);
+        cursadas.forEach(element => {
+            cursadasAlumno.push(element);
+            
+        });
+        this.cursadasFiltradas = this.getCursadasFiltradas(this.cursadas,cursadasAlumno);
+        if(this.cursadasFiltradas.length > 0){
+          this.selectedCursada = this.cursadasFiltradas[0];
+        }
+      });
+    this.mostrarPagosInicio = true;
+  }
+
+  clickPagar(alumno: any){
+    // this.mostrarPagosPagar = !this.mostrarPagosPagar;
+    this.mostrarRecibo = true;
+    // this.mostrarPagosInicio = !this.mostrarPagosInicio;
+    // this.mostrarPagosPagar = !this.mostrarPagosPagar;
+  }
+
+  clickCancelarPagar(){
+    this.mostrarPagosPagar = false;
+    this.mostrarPagosInicio = false;
+    this.mostrarRecibo = false;
+  }
+
+  descargarReporte(){
+
+  }
+
 
   eliminar(){
     this._spinnerService.show();
@@ -196,6 +256,7 @@ export class AlumnosListComponent implements OnInit {
   ocultarDialogo(){
     this.mostrarDialogoBorrar = false;
     this.mostrarDialogoAB = false;
+    this.mostrarPagosInicio = false;
   }
 
   nuevoAlumno(){

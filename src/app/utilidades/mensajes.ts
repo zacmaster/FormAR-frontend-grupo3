@@ -157,7 +157,8 @@ export var LABEL ={
         inscribir:  "Inscribir",
         editar:     "Editar",
         eliminar:   "Eliminar",
-        verCursadas: "Ver cursadas del alumno"
+        verCursadas: "Ver cursadas del alumno",
+        pagar: "Pagar"
     },
     seleccione: {
         area: "Seleccione un area",

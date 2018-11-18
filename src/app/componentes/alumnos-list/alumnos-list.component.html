@@ -1,11 +1,10 @@
-
 <div class="content-section implementation ui-fluid">
   <p-table #dt [columns]="cols" [value]="alumnos" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
       <ng-template pTemplate="caption">
-        <div style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-            <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-            <button class="btn btn-success" (click)="nuevoAlumno()"><span>{{ _LABEL.nuevoAlumno }}</span></button>
+          <div style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              <button class="btn btn-success" (click)="nuevoAlumno()"><span>{{ _LABEL.nuevoAlumno }}</span></button>
           </div>
       </ng-template>
 
@@ -24,33 +23,36 @@
       <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr>
               <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
-                  
+
                   {{rowData[col.field]}}
 
                   <span *ngSwitchCase="'nombre'">
-                    {{rowData.apellido}}
-                  </span>
+                  {{rowData.apellido}}
+                </span>
                   <span *ngSwitchCase="'acciones'">
+                      <button class="btn btn-default mr-2 bg-success" [title]="_LABEL.boton.pagar" (click)="clickPagos(rowData)">
+                            <i class="fas fa-dollar-sign "></i>
+                      </button>
                       <button class="btn btn-info mr-2" [title]="_LABEL.boton.inscribir" (click)="clickInscripcionAlumno(rowData)">
-                          <i class="fas fa-file-signature"></i>
-                        </button>
-                        
-                        <!-- [disabled]="! tieneCursadas(alumno)" -->
-                        <button
-                                class="btn btn-warning mr-2"
-                                [title]="_LABEL.boton.verCursadas"
-                                (click)="mostrarCursadasAlumno(rowData)"
-                                >
-                                <!-- (click)="alumnoSeleccionado.copiar(alumno);mostrarCursadasAlumno();" -->
-                            <i class="fas fa-book-reader"></i>
-                        </button>
-                        <button class="btn btn-success mr-2" [title]="_LABEL.boton.editar" (click)="editarAlumno(rowData);">
-                          <i class="fas fa-user-edit"></i>
-                        </button>
-                        <button class="btn btn-danger" [title]="_LABEL.boton.eliminar" (click)="mostrarDialogoEliminar(rowData)">
-                          <i class="fas fa-user-times"></i>
-                        </button>
-                  </span>
+                        <i class="fas fa-file-signature"></i>
+                      </button>
+
+                      <!-- [disabled]="! tieneCursadas(alumno)" -->
+                      <button
+                              class="btn btn-warning mr-2"
+                              [title]="_LABEL.boton.verCursadas"
+                              (click)="mostrarCursadasAlumno(rowData)"
+                              >
+                              <!-- (click)="alumnoSeleccionado.copiar(alumno);mostrarCursadasAlumno();" -->
+                          <i class="fas fa-book-reader"></i>
+                      </button>
+                      <button class="btn btn-success mr-2" [title]="_LABEL.boton.editar" (click)="editarAlumno(rowData);">
+                        <i class="fas fa-user-edit"></i>
+                      </button>
+                      <button class="btn btn-danger" [title]="_LABEL.boton.eliminar" (click)="mostrarDialogoEliminar(rowData)">
+                        <i class="fas fa-user-times"></i>
+                      </button>
+                </span>
               </td>
           </tr>
       </ng-template>
@@ -62,261 +64,202 @@
 
 <div *ngIf="inscripcionShowed" class="dialogoEdicion">
   <div class="card popUpInscripcion">
-    <div class="container">
-      <div class="row">
-          <div class="card-head text-center w-100 mt-2 mb-2 tituloInscripcion">
-            <h5 class="mx-auto">
-              {{ _LABEL.tituloInscipcion }}
-            </h5>
-          </div>
-            
-      </div>
-      <div class="row pl-3 pr-3 mb-3 w-100">
-        <p class="mx-auto">
-          Inscribiendo a {{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-5">
-          <label for="">
-            {{ _LABEL.seleccione.cursada }}
-          </label>
-        </div>
-        <div class="col-7">
-            <div class="form-group w-100 text-center">
-                <p-dropdown
-                            [options]="cursadasFiltradas"
-                            [(ngModel)]="selectedCursada"
-                            optionLabel="nombre"
-                            [filter]="true"
-                            [style]="{'width':'150px'}" >
-                </p-dropdown>
+      <div class="container">
+          <div class="row">
+              <div class="card-head text-center w-100 mt-2 mb-2 tituloInscripcion">
+                  <h5 class="mx-auto">
+            {{ _LABEL.tituloInscipcion }}
+          </h5>
               </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="d-flex w-75 justify-content-between mx-auto contenedorBotonesInscribir form-group">
-          <button class="btn btn-danger" (click)="clickCancelarNuevaInscripcion()">
-            {{ _LABEL.cancelar }}
-          </button>
-          <button class="btn btn-primary" (click)="clickConfirmarInscripcion()" [disabled]="selectedCursada.id == 0">
-            {{ _LABEL.inscribir}} <span><i class="fas fa-user-check"></i></span>
-          </button>
-        </div>
-  
-      </div>
 
-    </div>
+          </div>
+          <div class="row pl-3 pr-3 mb-3 w-100">
+              <p class="mx-auto">
+                  Inscribiendo a {{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}
+              </p>
+          </div>
+          <div class="row">
+              <div class="col-5">
+                  <label for="">
+                      {{ _LABEL.seleccione.cursada }}
+                  </label>
+              </div>
+              <div class="col-7">
+                  <div class="form-group w-100 text-center">
+                      <p-dropdown [options]="cursadasFiltradas" [(ngModel)]="selectedCursada" optionLabel="nombre" [filter]="true" [style]="{'width':'150px'}">
+                      </p-dropdown>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="d-flex w-75 justify-content-between mx-auto contenedorBotonesInscribir form-group">
+                  <button class="btn btn-danger" (click)="clickCancelarNuevaInscripcion()">
+                      {{ _LABEL.cancelar }}
+                  </button>
+                  <button class="btn btn-primary" (click)="clickConfirmarInscripcion()" [disabled]="selectedCursada.id == 0">
+                      {{ _LABEL.inscribir}} <span><i class="fas fa-user-check"></i></span>
+                  </button>
+              </div>
+
+          </div>
+
+      </div>
   </div>
 </div>
 
+<dialogo-info *ngIf="cursadasAlumnoShowed && !alumnoTieneCursadas" [titulo]="tituloDialogoCursada" [texto]="_LABEL.leyenda.alumnoSinCursadas" (clickBotonCerrar)="ocultarCursadasAlumno()" (clickBotonOk)="ocultarCursadasAlumno()"></dialogo-info>
 
-
-
-
-<dialogo-info
-                  *ngIf="cursadasAlumnoShowed && !alumnoTieneCursadas"
-                  [titulo]="tituloDialogoCursada"
-                  [texto]="_LABEL.leyenda.alumnoSinCursadas"
-                  (clickBotonCerrar)="ocultarCursadasAlumno()"
-                  (clickBotonOk)="ocultarCursadasAlumno()"
-></dialogo-info>
-
-
-<dialogo-confirmacion
-                    *ngIf="mostrarDialogoBorrar"
-                    (clickBotonCerrar)="ocultarDialogo()"
-                    (clickBotonIzquierdo)="ocultarDialogo()"
-                    (clickBotonDerecho)="eliminar()"
-                    [titulo]="_LABEL.bajaAlumno"
-                    [texto]="textoDlgEliminar"
-                      >
+<dialogo-confirmacion *ngIf="mostrarDialogoBorrar" (clickBotonCerrar)="ocultarDialogo()" (clickBotonIzquierdo)="ocultarDialogo()" (clickBotonDerecho)="eliminar()" [titulo]="_LABEL.bajaAlumno" [texto]="textoDlgEliminar">
 
 </dialogo-confirmacion>
 
-
-
-
-
-
-
-
-
-
 <!-- Dialogo que muestra la cursada a la que el alumno está inscripto -->
 
-<dialogo-info
-  [titulo]="tituloDialogoCursada"
-  [subtituloIzquierdo]="fechaDialogoCursada"
-  [texto]="textoDialogoCursada"
-  *ngIf="cursadasAlumnoShowed && alumnoTieneCursadas"
-  (clickBotonCerrar)="ocultarCursadasAlumno()"
-  (clickBotonOk)="ocultarCursadasAlumno()"
->
-<div class="contenedorTablaCursada">
-    <table class="table table-hover bg-light w-100">
-        <thead class="thead-light">
-            <tr>
-              <th>{{ _LABEL.nombre }}</th>
-              <th>{{ _LABEL.curso }}</th>
-              <th>{{ _LABEL.fechaInicio }}</th>
-              <th>{{ _LABEL.fechaFin }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let cursada of cursadasAlumnos">
-              <td>{{ cursada.nombre }}</td>
-              <td>{{ cursada.curso.nombre }}</td>
-              <td>{{ _Util.convertirTimestamp(cursada.fechaInicio)}}</td>
-              <td>{{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
-            </tr>
-        </tbody>
+<dialogo-info [titulo]="tituloDialogoCursada" [subtituloIzquierdo]="fechaDialogoCursada" [texto]="textoDialogoCursada" *ngIf="cursadasAlumnoShowed && alumnoTieneCursadas" (clickBotonCerrar)="ocultarCursadasAlumno()" (clickBotonOk)="ocultarCursadasAlumno()">
+  <div class="contenedorTablaCursada">
+      <table class="table table-hover bg-light w-100">
+          <thead class="thead-light">
+              <tr>
+                  <th>{{ _LABEL.nombre }}</th>
+                  <th>{{ _LABEL.curso }}</th>
+                  <th>{{ _LABEL.fechaInicio }}</th>
+                  <th>{{ _LABEL.fechaFin }}</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let cursada of cursadasAlumnos">
+                  <td>{{ cursada.nombre }}</td>
+                  <td>{{ cursada.curso.nombre }}</td>
+                  <td>{{ _Util.convertirTimestamp(cursada.fechaInicio)}}</td>
+                  <td>{{ _Util.convertirTimestamp(cursada.fechaFin) }}</td>
+              </tr>
+          </tbody>
       </table>
-</div>
+  </div>
 </dialogo-info>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <ng4-loading-spinner></ng4-loading-spinner>
-
-
-
-
 
 <div class="dialogoEdicion" *ngIf="mostrarDialogoAB">
   <div class="card mt-4 w-50 mx-auto">
       <div class="card-head d-flex  w-100 justify-content-between">
-        <div></div>
-        <div class="pt-2">
-          <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevoAlumno}}</h5>
-          <h5 *ngIf="edicion" class="">{{ _LABEL.edicionAlumno}}</h5>
-        </div>
-        <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
+          <div></div>
+          <div class="pt-2">
+              <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevoAlumno}}</h5>
+              <h5 *ngIf="edicion" class="">{{ _LABEL.edicionAlumno}}</h5>
+          </div>
+          <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="form-group col">
-            <label for="nombre">{{ _LABEL_R.nombre }}</label>
-            <input
-                      #nombre = "ngModel"
-                      class="form-control"
-                      type="text"
-                      required
-                      minlength="3"
-                      maxlength="30"
-                      [(ngModel)]="alumnoSeleccionado.nombre"
-                      [placeholder]="_LABEL.ingrese.nombre"
-                      [pattern]="_PATTERN.nombre"
-                      >
-            <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
-              <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>
-              <div *ngIf="nombre.errors.pattern">{{ _VALIDACION.valido.nombre }}</div>
-              <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+          <div class="row">
+              <div class="form-group col">
+                  <label for="nombre">{{ _LABEL_R.nombre }}</label>
+                  <input #nombre="ngModel" class="form-control" type="text" required minlength="3" maxlength="30" [(ngModel)]="alumnoSeleccionado.nombre" [placeholder]="_LABEL.ingrese.nombre" [pattern]="_PATTERN.nombre">
+                  <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
+                      <div *ngIf="nombre.errors.required">{{ _VALIDACION.requerido.nombre }}</div>
+                      <div *ngIf="nombre.errors.pattern">{{ _VALIDACION.valido.nombre }}</div>
+                      <div *ngIf="nombre.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+                  </div>
+              </div>
+              <div class="form-group col">
+                  <label for="apellido">{{ _LABEL_R.apellido }}</label>
+
+                  <input #apellido="ngModel" class="form-control" type="text" required minlength="3" maxlength="30" [(ngModel)]="alumnoSeleccionado.apellido" [placeholder]="_LABEL.ingrese.apellido" [pattern]="_PATTERN.nombre">
+                  <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger">
+                      <div *ngIf="apellido.errors.required">{{ _VALIDACION.requerido.apellido }}</div>
+                      <div *ngIf="apellido.errors.pattern">{{ _VALIDACION.valido.apellido }}</div>
+                      <div *ngIf="apellido.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="form-group col">
+                  <label for="dni">{{ _LABEL_R.dni }}</label>
+                  <input #dni="ngModel" class="form-control" type="text" required minlength="6" maxlength="9" [(ngModel)]="alumnoSeleccionado.dni" [placeholder]="_LABEL.ingrese.dni" [pattern]="_PATTERN.dni">
+                  <div *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="alert alert-danger">
+                      <div *ngIf="dni.errors.required">{{ _VALIDACION.requerido.dni }}</div>
+                      <div *ngIf="dni.errors.pattern">{{ _VALIDACION.valido.dni}}</div>
+                      <div *ngIf="dni.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
+                  </div>
+              </div>
+              <div class="form-group col">
+                  <label for="nacimiento">{{ _LABEL.fechaNacimiento }}</label>
+                  <ng-datepicker style="position: relative;z-index: 1000" id="calendario" [(ngModel)]="dateNac" [options]="options"></ng-datepicker>
+              </div>
+          </div>
+          <div class="row">
+              <div class="form-group col">
+                  <label for="email">{{ _LABEL_R.email }}</label>
+                  <input #email="ngModel" class="form-control" type="email" required [(ngModel)]="alumnoSeleccionado.email" [placeholder]="_LABEL.ingrese.email" [pattern]="_PATTERN.email">
+                  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                      <div *ngIf="email.errors.required">{{ _VALIDACION.requerido.email }}</div>
+                      <div *ngIf="email.errors.pattern">{{ _VALIDACION.valido.email }}</div>
+                  </div>
+              </div>
+              <div class="form-group col">
+                  <label for="telefono">{{ _LABEL_R.telefono }}</label>
+                  <input #telefono="ngModel" class="form-control" type="text" required [(ngModel)]="alumnoSeleccionado.telefono" [placeholder]="_LABEL.ingrese.telefono" [pattern]="_PATTERN.telefono">
+                  <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
+                      <div *ngIf="telefono.errors.required">{{ _VALIDACION.requerido.telefono }}</div>
+                      <div *ngIf="telefono.errors.pattern">{{ _VALIDACION.valido.telefono }}</div>
+                  </div>
+              </div>
+
+          </div>
+          <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid" (click)="guardar()">
+              <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
+              <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+          </button>
+      </div>
+  </div>
+
+</div>
+
+<div *ngIf="mostrarPagosInicio" class="dialogoEdicion">
+    <div class="card popUpInscripcion">
+        <div class="container">
+            <div class="card-head text-center w-100 mt-2 mb-2 tituloInscripcion">
+                <h1>Pagar</h1>
             </div>
-          </div>
-          <div class="form-group col">
-            <label for="apellido">{{ _LABEL_R.apellido }}</label>
-
-            <input #apellido = "ngModel"
-                          class="form-control"
-                          type="text"
-                          required
-                          minlength="3"
-                          maxlength="30"
-                          [(ngModel)]="alumnoSeleccionado.apellido"
-                          [placeholder]="_LABEL.ingrese.apellido"
-                          [pattern]="_PATTERN.nombre"
-                          >
-                  <div  *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger">
-                    <div *ngIf="apellido.errors.required">{{ _VALIDACION.requerido.apellido }}</div>
-                    <div *ngIf="apellido.errors.pattern">{{ _VALIDACION.valido.apellido }}</div>
-                    <div *ngIf="apellido.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
-                  </div>
+            <div>
+                <p class="mx-auto">
+                    Alumno: {{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}
+                </p>
+                <p-dropdown [options]="cursadasFiltradas" [(ngModel)]="selectedCursada" optionLabel="nombre" [filter]="true" [style]="{'width':'150px'}">
+                </p-dropdown>
+                <p class="mx-auto">
+                    #Cuotas: 00 - #Cuotas Vencidas: 00 - #Cuotas Pagas: 00
+                </p>
+                <label for="basic-url">{{ _LABEL.titulo.cupoMinimo }}</label>
+                <p-spinner size="10" [(ngModel)]="cursadaSeleccionada.cupoMinimo" [placeholder]="_LABEL.ingrese.cupoMinimo" [min]="0" [max]="10"></p-spinner>
+                <div class="row">
+                    <button class="col" (click)=clickPagar()>Pagar</button>
+                    <button class="col" (click)=clickCancelarPagar()>Cancelar</button>
                 </div>
+            </div>
         </div>
-        <div class="row">
-          <div class="form-group col">
-            <label for="dni">{{ _LABEL_R.dni }}</label>
-              <input
-                          #dni = "ngModel"
-                          class="form-control"
-                          type="text"
-                          required
-                          minlength="6"
-                          maxlength="9"
-                          [(ngModel)]="alumnoSeleccionado.dni"
-                          [placeholder]="_LABEL.ingrese.dni"
-                          [pattern]="_PATTERN.dni"
-                          >
-                  <div  *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="alert alert-danger">
-                    <div *ngIf="dni.errors.required">{{ _VALIDACION.requerido.dni }}</div>
-                    <div *ngIf="dni.errors.pattern">{{ _VALIDACION.valido.dni}}</div>
-                    <div *ngIf="dni.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
-                  </div>
-                </div>
-          <div class="form-group col">
-           <label for="nacimiento">{{ _LABEL.fechaNacimiento }}</label>
-           <ng-datepicker
-                          style="position: relative;z-index: 1000"
-                          id="calendario"
-                          [(ngModel)]="dateNac"
-                          [options]="options"
-            ></ng-datepicker>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group col">
-            <label for="email">{{ _LABEL_R.email }}</label>
-            <input
-                            #email="ngModel"
-                            class="form-control"
-                            type="email"
-                            required
-                            [(ngModel)]="alumnoSeleccionado.email"
-                            [placeholder]="_LABEL.ingrese.email"
-                            [pattern]="_PATTERN.email"
-                            >
-                    <div  *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-                        <div *ngIf="email.errors.required">{{ _VALIDACION.requerido.email }}</div>
-                        <div *ngIf="email.errors.pattern">{{ _VALIDACION.valido.email }}</div>
-                    </div>
-          </div>
-          <div class="form-group col">
-            <label for="telefono">{{ _LABEL_R.telefono }}</label>
-            <input
-                            #telefono="ngModel"
-                            class="form-control"
-                            type="text"
-                            required
-                            [(ngModel)]="alumnoSeleccionado.telefono"
-                            [placeholder]="_LABEL.ingrese.telefono"
-                            [pattern]="_PATTERN.telefono"
-                            >
-                    <div  *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
-                        <div *ngIf="telefono.errors.required">{{ _VALIDACION.requerido.telefono }}</div>
-                        <div *ngIf="telefono.errors.pattern">{{ _VALIDACION.valido.telefono }}</div>
-                    </div>
-          </div>
-
-        </div>
-        <button class="btn btn-primary float-right " [disabled]="nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid" (click)="guardar()">
-          <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
-          <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
-        </button>
     </div>
 </div>
 
+<div *ngIf="mostrarRecibo" class="dialogoEdicion">
+    <div class="card popUpInscripcion">
+        <div class="container">
+                <div class="card-head text-center w-100 mt-2 mb-2 tituloInscripcion">
+                    <h1>Recibo</h1>
+                </div>
+                <div id="content" #content>
+                    <p class="mx-auto">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quia at cum non labore quod dignissimos numquam saepe provident eos enim dolore magni quibusdam dolor, ratione reiciendis culpa! Maxime, incidunt.
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos cupiditate laudantium iusto perferendis eius. Suscipit veritatis officiis eligendi consectetur repellat maiores dolorem ea. Optio praesentium laborum, eius sint voluptas eaque.
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi cupiditate dolor voluptates culpa eveniet beatae, dolore rerum odit excepturi pariatur perspiciatis ipsam minus libero ipsum nulla, maxime velit ut labore!
+                    </p>
+                </div>                
+                
+                <div class="row">
+                    <button class="col" (click)=captureScreen()>Imprimir</button>
+                    <button class="col" (click)=clickCancelarPagar()>Finalizar</button>
+                </div>
+            </div>
+    </div>
 </div>
+
