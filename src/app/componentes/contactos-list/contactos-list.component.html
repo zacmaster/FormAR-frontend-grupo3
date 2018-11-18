@@ -90,7 +90,9 @@
                 <!-- Alumno Seleccionado -->
                 <div class="input-group" *ngIf="!agregandoAlumno">
                   <p-dropdown [options]="alumnos" [(ngModel)]="selectedAlumno" optionLabel="nombreApellido"[style]="{'width':'300px'}" 
-                  (onClick)="actualizarAlumnoSeleccionado(selectedAlumno)"></p-dropdown>
+                  (onClick)="actualizarAlumnoSeleccionado(selectedAlumno)"
+                  [filter]="true"
+                  ></p-dropdown>
                   <!--<select class="custom-select" >
                       <option *ngFor="let alumno of alumnos" [value]="alumno"(click)="actualizarAlumnoSeleccionado(alumno)" >
                         {{ alumno.nombre }}  {{ alumno.apellido }}
