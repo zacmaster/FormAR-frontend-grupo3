@@ -15,6 +15,7 @@ export class AuthGuardService implements CanActivate {
     if((expectedRole == 'ROLE_INSTRUCTOR' && !this.tokenStorageService.isInstructor()) ||
         (expectedRole == 'ROLE_ADMINISTRATIVO' && !this.tokenStorageService.isAdministrativo()) ||
         (expectedRole == 'ROLE_SUPERVISOR' && !this.tokenStorageService.isSupervisor())) {
+      console.log(state.url);
       this.router.navigate(['/auth/login'],{
         queryParams: {
           return: state.url
