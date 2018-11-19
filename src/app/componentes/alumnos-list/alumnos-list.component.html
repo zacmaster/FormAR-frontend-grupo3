@@ -253,7 +253,7 @@
                     <td>{{ pago.nombre_cursada }}</td>
                     <td>{{ pago.tipo }}</td>
                     <td>{{ pago.monto }}</td>
-                    <td>{{ pago.estado }}</td>
+                    <td>{{ pago.estado }}</td>cursadas/a
                     <td>{{ _Util.convertirTimestamp(pago.fecha_vencimiento) }}</td>
                     <td> 
                         <button class="btn btn-default mr-2 bg-success" [title]="_LABEL.boton.pagar" (click)="clickPagar(rowData)">
@@ -276,14 +276,38 @@
 
 <dialogo-confirmacion
     *ngIf="mostrarRecibo"
-    titulo="Recibo"
+    titulo="Generar Recibo"
     [botonIzquierdo]="false"
     [botonDerecho]="false"
     [botonCerrar]="false"
     >
 
         <div class="content" #content>
-               {{alumnoSeleccionado.nombre}}
+            <div class="marco">
+                <h5><span class="font-italic">Instituto formAR</span> <span class="text-center font-weight-bold">Recibo</span></h5>
+                <table class="tabla-recibo">
+                    <thead>
+                        <tr><td class="font-italic"></td><td class="font-weight-bold"></td></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fecha:</td><td>{{ _Util.fechaHoy() }}</td>
+                        </tr>
+                        <tr>
+                            <td>Alumno: </td><td>{{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cursada: </td><td>{{ pagoSeleccionado.nombre_cursada }}</td>
+                        </tr>
+                        <tr>
+                            <td>Se paga: </td><td>{{ pagoSeleccionado.tipo }}</td>
+                        </tr>
+                        <tr>
+                            <td>Monto:</td><td>${{ pagoSeleccionado.monto }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="row justify-content-center mt-3">
             <button class="btn btn-primary mr-5" (click)=captureScreen()>Imprimir</button>

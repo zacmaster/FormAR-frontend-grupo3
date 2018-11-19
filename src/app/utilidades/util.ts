@@ -9,4 +9,7 @@ export class Util {
         
         return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     }
+    static fechaHoy(): string{
+        return this.convertirTimestamp(+ new Date());
+    }
 }
