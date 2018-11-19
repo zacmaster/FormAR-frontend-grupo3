@@ -1,47 +1,27 @@
 import { Injectable } from '@angular/core';
 import {TokenStorageService} from '../auth/token-storage.service';
-import {ActivatedRouteSnapshot, CanActivate, Router} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import decode from 'jwt-decode';
+
+const TOKEN_KEY = 'AuthToken';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
   constructor(public tokenStorageService: TokenStorageService, public router: Router) {}
 
-  canActivate() {
-    // if (!true) {
-    //   return true;
-    // }
-    // this.router.navigate(['/auth/login']);
-    // return false;
-
-
-    if(this.tokenStorageService.getToken()){
-      return true;
+  canActivate(route: ActivatedRouteSnapshot,state: RouterStateSnapshot) {
+    const expectedRole = route.data.expectedRole;
+    if((expectedRole == 'ROLE_INSTRUCTOR' && !this.tokenStorageService.isInstructor()) ||
+        (expectedRole == 'ROLE_ADMINISTRATIVO' && !this.tokenStorageService.isAdministrativo()) ||
+        (expectedRole == 'ROLE_SUPERVISOR' && !this.tokenStorageService.isSupervisor())) {
+      this.router.navigate(['/auth/login'],{
+        queryParams: {
+          return: state.url
+        }
+      });
+      return false
     }
-    this.router.navigate(['/auth/login'])
-    return false;
+    return true;
   }
-
-  // canActivate(): boolean {
-  //   // this.router.navigate(['auth/signin']);
-  //   // return false;
-  //
-  //   // if (this.tokenStorageService.getToken()) {
-  //   //   return true;
-  //   // } else {
-  //   //   this.router.navigate(['auth/signin']);
-  //   //   return false;
-  //   // }
-  //
-  //   // if (!this.tokenStorageService.getToken()) {
-  //   //   this.router.navigate(['auth/signin']);
-  //   //   return false;
-  //   // }
-  //   // return true;
-  //   if (1 === 1) {
-  //     this.router.navigate(['auth/signin']);
-  //     return false;
-  //   }
-  //   return true;
-  // }
 }

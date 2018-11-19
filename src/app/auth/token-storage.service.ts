@@ -49,4 +49,17 @@ export class TokenStorageService {
 
     return this.roles;
   }
+
+  public isInstructor(): boolean {
+    console.log(this.getAuthorities());
+    return this.getAuthorities().includes('ROLE_INSTRUCTOR')
+  }
+
+  public isAdministrativo(): boolean {
+    return this.getAuthorities().includes('ROLE_ADMINISTRATIVO')
+  }
+
+  public isSupervisor(): boolean {
+    return this.getAuthorities().includes('ROLE_SUPERVISOR')
+  }
 }

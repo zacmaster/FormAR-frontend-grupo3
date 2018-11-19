@@ -14,11 +14,16 @@ import { SalasComponent } from './vistas/salas/salas.component';
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
 import { TareasComponent } from './vistas/tareas/tareas.component';
 import {SupervisorHomeComponent} from './vistas/supervisor-home/supervisor-home.component'
+import {AuthGuardService} from './servicios/auth-guard.service';
 
 const routes: Routes = [
     {
       path: '',
       redirectTo: '/administrativo/alumnos',
+      canActivate: [AuthGuardService],
+      data: {
+        expectedRole: 'ROLE_ADMINISTRATIVO'
+      },
       pathMatch: 'full' },
     {
       path: 'administrativo',
@@ -26,65 +31,121 @@ const routes: Routes = [
       children:[
           { path: '',
             redirectTo: '/administrativo/alumnos',
-            pathMatch: 'full'
+            pathMatch: 'full',
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           },
           {
             path: 'alumnos',
-            component: AbmAlumnosComponent
+            component: AbmAlumnosComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           },
           {
             path: 'contactos',
-            component: ContactosListComponent
+            component: ContactosListComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           },
           {
             path: 'cursos',
-            component: CursosComponent
+            component: CursosComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           },
           {
             path: 'cursadas',
-            component: CursadasComponent
+            component: CursadasComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           },
           {
             path: 'instructores',
-            component: InstructoresComponent
+            component: InstructoresComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           },
           {
             path: 'salas',
-            component: SalasComponent
+            component: SalasComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           },
           {
             path: 'tareas',
-            component: TareasComponent
+            component: TareasComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_ADMINISTRATIVO'
+            },
           }
       ]
     },
     {
-      path: 'login',
+      path: 'auth/login',
       component:  LoginComponent
     },
     { path: 'register',
       component: RegisterComponent
     },
     { path: 'instructor',
-      component: InstructorHomeComponent
+      component: InstructorHomeComponent,
+      canActivate: [AuthGuardService],
+      data: {
+        expectedRole: 'ROLE_INSTRUCTOR'
+      }
     },
     { path:'supervisor',
       component:SupervisorHomeComponent,
+      canActivate: [AuthGuardService],
+      data: {
+        expectedRole: 'ROLE_SUPERVISOR'
+      },
         children:[
         {
           path: '',
           redirectTo: '/supervisor/tareas',
+          canActivate: [AuthGuardService],
+          data: {
+            expectedRole: 'ROLE_SUPERVISOR'
+          },
           pathMatch: 'full'
         },
         { path: 'tareas',
-          component: TareasComponent
+          component: TareasComponent,
+          canActivate: [AuthGuardService],
+          data: {
+            expectedRole: 'ROLE_SUPERVISOR'
+          },
         },
         {
           path: 'cursadas',
-          component: CursadasComponent
+          component: CursadasComponent,
+          canActivate: [AuthGuardService],
+          data: {
+            expectedRole: 'ROLE_SUPERVISOR'
+          },
         },
         { path: 'usuarios',
-          component: InstructoresComponent
+          component: InstructoresComponent,
+          canActivate: [AuthGuardService],
+          data: {
+            expectedRole: 'ROLE_SUPERVISOR'
+          },
         }
 
     ]},
