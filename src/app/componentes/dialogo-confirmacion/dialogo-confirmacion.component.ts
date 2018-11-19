@@ -17,8 +17,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
           <ng-content></ng-content>
         </div>
         <div class="dialogoFooter d-flex mx-5 mb-3 justify-content-between">
-          <span class="btn btn-danger mr-3" (click)="clickBtnIzquierdo()">{{ textoBotonIzquierdo }}</span>
-          <span class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">{{ textoBotonDerecho }}</span>
+          <span *ngIf="botonIzquierdo" class="btn btn-danger mr-3" (click)="clickBtnIzquierdo()">{{ textoBotonIzquierdo }}</span>
+          <span *ngIf="botonDerecho" class="btn btn-primary ml-3"  (click)="clickBtnDerecho()">{{ textoBotonDerecho }}</span>
         </div>
       </div>
     </div>
@@ -36,6 +36,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       }
       .dialogo{
         border-radius: 5px;
+        max-width: 80%
       }
       .titulo p{
         margin: auto;
@@ -55,6 +56,8 @@ export class DialogoConfirmacionComponent implements OnInit {
   @Input() textoBotonIzquierdo = 'Cancelar'; 
   @Input() textoBotonDerecho =  'Aceptar';
   @Input() public botonCerrar: boolean = true;
+  @Input() public botonIzquierdo: boolean = true;
+  @Input() public botonDerecho: boolean = true;
 
   @Output() clickBotonCerrar = new EventEmitter<boolean>();
   @Output() clickBotonIzquierdo =  new EventEmitter<boolean>();

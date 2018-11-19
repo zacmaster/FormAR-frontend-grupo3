@@ -215,32 +215,83 @@
 
 </div>
 
-<div *ngIf="mostrarPagosInicio" class="dialogoEdicion">
-    <div class="card popUpInscripcion">
-        <div class="container">
-            <div class="card-head text-center w-100 mt-2 mb-2 tituloInscripcion">
-                <h1>Pagar</h1>
-            </div>
-            <div>
-                <p class="mx-auto">
-                    Alumno: {{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}
-                </p>
-                <p-dropdown [options]="cursadasFiltradas" [(ngModel)]="selectedCursada" optionLabel="nombre" [filter]="true" [style]="{'width':'150px'}">
-                </p-dropdown>
-                <p class="mx-auto">
-                    #Cuotas: 00 - #Cuotas Vencidas: 00 - #Cuotas Pagas: 00
-                </p>
-                <label for="basic-url">{{ _LABEL.titulo.cupoMinimo }}</label>
-                <p-spinner size="10" [(ngModel)]="cursadaSeleccionada.cupoMinimo" [placeholder]="_LABEL.ingrese.cupoMinimo" [min]="0" [max]="10"></p-spinner>
-                <div class="row">
-                    <button class="col" (click)=clickPagar()>Pagar</button>
-                    <button class="col" (click)=clickCancelarPagar()>Cancelar</button>
-                </div>
-            </div>
+
+<!-- Inicio Dialogo para pagar -->
+<dialogo-confirmacion
+    *ngIf="mostrarPagosInicio"
+    titulo="Pagar"
+    (clickBotonIzquierdo)="clickCancelarPagar()"
+    (clickBotonDerecho)="clickPagar()"
+    [botonCerrar]="false" 
+    textoBotonDerecho="Pagar"
+
+>
+    <div class="row">
+        <div class="col">
+            <p class="mx-auto">
+                Alumno: {{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}
+            </p>
+        </div>    
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <p>Seleccione una cursada</p>
+        </div>
+        <div class="col-6">
+            <p-dropdown [options]="cursadasFiltradas" [(ngModel)]="selectedCursada" optionLabel="nombre" [filter]="true" [style]="{'width':'150px'}">
+            </p-dropdown>
         </div>
     </div>
-</div>
+    <div class="row mt-2 mb-2">
+        <div class="col">
+            <!-- <p class="mx-auto"> -->
+                <label class="mr-2" for="basic-url">{{ _LABEL.titulo.cupoMinimo }}</label>
+                <p-spinner size="10" [(ngModel)]="cursadaSeleccionada.cupoMinimo" [placeholder]="_LABEL.ingrese.cupoMinimo" [min]="0" [max]="10"></p-spinner>
+                <!-- </p> -->
+            </div>
+        </div>
+    <div class="row">
+        <div class="col">
+            #Cuotas: 00 - #Cuotas Vencidas: 00 - #Cuotas Pagas: 00
+        </div>
+    </div>
+    
 
+
+
+</dialogo-confirmacion>
+
+
+
+<!-- Fin Dialogo para pagar -->
+
+
+<dialogo-confirmacion
+    *ngIf="mostrarRecibo"
+    titulo="Recibo"
+    [botonIzquierdo]="false"
+    [botonDerecho]="false"
+    [botonCerrar]="false"
+    >
+
+        <div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quia at cum non labore quod dignissimos numquam saepe provident eos enim dolore magni quibusdam dolor, ratione reiciendis culpa! Maxime, incidunt.
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos cupiditate laudantium iusto perferendis eius. Suscipit veritatis officiis eligendi consectetur repellat maiores dolorem ea. Optio praesentium laborum, eius sint voluptas eaque.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi cupiditate dolor voluptates culpa eveniet beatae, dolore rerum odit excepturi pariatur perspiciatis ipsam minus libero ipsum nulla, maxime velit ut labore!
+        </div>
+        <div class="row justify-content-center mt-3">
+            <button class="btn btn-primary mr-5" (click)=captureScreen()>Imprimir</button>
+            <button class="btn btn-primary" (click)=clickCancelarPagar()>Finalizar</button>
+        </div>
+        
+
+
+</dialogo-confirmacion>
+
+
+
+
+<!-- 
 <div *ngIf="mostrarRecibo" class="dialogoEdicion">
     <div class="card popUpInscripcion">
         <div class="container">
@@ -256,10 +307,8 @@
                 </div>                
                 
                 <div class="row">
-                    <button class="col" (click)=captureScreen()>Imprimir</button>
-                    <button class="col" (click)=clickCancelarPagar()>Finalizar</button>
                 </div>
             </div>
     </div>
-</div>
+</div> -->
 
