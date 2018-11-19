@@ -638,6 +638,23 @@ export class CursadasComponent implements OnInit {
    // console.log("alumnosAux: ",alumnosAux);
     return alumnosAux;
   }
+  eliminarInscripcion(alumno){
+      this._inscripcionService.getInscripcion(alumno.id,this.cursadaSeleccionada.id)
+        .toPromise()
+        .then(inscripcion => { 
+          
+          this._spinnerService.show();
+          setTimeout(() => {
+            
+            this._inscripcionService.deleteInscripcion(inscripcion).
+              subscribe(response =>{
+                this.mostrarAlumnosEnCursada(this.cursadaSeleccionada);
+              })
+          }, 500)
+         
+        });
+    
+  }
 
 
   private cargarCampos(){

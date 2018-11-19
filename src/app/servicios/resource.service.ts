@@ -56,7 +56,9 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
   public listURL(url): Observable<T[]>{
     return this.httpClient.get<T[]>(url);
   }
-  
+  public listURLOne(url): Observable<T>{
+    return this.httpClient.get<T>(url);
+  }
 
 
   private handleError(error: HttpErrorResponse) {
