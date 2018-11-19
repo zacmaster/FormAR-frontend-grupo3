@@ -12,9 +12,7 @@
                 <thead class="thead-light">
                     <tr class="zui-sticky-row" >
                       <th class="zui-sticky-col" >Alumnos</th>
-                      <th *ngFor="let examen of examenesDeCursada" > Examen {{examen.nroExamen}} <button class="btn-danger" *ngIf= "esUltimoExamen(examen.nroExamen)" (click)="clickBorrarExamen()" ><i class="fas fa-times"></i></button></th>
-                      <th style="width: 150px">Promedio 
-                      </th>
+                      <th *ngFor="let examen of examenesDeCursada" >{{examen.nombreExamen}} <button class="btn-danger" *ngIf= "esUltimoExamen(examen.nroExamen)" (click)="clickBorrarExamen()" ><i class="fas fa-times"></i></button></th>
                     </tr>
                 </thead>
                     <tbody >
@@ -24,7 +22,7 @@
                            <p-spinner size="10" [(ngModel)]="notaE.nota" [min]="0" [max]="10" [step]="0.25" [disabled]="notaE.deshabilitado" ></p-spinner> 
                           
                         </td>
-                        <td >{{calcularPromedio(fila)}}</td>
+                        
                        
                       </tr>
                       <tr >
@@ -42,11 +40,35 @@
                   </table> 
         </div> 
         <div class="dialogoFooter" >
-            <button class="btn btn-primary float-left " (click)="agregarExamen()">
+            <button class="btn btn-primary float-left " (click)="nuevoExamenCursada()">
                   <span >Agregar examen </span>
             </button>
         </div>
       </div>
     </div>
     <ng4-loading-spinner></ng4-loading-spinner>
-  
+
+    <div class="contenedor-info"  *ngIf="nuevoExamen">
+        <div  class="info bg-light p-1">
+            <div class="infoHeader d-flex justify-content-between">
+              <div></div>
+              <div class="titulo text-center" ><h5> Crear Examen </h5></div>
+              <span class="btn btn-danger" (click)="cerrarInfo()"><i class="fas fa-times"></i></span>
+            </div>
+            <div class="infoBody p-3  text-center">
+             
+             <input
+              class="form-control"
+              type="text"
+              required
+              minlength="3"
+              maxlength="30"
+              [(ngModel)]="nombreNuevoExamen"
+              [placeholder]="_LABEL.ingrese.nombre"
+              >
+              <button class="btn btn-primary float-right "(click)="agregarExamen()">
+                  <span >{{ _LABEL.guardar }}</span>      
+                </button>
+            </div>
+          </div>
+      </div>

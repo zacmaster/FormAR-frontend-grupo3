@@ -1,0 +1,9 @@
+a:hover{
+    cursor: pointer;
+}
+a{
+    outline: none;
+}
+.bg-inactive{
+    background-color: rgba(228, 228, 228, 0.959);
+}

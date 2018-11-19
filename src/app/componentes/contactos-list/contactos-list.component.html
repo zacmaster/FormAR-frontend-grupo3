@@ -3,8 +3,6 @@
     <p-table #dt [columns]="cols" [value]="contactos" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
         <ng-template pTemplate="caption">
           <div style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-              <input pInputText type="text" size="50" [placeholder]="_LABEL.buscar" (input)="dt.filter($event.target.value, 'alumno.nombreApellido', 'contains')">
               <button class="btn btn-success" (click)="nuevoContacto()"><span>{{ tituloNuevoContacto}}</span></button>
             </div>
           </ng-template>
@@ -22,6 +20,11 @@
                     <p-sortIcon [field]="fecha" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </span>
               </th>
+            </tr>
+            <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                  <input *ngSwitchCase="'alumno'" pInputText type="text" (input)="dt.filter($event.target.value, 'alumno.nombreApellido', 'contains')">
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -301,8 +304,53 @@
 
             </div>
             
+            <div class="row mt-2 pt-2" style="border-top: 1px solid #dee2e6" *ngIf="!edicion">
+              <div class="col-3">Generar tarea</div>
+              <div class="col-2"><p-inputSwitch [(ngModel)]="generarTarea" (click)="agregarTarea()"></p-inputSwitch></div>
+            </div>
+            <div *ngIf="generarTarea">
+                <div class="row form-group">
+                    <div class="col-4">
+                      <label>{{ _LABEL_R.fecha}}</label>
+                      <ng-datepicker
+                        #fechaTarea = "ngModel"
+                        [(ngModel)]="tareaSeleccionada.fechaEstimada"
+                        [options]="options"
+                        style="z-index: 1000; position: relative;"
+                      >
+                      </ng-datepicker>
+                    </div>
+                    <div class="col-8">
+                      <label>{{ _LABEL_R.titulo }}</label>
+                      <input  
+                              type="text"
+                              class="form-control"
+                              #tituloTarea= "ngModel"
+                              required
+                              [(ngModel)]="tareaSeleccionada.titulo"
+                              [placeholder]="_LABEL.ingrese.asunto"
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col">
+                      <label>{{ _LABEL.descripcion }}</label>
+                      <textarea
+                                class="form-control" rows="2"
+                                #descripcionTarea = "ngModel"
+                                required
+                                [(ngModel)]="tareaSeleccionada.descripcion"
+                                [placeholder]="_LABEL.ingrese.descripcion"
+                      
+                      ></textarea>
+                    </div>
+                  </div>
+            </div>
+            
+
           </div>
         </div>
+
         <!-- Boton de Agregar Contacto CON ALUMNO NUEVO-->
         <!-- Boton de Agregar Contacto CON ALUMNO SELECCIONADO-->
         <div class="d-flex justify-content-end p-3" >

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from '../app/vistas/home/home.component';
+import { AdministrativoHomeComponent } from '../app/vistas/administrativo-home/administrativo-home.component';
 import { LoginComponent} from './componentes/auth/login/login.component';
 import { RegisterComponent} from './componentes/auth/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
@@ -12,49 +12,86 @@ import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
 import { SalasComponent } from './vistas/salas/salas.component';
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
-import {AuthGuardService} from './servicios/auth-guard.service';
+import { TareasComponent } from './vistas/tareas/tareas.component';
+import {SupervisorHomeComponent} from './vistas/supervisor-home/supervisor-home.component'
 
 const routes: Routes = [
     {
       path: '',
-      redirectTo: '/home/alumnos',
-      pathMatch: 'full'
-    },
+      redirectTo: '/administrativo/alumnos',
+      pathMatch: 'full' },
     {
-      path: 'home',
-      component:  HomeComponent,
+      path: 'administrativo',
+      component:  AdministrativoHomeComponent,
       children:[
-          { path: '', redirectTo: '/home/alumnos', pathMatch: 'full'},
-          { path: 'alumnos', component: AbmAlumnosComponent},
-          { path: 'contactos', component: ContactosListComponent},
-          { path: 'cursos', component: CursosComponent},
-          { path: 'cursadas', component: CursadasComponent},
-          { path: 'instructores', component: InstructoresComponent},
-          { path: 'salas', component: SalasComponent},
+          { path: '',
+            redirectTo: '/administrativo/alumnos',
+            pathMatch: 'full'
+          },
+          {
+            path: 'alumnos',
+            component: AbmAlumnosComponent
+          },
+          {
+            path: 'contactos',
+            component: ContactosListComponent
+          },
+          {
+            path: 'cursos',
+            component: CursosComponent
+          },
+          {
+            path: 'cursadas',
+            component: CursadasComponent
+          },
+          {
+            path: 'instructores',
+            component: InstructoresComponent
+          },
+          {
+            path: 'salas',
+            component: SalasComponent
+          },
+          {
+            path: 'tareas',
+            component: TareasComponent
+          }
       ]
     },
     {
-      path: 'auth/login',
+      path: 'login',
       component:  LoginComponent
     },
-    {
-      path: 'signup',
+    { path: 'register',
       component: RegisterComponent
     },
-    {
-      path: 'instructor',
+    { path: 'instructor',
       component: InstructorHomeComponent
     },
-    {
-      path: 'algo',
-      component: PageNotFoundComponent,
-      canActivate: [AuthGuardService]
-    },
+    { path:'supervisor',
+      component:SupervisorHomeComponent,
+        children:[
+        {
+          path: '',
+          redirectTo: '/supervisor/tareas',
+          pathMatch: 'full'
+        },
+        { path: 'tareas',
+          component: TareasComponent
+        },
+        {
+          path: 'cursadas',
+          component: CursadasComponent
+        },
+        { path: 'usuarios',
+          component: InstructoresComponent
+        }
+
+    ]},
     {
       path: '**',
       component: PageNotFoundComponent
     }
-
 ];
 
 @NgModule({

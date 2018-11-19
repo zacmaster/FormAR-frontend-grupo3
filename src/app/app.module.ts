@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AutoCompleteModule,  PaginatorModule} from 'primeng/primeng'
+import {AutoCompleteModule,  PaginatorModule, InputSwitchModule} from 'primeng/primeng'
 
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
@@ -27,7 +27,9 @@ import {FullCalendarModule} from 'primeng/fullcalendar';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import { HomeComponent } from './vistas/home/home.component';
+import { LoginComponent} from './componentes/auth/login/login.component';
+import { AdministrativoHomeComponent } from './vistas/administrativo-home/administrativo-home.component';
+import { RegisterComponent} from './componentes/auth/register/register.component';
 import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.component';
 import { AlumnosListComponent } from './componentes/alumnos-list/alumnos-list.component';
 import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
@@ -37,9 +39,6 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import {TableModule} from 'primeng/table';
 
-
-import { LoginComponent} from './componentes/auth/login/login.component';
-import { RegisterComponent} from './componentes/auth/register/register.component';
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
@@ -55,10 +54,12 @@ import { CalendarioDisponibilidadComponent } from './componentes/calendario-disp
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
 import { AsistenciaComponent } from './vistas/asistencia/asistencia.component';
 import { NotasComponent } from './vistas/notas/notas.component';
+import { TareasComponent } from './vistas/tareas/tareas.component';
 import { MatSortModule,} from '@angular/material';
 
 import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
+import { SupervisorHomeComponent } from './vistas/supervisor-home/supervisor-home.component';
 
 import { httpInterceptorProviders} from './auth/auth-interceptor';
 import {AuthGuardService} from './servicios/auth-guard.service';
@@ -68,9 +69,8 @@ import {TokenStorageService} from './auth/token-storage.service';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent,
     UsuariosListComponent,
-    HomeComponent,
+    AdministrativoHomeComponent,
     RegisterComponent,
     PageNotFoundComponent,
     AlumnosListComponent,
@@ -90,7 +90,8 @@ import {TokenStorageService} from './auth/token-storage.service';
     InstructorHomeComponent,
     AsistenciaComponent,
     NotasComponent,
-
+    TareasComponent,
+    SupervisorHomeComponent
 
   ],
   imports: [
@@ -109,6 +110,7 @@ import {TokenStorageService} from './auth/token-storage.service';
     FullCalendarModule,
     AutoCompleteModule,
     CheckboxModule,
+    InputSwitchModule,
     TableModule,
     MatTableModule,
 
@@ -118,8 +120,7 @@ import {TokenStorageService} from './auth/token-storage.service';
     PaginatorModule
   ],
   providers: [
-    AlumnoService, httpInterceptorProviders, AuthGuardService,
-    TokenStorageService
+    AlumnoService,TokenStorageService,AuthGuardService,httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

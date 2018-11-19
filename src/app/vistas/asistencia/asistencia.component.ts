@@ -43,6 +43,8 @@ export class AsistenciaComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerDatos();
+    
+   
   }
   guardar(nro:number){
     let claseAux = new ClaseCursada();
@@ -209,10 +211,6 @@ getFilas(){
         faltas++;
       }
     });
-    if(faltas==this.limiteFaltas){
-      //generar tarea 
-    }
-
     return faltas;
   }
 

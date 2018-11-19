@@ -36,6 +36,8 @@ export class InstructorHomeComponent implements OnInit {
   public idCursadaFila:number;
   cursadaSeleccionada: Cursada;
   infoShowed:boolean=false;
+  cursadasTipo:SelectItem[]=[];
+  selectedTipoCursada:String;
 
 
     cols: any[];
@@ -45,12 +47,15 @@ export class InstructorHomeComponent implements OnInit {
 
     ngOnInit() {
         this.getInstructores();
-        
+        this.cursadasTipo.push({label:"Activas",value:"activas"});
+        this.cursadasTipo.push({label:"Finalizadas",value:"finalizada"});
         this.cols = [
             { field: 'nombre', header: 'Nombre de cursada' },
-            {field: 'inscriptos', header: 'Cant. Inscriptos'},
-            { field: 'fechaInicioString', header: 'Fecha de inicio' },
-            { field: 'fechaFinString', header: 'Fecha de fin' },
+            { field: 'inscriptos', header: 'Cant. Inscriptos'},
+            { field: 'fechaInicio', header: 'Fecha de inicio' },
+            { field: 'fechaFin', header: 'Fecha de fin' },
+            { field: 'info', header: 'Info' },
+            { field: 'acciones', header: 'Acciones' }
             
           
         ];
@@ -125,8 +130,16 @@ export class InstructorHomeComponent implements OnInit {
    
   }
   refrescarCursadas(){  
-    if(this.selectedInstructor!=undefined){
-      this.getCursadas();
+    if(this.selectedTipoCursada=="activas"){
+      if(this.selectedInstructor!=undefined){
+        this.getCursadas();
+      }
+        
+    }
+    if(this.selectedTipoCursada=="finalizada"){
+      if(this.selectedInstructor!=undefined){
+        this.getCursadasFinalizadas();
+      }
     }
   }
   getCursadas(){
@@ -158,6 +171,47 @@ export class InstructorHomeComponent implements OnInit {
       //console.log(this.cursadas);
     
     })
+  }
+  getCursadasFinalizadas(){
+    this.cursadas = [];
+    this._cursadaService.getCursadasInstructorFinalizadas(this.selectedInstructor.id)
+    .subscribe(cursadas => {
+      cursadas.forEach(cursada => {
+        let nuevaCursada = new Cursada();
+        let nuevoCurso = new Curso();
+        let nuevoInstructor = new Instructor();
+        let nuevaSala = new Sala();
+
+        nuevoCurso.copiar(cursada.curso);
+        nuevoInstructor.copiar(cursada.instructor);
+        nuevaSala.copiar(cursada.sala);
+        nuevaCursada.copiar(cursada);
+        nuevaCursada.curso = nuevoCurso;
+        nuevaCursada.instructor = nuevoInstructor;
+        nuevaCursada.sala = nuevaSala;
+        nuevaCursada.fechaInicioString=this._Util.convertirTimestamp(nuevaCursada.fechaInicio);
+        nuevaCursada.fechaFinString=this._Util.convertirTimestamp(nuevaCursada.fechaFin);
+        this._inscripcionService.getAlumnosCursada(nuevaCursada.id)
+        .toPromise()
+        .then(alumnos => {
+          nuevaCursada.inscriptos=alumnos.length;
+        });
+        this.cursadas.push(nuevaCursada);
+      })  
+    })
+  }
+  refrescarTipoCursadas(){
+    if(this.selectedTipoCursada=="activas"){
+      if(this.selectedInstructor!=undefined){
+        this.getCursadas();
+      }
+        
+    }
+    if(this.selectedTipoCursada=="finalizada"){
+      if(this.selectedInstructor!=undefined){
+        this.getCursadasFinalizadas();
+      }
+    }
   }
 }
 

@@ -7,6 +7,7 @@ export class Nota extends Resource implements INota{
     idAlumno:number;
     nombreAlumno:string;
     deshabilitado:boolean;
+    pendiente:boolean;
     
     constructor(){
         super();

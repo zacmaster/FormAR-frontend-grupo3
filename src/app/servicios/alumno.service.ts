@@ -4,7 +4,7 @@ import { IAlumno } from '../interfaces/ialumno'
 import { Alumno } from '../modelos/alumno';
 
 import { GLOBAL } from './global';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError} from 'rxjs';
 import { ResourceService } from "./resource.service";
 
@@ -39,6 +39,21 @@ export class AlumnoService extends ResourceService<Alumno, IAlumno>{
   getAlumno(id: number): Observable<IAlumno> {
     return super.read(id);
   }
+  getAnalitico(id: number){
+    let url = GLOBAL.url + 'alumnos/analitico/' + id;
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this._http.get(url, { headers: headers, responseType: 'blob' });
+   
+  }
+  getHistorial(id: number){
+    let url = GLOBAL.url + 'alumnos/historialacademico/' + id;
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this._http.get(url, { headers: headers, responseType: 'blob' });
+   
+  }
+
 
   save(alumno: Alumno){
     if(alumno.id)

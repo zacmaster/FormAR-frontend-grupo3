@@ -20,5 +20,6 @@ export interface Icursada extends Iresource{
     diaVencCuota: number;
     curso: Curso;
     horariosCursada: Horario[];
+    iniciada:boolean;
     
 }

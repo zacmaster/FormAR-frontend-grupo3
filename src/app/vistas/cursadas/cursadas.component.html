@@ -52,6 +52,7 @@
           <th>{{ _LABEL.nombre }}</th>
           <th>{{ _LABEL.apellido }}</th>
           <th>{{ _LABEL.dni }}</th>
+          <th>Baja</th>
         </tr>
     </thead>
       <tbody>
@@ -59,6 +60,9 @@
           <td>{{ alumno.nombre }}</td>
           <td>{{ alumno.apellido }}</td>
           <td>{{ alumno.dni }}</td>
+          <td>   <button class="btn btn-danger">
+            <i class="fas fa-ban"></i>
+          </button></td>
         </tr>
       </tbody>
     </table>
@@ -124,14 +128,19 @@
                       > 
                       <i class="fas fa-users"></i></button>
                 </span>
+                <span *ngSwitchCase="'iniciada'">
+                  <span *ngIf="rowData.iniciada">Iniciada</span>
+                  <span *ngIf="!rowData.iniciada">En espera</span>
+              </span>
                 <span *ngSwitchCase="'acciones'">
                     <button class="btn btn-info mr-2" (click)="clickInscribir(rowData)">
                         <i class="fas fa-file-signature"></i>
                       </button>
-                      <button class="btn btn-success mr-2">
+                      <button *ngIf="!rowData.iniciada" class="btn btn-success mr-2" (click)="editarCursada(rowData)">
                         <i class="fas fa-edit"></i>
                       </button>
-                      <button class="btn btn-danger">
+                  
+                      <button class="btn btn-danger" (click)="eliminarCursada(rowData)">
                         <i class="fas fa-trash"></i>
                       </button>
                 </span>
@@ -165,15 +174,16 @@
 
 
 
+<dialogo-confirmacion
+                    *ngIf="mostrarDialogoBorrar"
+                    (clickBotonCerrar)="ocultarDialogoEliminar()"
+                    (clickBotonIzquierdo)="ocultarDialogoEliminar()"
+                    (clickBotonDerecho)="eliminar()"
+                    [titulo]="_LABEL.bajaCursada"
+                    [texto]="textoDlgEliminar"
+                      >
 
-
-
-
-
-
-
-
-
+</dialogo-confirmacion>
  <!--Dialogo info-->
 <div class="contenedor-info"  *ngIf="infoShowed">
   <div  class="dialogo bg-light p-1">
@@ -423,7 +433,7 @@
                              
                           </tbody>
                       </table>  
-                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.disponibilidadHoraria }}</p>
+                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.horarioCursada }}</p>
               </div>
               </div>
             <!-- FIN HORARIO DE CURSADA -->
@@ -474,6 +484,7 @@
                       
 
 </dialogo-confirmacion> -->
+
 
 
 
