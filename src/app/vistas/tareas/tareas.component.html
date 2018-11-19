@@ -121,7 +121,7 @@
 <!-- Comienzo Tabla completadas del administrativo seleccionado-->          
 <div class="bg-light p-4">
   <h5 style="text-align: left;color: #2ecc71; border-bottom: solid 3px #2ecc71;">Completadas por {{ selectedAdministrativo.nombre }}</h5>
-  <p-table *ngIf="hayTareasPersonalesCompletadas()" #dt [columns]="cols" [value]="tareasPersonalesCompletadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+  <p-table *ngIf="hayTareasPersonalesCompletadas()" #dt [columns]="colsCompletadas" [value]="tareasPersonalesCompletadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" pResizableColumn>
@@ -142,15 +142,6 @@
                 <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
                         (click)="mostrarDetalleTarea(rowData)">
                         <i class="fas fa-info"></i>
-                </button>
-            </span>
-            <span *ngSwitchCase="'acciones'">
-                <button
-                    class="btn btn-danger mr-2"
-                    (click)="restaurarTarea(rowData);"
-                    [title]="_LABEL.marcarComoPendiente"
-                    >
-                  <i class="fas fa-angle-double-left"></i>
                 </button>
             </span>
         </td>

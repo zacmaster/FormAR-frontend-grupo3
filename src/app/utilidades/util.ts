@@ -26,13 +26,35 @@ export class Util {
 
         return  d1.getFullYear() == d2.getFullYear() &&
                 d1.getMonth() == d2.getMonth() &&
-                d1.getDay() == d2.getDay();
+                d1.getDate() == d2.getDate();
     }
 
     static yaPaso(dia1: number): boolean{
-        let d1: Date = new Date(dia1);
-        return d1  < new Date();
+        let dia: Date = new Date(dia1);
+        let hoy: Date = new Date();
+        if(dia.getFullYear() < hoy.getFullYear()) return true;
+        if(dia.getFullYear() == hoy.getFullYear()){
+            if(dia.getMonth() > hoy.getMonth()){
+                return false;
+            }
+            else if(dia.getMonth() < hoy.getMonth()){
+                return true;
+            }
+            else{ //mismo mes
+                if(dia.getDate() > hoy.getDate()){
+                    return false;
+                } 
+                else if(dia.getDate() < hoy.getDate()){
+                    return true;
+                }
+                else{ //mismo dia
+                    return false;
+                }
+            }
+        }
     }
+
+
     
     static esHoy(dia: number): boolean{
         return this.esMismoDia(dia, + new Date())
