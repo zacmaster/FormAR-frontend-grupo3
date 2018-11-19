@@ -3,7 +3,6 @@ body{
     background: #b92b27;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #1565C0, #b92b27);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #1565C0, #b92b27); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 }
 
 
@@ -12,6 +11,10 @@ body{
  */
 :not(output):-moz-ui-invalid {
     box-shadow: none;
+}
+
+.auth{
+  background: #dee2e6;
 }
 
 :not(output):-moz-ui-invalid:-moz-focusring {
