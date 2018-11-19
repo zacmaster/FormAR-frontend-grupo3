@@ -65,6 +65,7 @@ export const LABEL_REQUIRED ={
 }
 
 export var LABEL ={
+    hora: "Hora",
     buscar: "Buscar",
     guardar: "Guardar",
     cancelar: "Cancelar",
@@ -113,6 +114,9 @@ export var LABEL ={
     inscribirAlumno: "Inscribir alumno",
     nuevaCursada: "Nueva cursada",
     crear: "Crear",
+    marcarComoPendiente: "Marcar tarea como pendiente",
+    marcarComoResuelta: "Marcar tarea como resuelta",
+    detalleTarea: "Ver detalle de tarea",
     bajaAlumno: "Baja de Alumno",
     elegirAlumnoLista: "Elegir alumno de la lista",
     contacto: "Contacto",

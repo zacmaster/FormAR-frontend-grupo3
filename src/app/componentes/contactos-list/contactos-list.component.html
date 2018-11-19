@@ -32,7 +32,7 @@
                 <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field" >
 
                     <span *ngSwitchCase="'fecha'" >
-                      {{ _Util.convertirTimestamp(rowData.fecha) }}
+                      {{ _Util.convertirTimestampConHora(rowData.fecha) }}
                       
                     </span>
                     <span *ngSwitchCase="'alumno'">
@@ -90,7 +90,9 @@
                 <!-- Alumno Seleccionado -->
                 <div class="input-group" *ngIf="!agregandoAlumno">
                   <p-dropdown [options]="alumnos" [(ngModel)]="selectedAlumno" optionLabel="nombreApellido"[style]="{'width':'300px'}" 
-                  (onClick)="actualizarAlumnoSeleccionado(selectedAlumno)"></p-dropdown>
+                  (onClick)="actualizarAlumnoSeleccionado(selectedAlumno)"
+                  [filter]="true"
+                  ></p-dropdown>
                   <!--<select class="custom-select" >
                       <option *ngFor="let alumno of alumnos" [value]="alumno"(click)="actualizarAlumnoSeleccionado(alumno)" >
                         {{ alumno.nombre }}  {{ alumno.apellido }}
@@ -254,7 +256,13 @@
               </div>
               <!-- Seccions de Asunto  -->
               <div class="col-8 ">
-                <label for="">{{ _LABEL_R.asunto }}</label>
+                  <label>{{ _LABEL.hora }}</label>
+                  <p-calendar class="estilo-reloj"  [(ngModel)]="horaContacto"  name="Hora" [timeOnly]="true" hourFormat="24"></p-calendar>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col">
+                  <label for="">{{ _LABEL_R.asunto }}</label>
                 <input
                         #asuntoContacto = "ngModel"
                         type="text"
@@ -304,48 +312,60 @@
 
             </div>
             
-            <div class="row mt-2 pt-2" style="border-top: 1px solid #dee2e6" *ngIf="!edicion">
-              <div class="col-3">Generar tarea</div>
-              <div class="col-2"><p-inputSwitch [(ngModel)]="generarTarea" (click)="agregarTarea()"></p-inputSwitch></div>
-            </div>
-            <div *ngIf="generarTarea">
-                <div class="row form-group">
-                    <div class="col-4">
-                      <label>{{ _LABEL_R.fecha}}</label>
-                      <ng-datepicker
-                        #fechaTarea = "ngModel"
-                        [(ngModel)]="tareaSeleccionada.fechaEstimada"
-                        [options]="options"
-                        style="z-index: 1000; position: relative;"
-                      >
-                      </ng-datepicker>
-                    </div>
-                    <div class="col-8">
-                      <label>{{ _LABEL_R.titulo }}</label>
-                      <input  
-                              type="text"
-                              class="form-control"
-                              #tituloTarea= "ngModel"
-                              required
-                              [(ngModel)]="tareaSeleccionada.titulo"
-                              [placeholder]="_LABEL.ingrese.asunto"
-                      >
-                    </div>
+            <div *ngIf="!edicion">
+                <div class="row mt-2 pt-2" style="border-top: 1px solid #dee2e6">
+                    <div class="col-3">Generar tarea</div>
+                    <div class="col-2"><p-inputSwitch [(ngModel)]="generarTarea" (click)="agregarTarea()"></p-inputSwitch></div>
                   </div>
-                  <div class="row">
-                    <div class="form-group col">
-                      <label>{{ _LABEL.descripcion }}</label>
-                      <textarea
-                                class="form-control" rows="2"
-                                #descripcionTarea = "ngModel"
-                                required
-                                [(ngModel)]="tareaSeleccionada.descripcion"
-                                [placeholder]="_LABEL.ingrese.descripcion"
-                      
-                      ></textarea>
-                    </div>
-                  </div>
+                <div *ngIf="generarTarea">
+                    <div class="row mt-2 mb-2">
+                        <div class="col-6"><p-selectButton [options]="types" [(ngModel)]="selectedType" (click)="togglePorFechaPorDia()"></p-selectButton></div>
+                        <div class="col-6" *ngIf="!porFecha">Fecha: <span>{{ _Util.convertirDate(fechaPorDia) }}</span></div>
+                      </div>
+                    <div class="row form-group">
+                        <div class="col-4" *ngIf="porFecha">
+                          <label>{{ _LABEL_R.fecha}}</label>
+                          <ng-datepicker
+                            #fechaTarea = "ngModel"
+                            [(ngModel)]="tareaSeleccionada.fechaEstimada"
+                            [options]="options"
+                            style="z-index: 1000; position: relative;"
+                          >
+                          </ng-datepicker>
+                        </div>
+                        <div class="col-4" *ngIf="!porFecha">
+                          <label>Avisar en </label>
+                          <input class="form-control" type="number" [(ngModel)]="cantidadDias" (click)="sumarDias()" min="1" max="100">
+                          <label >días</label>
+                        </div>
+                        <div class="col-8">
+                          <label>{{ _LABEL_R.titulo }}</label>
+                          <input  
+                                  type="text"
+                                  class="form-control"
+                                  #tituloTarea= "ngModel"
+                                  required
+                                  [(ngModel)]="tareaSeleccionada.titulo"
+                                  [placeholder]="_LABEL.ingrese.asunto"
+                          >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col">
+                          <label>{{ _LABEL.descripcion }}</label>
+                          <textarea
+                                    class="form-control" rows="2"
+                                    #descripcionTarea = "ngModel"
+                                    required
+                                    [(ngModel)]="tareaSeleccionada.descripcion"
+                                    [placeholder]="_LABEL.ingrese.descripcion"
+                          
+                          ></textarea>
+                        </div>
+                      </div>
+                </div>
             </div>
+            
             
 
           </div>

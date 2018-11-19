@@ -43,7 +43,15 @@ export class TareasComponent implements OnInit {
 
   tareas: Tarea[];
 
+  fechaTarea = + new Date();
+
+
+  mostrandoDetalleTarea: boolean = false;
   mostrarDialogoNuevaTarea: boolean = false;
+
+  mostrandoDialogoOfrecerContacto: boolean = false;
+
+
 
   tareasPersonalesParaHoy: Tarea[] = [];
   tareasPersonalesPendientes: Tarea[] = [];
@@ -53,6 +61,7 @@ export class TareasComponent implements OnInit {
 
   tareaSeleccionada: Tarea;
   cols: any[];
+  colsTodas: any[];
   administrativos: Administrativo[];
   contactos: Contacto[];
   selectedAdministrativo: Administrativo = new Administrativo();
@@ -118,9 +127,33 @@ export class TareasComponent implements OnInit {
     })
   }
 
+  actualizarTareas(){
+    Promise.all([
+      this._tareasService.getTareas().toPromise(),
+      this._contactoService.getContactos().toPromise()])
+      .then(values => {
+        this.tareas = [];
+        this.contactos = [];
+        values[0].forEach(tarea =>{
+          let tareaAux = new Tarea();
+          tareaAux.copiar(tarea);
+          this.tareas.push(tareaAux);
+        });
+        values[1].forEach(contacto =>{
+          let contactoAux = new Contacto();
+          contactoAux.copiar(contacto);
+          this.contactos.push(contactoAux);
+        })
+      }).then(() => this.llenarTablas());
+  }
+
   llenarTablas(){
+    this.tareasPendientes = [];
+    this.tareasPersonalesPendientes = [];
+    this.tareasPersonalesCompletadas = [];
+    this.tareasPersonalesParaHoy = [];
     this.tareas.forEach(tarea => {
-      if(tarea.pendiente){
+      if(tarea.pendiente && this._UTIL.yaPaso(tarea.fechaEstimada)){
         this.tareasPendientes.push(tarea);
         if(tarea.administrativo.id == this.selectedAdministrativo.id){
           this.tareasPersonalesPendientes.push(tarea);
@@ -139,7 +172,7 @@ export class TareasComponent implements OnInit {
     })
   }
   ngDoCheck(){
-    console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
+    // console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
     
     // console.log("administrativo: ",this.selectedAdministrativo);
   }
@@ -152,22 +185,53 @@ export class TareasComponent implements OnInit {
   }
 
   nuevaTarea(){
+    this.tareaSeleccionada = new Tarea();
     this.mostrarDialogoNuevaTarea = true;
-    this.tareaSeleccionada=new Tarea();
   }
   ocultarDialogo(){
     this.mostrarDialogoNuevaTarea = false;
   }
   guardarTarea(){
-    console.log('guardando..')
-    this.mostrarDialogoNuevaTarea = false;
+    let auxAdministrativo = new Administrativo();
+    auxAdministrativo.copiar(this.selectedAdministrativo);
+    this.tareaSeleccionada.administrativo.copiar(auxAdministrativo);
+    this.tareaSeleccionada.fechaEstimada = this.fechaTarea;
+    this._tareasService.addTarea(this.tareaSeleccionada)
+      .toPromise()
+      .then(()=>  this.actualizarTareas())
+      .then(() =>{
+        this.tareaSeleccionada = new Tarea();
+        this.mostrarDialogoNuevaTarea = false;
+      })
   }
 
 
   finalizarTarea(tarea){
-
+    this.modificarEstadoTarea(tarea, false);
   }
-  mostrarContacto(tarea){
+  
+  restaurarTarea(tarea){
+    this.modificarEstadoTarea(tarea, true);
+  }
+
+
+  private modificarEstadoTarea(tarea, pendiente: boolean){
+    this.tareaSeleccionada = new Tarea();
+    this.tareaSeleccionada.copiar(tarea);
+    this.tareaSeleccionada.administrativo = this.selectedAdministrativo;
+    this.tareaSeleccionada.pendiente = pendiente;
+    this._tareasService.updateTarea(this.tareaSeleccionada)
+      .toPromise()
+      .then(() => {
+        this.actualizarTareas();
+        this.mostrarDialogoOfrecerContacto();
+      });
+  }
+
+  mostrarDetalleTarea(tarea){
+    this.tareaSeleccionada = new Tarea();
+    this.tareaSeleccionada.copiar(tarea);
+    this.mostrandoDetalleTarea = true;
 
   }
   refrescarTareas(){
@@ -226,6 +290,10 @@ export class TareasComponent implements OnInit {
   cargarTareasCompletadas(){
 
   }
+
+  ocultarDetalleTarea(){
+    this.mostrandoDetalleTarea = false;
+  }
   getTareas(){
     return this._tareasService.getTareas()
       .toPromise().then(tareas => {
@@ -274,6 +342,7 @@ export class TareasComponent implements OnInit {
   }
 
 
+  
 
 
 
@@ -292,7 +361,19 @@ export class TareasComponent implements OnInit {
   hayTareasPendientes(){
     return this.tareasPendientes.length > 0;
   }
+  
 
+
+  mostrarDialogoOfrecerContacto(){
+    this.mostrandoDialogoOfrecerContacto = true;
+  }
+  ocultarDialogoOfrecerContacto(){
+    this.mostrandoDialogoOfrecerContacto = false;
+  }
+
+  generarNuevoContacto(){
+
+  }
 
 
 
@@ -303,10 +384,16 @@ export class TareasComponent implements OnInit {
     this.cols = [
       { field: 'fechaEstimada', header: 'Fecha estimada a realizar'},
       { field: 'titulo', header:'Titulo'},
-      { field: 'descripcion', header:'Descripcion'},
-      { field: 'contacto', header:'Contacto'},
+      { field: 'info', header:'Info'},
       { field: 'acciones', header:'Acciones'}
     ];
+    this.colsTodas = [
+      { field: 'fechaEstimada', header: 'Fecha'},
+      { field: 'administrativo', header: 'Administrativo'},
+      { field: 'titulo', header: 'Título'},
+      { field: 'info', header: 'Info'},
+      { field: 'acciones', header: 'Acciones'}
+    ]
   }
 }
 
