@@ -9,7 +9,8 @@ export class Tarea extends Resource implements ITarea{
 	pendiente:boolean;
     fechaEstimada : number;
     contacto: Contacto;
-    administrativo: Administrativo;
+    administrativoCreador: Administrativo;
+    administrativoResolvedor: Administrativo;
     
     constructor(){
         super();
@@ -17,6 +18,7 @@ export class Tarea extends Resource implements ITarea{
         this.descripcion="";
         this.fechaEstimada = + new Date();
         this.pendiente = true;
-        this.administrativo = new Administrativo();
+        this.administrativoCreador = new Administrativo();
+        this.administrativoResolvedor = new Administrativo();
     }
 }

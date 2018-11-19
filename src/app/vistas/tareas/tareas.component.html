@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between p-4 bg-light header" >
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroup-sizing-default">Nombre Administrativo</span>
-      <p-dropdown [options]="administrativos" [(ngModel)]="selectedAdministrativo" [filter]="true" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange($event)"></p-dropdown>
+      <p-dropdown [options]="administrativos" [(ngModel)]="selectedAdministrativo" [filter]="true" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange()"></p-dropdown>
     </div>
     <!-- (onChange)="refrescarTareas()"  -->
     <div>
@@ -185,8 +185,8 @@
                 <span *ngSwitchCase="'fechaEstimada'">
                         {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
                 </span>
-                <span *ngSwitchCase="'administrativo'">
-                    {{ rowData.administrativo.nombre}}
+                <span *ngSwitchCase="'administrativoCreador'">
+                    {{ rowData.administrativoCreador.nombre}}
                 </span>
                 <span *ngSwitchCase="'info'">
                     <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"

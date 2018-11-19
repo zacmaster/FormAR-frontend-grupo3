@@ -8,5 +8,6 @@ export interface ITarea extends Iresource{
 	pendiente:boolean,
     fechaEstimada : number,
     contacto: Contacto,
-    administrativo: Administrativo,
+    administrativoCreador: Administrativo,
+    administrativoResolvedor: Administrativo
 }

@@ -468,7 +468,8 @@ export class ContactosListComponent implements OnInit {
                 if(!this.porFecha){
                   this.tareaSeleccionada.fechaEstimada = + this.fechaPorDia; 
                 }
-                this.tareaSeleccionada.administrativo = administrativoAux;
+                this.tareaSeleccionada.administrativoCreador = administrativoAux;
+                this.tareaSeleccionada.administrativoResolvedor=null;
     
                 this._tareaService.addTarea(this.tareaSeleccionada).subscribe();
               }

@@ -73,13 +73,15 @@ export class TareasComponent implements OnInit {
     private _contactoService: ContactoService
     
     ) {
-      this.cargarCampos();
-      this.bajarDatos();
+       this.cargarCampos();
+       this.bajarDatos();
       // this.getAdministrativos();
     }
 
   ngOnInit() {
-    console.log(this.tareasPendientes)
+    //console.log(this.tareasPendientes)
+    //this.cargarCampos();
+      //this.bajarDatos();
     // this.cargarCampos();
     // this.getTareas();
   }
@@ -93,6 +95,7 @@ export class TareasComponent implements OnInit {
       this.administrativos = [];
       this.tareas = [];
       this.contactos = [];
+      
       values[0].forEach(administrativo => {
         let adminAux = new Administrativo();
         adminAux.copiar(administrativo);
@@ -111,6 +114,8 @@ export class TareasComponent implements OnInit {
 
     }).then(() => {
       this.selectedAdministrativo = this.administrativos[0];
+   
+      
       this.llenarTablas();
       // console.log('contactos', this.contactos);
       // console.log('administrativos', this.administrativos);
@@ -153,9 +158,10 @@ export class TareasComponent implements OnInit {
     this.tareasPersonalesCompletadas = [];
     this.tareasPersonalesParaHoy = [];
     this.tareas.forEach(tarea => {
-      if(tarea.pendiente && this._UTIL.yaPaso(tarea.fechaEstimada)){
+      if(tarea.pendiente){//&& this._UTIL.yaPaso(tarea.fechaEstimada
+        
         this.tareasPendientes.push(tarea);
-        if(tarea.administrativo.id == this.selectedAdministrativo.id){
+        if(tarea.administrativoCreador.id == this.selectedAdministrativo.id){
           this.tareasPersonalesPendientes.push(tarea);
           if(this.esTareaAdministrativoHoy(tarea)){
             this.tareasPersonalesParaHoy.push(tarea)
@@ -164,23 +170,25 @@ export class TareasComponent implements OnInit {
 
       }
       else{
-        if(tarea.administrativo.id == this.selectedAdministrativo.id)
+        if(tarea.administrativoCreador.id == this.selectedAdministrativo.id){
           this.tareasPersonalesCompletadas.push(tarea);
+        }
+       
       }
-
-
     })
+    
+    
   }
   ngDoCheck(){
     // console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
     
-    // console.log("administrativo: ",this.selectedAdministrativo);
+     console.log("administrativo: ",this.administrativos);
   }
 
 
   esTareaAdministrativoHoy(tarea: Tarea): boolean{
     return  tarea.pendiente &&
-            tarea.administrativo.id == this.selectedAdministrativo.id &&
+            tarea.administrativoCreador.id == this.selectedAdministrativo.id &&
             Util.esHoy(tarea.fechaEstimada)
   }
 
@@ -194,7 +202,8 @@ export class TareasComponent implements OnInit {
   guardarTarea(){
     let auxAdministrativo = new Administrativo();
     auxAdministrativo.copiar(this.selectedAdministrativo);
-    this.tareaSeleccionada.administrativo.copiar(auxAdministrativo);
+    this.tareaSeleccionada.administrativoCreador.copiar(auxAdministrativo);
+    this.tareaSeleccionada.administrativoResolvedor=null;
     this.tareaSeleccionada.fechaEstimada = this.fechaTarea;
     this._tareasService.addTarea(this.tareaSeleccionada)
       .toPromise()
@@ -218,7 +227,7 @@ export class TareasComponent implements OnInit {
   private modificarEstadoTarea(tarea, pendiente: boolean){
     this.tareaSeleccionada = new Tarea();
     this.tareaSeleccionada.copiar(tarea);
-    this.tareaSeleccionada.administrativo = this.selectedAdministrativo;
+    this.tareaSeleccionada.administrativoResolvedor = this.selectedAdministrativo;
     this.tareaSeleccionada.pendiente = pendiente;
     this._tareasService.updateTarea(this.tareaSeleccionada)
       .toPromise()
@@ -253,10 +262,10 @@ export class TareasComponent implements OnInit {
         // this.getTareas();
       })
   }
-  onChange(e){
+  onChange(){
     let auxAdministrativo = new Administrativo();
     auxAdministrativo.copiar(this.selectedAdministrativo);
-    this.llenarTablasAdministrativo(auxAdministrativo);
+    this.llenarTablas();//this.llenarTablasAdministrativo(auxAdministrativo);
   }
 
 
@@ -267,7 +276,7 @@ export class TareasComponent implements OnInit {
     this.tareasPersonalesPendientes = [];
 
     this.tareas.forEach(tarea => {
-      if(tarea.administrativo.id == administrativo.id){
+      if(tarea.administrativoCreador.id == administrativo.id){
         if(tarea.pendiente){
           this.tareasPersonalesPendientes.push(tarea);
           if(this.esTareaAdministrativoHoy(tarea)){
@@ -389,7 +398,7 @@ export class TareasComponent implements OnInit {
     ];
     this.colsTodas = [
       { field: 'fechaEstimada', header: 'Fecha'},
-      { field: 'administrativo', header: 'Administrativo'},
+      { field: 'administrativoCreador', header: 'Administrativo'},
       { field: 'titulo', header: 'Título'},
       { field: 'info', header: 'Info'},
       { field: 'acciones', header: 'Acciones'}
