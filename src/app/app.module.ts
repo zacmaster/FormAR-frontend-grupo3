@@ -11,10 +11,10 @@ import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgDatepickerModule } from 'ng2-datepicker';
-import {CalendarModule} from 'primeng/calendar';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {DropdownModule} from 'primeng/dropdown';
-import {SpinnerModule} from 'primeng/spinner';
+import { CalendarModule } from 'primeng/calendar';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+import { SpinnerModule } from 'primeng/spinner';
 
 import {CheckboxModule} from 'primeng/checkbox';
 
@@ -22,10 +22,10 @@ import {CheckboxModule} from 'primeng/checkbox';
 
 
 
-import {FullCalendarModule} from 'primeng/fullcalendar';
+import { FullCalendarModule } from 'primeng/fullcalendar';
 
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './vistas/login/login.component';
 import { HomeComponent } from './vistas/home/home.component';
@@ -34,10 +34,10 @@ import { PageNotFoundComponent } from './vistas/page-not-found/page-not-found.co
 import { AlumnosListComponent } from './componentes/alumnos-list/alumnos-list.component';
 import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component';
 import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
-import {TableModule} from 'primeng/table';
+import { TableModule } from 'primeng/table';
 
 import { ContactosComponent } from './vistas/contactos/contactos.component';
 import { CursosComponent } from './vistas/cursos/cursos.component';

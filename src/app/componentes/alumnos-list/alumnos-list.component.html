@@ -30,7 +30,7 @@
                   {{rowData.apellido}}
                 </span>
                   <span *ngSwitchCase="'acciones'">
-                      <button class="btn btn-default mr-2 bg-success" [title]="_LABEL.boton.pagar" (click)="clickPagos(rowData)">
+                      <button class="btn btn-default mr-2 bg-success" [title]="_LABEL.boton.pagar" (click)="mostrarPagosAlumno(rowData)">
                             <i class="fas fa-dollar-sign "></i>
                       </button>
                       <button class="btn btn-info mr-2" [title]="_LABEL.boton.inscribir" (click)="clickInscripcionAlumno(rowData)">
@@ -217,15 +217,17 @@
 
 
 <!-- Inicio Dialogo para pagar -->
+<dialogo-info *ngIf="mostrarPagosInicio && !alumnoTienePagos" [titulo]="tituloDialogoCursada" [texto]="_LABEL.leyenda.alumnosSinPagos" (clickBotonCerrar)="clickCancelarPagar()" (clickBotonOk)="clickCancelarPagar()"></dialogo-info>
+
 <dialogo-confirmacion
-    *ngIf="mostrarPagosInicio"
+    *ngIf="mostrarPagosInicio && alumnoTienePagos"
     titulo="Pagar"
     (clickBotonIzquierdo)="clickCancelarPagar()"
     (clickBotonDerecho)="clickPagar()"
     [botonCerrar]="false" 
     textoBotonDerecho="Pagar"
+    >
 
->
     <div class="row">
         <div class="col">
             <p class="mx-auto">
@@ -233,29 +235,35 @@
             </p>
         </div>    
     </div>
-    <div class="row">
-        <div class="col-6">
-            <p>Seleccione una cursada</p>
-        </div>
-        <div class="col-6">
-            <p-dropdown [options]="cursadasFiltradas" [(ngModel)]="selectedCursada" optionLabel="nombre" [filter]="true" [style]="{'width':'150px'}">
-            </p-dropdown>
-        </div>
-    </div>
-    <div class="row mt-2 mb-2">
-        <div class="col">
-            <!-- <p class="mx-auto"> -->
-                <label class="mr-2" for="basic-url">{{ _LABEL.titulo.cupoMinimo }}</label>
-                <p-spinner size="10" [(ngModel)]="cursadaSeleccionada.cupoMinimo" [placeholder]="_LABEL.ingrese.cupoMinimo" [min]="0" [max]="10"></p-spinner>
-                <!-- </p> -->
-            </div>
-        </div>
-    <div class="row">
-        <div class="col">
-            #Cuotas: 00 - #Cuotas Vencidas: 00 - #Cuotas Pagas: 00
-        </div>
-    </div>
     
+    <div class="contenedorTablaCursada">
+        <table class="table table-hover bg-light w-100">
+            <thead class="thead-light">
+                <tr>
+                    <th>{{ _LABEL.curso }}</th>
+                    <th>{{ _LABEL.tipoPago }}</th>
+                    <th>{{ _LABEL.monto }}</th>
+                    <th>{{ _LABEL.estado }}</th>
+                    <th>{{ _LABEL.fechaVencimiento }}</th>
+                    <th>{{ _LABEL.acciones}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pago of pagosAlumno">
+                    <td>{{ pago.nombre_cursada }}</td>
+                    <td>{{ pago.tipo }}</td>
+                    <td>{{ pago.monto }}</td>
+                    <td>{{ pago.estado }}</td>
+                    <td>{{ _Util.convertirTimestamp(pago.fecha_vencimiento) }}</td>
+                    <td> 
+                        <button class="btn btn-default mr-2 bg-success" [title]="_LABEL.boton.pagar" (click)="clickPagar(rowData)">
+                            <i class="fas fa-dollar-sign "></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 
 
@@ -274,41 +282,15 @@
     [botonCerrar]="false"
     >
 
-        <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quia at cum non labore quod dignissimos numquam saepe provident eos enim dolore magni quibusdam dolor, ratione reiciendis culpa! Maxime, incidunt.
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos cupiditate laudantium iusto perferendis eius. Suscipit veritatis officiis eligendi consectetur repellat maiores dolorem ea. Optio praesentium laborum, eius sint voluptas eaque.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi cupiditate dolor voluptates culpa eveniet beatae, dolore rerum odit excepturi pariatur perspiciatis ipsam minus libero ipsum nulla, maxime velit ut labore!
+        <div class="content" #content>
+               {{alumnoSeleccionado.nombre}}
         </div>
         <div class="row justify-content-center mt-3">
             <button class="btn btn-primary mr-5" (click)=captureScreen()>Imprimir</button>
-            <button class="btn btn-primary" (click)=clickCancelarPagar()>Finalizar</button>
+            <button class="btn btn-primary" (click)=clickContinuar()>Finalizar</button>
         </div>
         
 
 
 </dialogo-confirmacion>
-
-
-
-
-<!-- 
-<div *ngIf="mostrarRecibo" class="dialogoEdicion">
-    <div class="card popUpInscripcion">
-        <div class="container">
-                <div class="card-head text-center w-100 mt-2 mb-2 tituloInscripcion">
-                    <h1>Recibo</h1>
-                </div>
-                <div id="content" #content>
-                    <p class="mx-auto">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quia at cum non labore quod dignissimos numquam saepe provident eos enim dolore magni quibusdam dolor, ratione reiciendis culpa! Maxime, incidunt.
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos cupiditate laudantium iusto perferendis eius. Suscipit veritatis officiis eligendi consectetur repellat maiores dolorem ea. Optio praesentium laborum, eius sint voluptas eaque.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi cupiditate dolor voluptates culpa eveniet beatae, dolore rerum odit excepturi pariatur perspiciatis ipsam minus libero ipsum nulla, maxime velit ut labore!
-                    </p>
-                </div>                
-                
-                <div class="row">
-                </div>
-            </div>
-    </div>
-</div> -->
 

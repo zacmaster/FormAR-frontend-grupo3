@@ -1,10 +1,14 @@
 import { Iresource } from "./iresource";
 
 export interface IPago extends Iresource{
-    idInscripcion: number,
-    idPago: number,
-    idCuota: number,
-    fecha_vencimiento: string,
-    fecha_pago: string,
-    estado: string,
+
+    id: number;
+    idAlumno: number;
+    idCursada: number;
+    tipo: string;
+    estado: string;
+    fecha_vencimiento: number;
+    fecha_pago: number;
+    nombre_cursada: string;
+    monto: number;
 }

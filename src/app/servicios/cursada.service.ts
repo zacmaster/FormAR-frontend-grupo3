@@ -32,8 +32,6 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
     return super.update(cursada);
   }
 
-
-
   deleteCursada(cursada: Cursada): Observable<{}>{
     return super.delete(cursada);
   }

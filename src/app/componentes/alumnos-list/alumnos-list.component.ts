@@ -13,6 +13,8 @@ import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Cursada } from 'src/app/modelos/cursada';
 import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import { Inscripcion } from 'src/app/modelos/inscripcion';
+import { PagoService } from 'src/app/servicios/pago.service';
+import { Pago } from 'src/app/modelos/pago';
 import * as jspdf from 'jspdf'; 
 import html2canvas from 'html2canvas';
 
@@ -69,11 +71,16 @@ public captureScreen() {
   public alumnos = [];
   public cursadas = [];
   public edicion: boolean = false;
+
+  pagosAlumno;
+  alumnoTienePagos: boolean = false;
+
   mostrarDialogoAB = false;
   mostrarDialogoBorrar: boolean = false;
   mostrarPagosInicio: boolean = false;
   mostrarPagosPagar: boolean = false;
   alumnoSeleccionado: Alumno = new Alumno();
+  pagoSeleccionado: Pago = new Pago();
   cursadaSeleccionada: Cursada = new Cursada();
   nombreAlumno: string = '';
   busqueda: string = "";
@@ -113,7 +120,8 @@ public captureScreen() {
               private _alumnoService: AlumnoService,
               private _spinnerService: Ng4LoadingSpinnerService,
               private _cursadaService: CursadaService,
-              private _inscripcionService: InscripcionService
+              private _inscripcionService: InscripcionService,
+              private _pagoService: PagoService
               ) { }
 
   ngOnInit() {
@@ -153,7 +161,6 @@ public captureScreen() {
       })
   }
 
-
   mostrarDialogoEliminar(alumno: any){
     this.alumnoSeleccionado = new Alumno();
     this.alumnoSeleccionado.copiar(alumno);
@@ -164,43 +171,23 @@ public captureScreen() {
     this.mostrarDialogoBorrar = true;
     
   }
-  
-  clickPagos(alumno: any){
-    this.alumnoSeleccionado = new Alumno();
-    this.alumnoSeleccionado.copiar(alumno);
-    let cursadasAlumno: Cursada[] = []; 
-    this._inscripcionService.getCursadasDeAlumno(this.alumnoSeleccionado.id).toPromise().then(
-      cursadas  => {
-        console.log("cursadas alumno",cursadas);
-        cursadas.forEach(element => {
-            cursadasAlumno.push(element);
-            
-        });
-        this.cursadasFiltradas = this.getCursadasFiltradas(this.cursadas,cursadasAlumno);
-        if(this.cursadasFiltradas.length > 0){
-          this.selectedCursada = this.cursadasFiltradas[0];
-        }
-      });
-    this.mostrarPagosInicio = true;
-  }
 
-  clickPagar(alumno: any){
-    // this.mostrarPagosPagar = !this.mostrarPagosPagar;
+  clickPagar(pago: any){
+    this.pagoSeleccionado = new Pago();
+    this.pagoSeleccionado.copiar(pago);
     this.mostrarRecibo = true;
-    // this.mostrarPagosInicio = !this.mostrarPagosInicio;
-    // this.mostrarPagosPagar = !this.mostrarPagosPagar;
+    console.log("PAgo: ",pago);
   }
 
   clickCancelarPagar(){
     this.mostrarPagosPagar = false;
     this.mostrarPagosInicio = false;
+    this.tituloDialogoCursada = this._LABEL.titulo.infoCursada;
+  }
+
+  clickContinuar(){
     this.mostrarRecibo = false;
   }
-
-  descargarReporte(){
-
-  }
-
 
   eliminar(){
     this._spinnerService.show();
@@ -369,4 +356,28 @@ public captureScreen() {
     }
     return false;
   }
+
+  mostrarPagosAlumno(alumno: any){
+    this.alumnoSeleccionado = new Alumno();
+    this.alumnoSeleccionado.copiar(alumno);
+    this._pagoService.getPagosAlumno(this.alumnoSeleccionado.id)
+    .toPromise()
+    .then(pagos => {
+      this.tituloDialogoCursada = this.tituloDialogoCursada + 
+                                  ` ${this.alumnoSeleccionado.nombre} ${this.alumnoSeleccionado.apellido}`;
+      this.pagosAlumno = pagos;
+
+      console.log("Pagos Alumno: ",this.pagosAlumno);
+      console.log("Cantidad pagos: ",this.pagosAlumno.length);
+      if(this.pagosAlumno.length > 0){
+        this.alumnoTienePagos = true;                              
+      }
+      else{
+        this.alumnoTienePagos = false;                              
+      }
+    });
+    this.mostrarPagosInicio = true;    
+  }
+
+
 }
