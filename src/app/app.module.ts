@@ -61,6 +61,8 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
 
 import { httpInterceptorProviders} from './auth/auth-interceptor';
+import {AuthGuardService} from './servicios/auth-guard.service';
+import {TokenStorageService} from './auth/token-storage.service';
 
 @NgModule({
   declarations: [
@@ -116,7 +118,8 @@ import { httpInterceptorProviders} from './auth/auth-interceptor';
     PaginatorModule
   ],
   providers: [
-    AlumnoService, httpInterceptorProviders
+    AlumnoService, httpInterceptorProviders, AuthGuardService,
+    TokenStorageService
   ],
   bootstrap: [AppComponent]
 })

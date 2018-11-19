@@ -12,26 +12,48 @@ import { CursadasComponent } from './vistas/cursadas/cursadas.component';
 import { InstructoresComponent } from './vistas/instructores/instructores.component';
 import { SalasComponent } from './vistas/salas/salas.component';
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
+import {AuthGuardService} from './servicios/auth-guard.service';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/home/alumnos', pathMatch: 'full' },
     {
-        path: 'home',
-        component:  HomeComponent,
-        children:[
-            { path: '', redirectTo: '/home/alumnos', pathMatch: 'full'},
-            { path: 'alumnos', component: AbmAlumnosComponent},
-            { path: 'contactos', component: ContactosListComponent},
-            { path: 'cursos', component: CursosComponent},
-            { path: 'cursadas', component: CursadasComponent},
-            { path: 'instructores', component: InstructoresComponent},
-            { path: 'salas', component: SalasComponent},
-        ]
+      path: '',
+      redirectTo: '/home/alumnos',
+      pathMatch: 'full'
     },
-    { path: 'auth/login', component:  LoginComponent},
-    { path: 'signup', component: RegisterComponent},
-    { path: 'instructor', component: InstructorHomeComponent},
-    { path: '**', component: PageNotFoundComponent}
+    {
+      path: 'home',
+      component:  HomeComponent,
+      children:[
+          { path: '', redirectTo: '/home/alumnos', pathMatch: 'full'},
+          { path: 'alumnos', component: AbmAlumnosComponent},
+          { path: 'contactos', component: ContactosListComponent},
+          { path: 'cursos', component: CursosComponent},
+          { path: 'cursadas', component: CursadasComponent},
+          { path: 'instructores', component: InstructoresComponent},
+          { path: 'salas', component: SalasComponent},
+      ]
+    },
+    {
+      path: 'auth/login',
+      component:  LoginComponent
+    },
+    {
+      path: 'signup',
+      component: RegisterComponent
+    },
+    {
+      path: 'instructor',
+      component: InstructorHomeComponent
+    },
+    {
+      path: 'algo',
+      component: PageNotFoundComponent,
+      canActivate: [AuthGuardService]
+    },
+    {
+      path: '**',
+      component: PageNotFoundComponent
+    }
 
 ];
 
