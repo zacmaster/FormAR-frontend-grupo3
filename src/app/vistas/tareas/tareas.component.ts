@@ -24,7 +24,7 @@ export class TareasComponent implements OnInit {
   _VALIDACION = VALIDACION;
   _PATTERN = PATTERNS;
   _UTIL= Util;
-
+  
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2000,
@@ -43,7 +43,15 @@ export class TareasComponent implements OnInit {
 
   tareas: Tarea[];
 
+  fechaTarea = + new Date();
+
+
+  mostrandoDetalleTarea: boolean = false;
   mostrarDialogoNuevaTarea: boolean = false;
+
+  mostrandoDialogoOfrecerContacto: boolean = false;
+
+
 
   tareasPersonalesParaHoy: Tarea[] = [];
   tareasPersonalesPendientes: Tarea[] = [];
@@ -53,26 +61,25 @@ export class TareasComponent implements OnInit {
 
   tareaSeleccionada: Tarea;
   cols: any[];
+  colsTodas: any[];
   administrativos: Administrativo[];
   contactos: Contacto[];
   selectedAdministrativo: Administrativo = new Administrativo();
+  colsCompletadas: { field: string; header: string; }[];
 
   constructor(
     private _tareasService:TareaService,
     private _administrativoService:AdministrativoService,
     private _spinnerService: Ng4LoadingSpinnerService,
     private _contactoService: ContactoService
-
+    
     ) {
-      this.cargarCampos();
-      this.bajarDatos();
+       this.cargarCampos();
+       this.bajarDatos();
       // this.getAdministrativos();
     }
 
   ngOnInit() {
-    console.log(this.tareasPendientes)
-    // this.cargarCampos();
-    // this.getTareas();
   }
 
   bajarDatos(){
@@ -84,6 +91,7 @@ export class TareasComponent implements OnInit {
       this.administrativos = [];
       this.tareas = [];
       this.contactos = [];
+      
       values[0].forEach(administrativo => {
         let adminAux = new Administrativo();
         adminAux.copiar(administrativo);
@@ -102,72 +110,131 @@ export class TareasComponent implements OnInit {
 
     }).then(() => {
       this.selectedAdministrativo = this.administrativos[0];
+   
+      
       this.llenarTablas();
-      // console.log('contactos', this.contactos);
-      // console.log('administrativos', this.administrativos);
-      // let nuevaTarea = new Tarea();
-      // nuevaTarea.administrativo = this.administrativos[1];
-      // nuevaTarea.contacto = this.contactos[0];
-      // nuevaTarea.pendiente = true;
-      // nuevaTarea.titulo = "Consulta por talleres de nodejs"
-      // nuevaTarea.descripcion = "Llamarlo de nuevo para convencerlo"
-      // nuevaTarea.fechaEstimada = + new Date();
-      // this._tareasService.addTarea(nuevaTarea).subscribe();
-      // console.log('tareas', this.tareas);
 
     })
+  }
+
+  actualizarTareas(){
+    Promise.all([
+      this._tareasService.getTareas().toPromise(),
+      this._contactoService.getContactos().toPromise()])
+      .then(values => {
+        this.tareas = [];
+        this.contactos = [];
+        values[0].forEach(tarea =>{
+          let tareaAux = new Tarea();
+          tareaAux.copiar(tarea);
+          this.tareas.push(tareaAux);
+        });
+        values[1].forEach(contacto =>{
+          let contactoAux = new Contacto();
+          contactoAux.copiar(contacto);
+          this.contactos.push(contactoAux);
+        })
+      }).then(() => this.llenarTablas());
   }
 
   llenarTablas(){
-    this.tareas.forEach(tarea => {
+    this.tareasPendientes = [];
+    this.tareasPersonalesPendientes = [];
+    this.tareasPersonalesCompletadas = [];
+    this.tareasPersonalesParaHoy = [];
+
+    this.tareas.forEach(tarea =>{
       if(tarea.pendiente){
-        this.tareasPendientes.push(tarea);
-        if(tarea.administrativo.id == this.selectedAdministrativo.id){
-          this.tareasPersonalesPendientes.push(tarea);
-          if(this.esTareaAdministrativoHoy(tarea)){
-            this.tareasPersonalesParaHoy.push(tarea)
+        if(tarea.administrativoCreador.id == this.selectedAdministrativo.id){
+          console.log('tareaFechaEstimada: ',tarea.fechaEstimada);
+          console.log('esHoy: ',this._UTIL.esHoy(tarea.fechaEstimada));
+          if(this._UTIL.esHoy(tarea.fechaEstimada)){
+            this.tareasPersonalesParaHoy.push(tarea);
+          }else if(this._UTIL.yaPaso(tarea.fechaEstimada)){
+            this.tareasPersonalesPendientes.push(tarea);
           }
+          // console.log('pendiente del admin activo: ',tarea);
         }
-
+        else{ //es pendiente pero no del admin activo
+          if(this._UTIL.yaPaso(tarea.fechaEstimada)){
+            this.tareasPendientes.push(tarea);
+          }
+          // console.log('pendiente de otro: ',tarea)
+        }
       }
-      else{
-        if(tarea.administrativo.id == this.selectedAdministrativo.id)
+      else{ //!tarea.pendiente
+        if(tarea.administrativoCreador.id == this.selectedAdministrativo.id){
+          console.log('tareas completadas por el admin activo', tarea);
           this.tareasPersonalesCompletadas.push(tarea);
+        }
       }
-
 
     })
-  }
-  ngDoCheck(){
-    console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
 
-    // console.log("administrativo: ",this.selectedAdministrativo);
+  }
+
+  ngDoCheck(){
+    // console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
+    
+     console.log("administrativo: ",this.administrativos);
   }
 
 
   esTareaAdministrativoHoy(tarea: Tarea): boolean{
     return  tarea.pendiente &&
-            tarea.administrativo.id == this.selectedAdministrativo.id &&
+            tarea.administrativoCreador.id == this.selectedAdministrativo.id &&
             Util.esHoy(tarea.fechaEstimada)
   }
 
   nuevaTarea(){
+    this.tareaSeleccionada = new Tarea();
     this.mostrarDialogoNuevaTarea = true;
-    this.tareaSeleccionada=new Tarea();
   }
   ocultarDialogo(){
     this.mostrarDialogoNuevaTarea = false;
   }
   guardarTarea(){
-    console.log('guardando..')
-    this.mostrarDialogoNuevaTarea = false;
+    let auxAdministrativo = new Administrativo();
+    auxAdministrativo.copiar(this.selectedAdministrativo);
+    this.tareaSeleccionada.administrativoCreador.copiar(auxAdministrativo);
+    this.tareaSeleccionada.administrativoResolvedor=null;
+    this.tareaSeleccionada.fechaEstimada = this.fechaTarea;
+    this._tareasService.addTarea(this.tareaSeleccionada)
+      .toPromise()
+      .then(()=>  this.actualizarTareas())
+      .then(() =>{
+        this.tareaSeleccionada = new Tarea();
+        this.mostrarDialogoNuevaTarea = false;
+      })
   }
 
 
   finalizarTarea(tarea){
-
+    this.modificarEstadoTarea(tarea, false);
   }
-  mostrarContacto(tarea){
+  
+  restaurarTarea(tarea){
+    this.modificarEstadoTarea(tarea, true);
+  }
+
+
+  private modificarEstadoTarea(tarea, pendiente: boolean){
+    this.tareaSeleccionada = new Tarea();
+    this.tareaSeleccionada.copiar(tarea);
+    this.tareaSeleccionada.administrativoResolvedor = this.selectedAdministrativo;
+    this.tareaSeleccionada.pendiente = pendiente;
+    this._tareasService.updateTarea(this.tareaSeleccionada)
+      .toPromise()
+      .then(() => {
+        this.actualizarTareas();
+        this.mostrarDialogoOfrecerContacto();
+      });
+  }
+
+  mostrarDetalleTarea(tarea){
+    this.tareaSeleccionada = new Tarea();
+    this.tareaSeleccionada.copiar(tarea);
+    this.mostrandoDetalleTarea = true;
 
   }
   refrescarTareas(){
@@ -189,11 +256,13 @@ export class TareasComponent implements OnInit {
         // this.getTareas();
       })
   }
-  onChange(e){
+  onChange(){
     let auxAdministrativo = new Administrativo();
     auxAdministrativo.copiar(this.selectedAdministrativo);
-    this.llenarTablasAdministrativo(auxAdministrativo);
+    this.llenarTablas();//this.llenarTablasAdministrativo(auxAdministrativo);
   }
+
+
 
   llenarTablasAdministrativo(administrativo: Administrativo){
     this.tareasPersonalesCompletadas = [];
@@ -201,7 +270,7 @@ export class TareasComponent implements OnInit {
     this.tareasPersonalesPendientes = [];
 
     this.tareas.forEach(tarea => {
-      if(tarea.administrativo.id == administrativo.id){
+      if(tarea.administrativoCreador.id == administrativo.id){
         if(tarea.pendiente){
           this.tareasPersonalesPendientes.push(tarea);
           if(this.esTareaAdministrativoHoy(tarea)){
@@ -223,6 +292,10 @@ export class TareasComponent implements OnInit {
 
   cargarTareasCompletadas(){
 
+  }
+
+  ocultarDetalleTarea(){
+    this.mostrandoDetalleTarea = false;
   }
   getTareas(){
     return this._tareasService.getTareas()
@@ -272,6 +345,7 @@ export class TareasComponent implements OnInit {
   }
 
 
+  
 
 
 
@@ -290,7 +364,19 @@ export class TareasComponent implements OnInit {
   hayTareasPendientes(){
     return this.tareasPendientes.length > 0;
   }
+  
 
+
+  mostrarDialogoOfrecerContacto(){
+    this.mostrandoDialogoOfrecerContacto = true;
+  }
+  ocultarDialogoOfrecerContacto(){
+    this.mostrandoDialogoOfrecerContacto = false;
+  }
+
+  generarNuevoContacto(){
+
+  }
 
 
 
@@ -301,10 +387,21 @@ export class TareasComponent implements OnInit {
     this.cols = [
       { field: 'fechaEstimada', header: 'Fecha estimada a realizar'},
       { field: 'titulo', header:'Titulo'},
-      { field: 'descripcion', header:'Descripcion'},
-      { field: 'contacto', header:'Contacto'},
+      { field: 'info', header:'Info'},
       { field: 'acciones', header:'Acciones'}
     ];
+    this.colsCompletadas = [
+      { field: 'fechaEstimada', header: 'Fecha estimada a realizar'},
+      { field: 'titulo', header:'Titulo'},
+      { field: 'info', header:'Info'}
+    ];
+    this.colsTodas = [
+      { field: 'fechaEstimada', header: 'Fecha'},
+      { field: 'administrativoCreador', header: 'Administrativo'},
+      { field: 'titulo', header: 'Título'},
+      { field: 'info', header: 'Info'},
+      { field: 'acciones', header: 'Acciones'}
+    ]
   }
 }
 

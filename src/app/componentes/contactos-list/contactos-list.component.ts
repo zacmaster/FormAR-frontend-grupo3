@@ -14,6 +14,7 @@ import { CursoService } from 'src/app/servicios/curso.service';
 import { AreaService } from 'src/app/servicios/area.service';
 import { Util } from '../../utilidades/util';
 import { SortEvent } from 'primeng/components/common/api';
+import {SelectItem} from 'primeng/api';
 import { Tarea } from 'src/app/modelos/tarea';
 import { AdministrativoService } from 'src/app/servicios/administrativo.service';
 import { TareaService } from 'src/app/servicios/tarea.service';
@@ -32,6 +33,8 @@ export class ContactosListComponent implements OnInit {
   agregandoAlumno = false;
   seEligeArea = true;
   edicion:boolean=false;
+  fechaContacto: Date;
+  fechaPorDia: Date = new Date();
   fechaHoraContacto: string = '';
   cols: any[];
 
@@ -52,9 +55,21 @@ export class ContactosListComponent implements OnInit {
   mostrarDialogoBorrar: boolean = false;
   descripcionShowed: boolean = false;
 
-  generarTarea: boolean = false;
+  porFecha: boolean = true;
+  cantidadDias: number = 1;
+
+
+  
+  types: SelectItem[] = [ {label: 'por Fecha', value: 'porFecha'},
+                                  {label: 'por Días', value: 'porDías'}]; 
+
+
+  selectedType: string = this.types[0].value;                                  
+  generarTarea: boolean = true;
 
   textoEliminarContacto: string;
+
+  horaContacto: Date;
 
 
 
@@ -117,6 +132,7 @@ export class ContactosListComponent implements OnInit {
   }
 
   ngDoCheck(){
+   // console.log('fechaContacto', this.fechaContacto);
     // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
    // console.log(this.contactos)
   }
@@ -253,6 +269,7 @@ export class ContactosListComponent implements OnInit {
 
   // Click en nuevo contacto, se muestra el formulario con los campos vacíos
   nuevoContacto(){
+    this.horaContacto = new Date();
     this.alumnoSeleccionado = new Alumno();
     this.selectedAlumno=this.alumnos[0];
     this.alumnoSeleccionado=this.selectedAlumno;
@@ -277,6 +294,7 @@ export class ContactosListComponent implements OnInit {
   editarContacto(contacto: any){
     this.contactoSeleccionado = new Contacto();
     this.contactoSeleccionado.copiar(contacto);
+    this.horaContacto = new Date(this.contactoSeleccionado.fecha);
     this.alumnos.forEach(element => {
       if(element.id==this.contactoSeleccionado.alumno.id){
         console.log("este es el alumno al editar",element);
@@ -352,6 +370,10 @@ export class ContactosListComponent implements OnInit {
             this.contactoSeleccionado.curso=this.selectedCurso;
           }
 
+          let fechaTemp: Date = new Date(this.contactoSeleccionado.fecha)
+          fechaTemp.setHours(this.horaContacto.getHours());
+          fechaTemp.setMinutes(this.horaContacto.getMinutes());
+          this.contactoSeleccionado.fecha = + fechaTemp;
           this.guardar(this.contactoSeleccionado);  
       }
       else{
@@ -408,6 +430,9 @@ export class ContactosListComponent implements OnInit {
   }
 
   private editar(contacto:Contacto){
+    let fechaAux = new Date(contacto.fecha);
+    fechaAux.setTime(this.horaContacto.getTime());
+    contacto.fecha = + fechaAux;
     this._contactoService.updateContacto(contacto).subscribe(() => {
       this.getContactos();
       this.getAlumnos();
@@ -439,8 +464,12 @@ export class ContactosListComponent implements OnInit {
                 let administrativoAux = new Administrativo();
                 administrativoAux.id = 2;
                 administrativoAux.nombre = "Eduardo Feinman";
-    
-                this.tareaSeleccionada.administrativo = administrativoAux;
+                
+                if(!this.porFecha){
+                  this.tareaSeleccionada.fechaEstimada = + this.fechaPorDia; 
+                }
+                this.tareaSeleccionada.administrativoCreador = administrativoAux;
+                this.tareaSeleccionada.administrativoResolvedor=null;
     
                 this._tareaService.addTarea(this.tareaSeleccionada).subscribe();
               }
@@ -518,7 +547,7 @@ export class ContactosListComponent implements OnInit {
     this.contactoSeleccionado = new Contacto();
     this.contactoSeleccionado.copiar(contacto);
     
-    this.fechaHoraContacto =  this._Util.convertirTimestamp(this.contactoSeleccionado.fecha);
+    this.fechaHoraContacto =  this._Util.convertirTimestampConHora(this.contactoSeleccionado.fecha);
 
     this.descripcionShowed = true;
   }
@@ -535,6 +564,22 @@ export class ContactosListComponent implements OnInit {
   }
 
 
+  togglePorFechaPorDia(){
+    if( this.selectedType == 'porFecha'){
+      this.porFecha = true;
+    }else{
+      this.porFecha = false;
+      this.fechaPorDia = this._Util.postergarPorDias(this.cantidadDias);
+      // this.fechaContacto = this._Util.postergarPorDias(this.cantidadDias);
+    }
+  }
+
+  sumarDias(){
+    this.fechaPorDia = this._Util.postergarPorDias(this.cantidadDias);
+  }
+
+
+
 
   private cargarCampos(){
     this.cols = [
@@ -544,6 +589,9 @@ export class ContactosListComponent implements OnInit {
       { field: 'acciones', header: 'Acciones' }
     ];
   }
+
+
+
 
 }
 

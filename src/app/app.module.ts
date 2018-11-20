@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AutoCompleteModule,  PaginatorModule, InputSwitchModule} from 'primeng/primeng'
+import {AutoCompleteModule,  PaginatorModule, InputSwitchModule, SelectButtonModule} from 'primeng/primeng'
 
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { NgDatepickerModule } from 'ng2-datepicker';
 import {CalendarModule} from 'primeng/calendar';
@@ -113,7 +114,7 @@ import {TokenStorageService} from './auth/token-storage.service';
     InputSwitchModule,
     TableModule,
     MatTableModule,
-
+    SelectButtonModule,
     CdkTableModule,
     CdkTreeModule,
     MatSortModule,
