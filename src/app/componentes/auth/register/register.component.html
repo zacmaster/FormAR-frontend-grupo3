@@ -1,20 +1,22 @@
-<div *ngIf="isSignedUp; else signupForm">
-  <!--Your registration is successful. Please login!-->
-</div>
-e
-<ng-template #signupForm>
-  <div class="col-sm-4 offset-sm-4" style="max-width:350px;">
-    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+<!-- <div *ngIf="isSignedUp; else signupForm">
+ Your registration is successful. Please login!
+</div> -->
+<div class="content-section implementation ui-fluid">
+ <!-- <ng-template #signupForm>  -->
+   <div class="contenedor">
+   <div class="formulario">
+     <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
       <div class="form-group">
+        <h1></h1>
         <label for="name">Nombre</label>
-        <input type="text" class="form-control" name="name" [(ngModel)]="form.name" #name="ngModel" required />
+        <input type="text" class="form-control" name="name" [(ngModel)]="form.name" required #name="ngModel" />
         <div *ngIf="f.submitted && name.invalid">
           <div *ngIf="name.errors.required">Name is required</div>
         </div>
       </div>
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"
+        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel" 
                required />
         <div *ngIf="f.submitted && username.invalid">
           <div *ngIf="username.errors.required">Username is required</div>
@@ -22,7 +24,7 @@ e
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel" required email />
+        <input type="text" class="form-control" name="email" [(ngModel)]="form.email" required email #email="ngModel"/>
         <div *ngIf="f.submitted && email.invalid">
           <div *ngIf="email.errors.required">Email is required</div>
           <div *ngIf="email.errors.email">Email must be a valid email address</div>
@@ -30,7 +32,7 @@ e
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"
+        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel" 
                required minlength="6" />
         <div *ngIf="f.submitted && password.invalid">
           <div *ngIf="password.errors.required">Password is required</div>
@@ -41,7 +43,7 @@ e
       <div class="form-group">
         <label for="role">Rol</label>
         <h1></h1>
-        <p-dropdown [options]="roles" [(ngModel)]="selectedRole" [filter]="false" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange($event)"></p-dropdown>
+        <p-dropdown [options]="roles" [(ngModel)]="selectedRole" [filter]="false" optionLabel="nombre" name="rol" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange($event)"></p-dropdown>
       </div>
 
       <div class="form-group">
@@ -49,7 +51,11 @@ e
         <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-warning">
           Signup failed!<br/>{{errorMessage}}
         </div>
+        <h1></h1>
       </div>
     </form>
   </div>
-</ng-template>
+</div>
+  <!-- </ng-template> -->
+</div>
+<!--  -->

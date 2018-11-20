@@ -1,0 +1,14 @@
+.contenedor{
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #f8f9fa ;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.formulario{
+    width: 20%;
+}

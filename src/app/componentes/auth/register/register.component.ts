@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService} from '../../../auth/auth.service';
 import { SignUpInfo} from '../../../modelos/signup-info';
 import {Role} from '../../../modelos/role';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -43,12 +44,14 @@ export class RegisterComponent implements OnInit {
       this.form.email,
       this.form.password,
       [this.selectedRole.nombre]);
+console.log(this.signupInfo);
 
     this.authService.signUp(this.signupInfo).subscribe(
       data => {
         console.log(data);
         this.isSignedUp = true;
         this.isSignUpFailed = false;
+        this.form={};
       },
       error => {
         console.log(error);
