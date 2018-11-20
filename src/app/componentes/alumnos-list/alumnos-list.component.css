@@ -69,3 +69,23 @@
     padding-bottom: 2px;
     border-bottom: 1px solid #0003;
   }
+
+
+.tabla-recibo td:first-child{
+    text-align: right;
+    padding-left: 50px;
+    padding-right: 5px;
+    font-weight: bold;
+}
+.tabla-recibo td:last-child{
+    text-align: left;
+    padding-right: 50px;
+}
+.tabla-recibo{
+    border-collapse:separate; 
+    border-spacing: 10px;
+}
+
+.marco{
+    border: dotted 2px tomato !important;
+}

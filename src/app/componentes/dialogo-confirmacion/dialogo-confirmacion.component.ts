@@ -36,6 +36,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
       }
       .dialogo{
         border-radius: 5px;
+        max-width: 80%
       }
       .titulo p{
         margin: auto;

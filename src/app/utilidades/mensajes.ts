@@ -129,6 +129,10 @@ export var LABEL ={
     nuevaTarea: "Nueva tarea",
     sinTareas: "Sin tareas..",
     bajaCursada: "Baja de cursada",
+    fechaVencimiento: "Vencimiento",
+    estado: "Estado",
+    tipoPago: "Tipo",
+    monto: "Monto",
     ingrese: {
         nombre: "Ingrese el nombre",
         apellido: "Ingrese el apellido",
@@ -158,7 +162,7 @@ export var LABEL ={
         nombreCursada: "Ingrese el nombre de la cursada",
         matricula: "Ingrese el valor de la mátricula",
         cuota: "Ingrese el valor de la cuota",
-        infoCursada: "Cursadas de",
+        infoCursada: "Cursadas de ",
         inscripcion: "Nueva inscripción"
     },
     boton: {
@@ -168,7 +172,8 @@ export var LABEL ={
         verCursadas: "Ver cursadas del alumno",
         analitico:"Obtener analitico",
         reporte:"Obtener reporte",
-        historial:"Obtener historial academico"
+        historial:"Obtener historial academico",
+        pagar: "Pagar"
     },
     seleccione: {
         area: "Seleccione un area",
@@ -199,7 +204,8 @@ export var LABEL ={
         horarioCursada: "El instructor seleccionado no se encuentra disponible en el horario elegido"
     },
     leyenda:{
-        alumnoSinCursadas: "Este alumno no tiene cursadas aún."
+        alumnoSinCursadas: "Este alumno no tiene cursadas aún.",
+        alumnosSinPagos: "Este alumno no tiene pagos pendientes."
     }
 }
 

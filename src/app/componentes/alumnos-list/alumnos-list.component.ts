@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Alumno } from '../../modelos/alumno';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
@@ -13,7 +13,10 @@ import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Cursada } from 'src/app/modelos/cursada';
 import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import { Inscripcion } from 'src/app/modelos/inscripcion';
-
+import { PagoService } from 'src/app/servicios/pago.service';
+import { Pago } from 'src/app/modelos/pago';
+import * as jspdf from 'jspdf'; 
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'alumnos-list',
@@ -39,7 +42,27 @@ export class AlumnosListComponent implements OnInit {
     useEmptyBarTitle: false,
   };
 
+// EJEMPLO DE PDF
 
+@ViewChild('content') content: ElementRef;
+public captureScreen() {  
+  let doc = new jspdf();
+  let specialElementHandlers = {
+    '#editor': function(elemento, renderer) {
+      return true;
+    }
+  };
+
+  let content = this.content.nativeElement;
+
+  doc.fromHTML(content.innerHTML, 15, 15, {
+    'width':190,
+    'elementHandlers': specialElementHandlers
+  });
+  doc.save('test.pdf');
+}  
+
+// FIN PDF
   
 
 
@@ -48,9 +71,16 @@ export class AlumnosListComponent implements OnInit {
   public alumnos = [];
   public cursadas = [];
   public edicion: boolean = false;
+
+  pagosAlumno;
+  alumnoTienePagos: boolean = false;
+
   mostrarDialogoAB = false;
   mostrarDialogoBorrar: boolean = false;
+  mostrarPagosInicio: boolean = false;
+  mostrarPagosPagar: boolean = false;
   alumnoSeleccionado: Alumno = new Alumno();
+  pagoSeleccionado: Pago = new Pago();
   cursadaSeleccionada: Cursada = new Cursada();
   nombreAlumno: string = '';
   busqueda: string = "";
@@ -61,6 +91,7 @@ export class AlumnosListComponent implements OnInit {
   cursadasAlumnoShowed: boolean = false;
   alumnoTieneCursadas: boolean = false;
   generarReporte: boolean = false;
+  mostrarRecibo = false;
 
   cols: any = [];
 
@@ -90,7 +121,8 @@ export class AlumnosListComponent implements OnInit {
               private _alumnoService: AlumnoService,
               private _spinnerService: Ng4LoadingSpinnerService,
               private _cursadaService: CursadaService,
-              private _inscripcionService: InscripcionService
+              private _inscripcionService: InscripcionService,
+              private _pagoService: PagoService
               ) { }
 
   ngOnInit() {
@@ -130,7 +162,6 @@ export class AlumnosListComponent implements OnInit {
       })
   }
 
-
   mostrarDialogoEliminar(alumno: any){
     this.alumnoSeleccionado = new Alumno();
     this.alumnoSeleccionado.copiar(alumno);
@@ -140,6 +171,23 @@ export class AlumnosListComponent implements OnInit {
 
     this.mostrarDialogoBorrar = true;
     
+  }
+
+  clickPagar(pago: any){
+    this.pagoSeleccionado = new Pago();
+    this.pagoSeleccionado.copiar(pago);
+    this.mostrarRecibo = true;
+    console.log("PAgo: ",pago);
+  }
+
+  clickCancelarPagar(){
+    this.mostrarPagosPagar = false;
+    this.mostrarPagosInicio = false;
+    this.tituloDialogoCursada = this._LABEL.titulo.infoCursada;
+  }
+
+  clickContinuar(){
+    this.mostrarRecibo = false;
   }
 
   eliminar(){
@@ -196,6 +244,7 @@ export class AlumnosListComponent implements OnInit {
   ocultarDialogo(){
     this.mostrarDialogoBorrar = false;
     this.mostrarDialogoAB = false;
+    this.mostrarPagosInicio = false;
   }
 
   nuevoAlumno(){
@@ -346,4 +395,28 @@ export class AlumnosListComponent implements OnInit {
     }
     return false;
   }
+
+  mostrarPagosAlumno(alumno: any){
+    this.alumnoSeleccionado = new Alumno();
+    this.alumnoSeleccionado.copiar(alumno);
+    this._pagoService.getPagosAlumno(this.alumnoSeleccionado.id)
+    .toPromise()
+    .then(pagos => {
+      this.tituloDialogoCursada = this.tituloDialogoCursada + 
+                                  ` ${this.alumnoSeleccionado.nombre} ${this.alumnoSeleccionado.apellido}`;
+      this.pagosAlumno = pagos;
+
+      console.log("Pagos Alumno: ",this.pagosAlumno);
+      console.log("Cantidad pagos: ",this.pagosAlumno.length);
+      if(this.pagosAlumno.length > 0){
+        this.alumnoTienePagos = true;                              
+      }
+      else{
+        this.alumnoTienePagos = false;                              
+      }
+    });
+    this.mostrarPagosInicio = true;    
+  }
+
+
 }

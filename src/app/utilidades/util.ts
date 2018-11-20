@@ -77,4 +77,7 @@ export class Util {
         result.setDate(result.getDate() + days);
         return result;
       }
+    static fechaHoy(): string{
+        return this.convertirTimestamp(+ new Date());
+    }
 }
