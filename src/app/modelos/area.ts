@@ -11,6 +11,4 @@ export class Area  extends Resource implements IArea{
     public copiar(area: Area){
         super.copiar(area);
     }
-
-
 }

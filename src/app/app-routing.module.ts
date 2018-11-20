@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AdministrativoHomeComponent } from '../app/vistas/administrativo-home/administrativo-home.component';
 import { LoginComponent} from './componentes/auth/login/login.component';
 import { RegisterComponent} from './componentes/auth/register/register.component';
@@ -125,7 +124,8 @@ const routes: Routes = [
           },
           pathMatch: 'full'
         },
-        { path: 'tareas',
+        {
+          path: 'tareas',
           component: TareasComponent,
           canActivate: [AuthGuardService],
           data: {
@@ -140,14 +140,14 @@ const routes: Routes = [
             expectedRole: 'ROLE_SUPERVISOR'
           },
         },
-        { path: 'usuarios',
-          component: InstructoresComponent,
+        {
+          path: 'usuarios',
+          component: RegisterComponent,
           canActivate: [AuthGuardService],
           data: {
             expectedRole: 'ROLE_SUPERVISOR'
           },
         }
-
     ]},
     {
       path: '**',

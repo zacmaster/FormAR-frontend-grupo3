@@ -9,11 +9,13 @@ import { TokenStorageService } from './auth/token-storage.service';
 export class AppComponent implements OnInit {
   private roles: string[];
   private authority: string;
+  isLoggedIn = false;
 
   constructor(private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
+      this.isLoggedIn = true
       this.roles = this.tokenStorage.getAuthorities();
       this.roles.every(role => {
         if (role === 'ROLE_ADMINASTRIVO') {
@@ -27,5 +29,11 @@ export class AppComponent implements OnInit {
         return true;
       });
     }
+  }
+
+  logout(){
+    this.isLoggedIn = false
+    this.tokenStorage.signOut()
+    window.location.reload();
   }
 }

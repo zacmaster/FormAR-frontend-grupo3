@@ -24,7 +24,7 @@ export class TareasComponent implements OnInit {
   _VALIDACION = VALIDACION;
   _PATTERN = PATTERNS;
   _UTIL= Util;
-  
+
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2000,
@@ -62,7 +62,7 @@ export class TareasComponent implements OnInit {
     private _administrativoService:AdministrativoService,
     private _spinnerService: Ng4LoadingSpinnerService,
     private _contactoService: ContactoService
-    
+
     ) {
       this.cargarCampos();
       this.bajarDatos();
@@ -140,7 +140,7 @@ export class TareasComponent implements OnInit {
   }
   ngDoCheck(){
     console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
-    
+
     // console.log("administrativo: ",this.selectedAdministrativo);
   }
 
@@ -194,8 +194,6 @@ export class TareasComponent implements OnInit {
     auxAdministrativo.copiar(this.selectedAdministrativo);
     this.llenarTablasAdministrativo(auxAdministrativo);
   }
-
-
 
   llenarTablasAdministrativo(administrativo: Administrativo){
     this.tareasPersonalesCompletadas = [];
