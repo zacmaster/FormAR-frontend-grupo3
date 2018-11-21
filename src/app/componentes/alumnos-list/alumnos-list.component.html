@@ -256,10 +256,10 @@
                     <td>{{ pago.nombre_cursada }}</td>
                     <td>{{ pago.tipo }}</td>
                     <td>{{ pago.monto }}</td>
-                    <td>{{ pago.estado }}</td>cursadas/a
+                    <td>{{ pago.estado }}</td>
                     <td>{{ _Util.convertirTimestamp(pago.fecha_vencimiento) }}</td>
                     <td> 
-                        <button class="btn btn-default mr-2 bg-success" [title]="_LABEL.boton.pagar" (click)="clickPagar(rowData)">
+                        <button class="btn btn-default mr-2 bg-success" [title]="_LABEL.boton.pagar" (click)="clickPagar(pago)">
                             <i class="fas fa-dollar-sign "></i>
                         </button>
                     </td>
@@ -287,7 +287,10 @@
 
         <div class="content" #content>
             <div class="marco">
-                <h5><span class="font-italic">Instituto formAR</span> <span class="text-center font-weight-bold">Recibo</span></h5>
+                <h5>
+                    <span class="font-italic">Instituto formAR</span> 
+                    <span class="text-center font-weight-bold">Recibo</span>
+                </h5>
                 <table class="tabla-recibo">
                     <thead>
                         <tr><td class="font-italic"></td><td class="font-weight-bold"></td></tr>

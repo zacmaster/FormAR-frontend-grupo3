@@ -173,11 +173,13 @@ public captureScreen() {
     
   }
 
-  clickPagar(pago: any){
+  clickPagar(pago){
     this.pagoSeleccionado = new Pago();
     this.pagoSeleccionado.copiar(pago);
     this.mostrarRecibo = true;
-    console.log("PAgo: ",pago);
+    console.log("pago traido",pago);
+    
+    console.log("PAgo: ",this.pagoSeleccionado);
   }
 
   clickCancelarPagar(){
