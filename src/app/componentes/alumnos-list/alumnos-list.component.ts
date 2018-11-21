@@ -342,9 +342,9 @@ public captureScreen() {
     this.cols = [
       { field: 'nombre', header: 'Nombre' },
       { field: 'telefono', header: 'Telefono' },
-      { field: 'email', header: 'Email' },
+      { field: 'email', header: 'Email', width: '300px' },
       { field: 'dni', header: 'DNI' },
-      { field: 'acciones', header: 'Acciones' }
+      { field: 'acciones', header: 'Acciones', width: '350px' }
     ];
   }
   mensajeReportes(alumno){
