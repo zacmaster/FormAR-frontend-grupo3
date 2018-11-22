@@ -32,7 +32,7 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
   }
 
   public readByEmail(email: string): Observable<I>{
-    let finalEndpoint = this.endpoint + "email/"
+    let finalEndpoint = this.endpoint + "email"
 
     return this.httpClient
       .get<I>(`${this.url}/${finalEndpoint}/${email}`)
