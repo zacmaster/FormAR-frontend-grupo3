@@ -56,8 +56,8 @@ export class InstructorHomeComponent implements OnInit {
             { field: 'fechaFin', header: 'Fecha de fin' },
             { field: 'info', header: 'Info' },
             { field: 'acciones', header: 'Acciones' }
-            
-          
+
+
         ];
     }
 
@@ -82,11 +82,11 @@ export class InstructorHomeComponent implements OnInit {
         });
     }
  // constructor() { }
-  
- 
-  ngDoCheck(){ 
+
+
+  ngDoCheck(){
    // console.log(this.cursadas);
-    
+
   }
   verAsistencia(data:Cursada){
     this.cursadaSeleccionada=data;
@@ -123,18 +123,16 @@ export class InstructorHomeComponent implements OnInit {
         this._spinnerService.hide();
         console.log("instructor seleccionado",this.selectedInstructor);
         console.log("instructores",this.instructores);
-        
+
         this.getCursadas();
-        
       })
-   
   }
-  refrescarCursadas(){  
+  refrescarCursadas(){
     if(this.selectedTipoCursada=="activas"){
       if(this.selectedInstructor!=undefined){
         this.getCursadas();
       }
-        
+
     }
     if(this.selectedTipoCursada=="finalizada"){
       if(this.selectedInstructor!=undefined){
@@ -169,7 +167,7 @@ export class InstructorHomeComponent implements OnInit {
         this.cursadas.push(nuevaCursada);
       })
       //console.log(this.cursadas);
-    
+
     })
   }
   getCursadasFinalizadas(){
@@ -197,7 +195,7 @@ export class InstructorHomeComponent implements OnInit {
           nuevaCursada.inscriptos=alumnos.length;
         });
         this.cursadas.push(nuevaCursada);
-      })  
+      })
     })
   }
   refrescarTipoCursadas(){
@@ -205,7 +203,7 @@ export class InstructorHomeComponent implements OnInit {
       if(this.selectedInstructor!=undefined){
         this.getCursadas();
       }
-        
+
     }
     if(this.selectedTipoCursada=="finalizada"){
       if(this.selectedInstructor!=undefined){
