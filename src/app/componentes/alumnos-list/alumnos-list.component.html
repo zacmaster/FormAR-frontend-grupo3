@@ -245,6 +245,7 @@
                 <tr>
                     <th>{{ _LABEL.curso }}</th>
                     <th>{{ _LABEL.tipoPago }}</th>
+                    <th>{{ _LABEL.num_cuota }}</th>
                     <th>{{ _LABEL.monto }}</th>
                     <th>{{ _LABEL.estado }}</th>
                     <th>{{ _LABEL.fechaVencimiento }}</th>
@@ -255,6 +256,7 @@
                 <tr *ngFor="let pago of pagosAlumno">
                     <td>{{ pago.nombre_cursada }}</td>
                     <td>{{ pago.tipo }}</td>
+                    <td>{{ pago.num_cuota}}</td>
                     <td>{{ pago.monto }}</td>
                     <td>{{ pago.estado }}</td>
                     <td>{{ _Util.convertirTimestamp(pago.fecha_vencimiento) }}</td>
@@ -285,34 +287,35 @@
     [botonCerrar]="false"
     >
 
-        <div class="content" #content>
-            <div class="marco">
-                <h5>
-                    <span class="font-italic">Instituto formAR</span> 
-                    <span class="text-center font-weight-bold">Recibo</span>
-                </h5>
-                <table class="tabla-recibo">
-                    <thead>
-                        <tr><td class="font-italic"></td><td class="font-weight-bold"></td></tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Fecha:</td><td>{{ _Util.fechaHoy() }}</td>
-                        </tr>
-                        <tr>
-                            <td>Alumno: </td><td>{{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}</td>
-                        </tr>
-                        <tr>
-                            <td>Cursada: </td><td>{{ pagoSeleccionado.nombre_cursada }}</td>
-                        </tr>
-                        <tr>
-                            <td>Se paga: </td><td>{{ pagoSeleccionado.tipo }}</td>
-                        </tr>
-                        <tr>
-                            <td>Monto:</td><td>${{ pagoSeleccionado.monto }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="content" #content id="results">
+            <div class="border p-5 rounded">
+                <div>
+                    <h2>
+                        <span class="text-center font-weight-bold">Recibo</span>
+                    </h2>
+                </div>
+                <hr>
+                <div>
+                    <h3>
+                        <span class="font-italic">Instituto formAR</span> 
+                    </h3>
+                </div>
+                <hr>
+                <div class="p3">
+                    Fecha: {{ _Util.fechaHoy() }}                        
+                </div>
+                <div class="p3">
+                    Alumno: {{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}                        
+                </div>
+                <div class="p3">
+                    Cursada: {{ pagoSeleccionado.nombre_cursada }}                        
+                </div>
+                <div class="p3">
+                    Se paga: {{ pagoSeleccionado.tipo }}                        
+                </div>
+                <div class="p3">
+                    Monto: ${{ pagoSeleccionado.monto }}
+                </div>
             </div>
         </div>
         <div class="row justify-content-center mt-3">
