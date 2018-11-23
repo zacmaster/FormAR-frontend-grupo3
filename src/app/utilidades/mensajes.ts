@@ -114,7 +114,6 @@ export var LABEL ={
     filtroArea: "Filtrar por área de curso",
     inscribirAlumno: "Inscribir alumno",
     nuevaCursada: "Nueva cursada",
-    crear: "Crear",
     marcarComoPendiente: "Marcar tarea como pendiente",
     marcarComoResuelta: "Marcar tarea como resuelta",
     detalleTarea: "Ver detalle de tarea",

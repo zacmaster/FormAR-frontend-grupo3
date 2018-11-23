@@ -48,7 +48,7 @@ export class CargaInstructorComponent implements OnInit{
   horariosShowed: boolean =false;
   areasShowed: boolean =false;
   mostrarCalendario:boolean =false;
-  mostrarSuccessDialogo: false;
+  mostrarSuccessDialogo = false;
 
   constructor(private _areaService: AreaService, private authService: AuthService, private _instructorService : InstructorService,
               private _spinnerService: Ng4LoadingSpinnerService){ }
