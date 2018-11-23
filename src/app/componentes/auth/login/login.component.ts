@@ -4,6 +4,7 @@ import { AuthService} from '../../../auth/auth.service';
 import { TokenStorageService} from '../../../auth/token-storage.service';
 import { AuthLoginInfo} from '../../../modelos/login-info';
 import {Router,ActivatedRoute} from '@angular/router';
+import { MyBooleanService } from 'src/app/servicios/boolean-cerrarsesion';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
               private route: ActivatedRoute,
-              private router: Router) {}
+              private router: Router,private service: MyBooleanService) {}
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
@@ -50,12 +51,16 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
         if(this.tokenStorage.isAdministrativo()){
+          this.service.setBool(true);
           this.router.navigateByUrl("administrativo")
+          
         }
         if(this.tokenStorage.isInstructor()){
+          this.service.setBool(true);
           this.router.navigateByUrl("instructor")
         }
         if(this.tokenStorage.isSupervisor()){
+          this.service.setBool(true);
           this.router.navigateByUrl("supervisor")
         }
        
