@@ -39,6 +39,9 @@ export class InstructorHomeComponent implements OnInit {
   infoShowed:boolean=false;
   cursadasTipo:SelectItem[]=[];
   selectedTipoCursada:String;
+  mostrarInstructoresSpinner = false;
+  mostrarNombre = false;
+  nombre: string;
 
     cols: any[];
 
@@ -47,6 +50,8 @@ export class InstructorHomeComponent implements OnInit {
                 private tokenStorage: TokenStorageService) { }
 
     ngOnInit() {
+        this.nombre = this.tokenStorage.getName();
+
         this.getInstructor();
 
         this.cursadasTipo.push({label:"Activas",value:"activas"});
@@ -58,8 +63,6 @@ export class InstructorHomeComponent implements OnInit {
             { field: 'fechaFin', header: 'Fecha de fin' },
             { field: 'info', header: 'Info' },
             { field: 'acciones', header: 'Acciones' }
-
-
         ];
     }
 
@@ -139,6 +142,9 @@ export class InstructorHomeComponent implements OnInit {
         let nuevoinstructor =  new Instructor();
         nuevoinstructor.copiar(instructor);
         this.instructores.push({label:nuevoinstructor.nombre+" "+nuevoinstructor.apellido,value:nuevoinstructor});
+
+        this.nombre = instructor.nombre + " " + instructor.apellido
+        this.mostrarNombre = true
 
         this.selectedInstructor=this.instructores[0].value;
         this._spinnerService.hide();

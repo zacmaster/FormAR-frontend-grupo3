@@ -2,11 +2,11 @@
 <div class="content-section implementation ui-fluid">
     <p-table #dt [columns]="cols" [value]="cursadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
           <ng-template pTemplate="caption">
-            <div style="text-align: right">
+            <div style="text-align: left">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Nombre Instructor</span>
+                <label>{{nombre}}</label>
               </div>
-              <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
+              <p-dropdown *ngIf="mostrarInstructoresSpinner" [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
               <p-dropdown [options]="cursadasTipo" [(ngModel)]="selectedTipoCursada" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarTipoCursadas()" ></p-dropdown>
               </div>
           </ng-template>

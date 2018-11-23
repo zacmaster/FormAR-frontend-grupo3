@@ -281,7 +281,7 @@ deleteAtributteValue(){
     this._spinnerService.show();
     setTimeout(() => {
       this.signupInfo = new SignUpInfo(
-        instructorDTO.nombre,
+        instructorDTO.nombre + " " + instructorDTO.apellido,
         instructorDTO.email,
         instructorDTO.email,
         "123456",
