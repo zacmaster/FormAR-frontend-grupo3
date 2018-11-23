@@ -4,9 +4,10 @@ import { Curso } from "./curso";
 import { Instructor } from "./instructor";
 import { Sala } from "./sala";
 import { Horario } from "./horario";
+import {Administrativo} from './administrativo';
 
 export class Cursada extends Resource implements Icursada {
- 
+
     nombre: string;
     fechaInicio: number;
     fechaFin: number;
@@ -14,6 +15,7 @@ export class Cursada extends Resource implements Icursada {
     fechaFinString: string;
     sala: Sala;
     instructor: Instructor;
+    administrativo : Administrativo;
     cantidadClases: number;
     cupoMinimo: number;
     cupoMaximo: number;
