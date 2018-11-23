@@ -65,6 +65,7 @@ import { SupervisorHomeComponent } from './vistas/supervisor-home/supervisor-hom
 import { httpInterceptorProviders} from './auth/auth-interceptor';
 import {AuthGuardService} from './servicios/auth-guard.service';
 import {TokenStorageService} from './auth/token-storage.service';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import {TokenStorageService} from './auth/token-storage.service';
     AsistenciaComponent,
     NotasComponent,
     TareasComponent,
-    SupervisorHomeComponent
+    SupervisorHomeComponent,
+    HeaderComponent
 
   ],
   imports: [
