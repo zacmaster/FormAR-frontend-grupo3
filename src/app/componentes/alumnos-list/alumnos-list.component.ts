@@ -6,7 +6,7 @@ import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 import { Util } from '../../utilidades/util';
 
 import { AlumnoService } from '../../servicios/alumno.service';
-import { GLOBAL } from '../../servicios/global';
+
 import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
 import { CursadaService } from 'src/app/servicios/cursada.service';
@@ -15,8 +15,8 @@ import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import { Inscripcion } from 'src/app/modelos/inscripcion';
 import { PagoService } from 'src/app/servicios/pago.service';
 import { Pago } from 'src/app/modelos/pago';
-import * as jspdf from 'jspdf'; 
-import html2canvas from 'html2canvas';
+import * as jsPDF from 'jspdf';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'alumnos-list',
@@ -44,24 +44,32 @@ export class AlumnosListComponent implements OnInit {
 
 // EJEMPLO DE PDF
 
-@ViewChild('content') content: ElementRef;
-public captureScreen() {  
-  let doc = new jspdf();
-  let specialElementHandlers = {
-    '#editor': function(elemento, renderer) {
-      return true;
-    }
-  };
+// @ViewChild('content') content: ElementRef;
+// public captureScreen() {  
+//   let doc = new jspdf();
+//   let specialElementHandlers = {
+//     '#editor': function(elemento, renderer) {
+//       return true;
+//     }
+//   };
 
-  let content = this.content.nativeElement;
+//   let content = this.content.nativeElement;
 
-  doc.fromHTML(content.innerHTML, 15, 15, {
-    'width':190,
-    'elementHandlers': specialElementHandlers
-  });
-  doc.save('test.pdf');
-}  
+//   doc.fromHTML(content.innerHTML, 15, 15, {
+//     'width':190,
+//     'elementHandlers': specialElementHandlers
+//   });
+//   doc.save('Recibo.pdf');
+// }  
 
+captureScreen(){
+    html2canvas(document.getElementById('results')).then(function(canvas) {
+    var img = canvas.toDataURL("image/png");
+    var doc = new jsPDF();
+    doc.addImage(img,'JPEG',5,20);
+    doc.save('testCanvas.pdf');
+    });
+}
 // FIN PDF
   
 
@@ -73,6 +81,7 @@ public captureScreen() {
   public edicion: boolean = false;
 
   pagosAlumno;
+  
   alumnoTienePagos: boolean = false;
 
   mostrarDialogoAB = false;
@@ -90,7 +99,6 @@ public captureScreen() {
   inscripcionShowed: boolean = false;
   cursadasAlumnoShowed: boolean = false;
   alumnoTieneCursadas: boolean = false;
-  generarReporte: boolean = false;
   mostrarRecibo = false;
 
   cols: any = [];
@@ -173,13 +181,10 @@ public captureScreen() {
     
   }
 
-  clickPagar(pago){
+  clickPagar(pago: any){
     this.pagoSeleccionado = new Pago();
     this.pagoSeleccionado.copiar(pago);
     this.mostrarRecibo = true;
-    console.log("pago traido",pago);
-    
-    console.log("PAgo: ",this.pagoSeleccionado);
   }
 
   clickCancelarPagar(){
@@ -189,6 +194,7 @@ public captureScreen() {
   }
 
   clickContinuar(){
+    this.editarPago(this.pagoSeleccionado);
     this.mostrarRecibo = false;
   }
 
@@ -239,7 +245,6 @@ public captureScreen() {
     }
     else{
       this.agregar(this.alumnoSeleccionado);
-
     }
   }
 
@@ -262,6 +267,16 @@ public captureScreen() {
     this.mostrarDialogoAB = true;
     
     this.dateNac = new Date(this.alumnoSeleccionado.fechaNacimiento);
+  }
+
+  editarPago(pago: Pago){
+    pago.estado = "Pagado";
+    pago.fecha_pago = + new Date();
+    this._pagoService.updatePago(pago).
+      subscribe(r => {
+        this.mostrarPagosAlumno(this.alumnoSeleccionado);
+        this.pagoSeleccionado = new Pago();
+      })
   }
 
 
@@ -347,44 +362,6 @@ public captureScreen() {
       { field: 'acciones', header: 'Acciones' }
     ];
   }
-  mensajeReportes(alumno){
-    this.alumnoSeleccionado = new Alumno();
-    this.alumnoSeleccionado.copiar(alumno);
-    this.generarReporte=true;
-  }
-  cerrarInfo(){
-    this.generarReporte=false;
-  }
-  buscarHistorial(){
-     this._alumnoService.getHistorial(this.alumnoSeleccionado.id).
-       subscribe(res => {
-         console.log('start download:',res);
-         var url = window.URL.createObjectURL(res);
-         var a = document.createElement('a');
-         document.body.appendChild(a);
-         a.setAttribute('style', 'display: none');
-         a.href = url;
-         a.download = "HistorialAcademico-"+this.alumnoSeleccionado.apellido+new Date().toLocaleDateString('en-GB');
-         a.click();
-         window.URL.revokeObjectURL(url);
-         a.remove(); // remove the element
-       })  
-  }
-  buscarAnalitico(){
-    this._alumnoService.getAnalitico(this.alumnoSeleccionado.id).
-      subscribe(res => {
-        console.log('start download:',res);
-        var url = window.URL.createObjectURL(res);
-        var a = document.createElement('a');
-        document.body.appendChild(a);
-        a.setAttribute('style', 'display: none');
-        a.href = url;
-        a.download = "Analitico-"+this.alumnoSeleccionado.apellido+new Date().toLocaleDateString('en-GB');
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove(); // remove the element
-      })  
- }
 
   private prepararTabla(){
     this.cargarCampos();
@@ -419,6 +396,4 @@ public captureScreen() {
     });
     this.mostrarPagosInicio = true;    
   }
-
-
 }
