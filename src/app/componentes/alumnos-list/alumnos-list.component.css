@@ -39,7 +39,7 @@
 }
   
 .contenedorTablaCursada{
-    height: 150px;
+    height: 250px;
     overflow-y: scroll;
     width: 700px;
 }

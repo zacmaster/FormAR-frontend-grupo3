@@ -1,0 +1,8 @@
+.login{
+    background-color:white;
+    border-radius: 15px 15px 15px 15px;
+    margin-left: 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    padding: 15px
+}

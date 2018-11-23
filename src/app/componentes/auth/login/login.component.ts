@@ -49,7 +49,16 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
-        this.router.navigateByUrl(this.return)
+        if(this.tokenStorage.isAdministrativo()){
+          this.router.navigateByUrl("administrativo")
+        }
+        if(this.tokenStorage.isInstructor()){
+          this.router.navigateByUrl("instructor")
+        }
+        if(this.tokenStorage.isSupervisor()){
+          this.router.navigateByUrl("supervisor")
+        }
+       
         //this.reloadPage();
       },
       error => {

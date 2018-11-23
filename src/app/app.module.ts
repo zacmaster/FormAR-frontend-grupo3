@@ -67,6 +67,7 @@ import {AuthGuardService} from './servicios/auth-guard.service';
 import {TokenStorageService} from './auth/token-storage.service';
 import { CargaInstructorComponent} from './vistas/carga-instructor/carga-instructor.component';
 import { AdmTareaComponent } from './vistas/adm-tarea/adm-tarea.component';
+import { HomeComponent } from './vistas/home/home.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { AdmTareaComponent } from './vistas/adm-tarea/adm-tarea.component';
     TareasComponent,
     SupervisorHomeComponent,
     CargaInstructorComponent,
-    AdmTareaComponent
+    AdmTareaComponent,
+    HomeComponent
 
   ],
   imports: [
