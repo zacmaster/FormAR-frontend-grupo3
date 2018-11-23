@@ -40,7 +40,6 @@ export class InstructorHomeComponent implements OnInit {
   cursadasTipo:SelectItem[]=[];
   selectedTipoCursada:String;
 
-
     cols: any[];
 
     constructor(private _cursadaService: CursadaService,private _inscripcionService: InscripcionService,

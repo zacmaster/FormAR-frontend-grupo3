@@ -1,166 +1,15 @@
+<div class="contenedor-formulario">
+  <div class="contenedor">
+  <div class="formulario">
 
-<!-- Comienzo de tabla -->
-<div class="content-section implementation ui-fluid">
-    <p-table #dt [columns]="cols" [value]="instructores" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
-        <ng-template pTemplate="caption">
-          <div style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-              <button class="btn btn-success"
-                      (click)="nuevoInstructor()">
-                      <span>{{ _LABEL.nuevoInstructor }}</span>
-              </button>
-            </div>
-          </ng-template>
 
-          <ng-template pTemplate="colgroup" let-columns>
-            <colgroup>
-              <col *ngFor="let col of columns" [style.width]="col.width">
-            </colgroup>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th *ngFor="let col of columns" pResizableColumn>
-                {{col.header}}
-              </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-          <tr>
-            <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
-                <span *ngSwitchCase="'instructor'">
-                    {{ rowData.nombre }}
-                </span>
-                <span *ngSwitchCase="'dni'">
-                    {{ rowData.dni }}
-                </span>
-                <span *ngSwitchCase="'telefono'">
-                    {{ rowData.telefono }}
-                </span>
-                <span *ngSwitchCase="'email'">
-                    {{ rowData.email }}
-                </span>
-                <span *ngSwitchCase="'estudios'">
-                    <button class="btn btn btn-info"
-                    [title]="_HVR.estudio"
-                    (click)="mostrarEstudios(rowData)">
-                    <i class="fas fa-atlas"></i>
-                  </button>
-                </span>
-                <span *ngSwitchCase="'horarios'">
-                    <button class="btn btn btn-info"
-                    [title]="_HVR.horario"
-                    (click)="mostrarHorarios(rowData)">
-                    <i class="fas fa-calendar-check"></i>
-                  </button>
-                </span>
-                <span *ngSwitchCase="'areasPreferencia'">
-                    <button class="btn btn btn-info"
-                    [title]="_HVR.areasPref"
-                    (click)="mostrarAreas(rowData)">
-                    <i class="fas fa-font"></i>
-                  </button>
-                </span>
-                <span *ngSwitchCase="'disponibilidad'">
-                    <button class="btn btn btn-info" (click)="verCalendario(rowData)">
-                        <i class="far fa-calendar-check"></i>
-                      </button>
-                </span>
-                <span *ngSwitchCase="'acciones'">
-                    <button class="btn btn-success mr-2" (click)="editarInstructor(rowData);">
-                        <i class="fas fa-user-edit"></i>
-                      </button>
-                      <button class="btn btn-danger" (click)="mostrarDialogoEliminar(rowData)">
-                        <i class="fas fa-user-times"></i>
-                      </button>
-                </span>
-            </td>
-          </tr>
-        </ng-template>
-
-    </p-table>
-  </div>
-
-  <!-- Fin de tabla -->
-<!-- Dialogo estudios-->
-<div class="contenedor-info"  *ngIf="estudiosShowed">
-    <div  class="dialogo bg-light p-1">
-        <div class="dialogoHeader d-flex justify-content-between">
-          <div></div>
-          <div class="titulo text-center" ><h5> {{ _LABEL.estudios }}: </h5></div>
-          <span class="btn btn-danger" (click)="cerrarEstudios()"><i class="fas fa-times"></i></span>
-        </div>
-        <div class="dialogoBody p-3 pt-3 text-center">
-          <p> <span style="font-weight: bold"> </span>{{ instructorSeleccionado.estudios }} </p>
-
-        </div>
-      </div>
-</div>
-<!-- Dialogo horarios-->
-<div class="contenedor-info"  *ngIf="horariosShowed">
-    <div  class="dialogo bg-light p-1">
-        <div class="dialogoHeader d-flex justify-content-between">
-          <div></div>
-          <div class="titulo text-center" ><h5>Horarios </h5></div>
-          <span class="btn btn-danger" (click)="cerrarHorarios()"><i class="fas fa-times"></i></span>
-        </div>
-        <div class="dialogoBody p-3 pt-3 text-center">
-          <p *ngFor="let horario of instructorSeleccionado.disponibilidadHoraria"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
-            {{ _Util.convertirTime(horario.horaInicio) }} a
-            {{ _Util.convertirTime(horario.horaFin) }}
-          </p>
-
-        </div>
-      </div>
-</div>
-<!-- Dialogo Areas-->
-<div class="contenedor-info"  *ngIf="areasShowed">
-    <div  class="dialogo bg-light p-1">
-        <div class="dialogoHeader d-flex justify-content-between">
-          <div></div>
-          <div class="titulo text-center" ><h5> Areas de preferencia </h5></div>
-          <span class="btn btn-danger" (click)="cerrarAreas()"><i class="fas fa-times"></i></span>
-        </div>
-        <div class="dialogoBody p-3 pt-3 text-center">
-          <h5 *ngFor="let area of instructorSeleccionado.areasPreferencia"> <span style="font-weight: bold"> </span>
-            {{ area.nombre }}
-          </h5>
-
-        </div>
-      </div>
-</div>
-<!--Dialogo eliminar-->
-<dialogo-confirmacion *ngIf="mostrarDialogoBorrar"
-                      (clickBotonCerrar)="ocultarDialogo()"
-                      (clickBotonIzquierdo)="ocultarDialogo()"
-                      (clickBotonDerecho)="eliminar()"
-                      [titulo]="dlg.titulo"
-                      [texto]="dlg.texto"
-                      >
-
-</dialogo-confirmacion>
-<!--Calendario-->
-<calendario-disponibilidad *ngIf="mostrarCalendario"
-(clickBotonCerrar)="ocultarCalendario()"
-[id]= instructorSeleccionado.id
-[esSala]=false
-[esInstructor]= true
-></calendario-disponibilidad>
-<ng4-loading-spinner></ng4-loading-spinner>
-
-<!-- Formulario:  -->
-
-<div class="contenedor-formulario" *ngIf="mostrarDialogoAB">
-  <div class="card mt-2 w-50 mx-auto">
-    <div class="card-head d-flex  w-100 justify-content-between">
-      <div></div>
-      <div class="pt-2">
-        <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevoInstructor}}</h5>
-        <h5 *ngIf="edicion" class="">{{ _LABEL.edicionInstructor}}</h5>
-      </div>
-      <span class="btn btn-danger" (click)="ocultarDialogo()"><i class="fas fa-times"></i></span>
-    </div>
-    <div class="card-body">
+  <!--<div class="card mt-2 w-50 mx-auto">-->
+    <!--<div class="card-head d-flex  w-100 justify-content-between">-->
+      <!--<div></div>-->
+      <!--<div class="pt-2">-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="card-body">-->
 
       <div style="max-height: 70vh; overflow-y: scroll;overflow-x: hidden;">
         <div class="row">
@@ -402,7 +251,7 @@
 -->
 
       </div>
-    </div>
+    <!--</div>-->
 
     <div class="pr-4 pb-4">
       <button
@@ -413,8 +262,8 @@
         <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
       </button>
     </div>
-  </div>
+  <!--</div>-->
 </div>
 
-
-
+  </div>
+</div>

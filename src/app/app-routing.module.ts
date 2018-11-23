@@ -14,6 +14,7 @@ import { InstructorHomeComponent } from './vistas/instructor-home/instructor-hom
 import { TareasComponent } from './vistas/tareas/tareas.component';
 import {SupervisorHomeComponent} from './vistas/supervisor-home/supervisor-home.component'
 import {AuthGuardService} from './servicios/auth-guard.service';
+import {CargaInstructorComponent} from './vistas/carga-instructor/carga-instructor.component';
 
 const routes: Routes = [
     {
@@ -147,7 +148,15 @@ const routes: Routes = [
           data: {
             expectedRole: 'ROLE_SUPERVISOR'
           },
-        }
+        },
+          {
+            path: 'instructor',
+            component: CargaInstructorComponent,
+            canActivate: [AuthGuardService],
+            data: {
+              expectedRole: 'ROLE_SUPERVISOR'
+            },
+          },
     ]},
     {
       path: '**',

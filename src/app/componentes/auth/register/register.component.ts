@@ -23,6 +23,8 @@ export class RegisterComponent implements OnInit {
   roles = [];
   selectedRole = new Role('Administrativo')
 
+  mostrarDialogoAB = true;
+
   constructor(private authService: AuthService) { }
 
   onChange(e){

@@ -56,7 +56,7 @@
                   </td>
               </tr>
           </ng-template>
-    
+
       </p-table>
 </div>
   <div class="contenedor-info"  *ngIf="infoShowed">
@@ -71,13 +71,14 @@
           <p> <span style="font-weight: bold"> Horarios de Cursada: </span></p>
           <p *ngFor="let horario of cursadaSeleccionada.horariosCursada"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
             {{ _Util.convertirTime(horario.horaInicio) }} a
-            {{ _Util.convertirTime(horario.horaFin) }} 
+            {{ _Util.convertirTime(horario.horaFin) }}
           </p>
           <p> <span style="font-weight: bold"> Cantidad de Clases: </span>{{ cursadaSeleccionada.cantidadClases }} </p>
-  
+
         </div>
       </div>
   </div>
+
 
 
 <!--Asistencia-->
@@ -89,8 +90,10 @@
 <!--Notas-->
 <app-notas *ngIf="mostrarNotas"
 (clickBotonCerrar)="ocultarNotas()"
-           [cursadaSeleccionada]="cursadaSeleccionada"
->
+           [cursadaSeleccionada]="cursadaSeleccionada">
 
 </app-notas>
+
+
+
 

@@ -18,6 +18,7 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
   public getCursadas(): Observable<Icursada[]>{
     return super.list();
   }
+
   getArray(url: string): Observable<Icursada[]>{
     return super.listURL(url);
   }
@@ -39,10 +40,12 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
   getCursada(id: number): Observable<Icursada> {
     return super.read(id);
   }
+
   getCursadasInstructor(id:number):Observable<Icursada[]>{
     let url = GLOBAL.url + 'cursadas/instructor/' + id;
     return super.listURL(url);
   }
+
   getCursadasInstructorFinalizadas(id:number):Observable<Icursada[]>{
     let url = GLOBAL.url + 'cursadas/instructor/' + id+'/finalizada';
     return super.listURL(url);
