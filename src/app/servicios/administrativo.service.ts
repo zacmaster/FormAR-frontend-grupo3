@@ -24,8 +24,12 @@ export class AdministrativoService extends ResourceService<Administrativo, IAdmi
     return super.list();
   }
 
-  addAdministrativo(administrativo: Administrativo): Observable<Administrativo>{
+  public addAdministrativo(administrativo: Administrativo): Observable<Administrativo>{
     console.log("posteando: ",administrativo)
     return super.create(administrativo);
+  }
+
+  public getAdministrativoByUsername(username: string) : Observable<IAdministrativo[]>{
+    return super.readByUsername(username);
   }
 }
