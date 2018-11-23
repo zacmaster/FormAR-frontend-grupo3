@@ -130,7 +130,13 @@ export class NotasComponent implements OnInit {
     }
   agregarExamen(){
     this.nuevoExamen=false;
-     let numero = this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen;
+    let numero =0;
+    if(this.examenesDeCursada.length==2){
+      numero = this.examenesDeCursada[0].nroExamen;
+    }
+    else{
+      numero = this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen;
+    }
      numero++;
      let examenAux = new Examen;
      examenAux.id=0;
@@ -166,10 +172,22 @@ export class NotasComponent implements OnInit {
      //this.calificaciones.pop();
   }
   esUltimoExamen(nro:number):boolean{
+    console.log("tamaño arreglo", this.examenesDeCursada.length);
+    console.log("tamaño arreglo", this.examenesDeCursada);
+    
     if(this.examenesDeCursada.length>2 && nro==this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen){
       if(this.examenesDeCursada[this.examenesDeCursada.length-2].id==0 && this.examenesDeCursada.length>1 ){
+        console.log("entre 1");
+        
         return true;
       }
+    }
+    if(this.examenesDeCursada.length==2 && this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen==nro){
+      if(this.examenesDeCursada[this.examenesDeCursada.length-2].id==0){
+        console.log("entre 2");
+        return true;
+      }
+  
     }
     else{
       return false;
