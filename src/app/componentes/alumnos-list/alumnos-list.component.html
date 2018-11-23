@@ -225,10 +225,10 @@
 <dialogo-confirmacion
     *ngIf="mostrarPagosInicio && alumnoTienePagos"
     titulo="Pagar"
-    (clickBotonIzquierdo)="clickCancelarPagar()"
-    (clickBotonDerecho)="clickPagar()"
-    [botonCerrar]="false" 
-    textoBotonDerecho="Pagar"
+    (clickBotonCerrar)="clickCancelarPagar()"
+    [botonCancelar]="false"
+    [botonAceptar]="false"
+ 
     >
 
     <div class="row">

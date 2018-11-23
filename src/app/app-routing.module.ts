@@ -16,15 +16,12 @@ import {SupervisorHomeComponent} from './vistas/supervisor-home/supervisor-home.
 import {AuthGuardService} from './servicios/auth-guard.service';
 import {CargaInstructorComponent} from './vistas/carga-instructor/carga-instructor.component';
 import {AdmTareaComponent} from './vistas/adm-tarea/adm-tarea.component';
+import{HomeComponent} from './vistas/home/home.component'
 
 const routes: Routes = [
     {
       path: '',
-      redirectTo: '/administrativo/alumnos',
-      canActivate: [AuthGuardService],
-      data: {
-        expectedRole: 'ROLE_ADMINISTRATIVO'
-      },
+      redirectTo: '/home',
       pathMatch: 'full' },
     {
       path: 'administrativo',
@@ -159,6 +156,9 @@ const routes: Routes = [
             },
           },
     ]},
+    { path: 'home',
+    component: HomeComponent
+    },
     {
       path: '**',
       component: PageNotFoundComponent
