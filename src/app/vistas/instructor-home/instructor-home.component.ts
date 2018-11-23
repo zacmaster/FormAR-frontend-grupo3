@@ -171,8 +171,11 @@ export class InstructorHomeComponent implements OnInit {
 
   getCursadas(){
     this.cursadas = [];
-    this._cursadaService.getCursadasInstructor(this.selectedInstructor.id)
+    console.log("get cursadas")
+    this._cursadaService.getCursadasInstructorEmail(this.tokenStorage.getUsername())
     .subscribe(cursadas => {
+      console.log(this.tokenStorage.getUsername())
+      console.log(cursadas);
       cursadas.forEach(cursada => {
         let nuevaCursada = new Cursada();
         let nuevoCurso = new Curso();
@@ -201,7 +204,7 @@ export class InstructorHomeComponent implements OnInit {
   }
   getCursadasFinalizadas(){
     this.cursadas = [];
-    this._cursadaService.getCursadasInstructorFinalizadas(this.selectedInstructor.id)
+    this._cursadaService.getCursadasInstructorEmailFinalizadas(this.tokenStorage.getUsername())
     .subscribe(cursadas => {
       cursadas.forEach(cursada => {
         let nuevaCursada = new Cursada();
