@@ -22,7 +22,12 @@ export class SupervisorHomeComponent implements OnInit {
       name: 'Usuarios',
       active: false,
       url: '/supervisor/usuarios'
-    }
+    },
+    {
+      name: "Cargar instructor",
+      active: false,
+      url: '/supervisor/instructor'
+    },
   ]
 
   constructor() { }

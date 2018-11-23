@@ -2,11 +2,11 @@
 <div class="content-section implementation ui-fluid">
     <p-table #dt [columns]="cols" [value]="cursadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
           <ng-template pTemplate="caption">
-            <div style="text-align: right">
+            <div style="text-align: left">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Nombre Instructor</span>
+                <label>{{nombre}}</label>
               </div>
-              <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
+              <p-dropdown *ngIf="mostrarInstructoresSpinner" [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
               <p-dropdown [options]="cursadasTipo" [(ngModel)]="selectedTipoCursada" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarTipoCursadas()" ></p-dropdown>
               </div>
           </ng-template>
@@ -56,7 +56,7 @@
                   </td>
               </tr>
           </ng-template>
-    
+
       </p-table>
 </div>
   <div class="contenedor-info"  *ngIf="infoShowed">
@@ -71,13 +71,14 @@
           <p> <span style="font-weight: bold"> Horarios de Cursada: </span></p>
           <p *ngFor="let horario of cursadaSeleccionada.horariosCursada"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
             {{ _Util.convertirTime(horario.horaInicio) }} a
-            {{ _Util.convertirTime(horario.horaFin) }} 
+            {{ _Util.convertirTime(horario.horaFin) }}
           </p>
           <p> <span style="font-weight: bold"> Cantidad de Clases: </span>{{ cursadaSeleccionada.cantidadClases }} </p>
-  
+
         </div>
       </div>
   </div>
+
 
 
 <!--Asistencia-->
@@ -89,8 +90,10 @@
 <!--Notas-->
 <app-notas *ngIf="mostrarNotas"
 (clickBotonCerrar)="ocultarNotas()"
-           [cursadaSeleccionada]="cursadaSeleccionada"
->
+           [cursadaSeleccionada]="cursadaSeleccionada">
 
 </app-notas>
+
+
+
 
