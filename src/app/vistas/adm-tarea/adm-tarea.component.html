@@ -1,8 +1,10 @@
 <!-- header de la sección -->
-<div class="d-flex justify-content-between p-4 bg-light header" >
+<div class="d-flex justify-content-between p-1 bg-light header" >
   <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-default">Nombre Administrativo</span>
-    <p-dropdown [options]="administrativos" [(ngModel)]="selectedAdministrativo" [filter]="true" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange()"></p-dropdown>
+      <div class="bg-light p-1">
+        <h5 style="text-align: right;color: #000000">{{nombreAdm}}</h5>
+      </div>
+    <p-dropdown *ngIf="mostrarAdministrativosSpinner" [options]="administrativos" [(ngModel)]="selectedAdministrativo" [filter]="true" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange()"></p-dropdown>
   </div>
   <!-- (onChange)="refrescarTareas()"  -->
   <div>

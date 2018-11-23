@@ -49,6 +49,9 @@ export class AdmTareaComponent implements OnInit {
 
   mostrandoDetalleTarea: boolean = false;
   mostrarDialogoNuevaTarea: boolean = false;
+  mostrarNombre = false;
+  nombreAdm: string;
+  mostrarAdministrativosSpinner = false
 
   mostrandoDialogoOfrecerContacto: boolean = false;
 
@@ -85,6 +88,7 @@ export class AdmTareaComponent implements OnInit {
   }
 
   bajarDatos(){
+    console.log("bajando")
     Promise.all([
       this._administrativoService.getAdministrativoByUsername(this.tokenStorageService.getUsername()).toPromise(),
       this._tareasService.getTareas().toPromise(),
@@ -94,8 +98,10 @@ export class AdmTareaComponent implements OnInit {
       this.tareas = [];
       this.contactos = [];
       values[0].forEach(administrativo => {
+        console.log(administrativo)
         let adminAux = new Administrativo();
         adminAux.copiar(administrativo);
+        this.nombreAdm = adminAux.nombre
         this.administrativos.push(adminAux);
       });
       values[1].forEach(tarea =>{
