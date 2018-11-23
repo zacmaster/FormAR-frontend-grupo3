@@ -31,6 +31,14 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
       .pipe(catchError(this.handleError))
   }
 
+  public readByEmail(email: string): Observable<I>{
+    let finalEndpoint = this.endpoint + "email"
+
+    return this.httpClient
+      .get<I>(`${this.url}/${finalEndpoint}/${email}`)
+      .pipe(catchError(this.handleError))
+  }
+
   public update(item: T): Observable<T>{
     // console.log("item:", item);
     // let url = `${this.url}/${this.endpoint}/${item.id}`; //for json-server
@@ -39,17 +47,17 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
     .put<T>(url, item,this.httpOptions)
     .pipe(catchError(this.handleError))
   }
-  
+
   public delete(item: T): Observable<{}>{
     return this.httpClient
     .delete(`${this.url}/${this.endpoint}${item.id}`, this.httpOptions)
     .pipe(catchError(this.handleError))
   }
-  
+
   public list(): Observable<I[]>{
     let url = `${this.url}/${this.endpoint}`;
     // console.log('url: ',url);
-    
+
     return this.httpClient.get<I[]>(url)
   }
 

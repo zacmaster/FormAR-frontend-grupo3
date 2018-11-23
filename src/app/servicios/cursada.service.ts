@@ -12,7 +12,7 @@ import { ValidacionCursada } from '../modelos/validacionCursada';
 })
 export class CursadaService extends ResourceService<Cursada,Icursada>{
 
-  constructor(private _http: HttpClient) { 
+  constructor(private _http: HttpClient) {
     super(_http, GLOBAL.url + 'cursadas','');
   }
 
@@ -29,7 +29,7 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
 
   updateCursada(cursada: Cursada){
     console.log("cursada: ", cursada);
-    
+
     return super.update(cursada);
   }
 
@@ -59,6 +59,15 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
       .post(url,"",GLOBAL.httpOptions)
   }
 
+  getCursadasInstructorEmail(email: string):Observable<Icursada[]>{
+    let url = GLOBAL.url + 'cursadas/instructor/email/' + email;
+    return super.listURL(url);
+  }
+
+  getCursadasInstructorEmailFinalizadas(email: string):Observable<Icursada[]>{
+    let url = GLOBAL.url + 'cursadas/instructor/email/' + email +'/finalizada';
+    return super.listURL(url);
+  }
 
   save(cursada: Cursada){
     if(cursada.id)

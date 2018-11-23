@@ -11,6 +11,8 @@ import { Util } from '../../utilidades/util';
 import { Horario } from '../../modelos/horario';
 import { Subscriber } from 'rxjs';
 import { dashCaseToCamelCase } from '@angular/animations/browser/src/util';
+import {AuthService} from '../../auth/auth.service';
+import {SignUpInfo} from '../../modelos/signup-info';
 
 @Component({
   selector: 'app-instructores',
@@ -19,7 +21,7 @@ import { dashCaseToCamelCase } from '@angular/animations/browser/src/util';
 })
 
 export class InstructoresComponent  implements OnInit, DoCheck{
-  
+
   _LABEL = LABEL;
   _LABEL_REQUIRED = LABEL_REQUIRED;
   _HVR = HVR;
@@ -37,7 +39,8 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   areas: Area[] = [];
   selectedAreas: Area[]=[];
   instructores: Instructor[]=[];
- 
+  signupInfo: SignUpInfo;
+
 
   mostrarDialogoAB: boolean = false;
   mostrarDialogoBorrar: boolean = false;
@@ -45,9 +48,9 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   horariosShowed: boolean =false;
   areasShowed: boolean =false;
   mostrarCalendario:boolean =false;
-  
 
-  constructor(private _areaService: AreaService,private _instructorService : InstructorService,
+
+  constructor(private _areaService: AreaService, private authService: AuthService, private _instructorService : InstructorService,
     private _spinnerService: Ng4LoadingSpinnerService){ }
 
 
@@ -64,22 +67,22 @@ export class InstructoresComponent  implements OnInit, DoCheck{
     {dia: 'Viernes'},
     {dia: 'Sabado'}
   ];
-  
+
 
 
   ngOnInit() {
     this.cargarCampos();
-    this.getAreas();  
+    this.getAreas();
     this.getInstructores();
-   
-   
+
+
   }
 
   ngDoCheck(){
 
 
-  } 
-  
+  }
+
   private fieldArray: Array<any> = [];
   private newAttribute: any = {};
 
@@ -112,12 +115,12 @@ deleteAtributteValue(){
   ocultarDialogo(){
     this.mostrarDialogoBorrar = false;
     this.mostrarDialogoAB=false;
-  
+
     this.selectedAreas=[];
     this.fieldArray=[];
     this.newAttribute ={};
     this.instructorSeleccionado = this.newInstructor();
-           
+
   }
   verCalendario(instructor){
     this.instructorSeleccionado = new Instructor();
@@ -136,7 +139,7 @@ deleteAtributteValue(){
              ${ this.instructorSeleccionado.nombre }
              ${ this.instructorSeleccionado.apellido } ?`;
     this.mostrarDialogoBorrar = true;
-    
+
   }
   mostrarEstudios(instructor){
     this.instructorSeleccionado = new Instructor();
@@ -163,19 +166,19 @@ deleteAtributteValue(){
     this.areasShowed=false;
   }
   guardar(){
-    
+
      //es editado
     if(this.instructorSeleccionado.id!=0){
-      
+
       //vacio y vuelvo a cargar las areas
       this.instructorSeleccionado.areasPreferencia=[];
       for (let j = 0; j < this.selectedAreas.length; j++) {
         if(this.selectedAreas[j]!=null){
           this.instructorSeleccionado.areasPreferencia.push(this.selectedAreas[j]);
-         
-        } 
-       } 
-       
+
+        }
+       }
+
        //vacio y vuelvo a cargar los horarios
        this.instructorSeleccionado.disponibilidadHoraria=[];
         for (let i = 0; i < this.fieldArray.length; i++) {
@@ -188,7 +191,7 @@ deleteAtributteValue(){
                   this.instructorSeleccionado.disponibilidadHoraria.push(horario);
                 }
                 else{
-               
+
                   let horario = new Horario();
                   horario.id=this.fieldArray[i].id;
                   horario.dia=this.fieldArray[i].dia;
@@ -199,7 +202,7 @@ deleteAtributteValue(){
         }
         //despues de sacar los del arreglo ,agarra el inidividual
         if(this.newAttribute.id==undefined){
-          
+
            let horario = new Horario();
            horario.id=0;
            horario.dia=this.newAttribute.dia;
@@ -216,9 +219,9 @@ deleteAtributteValue(){
           this.instructorSeleccionado.disponibilidadHoraria.push(horario);
         }
 
-      
-   
-        
+
+
+
       this.editar(this.instructorSeleccionado)
     }
     //es nuevo
@@ -245,17 +248,17 @@ deleteAtributteValue(){
           for (let j = 0; j < this.selectedAreas.length; j++) {
             if(this.selectedAreas[j]!=null){
               this.instructorSeleccionado.areasPreferencia.push(this.selectedAreas[j]);
-          }  
+          }
           }
          this.agregar(this.instructorSeleccionado);
     }
-    
+
   }
-  agregar(instructor : Instructor){
+  agregar(instructorDTO : Instructor){
     this._spinnerService.show();
     setTimeout(() => {
       //console.log("instructor seleccionado: ",this.instructorSeleccionado);
-          this._instructorService.addInstructor(instructor).
+          this._instructorService.addInstructor(instructorDTO).
           subscribe(response => {
             this.getInstructores();
             this.instructorSeleccionado = this.newInstructor();
@@ -264,8 +267,25 @@ deleteAtributteValue(){
             this.selectedAreas=[];
             this.mostrarDialogoAB = false;
             this._spinnerService.hide();
+
+            this.signupInfo = new SignUpInfo(
+              instructorDTO.nombre,
+              instructorDTO.email,
+              instructorDTO.email,
+              "123456",
+              ["Instructor"]);
+            console.log(this.signupInfo);
+
+            this.authService.signUp(this.signupInfo).subscribe(
+              data => {
+                console.log(data)
+              },
+              error => {
+                console.log(error);
+              }
+            );
           })
-      }, 500)
+      }, 800)
   }
   editar(instructor: Instructor){
     this._instructorService.updateInstructor(instructor).
@@ -307,9 +327,9 @@ deleteAtributteValue(){
               ,horaInicio:new Date(arrayAux[index].horaInicio),
               horaFin:new Date(arrayAux[index].horaFin)});
          }
-       
+
     }
-  
+
     this.edicion = true;
     this.mostrarDialogoAB = true;
     //console.log(this.instructorSeleccionado);
@@ -324,7 +344,7 @@ deleteAtributteValue(){
           this.getInstructores();
           this._spinnerService.hide();
           this.instructorSeleccionado = this.newInstructor();
-          
+
           this.selectedAreas=[];
         })
     }, 500)
@@ -366,7 +386,7 @@ deleteAtributteValue(){
         })
         this.busqueda = undefined;
         this._spinnerService.hide();
-        
+
       })
   }
 
@@ -384,7 +404,7 @@ deleteAtributteValue(){
 
     ];
   }
-  
+
 
   blankSpaces() {
     if (!this.instructorSeleccionado.nombre.trim().length || !this.instructorSeleccionado.apellido.trim().length) {

@@ -13,6 +13,7 @@ import { CursadaService } from 'src/app/servicios/cursada.service';
 import { Sala } from '../../modelos/sala';
 import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import {SelectItem} from 'primeng/api';
+import {TokenStorageService} from '../../auth/token-storage.service';
 
 @Component({
   selector: 'app-instructor-home',
@@ -43,10 +44,12 @@ export class InstructorHomeComponent implements OnInit {
     cols: any[];
 
     constructor(private _cursadaService: CursadaService,private _inscripcionService: InscripcionService,
-      private _instructorService : InstructorService,private _spinnerService: Ng4LoadingSpinnerService) { }
+      private _instructorService : InstructorService,private _spinnerService: Ng4LoadingSpinnerService,
+                private tokenStorage: TokenStorageService) { }
 
     ngOnInit() {
-        this.getInstructores();
+        this.getInstructor();
+
         this.cursadasTipo.push({label:"Activas",value:"activas"});
         this.cursadasTipo.push({label:"Finalizadas",value:"finalizada"});
         this.cols = [
@@ -56,8 +59,8 @@ export class InstructorHomeComponent implements OnInit {
             { field: 'fechaFin', header: 'Fecha de fin' },
             { field: 'info', header: 'Info' },
             { field: 'acciones', header: 'Acciones' }
-            
-          
+
+
         ];
     }
 
@@ -82,11 +85,11 @@ export class InstructorHomeComponent implements OnInit {
         });
     }
  // constructor() { }
-  
- 
-  ngDoCheck(){ 
+
+
+  ngDoCheck(){
    // console.log(this.cursadas);
-    
+
   }
   verAsistencia(data:Cursada){
     this.cursadaSeleccionada=data;
@@ -109,6 +112,7 @@ export class InstructorHomeComponent implements OnInit {
   cerrarInfo(){
     this.infoShowed=false;
   }
+
   private getInstructores(){
     this.instructores = [];
     this._spinnerService.show();
@@ -123,18 +127,35 @@ export class InstructorHomeComponent implements OnInit {
         this._spinnerService.hide();
         console.log("instructor seleccionado",this.selectedInstructor);
         console.log("instructores",this.instructores);
-        
+
         this.getCursadas();
-        
       })
-   
   }
-  refrescarCursadas(){  
+
+  private getInstructor(){
+    this.instructores = [];
+    this._spinnerService.show();
+    return this._instructorService.getInstructorByEmail(this.tokenStorage.getUsername())
+      .toPromise().then(instructor => {
+        let nuevoinstructor =  new Instructor();
+        nuevoinstructor.copiar(instructor);
+        this.instructores.push({label:nuevoinstructor.nombre+" "+nuevoinstructor.apellido,value:nuevoinstructor});
+
+        this.selectedInstructor=this.instructores[0].value;
+        this._spinnerService.hide();
+        console.log("instructor seleccionado",this.selectedInstructor);
+        console.log("instructores",this.instructores);
+
+        this.getCursadas();
+      })
+  }
+
+  refrescarCursadas(){
     if(this.selectedTipoCursada=="activas"){
       if(this.selectedInstructor!=undefined){
         this.getCursadas();
       }
-        
+
     }
     if(this.selectedTipoCursada=="finalizada"){
       if(this.selectedInstructor!=undefined){
@@ -142,6 +163,7 @@ export class InstructorHomeComponent implements OnInit {
       }
     }
   }
+
   getCursadas(){
     this.cursadas = [];
     this._cursadaService.getCursadasInstructor(this.selectedInstructor.id)
@@ -169,7 +191,7 @@ export class InstructorHomeComponent implements OnInit {
         this.cursadas.push(nuevaCursada);
       })
       //console.log(this.cursadas);
-    
+
     })
   }
   getCursadasFinalizadas(){
@@ -197,7 +219,7 @@ export class InstructorHomeComponent implements OnInit {
           nuevaCursada.inscriptos=alumnos.length;
         });
         this.cursadas.push(nuevaCursada);
-      })  
+      })
     })
   }
   refrescarTipoCursadas(){
@@ -205,7 +227,7 @@ export class InstructorHomeComponent implements OnInit {
       if(this.selectedInstructor!=undefined){
         this.getCursadas();
       }
-        
+
     }
     if(this.selectedTipoCursada=="finalizada"){
       if(this.selectedInstructor!=undefined){

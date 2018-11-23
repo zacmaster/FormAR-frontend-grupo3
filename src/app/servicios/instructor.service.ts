@@ -21,12 +21,12 @@ export class InstructorService extends ResourceService<Instructor, IInstructor>{
   public getInstructores(): Observable<IInstructor[]>{
     return super.list();
   }
-  
+
   addInstructor(instructor: Instructor): Observable<Instructor>{
     console.log("posteando: ",instructor)
     return super.create(instructor);
   }
-  
+
   updateInstructor(instructor: Instructor){
     return super.update(instructor);
   }
@@ -37,6 +37,10 @@ export class InstructorService extends ResourceService<Instructor, IInstructor>{
 
   getInstructor(id: number): Observable<IInstructor> {
     return super.read(id);
+  }
+
+  getInstructorByEmail(email: string): Observable<IInstructor>{
+    return super.readByEmail(email)
   }
 
   save(instructor: Instructor){
