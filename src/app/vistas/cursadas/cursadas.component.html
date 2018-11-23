@@ -133,6 +133,9 @@
                   <span *ngIf="!rowData.iniciada">En espera</span>
               </span>
                 <span *ngSwitchCase="'acciones'">
+                    <button *ngIf="supervisorConectado && !rowData.iniciada" class="btn btn-success mr-2" (click)="iniciarCursada(rowData)">
+                        <i class="fas fa-play-circle"></i>
+                      </button>
                     <button class="btn btn-info mr-2" (click)="clickInscribir(rowData)">
                         <i class="fas fa-file-signature"></i>
                       </button>
@@ -171,7 +174,12 @@
 
 
 
-
+<dialogo-info [titulo]="tituloDialogoInfo" 
+[texto]="textoDialogoInfo" 
+*ngIf="mensajeInfo " 
+(clickBotonCerrar)="ocultarMensaje()" 
+(clickBotonOk)="ocultarMensaje()">
+</dialogo-info>
 
 
 <dialogo-confirmacion
@@ -217,8 +225,9 @@
     <div class="card-head d-flex  w-100 justify-content-between">
       <div></div>
       <div class="pt-2">
-        <h5 *ngIf="!edicion" class="">{{ _LABEL.nuevaCursada}}</h5>
-        <h5 *ngIf="edicion" class="">Edicion</h5>
+        <h5 *ngIf="!edicion && !iniciar" class="">{{ _LABEL.nuevaCursada}}</h5>
+        <h5 *ngIf="edicion && !iniciar" class="">Edicion</h5>
+        <h5 *ngIf="iniciar" class="">Inicio cursada</h5>
       </div>
       <span class="btn btn-danger" (click)="cerrarDialogo()"><i class="fas fa-times"></i></span>
     </div>
@@ -433,7 +442,7 @@
                              
                           </tbody>
                       </table>  
-                      <p *ngIf="horarioDisponibilidad" > {{_LABEL.error.horarioCursada }}</p>
+                      <span *ngIf="horarioDisponibilidad" > {{_LABEL.error.horarioCursada }}</span>
               </div>
               </div>
             <!-- FIN HORARIO DE CURSADA -->
@@ -442,8 +451,9 @@
                || cursadaSeleccionada.cantidadClases==undefined || cursadaSeleccionada.cantidadCuotas==undefined || cursadaSeleccionada.matricula==undefined ||
                cursadaSeleccionada.precioCuota==undefined || cursadaSeleccionada.diaVencCuota==undefined || fechaInicio==undefined ||
                newAttribute.dia==undefined || newAttribute.horaInicio==undefined || newAttribute.horaFin==undefined  || !validarDisponibilidadInstructor()" (click)="guardarCursada()">
-                <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
-                <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
+                <span *ngIf="edicion && !iniciar">{{ _LABEL.guardar }}</span>
+                <span *ngIf="!edicion && !iniciar">{{ _LABEL.agregar }}</span>
+                <span *ngIf="iniciar">{{ _LABEL.iniciar }}</span>
               </button>
             
            </div>  
@@ -485,10 +495,6 @@
 
 </dialogo-confirmacion> -->
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0d64b4577d4eadb8d4064143ab350db80b482487
 
 
 <ng4-loading-spinner></ng4-loading-spinner>

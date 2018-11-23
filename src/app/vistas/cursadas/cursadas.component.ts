@@ -19,11 +19,13 @@ import {DatepickerOptions} from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
 import { CompileShallowModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { npost } from 'q';
-import { isTuesday } from 'date-fns';
+import { isTuesday, isThisISOWeek } from 'date-fns';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { AlumnoService } from 'src/app/servicios/alumno.service';
 import { Inscripcion } from '../../modelos/inscripcion'
 import { InscripcionService } from 'src/app/servicios/inscripcion.service';
+import { ValidacionCursada } from 'src/app/modelos/validacionCursada';
+import { TokenStorageService } from 'src/app/auth/token-storage.service';
 
 @Component({
   selector: 'app-cursadas',
@@ -41,7 +43,8 @@ export class CursadasComponent implements OnInit {
     private _instructorService : InstructorService,
     private _salasService : SalaService,
     private _spinnerService: Ng4LoadingSpinnerService,
-    private _inscripcionService: InscripcionService
+    private _inscripcionService: InscripcionService,
+    private _tokenService : TokenStorageService
   ) { }
 
   _LABEL = LABEL;
@@ -54,7 +57,7 @@ export class CursadasComponent implements OnInit {
   instructoresTotal=[];
   salas = [];
   _Util = Util;
-  fechaInicio: number;
+  fechaInicio: Date;
   cols: any[];
   
   pruebaCurso;
@@ -67,13 +70,14 @@ export class CursadasComponent implements OnInit {
   alumnos: Alumno[];
   alumnosEnCursada: Alumno[];
 
-
+  supervisorConectado:boolean = false;
 
   alumnosFiltrados: Alumno[];
   selectedAlumno: Alumno = new Alumno();
   results: string[] = ['Zacarías','Jorge'];
   alumnoSeleccionado: Alumno = new Alumno();
   edicion: boolean = false;
+  iniciar: boolean = false;
 
   //parametros calendario
   idSeleccionado: number = 0;
@@ -84,7 +88,9 @@ export class CursadasComponent implements OnInit {
   mostrarDialogoBorrar:boolean=false;
   textoDlgEliminar: string;
 
-  sabado;
+  mensajeInfo:boolean=false;
+  tituloDialogoInfo:string;
+  textoDialogoInfo:string;
 
   cursoSeleccionado = new Curso();
   instructorSeleccionado = new Instructor();
@@ -121,6 +127,7 @@ export class CursadasComponent implements OnInit {
     
   guardarCursada(){
     this.cursadaSeleccionada.fechaInicio = + this.fechaInicio;
+
     this.cursadaSeleccionada.curso = new Curso();
     this.cursadaSeleccionada.curso = this.selectedCurso;
     this.cursadaSeleccionada.instructor = new Instructor();
@@ -137,15 +144,6 @@ export class CursadasComponent implements OnInit {
     else{
       this.cursadaSeleccionada.sala = this.selectedSala;
     }
-
-
-    // this.cursadaSeleccionada.cupoMinimo = +this.cursadaSeleccionada.cupoMinimo;
-    // this.cursadaSeleccionada.cupoMaximo = +this.cursadaSeleccionada.cupoMaximo;
-    // this.cursadaSeleccionada.cantidadClases = +this.cursadaSeleccionada.cantidadClases;
-    // this.cursadaSeleccionada.cantidadCuotas = +this.cursadaSeleccionada.cantidadCuotas;
-    // this.cursadaSeleccionada.matricula = +this.cursadaSeleccionada.matricula;
-    // this.cursadaSeleccionada.precioCuota = +this.cursadaSeleccionada.precioCuota;
-    //console.log("Horarios: ",this.fieldArray);
     this.cursadaSeleccionada.horariosCursada=[];
     this.cursadaSeleccionada.fechaFin = null;
 
@@ -166,11 +164,87 @@ export class CursadasComponent implements OnInit {
      horario.horaInicio=this.newAttribute.horaInicio;
      horario.horaFin=this.newAttribute.horaFin;
      this.cursadaSeleccionada.horariosCursada.push(horario);
+
+     
         
+     this._cursadaService.validarCursada(this.cursadaSeleccionada).
+     subscribe(response => {
+       console.log(response);
+       if(!this.iniciar){
+        if(response.estadoInstructor=="libre" && response.estadoSala=="libre"){
+          if(this.cursadaSeleccionada.id==0){
+            this.agregar(this.cursadaSeleccionada);
+          }
+          else{
+            this.editar(this.cursadaSeleccionada);
+          }
+       }
+       if(response.estadoInstructor=="tentativo" || response.estadoSala=="tentativo"){
+          this.generarMensaje(response);
+          if(this.cursadaSeleccionada.id==0){
+            this.agregar(this.cursadaSeleccionada);
+          }
+          else{
+            this.editar(this.cursadaSeleccionada);
+          }
+       }
+       if(response.estadoInstructor=="ocupado" || response.estadoSala=="ocupado"){
+        this.generarMensaje(response);
+        }
+       }
+       else{
+         if(this.instructorYSalaValida(this.cursadaSeleccionada)){
+          if(response.estadoInstructor=="libre" && response.estadoSala=="libre"){
+            this.iniciarCursadaValida(this.cursadaSeleccionada);
+          }
+          if(response.estadoInstructor=="tentativo" || response.estadoSala=="tentativo"){
+            this.iniciarCursadaValida(this.cursadaSeleccionada);
+          }
+          if(response.estadoInstructor=="ocupado" || response.estadoSala=="ocupado"){
+           this.generarMensaje(response);
+           }
+         }
+         else{
+          this.textoDialogoInfo="Debe seleccionar un instructor y una sala para poder iniciar una cursada";
+          this.mensajeInfo=true;
+         }
         
-         
-    this.agregar(this.cursadaSeleccionada);
-  }
+       }
+       
+     })
+  
+    }
+    instructorYSalaValida(cursada:Cursada):boolean{
+        if(cursada.instructor==null){
+          return false;
+        }
+        else if(cursada.sala==null){
+          return false;
+        }
+        else{
+          return true;
+        }
+    }
+    generarMensaje(response:ValidacionCursada){
+      this.tituloDialogoInfo="Aviso"
+      if(response.estadoInstructor=="ocupado"){
+        this.textoDialogoInfo="El instructor se encuentra ocupado para la creacion de la cursada, por favor verifique con el calendario";
+        this.mensajeInfo=true;
+      }
+      if(response.estadoSala=="ocupado"){
+        this.textoDialogoInfo="La sala se encuentra ocupada para la creacion de la cursada, por favor verifique con el calendario";
+        this.mensajeInfo=true;
+      }
+      if(response.estadoInstructor=="tentativo"){
+        this.textoDialogoInfo="El instructor se encuentra ocupado de manera tentativa, aunque se volvera a verificar al iniciar la cursada";
+        this.mensajeInfo=true;
+      }
+      if(response.estadoInstructor=="tentativo"){
+        this.textoDialogoInfo="La sala se encuentra ocupada de manera tentativa, aunque se volvera a verificar al iniciar la cursada";
+        this.mensajeInfo=true;
+      }
+    }
+    
   verCalendarioInstructor(){
     if(this.selectedInstructor.id>0){
       this.esInstructor=true;
@@ -248,19 +322,19 @@ export class CursadasComponent implements OnInit {
         }
     }
     else{
-      this.horarioDisponibilidad=true;
+      this.horarioDisponibilidad=false;
       return true;
     }
   }
   private compararHora(horaI1:Date ,horaI2:Date , horaF1:Date, horaF2:Date): boolean{
    
    if(horaI2.getHours()>=horaI1.getHours() && horaI2.getMinutes()>=horaI1.getMinutes()){
-  
-      if(horaI2.getHours()<horaF2.getHours()){
-      
+        
+      if(horaI2.getHours()<=horaF2.getHours()){
+    
           if(horaF2.getHours()<horaF1.getHours() || (horaF2.getHours()==horaF1.getHours() && horaF2.getMinutes()==horaF1.getMinutes()) ){
            
-              if(horaF2.getHours()>horaI2.getHours()){
+              if(horaF2.getHours()>horaI2.getHours() || (horaI2.getHours()==horaF2.getHours() && horaI2.getMinutes()<horaF2.getMinutes())){
                 
                 return true;
               }
@@ -292,6 +366,7 @@ export class CursadasComponent implements OnInit {
   cerrarInfo(){
     this.infoShowed=false;
     this.cursadaSeleccionada= this.newCursada();
+  
   }
   // METODOS CURSADAS
   
@@ -303,11 +378,25 @@ export class CursadasComponent implements OnInit {
         this.selectedCurso=this.cursos[i];
         this.filtrarInstructores();
      }
+     console.log("instructor Actual",this.selectedInstructor);
      
     }
-    this.selectedInstructor=this.cursadaSeleccionada.instructor;
-    this.selectedSala=this.cursadaSeleccionada.sala;
-    this.fechaInicio=this.cursadaSeleccionada.fechaInicio;
+    console.log("cursada actual",this.cursadaSeleccionada);
+    
+    if(this.cursadaSeleccionada.instructor.id!=0){
+      console.log("entre a cambiar el instructor");
+      
+      this.selectedInstructor=this.cursadaSeleccionada.instructor;
+    }
+    if(this.cursadaSeleccionada.sala.id==0){
+      this.selectedSala=this.salas[0];
+    }
+    else{
+      this.selectedSala=this.cursadaSeleccionada.sala;
+    }
+    
+    
+    this.fechaInicio=new Date(this.cursadaSeleccionada.fechaInicio);
     this.newAttribute={};
     this.fieldArray=[];
     const arrayAux= this.cursadaSeleccionada.horariosCursada;
@@ -324,6 +413,45 @@ export class CursadasComponent implements OnInit {
       }
     }
     this.edicion=true;
+    this.mostrarDialogo=true;
+  }
+  iniciarCursada(cursada){
+    this.cursadaSeleccionada=this.newCursada();
+    this.cursadaSeleccionada.copiar(cursada);
+    for (let i = 0; i < this.cursos.length; i++) {
+     if(this.cursos[i].id==this.cursadaSeleccionada.curso.id){
+        this.selectedCurso=this.cursos[i];
+        this.filtrarInstructores();
+     }     
+    }
+    if(this.cursadaSeleccionada.instructor.id!=0){
+      this.selectedInstructor=this.cursadaSeleccionada.instructor;
+    }
+    if(this.cursadaSeleccionada.sala.id==0){
+      this.selectedSala=this.salas[0];
+    }
+    else{
+      this.selectedSala=this.cursadaSeleccionada.sala;
+    }
+    
+    
+    this.fechaInicio=new Date(this.cursadaSeleccionada.fechaInicio);
+    this.newAttribute={};
+    this.fieldArray=[];
+    const arrayAux= this.cursadaSeleccionada.horariosCursada;
+    for (let index = 0; index < arrayAux.length; index++) {
+      if(index==arrayAux.length-1){
+       this.newAttribute={id:arrayAux[index].id,dia:arrayAux[index].dia
+         ,horaInicio:new Date(arrayAux[index].horaInicio),
+         horaFin:new Date(arrayAux[index].horaFin)};
+      }
+      else{
+         this.fieldArray.push(this.newAttribute={id:arrayAux[index].id,dia:arrayAux[index].dia
+           ,horaInicio:new Date(arrayAux[index].horaInicio),
+           horaFin:new Date(arrayAux[index].horaFin)});
+      }
+    }
+    this.iniciar=true;
     this.mostrarDialogo=true;
   }
   eliminarCursada(cursada){
@@ -366,7 +494,7 @@ export class CursadasComponent implements OnInit {
     this.filtrarInstructores();
     this.selectedInstructor=this.instructores[0];
     this.selectedSala=this.salas[0];
-    this.fechaInicio= 0;
+    this.fechaInicio=new Date();
     this.fieldArray= [];
     this.newAttribute={};
     this.horarioDisponibilidad=false;
@@ -375,6 +503,8 @@ export class CursadasComponent implements OnInit {
   cerrarDialogo(){
     this.mostrarDialogo=false;
     this.cursadaSeleccionada=this.newCursada();
+    this.edicion=false;
+    this.iniciar=false;
   }
   
   agregar(cursada: Cursada){
@@ -393,6 +523,41 @@ export class CursadasComponent implements OnInit {
       })
     }, 500)
     
+  }
+  editar(cursada: Cursada){
+    this._spinnerService.show();
+    setTimeout(() => {
+      console.log("cursada seleccionad: ",this.cursadaSeleccionada);
+      this._cursadaService.updateCursada(cursada).
+      subscribe(response => {
+        this.getCursadas();
+        this.getSalas();
+        this.getCursos();
+        this.getInstructores();
+        this.cursadaSeleccionada = this.newCursada();
+        this.cerrarDialogo();
+        this._spinnerService.hide();
+      })
+    }, 500)
+    
+  }
+  iniciarCursadaValida(cursada:Cursada){
+    this._spinnerService.show();
+    setTimeout(() => {
+      console.log("cursada seleccionad: ",this.cursadaSeleccionada);
+      this._cursadaService.updateCursada(cursada).
+      subscribe(response => {
+       this._cursadaService.iniciarCursada(cursada).subscribe(respuesta=>{
+          this.getCursadas();
+          this.getSalas();
+          this.getCursos();
+          this.getInstructores();
+          this.cursadaSeleccionada = this.newCursada();
+          this.cerrarDialogo();
+          this._spinnerService.hide();
+       });
+      })
+    }, 500)
   }
   
   getCursadas(){
@@ -514,6 +679,9 @@ export class CursadasComponent implements OnInit {
       });
      this.selectedInstructor= this.instructores[0];
     }
+    ocultarMensaje(){
+      this.mensajeInfo=false;
+    }
 
     // METODOS DEL SISTEMA
     
@@ -521,18 +689,12 @@ export class CursadasComponent implements OnInit {
       this.cargarCampos();
       this.getAlumnos();
       this.getCursadas();
-      // console.log("on init");
-      // this._spinnerService.show();
-      // setTimeout(() => {
-      //   this.cargarCursadas()
-      //   .then(r => {
-      //     this.cursadas = r;
-      //     this._spinnerService.hide();
-      //   })
-      // },0)
        this.getCursos();
        this.getInstructores();
        this.getSalas();
+       if(this._tokenService.isSupervisor()){
+         this.supervisorConectado=true;
+       }
   }
 
 
@@ -602,12 +764,13 @@ export class CursadasComponent implements OnInit {
   }
 
   ngDoCheck(){
+
      //console.log("Cursadas: ", this.cursadas);
     //console.log('alumnosFiltrados: ',this.alumnosFiltrados
     
-    // console.log("Alumnos: ",this.alumnos);
+   console.log("Cursada: ",this.cursadaSeleccionada);
     
-    // console.log("sabado: ",this.sabado);
+    // console.log("fecha: ",this.fechaInicio);
   }
 
 

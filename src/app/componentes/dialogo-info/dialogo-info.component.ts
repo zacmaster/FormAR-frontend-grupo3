@@ -28,7 +28,7 @@ styles: [
   `
     .contenedor{
       position: absolute;
-      z-index: 5;
+      z-index: 7;
       top: 0;
       left: 0;
       height: 100%;

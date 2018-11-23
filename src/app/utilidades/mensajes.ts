@@ -133,6 +133,7 @@ export var LABEL ={
     estado: "Estado",
     tipoPago: "Tipo",
     monto: "Monto",
+    iniciar: "Iniciar",
     ingrese: {
         nombre: "Ingrese el nombre",
         apellido: "Ingrese el apellido",
