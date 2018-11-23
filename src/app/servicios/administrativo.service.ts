@@ -19,7 +19,13 @@ export class AdministrativoService extends ResourceService<Administrativo, IAdmi
   constructor(private _http: HttpClient) {
     super(_http,GLOBAL.url + 'tareas/administrativos','');
    }
-  public getAdministrativos(): Observable<IAdministrativo[]>{
+
+   public getAdministrativos(): Observable<IAdministrativo[]>{
     return super.list();
+  }
+
+  addAdministrativo(administrativo: Administrativo): Observable<Administrativo>{
+    console.log("posteando: ",administrativo)
+    return super.create(administrativo);
   }
 }
