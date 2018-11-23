@@ -417,4 +417,12 @@
 </div>
 
 
+<dialogo-info *ngIf="mostrarSuccessDialogo"
+              (clickBotonCerrar)="ocultarSuccessDialogo()"
+              (clickBotonOk)="ocultarSuccessDialogo()"
+              [titulo]="dlg2.titulo"
+              [texto]="dlg2.texto">
+</dialogo-info>
+
+
 

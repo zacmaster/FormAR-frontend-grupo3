@@ -79,6 +79,7 @@ export var LABEL ={
     filtrar: "Filtrar",
     alumno: "Alumno",
     agregar: "Agregar",
+    crear: "Crear",
     acciones: "Acciones",
     fecha: "Fecha",
     asunto: "Asunto",

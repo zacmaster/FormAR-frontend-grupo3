@@ -48,6 +48,7 @@ export class InstructoresComponent  implements OnInit, DoCheck{
   horariosShowed: boolean =false;
   areasShowed: boolean =false;
   mostrarCalendario:boolean =false;
+  mostrarSuccessDialogo = false;
 
 
   constructor(private _areaService: AreaService, private authService: AuthService, private _instructorService : InstructorService,
@@ -56,6 +57,11 @@ export class InstructoresComponent  implements OnInit, DoCheck{
 
   dlg = {
     titulo: this._LABEL.bajaInstructor,
+    texto: ''
+  }
+
+  dlg2 = {
+    titulo: '',
     texto: ''
   }
 
@@ -252,12 +258,37 @@ deleteAtributteValue(){
           }
          this.agregar(this.instructorSeleccionado);
     }
-
   }
+
+  ocultarSuccessDialogo(){
+    this.mostrarSuccessDialogo = false;
+    window.location.reload()
+  }
+
+  mostrarDialogo(){
+    this.dlg2.titulo= 'Carga de instructor';
+    this.dlg2.texto =  `Se ha guardado el instructor exitosamente`;
+    this.mostrarSuccessDialogo = true;
+  }
+
+  mostrarErrorDialogo(){
+    this.dlg2.titulo= 'Error';
+    this.dlg2.texto =  `El email ingresado ya se encuentra en uso`;
+    this.mostrarSuccessDialogo = true;
+  }
+
   agregar(instructorDTO : Instructor){
     this._spinnerService.show();
     setTimeout(() => {
-      //console.log("instructor seleccionado: ",this.instructorSeleccionado);
+      this.signupInfo = new SignUpInfo(
+        instructorDTO.nombre,
+        instructorDTO.email,
+        instructorDTO.email,
+        "123456",
+        ["Instructor"]);
+
+      this.authService.signUp(this.signupInfo).subscribe(
+        data => {
           this._instructorService.addInstructor(instructorDTO).
           subscribe(response => {
             this.getInstructores();
@@ -267,24 +298,12 @@ deleteAtributteValue(){
             this.selectedAreas=[];
             this.mostrarDialogoAB = false;
             this._spinnerService.hide();
-
-            this.signupInfo = new SignUpInfo(
-              instructorDTO.nombre,
-              instructorDTO.email,
-              instructorDTO.email,
-              "123456",
-              ["Instructor"]);
-            console.log(this.signupInfo);
-
-            this.authService.signUp(this.signupInfo).subscribe(
-              data => {
-                console.log(data)
-              },
-              error => {
-                console.log(error);
-              }
-            );
           })
+        },
+        error => {
+          this.mostrarErrorDialogo()
+        }
+      );
       }, 800)
   }
   editar(instructor: Instructor){

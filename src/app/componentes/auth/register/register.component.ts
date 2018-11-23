@@ -33,7 +33,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.roles.push(this.adminRole)
-    this.roles.push(this.instructorRole)
     this.roles.push(this.supervisorRole)
   }
 
