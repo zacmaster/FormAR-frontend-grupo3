@@ -5,6 +5,7 @@ import { Nota } from "../modelos/nota";
 export class Examen extends Resource implements IExamen{
     nroExamen:number;
     nombreExamen: string;
+    fecha:number;
 	idCursada:number;
 	notas : Nota[];
 

@@ -9,9 +9,8 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PATTERNS } from '../../utilidades/patterns';
 import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 import { Util } from '../../utilidades/util';
-
-
-
+import { DatepickerOptions } from 'ng2-datepicker';
+import * as esLocale from 'date-fns/locale/es';
 
 
 @Component({
@@ -30,7 +29,22 @@ export class NotasComponent implements OnInit {
   examenesGuardar :Examen[];
   nuevoExamen:boolean = false;
   nombreNuevoExamen:string;
-
+  fechaExamen: Date;
+  options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2000,
+    displayFormat: 'DD[-]MM[-]YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 1,
+    locale: esLocale,
+    barTitleIfEmpty: 'Click para seleccionar una fecha',
+    placeholder: 'Click para seleccionar una fecha', 
+    addClass: 'form-control', 
+    addStyle: {}, 
+    fieldId: 'my-date-picker', 
+    useEmptyBarTitle: false,
+  };
 
   _LABEL = LABEL;
    _LABEL_R = LABEL_REQUIRED;
@@ -39,6 +53,7 @@ export class NotasComponent implements OnInit {
    _Util = Util;
 
   ngDoCheck(){ 
+   console.log("fecha",this.fechaExamen);
    
     
   }
@@ -61,6 +76,7 @@ export class NotasComponent implements OnInit {
       examenAux.id=this.examenesDeCursada[nro].id; 
       examenAux.idCursada=this.examenesDeCursada[nro].idCursada;
       examenAux.nroExamen=this.examenesDeCursada[nro].nroExamen;
+      examenAux.fecha=this.examenesDeCursada[nro].fecha;
       examenAux.nombreExamen= this.examenesDeCursada[nro].nombreExamen;
       let notasAux: Nota[] = [];
       for (let z = 0; z < this.filas.length; z++) {
@@ -114,12 +130,19 @@ export class NotasComponent implements OnInit {
     }
   agregarExamen(){
     this.nuevoExamen=false;
-     let numero = this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen;
+    let numero =0;
+    if(this.examenesDeCursada.length==2){
+      numero = this.examenesDeCursada[0].nroExamen;
+    }
+    else{
+      numero = this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen;
+    }
      numero++;
      let examenAux = new Examen;
      examenAux.id=0;
      examenAux.idCursada=this.cursadaSeleccionada.id;
      examenAux.nombreExamen=this.nombreNuevoExamen;
+     examenAux.fecha= +this.fechaExamen;
      examenAux.nroExamen=numero;
      this.examenesDeCursada.splice(this.examenesDeCursada.length-1,0,examenAux)
      this.agregarColumnaAFila();
@@ -149,10 +172,22 @@ export class NotasComponent implements OnInit {
      //this.calificaciones.pop();
   }
   esUltimoExamen(nro:number):boolean{
+    console.log("tamaño arreglo", this.examenesDeCursada.length);
+    console.log("tamaño arreglo", this.examenesDeCursada);
+    
     if(this.examenesDeCursada.length>2 && nro==this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen){
       if(this.examenesDeCursada[this.examenesDeCursada.length-2].id==0 && this.examenesDeCursada.length>1 ){
+        console.log("entre 1");
+        
         return true;
       }
+    }
+    if(this.examenesDeCursada.length==2 && this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen==nro){
+      if(this.examenesDeCursada[this.examenesDeCursada.length-2].id==0){
+        console.log("entre 2");
+        return true;
+      }
+  
     }
     else{
       return false;

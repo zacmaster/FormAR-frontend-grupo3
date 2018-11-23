@@ -5,6 +5,7 @@ import { Icursada } from '../interfaces/icursada';
 import { GLOBAL } from './global';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ValidacionCursada } from '../modelos/validacionCursada';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,16 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
   getCursadasInstructorFinalizadas(id:number):Observable<Icursada[]>{
     let url = GLOBAL.url + 'cursadas/instructor/' + id+'/finalizada';
     return super.listURL(url);
+  }
+  validarCursada(cursada:Cursada){
+    let url = GLOBAL.url + 'cursadas/validar';
+    return this._http
+      .post<ValidacionCursada>(url, cursada,GLOBAL.httpOptions)
+  }
+  iniciarCursada(cursada:Cursada){
+    let url = GLOBAL.url + 'cursadas/iniciar/'+cursada.id;
+    return this._http
+      .post(url,"",GLOBAL.httpOptions)
   }
 
   getCursadasInstructorEmail(email: string):Observable<Icursada[]>{

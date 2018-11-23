@@ -12,7 +12,7 @@
                 <thead class="thead-light">
                     <tr class="zui-sticky-row" >
                       <th class="zui-sticky-col" >Alumnos</th>
-                      <th *ngFor="let examen of examenesDeCursada" >{{examen.nombreExamen}} <button class="btn-danger" *ngIf= "esUltimoExamen(examen.nroExamen)" (click)="clickBorrarExamen()" ><i class="fas fa-times"></i></button></th>
+                      <th *ngFor="let examen of examenesDeCursada" >{{examen.nombreExamen}} <br>{{_Util.convertirTimestamp(examen.fecha)}} <button class="btn-danger" *ngIf= "esUltimoExamen(examen.nroExamen)" (click)="clickBorrarExamen()" ><i class="fas fa-times"></i></button></th>
                     </tr>
                 </thead>
                     <tbody >
@@ -55,7 +55,7 @@
               <div class="titulo text-center" ><h5> Crear Examen </h5></div>
               <span class="btn btn-danger" (click)="cerrarInfo()"><i class="fas fa-times"></i></span>
             </div>
-            <div class="infoBody p-3  text-center">
+            <div class="infoBody p-3  text-left">
              
              <input
               class="form-control"
@@ -66,7 +66,11 @@
               [(ngModel)]="nombreNuevoExamen"
               [placeholder]="_LABEL.ingrese.nombre"
               >
-              <button class="btn btn-primary float-right "(click)="agregarExamen()">
+           
+              <span >Fecha:</span>
+              <ng-datepicker style="position: relative;z-index: 1000;" id="calendario" [(ngModel)]="fechaExamen" [options]="options"></ng-datepicker>
+            
+              <button class="btn btn-primary float-right "(click)="agregarExamen()" [disabled]="fechaExamen==undefined || !(nombreNuevoExamen.length>3)">
                   <span >{{ _LABEL.guardar }}</span>      
                 </button>
             </div>
