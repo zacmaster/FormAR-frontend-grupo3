@@ -131,10 +131,16 @@ export class NotasComponent implements OnInit {
   agregarExamen(){
     this.nuevoExamen=false;
     let numero =0;
-    if(this.examenesDeCursada.length==2){
+    console.log("tamaño arreglo ",this.examenesDeCursada.length);
+    
+    if(this.examenesDeCursada.length==1){
+      console.log("entre 1");
+      
       numero = this.examenesDeCursada[0].nroExamen;
     }
     else{
+      console.log("entre2");
+      
       numero = this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen;
     }
      numero++;
