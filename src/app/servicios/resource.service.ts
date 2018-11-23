@@ -39,6 +39,14 @@ export class ResourceService<T extends  Resource, I extends Iresource> {
       .pipe(catchError(this.handleError))
   }
 
+  public readByUsername(email: string): Observable<I[]>{
+    let finalEndpoint = this.endpoint + "username"
+
+    return this.httpClient
+      .get<I[]>(`${this.url}/${finalEndpoint}/${email}`)
+      .pipe(catchError(this.handleError))
+  }
+
   public update(item: T): Observable<T>{
     // console.log("item:", item);
     // let url = `${this.url}/${this.endpoint}/${item.id}`; //for json-server

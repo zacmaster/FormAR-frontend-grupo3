@@ -15,6 +15,7 @@ import { TareasComponent } from './vistas/tareas/tareas.component';
 import {SupervisorHomeComponent} from './vistas/supervisor-home/supervisor-home.component'
 import {AuthGuardService} from './servicios/auth-guard.service';
 import {CargaInstructorComponent} from './vistas/carga-instructor/carga-instructor.component';
+import {AdmTareaComponent} from './vistas/adm-tarea/adm-tarea.component';
 
 const routes: Routes = [
     {
@@ -87,7 +88,7 @@ const routes: Routes = [
           },
           {
             path: 'tareas',
-            component: TareasComponent,
+            component: AdmTareaComponent,
             canActivate: [AuthGuardService],
             data: {
               expectedRole: 'ROLE_ADMINISTRATIVO'

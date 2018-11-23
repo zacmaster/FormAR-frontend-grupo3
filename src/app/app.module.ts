@@ -66,6 +66,7 @@ import { httpInterceptorProviders} from './auth/auth-interceptor';
 import {AuthGuardService} from './servicios/auth-guard.service';
 import {TokenStorageService} from './auth/token-storage.service';
 import { CargaInstructorComponent} from './vistas/carga-instructor/carga-instructor.component';
+import { AdmTareaComponent } from './vistas/adm-tarea/adm-tarea.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { CargaInstructorComponent} from './vistas/carga-instructor/carga-instruc
     CursadasComponent,
     InscripcionComponent,
     ContactosListComponent,
+    AdmTareaComponent,
     CargaInstructorComponent,
     SearchPipe,
     DialogoInscripcionComponent,
@@ -95,7 +97,8 @@ import { CargaInstructorComponent} from './vistas/carga-instructor/carga-instruc
     NotasComponent,
     TareasComponent,
     SupervisorHomeComponent,
-    CargaInstructorComponent
+    CargaInstructorComponent,
+    AdmTareaComponent
 
   ],
   imports: [
