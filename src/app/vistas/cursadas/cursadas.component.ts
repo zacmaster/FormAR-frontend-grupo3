@@ -26,6 +26,9 @@ import { Inscripcion } from '../../modelos/inscripcion'
 import { InscripcionService } from 'src/app/servicios/inscripcion.service';
 import { ValidacionCursada } from 'src/app/modelos/validacionCursada';
 import { TokenStorageService } from 'src/app/auth/token-storage.service';
+import {AdministrativoService} from '../../servicios/administrativo.service';
+import {Area} from '../../modelos/area';
+import {Administrativo} from '../../modelos/administrativo';
 
 @Component({
   selector: 'app-cursadas',
@@ -35,8 +38,6 @@ import { TokenStorageService } from 'src/app/auth/token-storage.service';
 export class CursadasComponent implements OnInit {
 
   constructor(
-    
-    
     private _cursadaService: CursadaService,
     private _cursoService: CursoService,
     private _alumnoService: AlumnoService,
@@ -44,7 +45,8 @@ export class CursadasComponent implements OnInit {
     private _salasService : SalaService,
     private _spinnerService: Ng4LoadingSpinnerService,
     private _inscripcionService: InscripcionService,
-    private _tokenService : TokenStorageService
+    private _tokenService : TokenStorageService,
+    private _administrativoService: AdministrativoService
   ) { }
 
   _LABEL = LABEL;
@@ -59,13 +61,14 @@ export class CursadasComponent implements OnInit {
   _Util = Util;
   fechaInicio: Date;
   cols: any[];
-  
+  adms = [];
+
   pruebaCurso;
-  
+
   inscribiendo: boolean = false;
   infoShowed: boolean = false;
   horarioDisponibilidad: boolean = false;
-  
+
   cursadaSeleccionada: Cursada = this.newCursada();
   alumnos: Alumno[];
   alumnosEnCursada: Alumno[];
@@ -98,7 +101,7 @@ export class CursadasComponent implements OnInit {
   selectedCurso= new Curso();
   selectedSala= new Sala();
   selectedInstructor= new Instructor();
-  
+
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2000,
@@ -124,7 +127,7 @@ export class CursadasComponent implements OnInit {
       {dia: 'Viernes'},
       {dia: 'Sabado'}
     ];
-    
+
   guardarCursada(){
     this.cursadaSeleccionada.fechaInicio = + this.fechaInicio;
 
@@ -157,7 +160,7 @@ export class CursadasComponent implements OnInit {
           this.cursadaSeleccionada.horariosCursada.push(horario);
           });
         }
-        
+
      let horario = new Horario();
      horario.id=0;
      horario.dia=this.newAttribute.dia;
@@ -165,8 +168,8 @@ export class CursadasComponent implements OnInit {
      horario.horaFin=this.newAttribute.horaFin;
      this.cursadaSeleccionada.horariosCursada.push(horario);
 
-     
-        
+
+
      this._cursadaService.validarCursada(this.cursadaSeleccionada).
      subscribe(response => {
        console.log(response);
@@ -208,11 +211,11 @@ export class CursadasComponent implements OnInit {
           this.textoDialogoInfo="Debe seleccionar un instructor y una sala para poder iniciar una cursada";
           this.mensajeInfo=true;
          }
-        
+
        }
-       
+
      })
-  
+
     }
     instructorYSalaValida(cursada:Cursada):boolean{
         if(cursada.instructor==null){
@@ -244,14 +247,14 @@ export class CursadasComponent implements OnInit {
         this.mensajeInfo=true;
       }
     }
-    
+
   verCalendarioInstructor(){
     if(this.selectedInstructor.id>0){
       this.esInstructor=true;
       this.idSeleccionado=this.selectedInstructor.id;
-      this.mostrarCalendario=true;  
+      this.mostrarCalendario=true;
     }
-    
+
   }
   verCalendarioSala(){
     if(this.selectedSala.id>0){
@@ -259,9 +262,9 @@ export class CursadasComponent implements OnInit {
       this.idSeleccionado=this.selectedSala.id;
       this.mostrarCalendario=true;
     }
-    
+
   }
-  
+
   ocultarCalendario(){
     this.esSala=false;
     this.esInstructor=false;
@@ -291,33 +294,33 @@ export class CursadasComponent implements OnInit {
             if(this.fieldArray.length>0){
                 this.fieldArray.forEach(hora=>{
                   if(element.dia==hora.dia){
-                   
+
                     if(this.compararHora(new Date(element.horaInicio),hora.horaInicio,new Date(element.horaFin),hora.horaFin)){
-                      
+
                       valido++;
-                       
+
                     }
                   }
                 });
             }
             if(element.dia==this.newAttribute.dia){
-              
+
               if(this.compararHora(new Date(element.horaInicio),this.newAttribute.horaInicio,new Date(element.horaFin),this.newAttribute.horaFin)){
-                  
+
                 valido++;
-                 
+
               }
             }
-            
+
         });
         if(valido==this.fieldArray.length+1){
           this.horarioDisponibilidad=false;
-          
+
           return true;
         }
         else {
           this.horarioDisponibilidad=true;
-      
+
           return false;
         }
     }
@@ -327,21 +330,21 @@ export class CursadasComponent implements OnInit {
     }
   }
   private compararHora(horaI1:Date ,horaI2:Date , horaF1:Date, horaF2:Date): boolean{
-   
+
    if(horaI2.getHours()>=horaI1.getHours() && horaI2.getMinutes()>=horaI1.getMinutes()){
-        
+
       if(horaI2.getHours()<=horaF2.getHours()){
-    
+
           if(horaF2.getHours()<horaF1.getHours() || (horaF2.getHours()==horaF1.getHours() && horaF2.getMinutes()==horaF1.getMinutes()) ){
-           
+
               if(horaF2.getHours()>horaI2.getHours() || (horaI2.getHours()==horaF2.getHours() && horaI2.getMinutes()<horaF2.getMinutes())){
-                
+
                 return true;
               }
               else{
                 return false;
               }
-            
+
           }
           else{
             return false;
@@ -355,9 +358,9 @@ export class CursadasComponent implements OnInit {
      return false;
    }
   }
- 
-    
-  
+
+
+
   mostrarInfo(cursada: any){
     this.cursadaSeleccionada = new Cursada();
     this.cursadaSeleccionada.copiar(cursada);
@@ -366,10 +369,10 @@ export class CursadasComponent implements OnInit {
   cerrarInfo(){
     this.infoShowed=false;
     this.cursadaSeleccionada= this.newCursada();
-  
+
   }
   // METODOS CURSADAS
-  
+
   editarCursada(cursada){
     this.cursadaSeleccionada=this.newCursada();
     this.cursadaSeleccionada.copiar(cursada);
@@ -379,13 +382,13 @@ export class CursadasComponent implements OnInit {
         this.filtrarInstructores();
      }
      console.log("instructor Actual",this.selectedInstructor);
-     
+
     }
     console.log("cursada actual",this.cursadaSeleccionada);
-    
+
     if(this.cursadaSeleccionada.instructor.id!=0){
       console.log("entre a cambiar el instructor");
-      
+
       this.selectedInstructor=this.cursadaSeleccionada.instructor;
     }
     if(this.cursadaSeleccionada.sala.id==0){
@@ -394,8 +397,8 @@ export class CursadasComponent implements OnInit {
     else{
       this.selectedSala=this.cursadaSeleccionada.sala;
     }
-    
-    
+
+
     this.fechaInicio=new Date(this.cursadaSeleccionada.fechaInicio);
     this.newAttribute={};
     this.fieldArray=[];
@@ -422,7 +425,7 @@ export class CursadasComponent implements OnInit {
      if(this.cursos[i].id==this.cursadaSeleccionada.curso.id){
         this.selectedCurso=this.cursos[i];
         this.filtrarInstructores();
-     }     
+     }
     }
     if(this.cursadaSeleccionada.instructor.id!=0){
       this.selectedInstructor=this.cursadaSeleccionada.instructor;
@@ -433,8 +436,8 @@ export class CursadasComponent implements OnInit {
     else{
       this.selectedSala=this.cursadaSeleccionada.sala;
     }
-    
-    
+
+
     this.fechaInicio=new Date(this.cursadaSeleccionada.fechaInicio);
     this.newAttribute={};
     this.fieldArray=[];
@@ -466,16 +469,16 @@ export class CursadasComponent implements OnInit {
       ${ this.cursadaSeleccionada.nombre }?`
     }
     this.mostrarDialogoBorrar = true;
-    
+
   }
- 
+
   ocultarDialogoEliminar(){
     this.mostrarDialogoBorrar=false;
   }
   eliminar(){
     this._spinnerService.show();
     setTimeout(() => {
-     
+
       this._cursadaService.deleteCursada(this.cursadaSeleccionada).
         subscribe(response =>{
           this.getCursadas();
@@ -506,24 +509,41 @@ export class CursadasComponent implements OnInit {
     this.edicion=false;
     this.iniciar=false;
   }
-  
+
   agregar(cursada: Cursada){
     this._spinnerService.show();
     setTimeout(() => {
-      console.log("cursada seleccionad: ",this.cursadaSeleccionada);
-      this._cursadaService.addCursada(cursada).
-      subscribe(response => {
-        this.getCursadas();
-        this.getSalas();
-        this.getCursos();
-        this.getInstructores();
-        this.cursadaSeleccionada = this.newCursada();
-        this.cerrarDialogo();
-        this._spinnerService.hide();
-      })
-    }, 500)
-    
+
+      this._administrativoService.getAdministrativoByUsername(this._tokenService.getUsername())
+        .subscribe(administrativos => {
+          console.log(administrativos)
+          this.adms = [];
+          administrativos.forEach(adm => {
+            let nuevoAdm = new Administrativo()
+            nuevoAdm.copiar(adm);
+            this.adms.push(nuevoAdm)
+
+            console.log("1")
+            console.log(nuevoAdm)
+
+            cursada.administrativo = nuevoAdm;
+            this._cursadaService.addCursada(cursada)
+              .subscribe(response => {
+                console.log(response)
+
+                this.getCursadas();
+                this.getSalas();
+                this.getCursos();
+                this.getInstructores();
+                this.cursadaSeleccionada = this.newCursada();
+                this.cerrarDialogo();
+                this._spinnerService.hide();
+              })
+          });
+        });
+    },500)
   }
+
   editar(cursada: Cursada){
     this._spinnerService.show();
     setTimeout(() => {
@@ -539,7 +559,7 @@ export class CursadasComponent implements OnInit {
         this._spinnerService.hide();
       })
     }, 500)
-    
+
   }
   iniciarCursadaValida(cursada:Cursada){
     this._spinnerService.show();
@@ -559,31 +579,56 @@ export class CursadasComponent implements OnInit {
       })
     }, 500)
   }
-  
+
   getCursadas(){
     this.cursadas = [];
-    this._cursadaService.list()
-    .subscribe(cursadas => {
-      cursadas.forEach(cursada => {
-        let nuevaCursada = new Cursada();
-        let nuevoCurso = new Curso();
-        let nuevoInstructor = new Instructor();
-        let nuevaSala = new Sala();
+    if(this._tokenService.isAdministrativo()){
+      this._cursadaService.getCursadasByAdministrativo(this._tokenService.getUsername())
+        .subscribe(cursadas => {
+          cursadas.forEach(cursada => {
+            let nuevaCursada = new Cursada();
+            let nuevoCurso = new Curso();
+            let nuevoInstructor = new Instructor();
+            let nuevaSala = new Sala();
 
-        nuevoCurso.copiar(cursada.curso);
-        nuevoInstructor.copiar(cursada.instructor);
-        nuevaSala.copiar(cursada.sala);
-        nuevaCursada.copiar(cursada);
-        nuevaCursada.curso = nuevoCurso;
-        nuevaCursada.instructor = nuevoInstructor;
-        nuevaCursada.sala = nuevaSala;
-        
-        this.cursadas.push(nuevaCursada);
+            nuevoCurso.copiar(cursada.curso);
+            nuevoInstructor.copiar(cursada.instructor);
+            nuevaSala.copiar(cursada.sala);
+            nuevaCursada.copiar(cursada);
+            nuevaCursada.curso = nuevoCurso;
+            nuevaCursada.instructor = nuevoInstructor;
+            nuevaCursada.sala = nuevaSala;
 
-      })
-      //console.log(this.cursadas);
-      this.busqueda = undefined;
-    })
+            this.cursadas.push(nuevaCursada);
+
+          })
+          //console.log(this.cursadas);
+          this.busqueda = undefined;
+        })
+    }else {
+      this._cursadaService.list()
+        .subscribe(cursadas => {
+          cursadas.forEach(cursada => {
+            let nuevaCursada = new Cursada();
+            let nuevoCurso = new Curso();
+            let nuevoInstructor = new Instructor();
+            let nuevaSala = new Sala();
+
+            nuevoCurso.copiar(cursada.curso);
+            nuevoInstructor.copiar(cursada.instructor);
+            nuevaSala.copiar(cursada.sala);
+            nuevaCursada.copiar(cursada);
+            nuevaCursada.curso = nuevoCurso;
+            nuevaCursada.instructor = nuevoInstructor;
+            nuevaCursada.sala = nuevaSala;
+
+            this.cursadas.push(nuevaCursada);
+
+          })
+          //console.log(this.cursadas);
+          this.busqueda = undefined;
+        })
+    }
   }
 
   getAlumnos(){
@@ -596,8 +641,8 @@ export class CursadasComponent implements OnInit {
         this.alumnos.push(alumnoAux)
       })
       //console.log("alumnos: ",this.alumnos);
-    }) 
-      
+    })
+
   }
 
   private newCursada(): Cursada{
@@ -606,7 +651,7 @@ export class CursadasComponent implements OnInit {
   }
 
   // METODOS DE CURSOS
-  
+
   private getCursos(){
     this.cursos=[];
     this._cursoService.list()
@@ -614,7 +659,7 @@ export class CursadasComponent implements OnInit {
         this.cursos = r
       })
     }
-    
+
     private getInstructores(){
       this._instructorService.getInstructores()
         .subscribe(r => {
@@ -630,9 +675,9 @@ export class CursadasComponent implements OnInit {
           //console.log(this.instructoresTotal);
       })
     }
-    
+
     private getSalas(){
-     
+
       this._salasService.list()
         .subscribe(r => {
           this.salas=[];
@@ -658,20 +703,20 @@ export class CursadasComponent implements OnInit {
     public guardarInstructor(instructor){
       this.instructorSeleccionado.copiar(instructor);
     }
-    
+
     public guardarSala(sala){
       this.salaSeleccionada.copiar(sala);
     }
 
     public filtrarInstructores(){
       this.instructores=[];
-      
+
       let instructorVacio= new Instructor();
       instructorVacio.nombre= "Sin Especificar";
       this. instructores.push(instructorVacio);
       this.instructoresTotal.forEach(instructor=> {
           instructor.areasPreferencia.forEach(element => {
-            
+
               if(element.nombre==this.selectedCurso.area.nombre){
                   this.instructores.push(instructor);
               }
@@ -684,8 +729,10 @@ export class CursadasComponent implements OnInit {
     }
 
     // METODOS DEL SISTEMA
-    
+
     ngOnInit() {
+      console.log(this._tokenService.getUsername())
+
       this.cargarCampos();
       this.getAlumnos();
       this.getCursadas();
@@ -717,7 +764,7 @@ export class CursadasComponent implements OnInit {
       this.newAttribute.horaFin=this.fieldArray[this.fieldArray.length-1].horaFin;
       this.fieldArray.splice(this.fieldArray.length-1, 1);
     }
- 
+
   }
   // METODOS DEL SISTEMA
 
@@ -725,7 +772,7 @@ export class CursadasComponent implements OnInit {
   cerrarDialogoInscripcion(){
     this.inscribiendo = false;
   }
-  
+
 
   clickConfirmarInscripcion(){
     let nuevaInscripcion: Inscripcion = new Inscripcion();
@@ -757,7 +804,7 @@ export class CursadasComponent implements OnInit {
 
   search(event){
     //console.log("Alumnos :", this.alumnos);
-    
+
     // this.alumnos.forEach(alumno => {
     //   this.results.push(alumno.nombre)
     // })
@@ -767,9 +814,9 @@ export class CursadasComponent implements OnInit {
 
      //console.log("Cursadas: ", this.cursadas);
     //console.log('alumnosFiltrados: ',this.alumnosFiltrados
-    
+
    console.log("Cursada: ",this.cursadaSeleccionada);
-    
+
     // console.log("fecha: ",this.fechaInicio);
   }
 
@@ -794,7 +841,7 @@ export class CursadasComponent implements OnInit {
     let alumnosAux = [];
     alumnosTodos.forEach(alumno =>{
       if(!alumnosInscriptos.some(e => e.id === alumno.id)){
-        alumno.nombreApellido = `${alumno.nombre} ${alumno.apellido}`; 
+        alumno.nombreApellido = `${alumno.nombre} ${alumno.apellido}`;
         alumnosAux.push(alumno);
       }
     })
@@ -804,21 +851,20 @@ export class CursadasComponent implements OnInit {
   eliminarInscripcion(alumno){
       this._inscripcionService.getInscripcion(alumno.id,this.cursadaSeleccionada.id)
         .toPromise()
-        .then(inscripcion => { 
-          
+        .then(inscripcion => {
+
           this._spinnerService.show();
           setTimeout(() => {
-            
+
             this._inscripcionService.deleteInscripcion(inscripcion).
               subscribe(response =>{
                 this.mostrarAlumnosEnCursada(this.cursadaSeleccionada);
               })
           }, 500)
-         
-        });
-    
-  }
 
+        });
+
+  }
 
   private cargarCampos(){
     this.cols = [
@@ -832,7 +878,5 @@ export class CursadasComponent implements OnInit {
       { field: 'acciones', header: 'Acciones' }
     ];
   }
-
-
 }
 

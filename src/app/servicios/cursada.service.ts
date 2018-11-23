@@ -47,6 +47,11 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
     return super.listURL(url);
   }
 
+  getCursadasByAdministrativo(username: string):Observable<Icursada[]>{
+    let url = GLOBAL.url + 'cursadas/administrativo/username/' + username;
+    return super.listURL(url);
+  }
+
   getCursadasInstructorFinalizadas(id:number):Observable<Icursada[]>{
     let url = GLOBAL.url + 'cursadas/instructor/' + id+'/finalizada';
     return super.listURL(url);
