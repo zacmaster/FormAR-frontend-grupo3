@@ -302,6 +302,8 @@
 
 
 
+
+
 <!-- Formulario para crear una tarea nueva  -->
 <dialogo-confirmacion
   *ngIf="mostrarDialogoNuevaTarea"
@@ -366,8 +368,57 @@
 
 
 
+<!-- Dialogo info tarea -->
+
+<p-dialog   
+            [width]="400"
+            [contentStyle]="{'overflow':'hidden'}"
+            [(visible)]="mostrandoDetalleTarea"
+            [modal]="true"
+            >
+    <p-header>
+        Detalle de tarea
+    </p-header>
+    <div>
+        <div class="row p-4">
+            <div class="d-flex justify-content-between w-100">
+                <div class="font-weight-bold">{{ _Util.convertirTimestamp(tareaSeleccionada.fechaEstimada) }}</div>
+                <div class="font-weight-bold">{{ tareaSeleccionada.titulo }}</div>
+            </div>
+        </div>
+        <div class="row p-3 font-italic" style="background-color: beige">
+            <div class="col" style="word-wrap: break-word;">
+                {{ tareaSeleccionada.descripcion }} 
+            </div>
+        </div>
+        <p-accordion *ngIf="tareaSeleccionada.contacto != null">
+            <p-accordionTab header="Ver Contacto">
+                <div class="row p-4">
+                        <div class="d-flex justify-content-between w-100">
+                            <div class="font-weight-bold">{{ _Util.convertirTimestampConHora(tareaSeleccionada.contacto.fecha) }}</div>
+                            <div class="font-weight-bold">{{ tareaSeleccionada.contacto.asunto }}</div>
+                        </div>
+                </div>
+                <div class="row p-3 font-italic" style="background-color: beige">
+                    <div class="col" style="word-wrap: break-word;">
+                        {{ tareaSeleccionada.contacto.descripcion }} 
+                    </div>
+                </div>
+                
+                
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+    <p-footer>
+            <p-button label="Ok" (onClick)="ocultarDetalleTarea()"></p-button>
+    </p-footer>
+    
+    
+</p-dialog>
+<!-- Dialogo info tarea -->
 
 
+<!-- 
 <dialogo-info
   *ngIf="mostrandoDetalleTarea"
   (clickBotonCerrar)="ocultarDetalleTarea()"
@@ -379,7 +430,7 @@
   [texto]="tareaSeleccionada.descripcion"                        
 >
 
-</dialogo-info>
+</dialogo-info> -->
 
 
 

@@ -1,8 +1,7 @@
 <!-- header de la sección -->
 <div class="d-flex justify-content-between p-4 bg-light header" >
     <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-default">Nombre Administrativo</span>
-      <p-dropdown [options]="administrativos" [(ngModel)]="selectedAdministrativo" [filter]="true" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange()"></p-dropdown>
+      <span class="input-group-text" id="inputGroup-sizing-default">{{nombreSupervisor}}</span>
     </div>
     <!-- (onChange)="refrescarTareas()"  -->
     <div>
@@ -18,8 +17,8 @@
 
 <!-- Comienzo Tabla de todas las tareas pendientes para hoy-->          
 <div class="bg-light p-4">
-    <h5 style="text-align: left;color: #9b59b6; border-bottom: solid 3px #9b59b6;">Pendientes personales para hoy <i class="fas fa-exclamation-circle"></i></h5>
-    <p-table *ngIf="hayTareasPersonalesParaHoy()" #dt [columns]="cols" [value]="tareasPersonalesParaHoy" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+    <h5 style="text-align: left;color: #9b59b6; border-bottom: solid 3px #9b59b6;">Todas las pendientes para hoy<i class="fas fa-exclamation-circle"></i></h5>
+    <p-table *ngIf="hayTareasParaHoy()" #dt [columns]="cols" [value]="tareasParaHoy" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th *ngFor="let col of columns" pResizableColumn>
@@ -33,6 +32,9 @@
               <span *ngSwitchCase="'fechaEstimada'">
                   {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
               </span>
+              <span *ngSwitchCase="'administrativoCreador'">
+                    {{ rowData.administrativoCreador.nombre}}
+                </span>
               <span *ngSwitchCase="'titulo'">
                   {{ rowData.titulo}}
               </span>
@@ -45,8 +47,8 @@
               <span *ngSwitchCase="'acciones'">
                   <button
                             class="btn btn-success mr-2"
-                            (click)="finalizarTarea(rowData);"
-                            [title]="_LABEL.marcarComoResuelta"
+                            (click)="mostrarDialogoReasignarTarea(rowData);"
+                            title="re asignar tarea"
                             >
                     <i class="fas fa-clipboard-check"></i>
                   </button>
@@ -55,7 +57,7 @@
         </tr>
       </ng-template>
   </p-table>
-    <div *ngIf="! hayTareasPersonalesParaHoy()">
+    <div *ngIf="! hayTareasParaHoy()">
         {{ _LABEL.sinTareas }}
     </div>
   </div>
@@ -65,51 +67,6 @@
 
 
           
-<!-- Comienzo Tabla pendientes del administrativo seleccionado-->          
-<div class="bg-light p-4">
-    <h5 style="text-align: left; color: #e74c3c; border-bottom: solid 3px #e74c3c">Pendientes para {{ selectedAdministrativo.nombre }}</h5>
-    <p-table *ngIf="hayTareasPersonalesPendientes()" #dt [columns]="cols" [value]="tareasPersonalesPendientes" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th *ngFor="let col of columns" pResizableColumn>
-              {{col.header}}
-            </th>
-          </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
-              <span *ngSwitchCase="'fechaEstimada'">
-                  {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
-              </span>
-              <span *ngSwitchCase="'titulo'">
-                  {{ rowData.titulo}}
-              </span>
-              <span *ngSwitchCase="'info'">
-                  <button class="btn btn-warning mr-2"
-                          (click)="mostrarDetalleTarea(rowData)">
-                          <i class="fas fa-info"></i>
-                  </button>
-              </span>
-              <span *ngSwitchCase="'acciones'">
-                  <button
-                            class="btn btn-success mr-2"
-                            (click)="finalizarTarea(rowData);"
-                            [title]="_LABEL.marcarComoResuelta"
-                            >
-                    <i class="fas fa-clipboard-check"></i>
-                  </button>
-              </span>
-          </td>
-        </tr>
-      </ng-template>
-  </p-table>
-    <div *ngIf="! hayTareasPersonalesPendientes()">
-        {{ _LABEL.sinTareas }}
-    </div>
-</div>
-
-<!-- Fin Tabla pendientes del administrativo seleccionado-->          
 
 
 
@@ -120,8 +77,8 @@
 
 <!-- Comienzo Tabla completadas del administrativo seleccionado-->          
 <div class="bg-light p-4">
-  <h5 style="text-align: left;color: #2ecc71; border-bottom: solid 3px #2ecc71;">Completadas por {{ selectedAdministrativo.nombre }}</h5>
-  <p-table *ngIf="hayTareasPersonalesCompletadas()" #dt [columns]="colsCompletadas" [value]="tareasPersonalesCompletadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+  <h5 style="text-align: left;color: #2ecc71; border-bottom: solid 3px #2ecc71;">Todas las Completadas</h5>
+  <p-table *ngIf="hayTareasCompletadas()" #dt [columns]="colsCompletadas" [value]="tareasCompletadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" pResizableColumn>
@@ -134,6 +91,12 @@
         <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
             <span *ngSwitchCase="'fechaEstimada'">
                 {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
+            </span>
+            <span *ngSwitchCase="'administrativoCreador'">
+                    {{ rowData.administrativoCreador.nombre}}
+            </span>
+            <span *ngSwitchCase="'administrativoResolvedor'">
+                    {{ rowData.administrativoResolvedor.nombre}}
             </span>
             <span *ngSwitchCase="'titulo'">
                 {{ rowData.titulo}}
@@ -148,7 +111,7 @@
       </tr>
     </ng-template>
 </p-table>
-<div *ngIf="! hayTareasPersonalesCompletadas()">
+<div *ngIf="! hayTareasCompletadas()">
         {{ _LABEL.sinTareas }}
     </div>
 </div>
@@ -217,7 +180,64 @@
 
 
 
+<!-- Dialogo para la reasignacion de una tarea -->
+<!-- Dialogo info tarea -->
 
+<p-dialog   
+            [width]="400"
+            [contentStyle]="{'overflow':'hidden'}"
+            [(visible)]="mostrandoReasignacionTarea"
+            [modal]="true"
+            >
+    <p-header>
+        Cambiar el responsable de la tarea
+    </p-header>
+    <div>
+        <div class="row p-4">
+            <div class="d-flex justify-content-between w-100">
+                <div class="font-weight-bold">{{ _UTIL.convertirTimestamp(tareaSeleccionada.fechaEstimada) }}</div>
+                <div class="font-weight-bold">{{ tareaSeleccionada.titulo }}</div>
+            </div>
+        </div>
+        <div class="row p-3 font-italic" style="background-color: beige">
+            <div class="col" style="word-wrap: break-word;">
+                    {{ tareaSeleccionada.descripcion }} 
+            </div>
+            <div class="col">Administrativo anterior: {{ tareaSeleccionada.administrativoCreador.nombre }}</div>
+            <p-dropdown [options]="administrativos"  [(ngModel)]="selectedAdministrativo" optionLabel="nombre" [filter]="true" [style]="{'width':'150px','z-index':'2000'}">
+
+            </p-dropdown>
+        </div>
+        <p-accordion *ngIf="tareaSeleccionada.contacto != null">
+            <p-accordionTab header="Ver Contacto">
+                <div class="row p-4">
+                        <div class="d-flex justify-content-between w-100">
+                            <div class="font-weight-bold">{{ _UTIL.convertirTimestampConHora(tareaSeleccionada.contacto.fecha) }}</div>
+                            <div class="font-weight-bold">{{ tareaSeleccionada.contacto.asunto }}</div>
+                        </div>
+                </div>
+                <div class="row p-3 font-italic" style="background-color: beige">
+                    <div class="col" style="word-wrap: break-word;">
+                        {{ tareaSeleccionada.contacto.descripcion }} 
+                    </div>
+                </div>
+                
+                
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+    <!-- <p-footer>
+            <p-button label="Ok" (onClick)="ocultarDetalleTarea()"></p-button>
+    </p-footer> -->
+    
+    
+</p-dialog>
+
+
+
+
+
+<!-- Dialogo para la reasignacion de una tarea -->
 
 
 
@@ -337,16 +357,3 @@
 
 
 
-
-
-<dialogo-confirmacion
-    *ngIf="mostrandoDialogoOfrecerContacto"
-    (clickBotonCerrar)="ocultarDialogo()"
-    titulo="Usted ha resuleto una tarea"
-    texto="¿Desea crear un nuevo contacto?"
-    (clickBotonCerrar)="ocultarDialogoOfrecerContacto()"
-    (clickBotonIzquierdo)="ocultarDialogoOfrecerContacto()"
-    (clickBotonDerecho)="generarNuevoContacto()"
->
-
-</dialogo-confirmacion>
