@@ -47,6 +47,11 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
     return super.listURL(url);
   }
 
+  getCursadasInstructorEmail(email: string):Observable<Icursada[]>{
+    let url = GLOBAL.url + 'cursadas/instructor/email/' + email;
+    return super.listURL(url)
+  }
+
   getCursadasByAdministrativo(username: string):Observable<Icursada[]>{
     let url = GLOBAL.url + 'cursadas/administrativo/username/' + username;
     return super.listURL(url);
@@ -65,11 +70,6 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
     let url = GLOBAL.url + 'cursadas/iniciar/'+cursada.id;
     return this._http
       .post(url,"",GLOBAL.httpOptions)
-  }
-
-  getCursadasInstructorEmail(email: string):Observable<Icursada[]>{
-    let url = GLOBAL.url + 'cursadas/instructor/email/' + email;
-    return super.listURL(url);
   }
 
   getCursadasInstructorEmailFinalizadas(email: string):Observable<Icursada[]>{
