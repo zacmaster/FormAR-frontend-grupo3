@@ -62,6 +62,7 @@ export class CursadasComponent implements OnInit {
   fechaInicio: Date;
   cols: any[];
   adms = [];
+  administrativos = [];
 
   pruebaCurso;
 
@@ -101,6 +102,7 @@ export class CursadasComponent implements OnInit {
   selectedCurso= new Curso();
   selectedSala= new Sala();
   selectedInstructor= new Instructor();
+  selectedAdm = new Administrativo();
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -514,33 +516,21 @@ export class CursadasComponent implements OnInit {
     this._spinnerService.show();
     setTimeout(() => {
 
-      this._administrativoService.getAdministrativoByUsername(this._tokenService.getUsername())
-        .subscribe(administrativos => {
-          console.log(administrativos)
-          this.adms = [];
-          administrativos.forEach(adm => {
-            let nuevoAdm = new Administrativo()
-            nuevoAdm.copiar(adm);
-            this.adms.push(nuevoAdm)
+    cursada.administrativo = this.selectedAdm;
+      console.log(this.selectedAdm);
+      this._cursadaService.addCursada(cursada)
+      .subscribe(response => {
+        console.log(response)
 
-            console.log("1")
-            console.log(nuevoAdm)
-
-            cursada.administrativo = nuevoAdm;
-            this._cursadaService.addCursada(cursada)
-              .subscribe(response => {
-                console.log(response)
-
-                this.getCursadas();
-                this.getSalas();
-                this.getCursos();
-                this.getInstructores();
-                this.cursadaSeleccionada = this.newCursada();
-                this.cerrarDialogo();
-                this._spinnerService.hide();
+        this.getCursadas();
+        this.getSalas();
+        this.getCursos();
+        this.getInstructores();
+        this.getAdministrativos();
+        this.cursadaSeleccionada = this.newCursada();
+        this.cerrarDialogo();
+        this._spinnerService.hide();
               })
-          });
-        });
     },500)
   }
 
@@ -671,6 +661,18 @@ export class CursadasComponent implements OnInit {
         });
     }
 
+    private getAdministrativos(){
+      this._administrativoService.getAdministrativos()
+        .subscribe(r => {
+          this.administrativos = [];
+          r.forEach(administrativo => {
+            let newAdministrativo = new Administrativo()
+            newAdministrativo.copiar(administrativo)
+            this.administrativos.push(newAdministrativo)
+          })
+        })
+    }
+
     public guardarCurso(curso){
       this.cursoSeleccionado.copiar(curso);
     }
@@ -710,6 +712,7 @@ export class CursadasComponent implements OnInit {
 
       this.cargarCampos();
       this.getAlumnos();
+      this.getAdministrativos();
       this.getCursadas();
        this.getCursos();
        this.getInstructores();

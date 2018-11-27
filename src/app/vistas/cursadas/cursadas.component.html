@@ -14,7 +14,7 @@
                 [(ngModel)]="selectedAlumno"
                 optionLabel="nombreApellido"
                 [filter]="true"
-                [style]="{'width':'300px'}" 
+                [style]="{'width':'300px'}"
     ></p-dropdown>
     <table class="table bg-light table-hover" style="width: 400px; margin: 20px 0;">
       <thead class="thead-light">
@@ -32,12 +32,12 @@
         </tr>
       </tbody>
     </table>
-    
-    
+
+
   </dialogo-confirmacion>
-  
-  
-  
+
+
+
   <dialogo-info
     *ngIf="mostrandoAlumnosInscriptos"
     titulo="Alumnos inscriptos en la cursada"
@@ -84,7 +84,7 @@
               </button>
             </div>
           </ng-template>
-          
+
           <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
               <col *ngFor="let col of columns" [style.width]="col.width">
@@ -125,7 +125,7 @@
                             (click)="mostrarAlumnosEnCursada(rowData)"
                             class="btn btn-warning mr-2"
                             [title]="_LABEL.info.alumnosEnCursada"
-                      > 
+                      >
                       <i class="fas fa-users"></i></button>
                 </span>
                 <span *ngSwitchCase="'iniciada'">
@@ -142,7 +142,7 @@
                       <button *ngIf="!rowData.iniciada" class="btn btn-success mr-2" (click)="editarCursada(rowData)">
                         <i class="fas fa-edit"></i>
                       </button>
-                  
+
                       <button class="btn btn-danger" (click)="eliminarCursada(rowData)">
                         <i class="fas fa-trash"></i>
                       </button>
@@ -150,7 +150,7 @@
             </td>
           </tr>
         </ng-template>
-  
+
     </p-table>
   </div>
 
@@ -174,10 +174,10 @@
 
 
 
-<dialogo-info [titulo]="tituloDialogoInfo" 
-[texto]="textoDialogoInfo" 
-*ngIf="mensajeInfo " 
-(clickBotonCerrar)="ocultarMensaje()" 
+<dialogo-info [titulo]="tituloDialogoInfo"
+[texto]="textoDialogoInfo"
+*ngIf="mensajeInfo "
+(clickBotonCerrar)="ocultarMensaje()"
 (clickBotonOk)="ocultarMensaje()">
 </dialogo-info>
 
@@ -212,7 +212,7 @@
         <p> <span style="font-weight: bold"> Horarios de Cursada: </span></p>
         <p *ngFor="let horario of cursadaSeleccionada.horariosCursada"> <span style="font-weight: bold"> {{ horario.dia }}  </span>
           {{ _Util.convertirTime(horario.horaInicio) }} a
-          {{ _Util.convertirTime(horario.horaFin) }} 
+          {{ _Util.convertirTime(horario.horaFin) }}
         </p>
         <p> <span style="font-weight: bold"> Cantidad de Clases: </span>{{ cursadaSeleccionada.cantidadClases }} </p>
 
@@ -237,7 +237,7 @@
         <div class="mt-3 col row">
           <label for="basic-url col">{{ _LABEL.titulo.nombreCursada }}</label>
           <div class="input-group col">
-            <input 
+            <input
                     type="text"
                     class="form-control"
                     [placeholder]="_LABEL.ingrese.nombreCursada"
@@ -246,17 +246,17 @@
           </div>
         </div>
         <!-- FIN NOMBRE DE LA CURSADA -->
-          
+
       <div class="row">
           <!--  SELECT CURSO -->
           <div class="mt-3 col">
             <label for="basic-url">{{ _LABEL.seleccione.curso  }}</label>
             <div class="input-group">
-              <p-dropdown [options]="cursos" [(ngModel)]="selectedCurso" optionLabel="nombre" [style]="{'width':'250px'}" (onChange)="filtrarInstructores()" ></p-dropdown> 
+              <p-dropdown [options]="cursos" [(ngModel)]="selectedCurso" optionLabel="nombre" [style]="{'width':'250px'}" (onChange)="filtrarInstructores()" ></p-dropdown>
             </div>
           </div>
           <!--  FIN SELECT CURSO -->
-            
+
           <!--  SELECT INSTRUCTOR -->
           <div class="mt-3 col">
             <label for="basic-url">{{ _LABEL.seleccione.instructor  }}</label>
@@ -264,22 +264,22 @@
               <p-dropdown [options]="instructores" [(ngModel)]="selectedInstructor" optionLabel="nombre" [style]="{'width':'200px'}" ></p-dropdown>
               <button class="btn btn btn-info" (click)="verCalendarioInstructor()" style="margin-left: 10px;height:33px;">
                 <i class="far fa-calendar-check"></i>
-              </button> 
+              </button>
               <p>  Disponibilidad:</p>
               <!-- <div class="col"> -->
                 <!-- <br> -->
-              <p *ngFor="let horario of selectedInstructor.disponibilidadHoraria" style="line-height: 100%"> 
+              <p *ngFor="let horario of selectedInstructor.disponibilidadHoraria" style="line-height: 100%">
                 <li><span style="font-weight: bold"> {{ horario.dia }}  </span>
-                    {{ _Util.convertirTime(horario.horaInicio) }} 
-                    a 
+                    {{ _Util.convertirTime(horario.horaInicio) }}
+                    a
                     {{ _Util.convertirTime(horario.horaFin) }}
-                  </li> 
+                  </li>
               </p>
             <!-- </div> -->
             </div>
           </div>
           <!--  FIN SELECT INSTRUCTOR -->
-      
+
           <!--  SELECT SALA -->
           <div class="mt-3 col">
               <label for="basic-url">{{ _LABEL.seleccione.sala  }}</label>
@@ -287,11 +287,22 @@
                   <p-dropdown [options]="salas" [(ngModel)]="selectedSala" optionLabel="nombre" [style]="{'width':'200px'}" ></p-dropdown>
                   <button class="btn btn btn-info" (click)="verCalendarioSala()" style="margin-left: 10px;height:33px;">
                     <i class="far fa-calendar-check"></i>
-                  </button> 
+                  </button>
                   <p>Capacidad: {{ selectedSala.capacidad }}</p>
               </div>
             </div>
             <!--  FIN SELECT SALA -->
+
+
+        <!--  SELECT ADMINISTRATIVO -->
+        <div class="mt-3 col">
+          <label for="basic-url">{{ _LABEL.seleccione.administrativo  }}</label>
+          <div class="input-group">
+            <p-dropdown [options]="administrativos" [(ngModel)]="selectedAdm" optionLabel="nombre" [style]="{'width':'200px'}" ></p-dropdown>
+          </div>
+        </div>
+        <!--  FIN SELECT ADMINISTRATIVO -->
+
           </div>
           <hr>
           <div class="row">
@@ -300,40 +311,40 @@
               <label for="basic-url">{{ _LABEL.titulo.cupoMinimo }}</label>
               <div class="input-group">
                 <p-spinner size="25" [(ngModel)]="cursadaSeleccionada.cupoMinimo" [placeholder]="_LABEL.ingrese.cupoMinimo"[min]="0" [max]="selectedSala.capacidad"></p-spinner>
-               
+
               </div>
             </div>
             <!--  FIN SELECT CUPO MINIMO -->
-            
+
             <!--  SELECT CUPO MAXIMO -->
             <div class="mt-3 col">
                 <label for="basic-url">{{ _LABEL.titulo.cupoMaximo }}</label>
                 <div class="input-group">
                 <p-spinner size="25" [(ngModel)]="cursadaSeleccionada.cupoMaximo" [placeholder]="_LABEL.ingrese.cupoMaximo"[min]="cursadaSeleccionada.cupoMinimo" [max]="selectedSala.capacidad"></p-spinner>
-                
+
               </div>
             </div>
             <!--  FIN SELECT CUPO MAXIMO -->
             </div>
-    
+
             <div class="row">
             <!--  SELECT CANT CLASES -->
             <div class="mt-3 col">
               <label for="basic-url">{{ _LABEL.titulo.cantClases }}</label>
               <div class="input-group">
                   <p-spinner size="25" [(ngModel)]="cursadaSeleccionada.cantidadClases" [placeholder]="_LABEL.ingrese.cupoMinimo"[min]="0" [max]="500"></p-spinner>
-                
+
               </div>
             </div>
             <!--  FIN SELECT CANT CLASES -->
-            
+
             <!--  SELECT CANT CUOTAS -->
             <div class="mt-3 col">
                 <label for="basic-url">{{ _LABEL.titulo.cantCuotas }}</label>
                 <div class="input-group">
                  <p-spinner size="25" [(ngModel)]="cursadaSeleccionada.cantidadCuotas" [placeholder]="_LABEL.ingrese.cantCuotas"[min]="0" [max]="500"></p-spinner>
-                 
-              </div> 
+
+              </div>
             </div>
             <!--  FIN SELECT CANT CUOTAS -->
             </div>
@@ -343,26 +354,26 @@
               <label for="basic-url">{{ _LABEL.titulo.matricula }}</label>
               <div class="input-group">
                 <p-spinner size="25" [(ngModel)]="cursadaSeleccionada.matricula" [placeholder]="_LABEL.ingrese.matricula"[min]="0" [max]="10000"></p-spinner>
-                
+
               </div>
             </div>
             <!--  FIN SELECT IMPORTE MATRICULA -->
-            
+
             <!--  SELECT IMPORTE CUOTAS -->
             <div class="mt-3 col">
                 <label for="basic-url">{{ _LABEL.titulo.cuota }}</label>
                 <div class="input-group">
                   <p-spinner size="25" [(ngModel)]="cursadaSeleccionada.precioCuota" [placeholder]="_LABEL.ingrese.cuota"[min]="0" [max]="50000"></p-spinner>
-                  
+
               </div>
             </div>
             <!--  FIN SELECT IMPORTE CUOTAS -->
             </div>
             <div class="row">
-              <!-- INICIO SELECCION FECHA -->    
-              <div class="mt-3 col">    
+              <!-- INICIO SELECCION FECHA -->
+              <div class="mt-3 col">
               <label for="">{{ _LABEL.fechaInicio }}</label>
-              <ng-datepicker 
+              <ng-datepicker
                     style="position: relative;z-index: 10"
                     id="calendario"
                     [(ngModel)]="fechaInicio"
@@ -370,24 +381,24 @@
               ></ng-datepicker>
               <!-- FIN SELECCION FECHA -->
               </div>
-              <div class="mt-3 col"> 
+              <div class="mt-3 col">
                   <label for="basic-url">Dia de vencimiento de cuota</label>
                   <div class="input-group">
                     <p-spinner size="25" [(ngModel)]="cursadaSeleccionada.diaVencCuota" placeholder="Ingrese el dia de vencimiento "[min]="1" [max]="30"></p-spinner>
                 </div>
               </div>
               </div>
-            
+
             <hr>
             <!-- INICIO HORARIO DE CURSADA -->
               <div class="form-group col">
                 <label for="">{{ _LABEL.horarioCursada }} &nbsp; </label>
-                
+
                 <label for=""><button class="btn btn-success " type="button" (click)="addFieldValue()"> <i class="fas fa-plus"></i></button>
                 </label>
-                
-                
-               
+
+
+
                       <table  style="border:hidden;">
                           <thead>
                               <tr>
@@ -404,11 +415,11 @@
                                           <option *ngFor="let dia of dias" [value]="dia.dia">
                                             {{ dia.dia }}
                                           </option>
-                                        </select>  
+                                        </select>
                                   </td>
                                   <td>
                                       <p-calendar [(ngModel)]="field.horaInicio"   name="{{field.horaInicio}}" [timeOnly]="true" hourFormat="24"></p-calendar>
-                            
+
                                   </td>
                                   <td>
                                       <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
@@ -424,24 +435,24 @@
                                           <option *ngFor="let dia of dias" [value]="dia.dia">
                                             {{ dia.dia }}
                                           </option>
-                                        </select>  
+                                        </select>
                                   </td>
                                   <td>
                                       <p-calendar [(ngModel)]="newAttribute.horaInicio" id="newAttributehoraInicio"   name="newAttributehoraInicio" [timeOnly]="true" hourFormat="24"></p-calendar>
-                                   
+
                                   </td>
                                   <td>
                                       <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
-                                     
+
                                   </td>
-                                 
+
                                   <td>
                                       <button class="btn btn-danger"  type="button" (click)="deleteAtributteValue()"><i class="fas fa-minus"></i></button>
                                   </td>
                               </tr>
-                             
+
                           </tbody>
-                      </table>  
+                      </table>
                       <span *ngIf="horarioDisponibilidad" > {{_LABEL.error.horarioCursada }}</span>
               </div>
               </div>
@@ -455,19 +466,19 @@
                 <span *ngIf="!edicion && !iniciar">{{ _LABEL.agregar }}</span>
                 <span *ngIf="iniciar">{{ _LABEL.iniciar }}</span>
               </button>
-            
-           </div>  
+
+           </div>
       </div>
   </div>
   <!--Calendario-->
-  <calendario-disponibilidad 
+  <calendario-disponibilidad
                               *ngIf="mostrarCalendario"
                               (clickBotonCerrar)="ocultarCalendario()"
                               [id]= idSeleccionado
                               [esSala]=esSala
                               [esInstructor]= esInstructor
 ></calendario-disponibilidad>
-  
+
 
 
 
@@ -488,10 +499,10 @@
 
 
 
-<!-- 
+<!--
 <dialogo-confirmacion *ngIf="inscribiendo"
                       >
-                      
+
 
 </dialogo-confirmacion> -->
 

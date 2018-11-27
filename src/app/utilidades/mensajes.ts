@@ -183,6 +183,7 @@ export var LABEL ={
         cursada: "Seleccione una cursada",
         instructor: "Seleccione un instructor",
         sala: "Seleccione una sala",
+        administrativo: "Seleccione el administrativo a cargo",
         alumno: "Seleccione un alumno",
         dias: "Seleccione los días de cursada",
         hora: "Seleccione la hora de cursada",
