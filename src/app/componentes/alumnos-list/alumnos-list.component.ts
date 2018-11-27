@@ -117,7 +117,7 @@ captureScreen(){
    fechaDialogoCursada: string;
    textoDialogoCursada: string;
 
-
+   generarReporte: boolean = false;
   ngDoCheck(){
     // console.log("alumnos", this.alumnos);
     // console.log("cursadas", this.cursadas);
@@ -396,4 +396,43 @@ captureScreen(){
     });
     this.mostrarPagosInicio = true;    
   }
+  mensajeReportes(alumno){
+    this.alumnoSeleccionado = new Alumno();
+    this.alumnoSeleccionado.copiar(alumno);
+    this.generarReporte=true;
+  }
+  cerrarInfo(){
+    this.generarReporte=false;
+  }
+  buscarHistorial(){
+     this._alumnoService.getHistorial(this.alumnoSeleccionado.id).
+       subscribe(res => {
+         console.log('start download:',res);
+         var url = window.URL.createObjectURL(res);
+         var a = document.createElement('a');
+         document.body.appendChild(a);
+         a.setAttribute('style', 'display: none');
+         a.href = url;
+         a.download = "HistorialAcademico-"+this.alumnoSeleccionado.apellido+new Date().toLocaleDateString('en-GB');
+         a.click();
+         window.URL.revokeObjectURL(url);
+         a.remove(); // remove the element
+       })  
+  }
+  buscarAnalitico(){
+    this._alumnoService.getAnalitico(this.alumnoSeleccionado.id).
+      subscribe(res => {
+        console.log('start download:',res);
+        var url = window.URL.createObjectURL(res);
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.href = url;
+        a.download = "Analitico-"+this.alumnoSeleccionado.apellido+new Date().toLocaleDateString('en-GB');
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove(); // remove the element
+      })  
+ }
+
 }

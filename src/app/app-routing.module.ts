@@ -17,6 +17,7 @@ import {AuthGuardService} from './servicios/auth-guard.service';
 import {CargaInstructorComponent} from './vistas/carga-instructor/carga-instructor.component';
 import {AdmTareaComponent} from './vistas/adm-tarea/adm-tarea.component';
 import{HomeComponent} from './vistas/home/home.component'
+import{BackupComponent} from './vistas/backup/backup.component'
 
 const routes: Routes = [
     {
@@ -154,7 +155,15 @@ const routes: Routes = [
             data: {
               expectedRole: 'ROLE_SUPERVISOR'
             },
-          },
+           
+        }, {
+          path: 'backup',
+          component: BackupComponent,
+          canActivate: [AuthGuardService],
+          data: {
+            expectedRole: 'ROLE_SUPERVISOR'
+         }
+        }
     ]},
     { path: 'home',
     component: HomeComponent

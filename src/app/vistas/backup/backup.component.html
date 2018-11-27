@@ -1,0 +1,16 @@
+<div class="contenedor">
+  <h3>Base de Datos:</h3>
+  <br>
+  <h4>Exportar:  </h4>
+    <button class="btn btn-success mr-2"(click)="getBackupDB()">
+        Generar Backup
+    </button>
+<br>
+<br>
+<h4>Importar:  </h4>
+    <!-- <p-fileUpload mode="basic" name="file[]" chooseLabel="Elegir Archivo" 
+    url="{{urlPostBD}}" accept=".sql" maxFileSize="1000000" (onUpload)="onBasicUpload($event)" 
+    auto="true"></p-fileUpload> -->
+    <p-fileUpload  mode="basic" chooseLabel="Elegir Archivo" accept=".sql" maxFileSize="1000000"
+     name="file" customUpload="true"  (uploadHandler)="myUploader($event)"></p-fileUpload>
+</div>

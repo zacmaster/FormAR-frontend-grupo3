@@ -57,6 +57,8 @@ import { AsistenciaComponent } from './vistas/asistencia/asistencia.component';
 import { NotasComponent } from './vistas/notas/notas.component';
 import { TareasComponent } from './vistas/tareas/tareas.component';
 import { MatSortModule,} from '@angular/material';
+import {FileUploadModule} from 'primeng/fileupload';
+
 
 import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
@@ -69,6 +71,7 @@ import { CargaInstructorComponent} from './vistas/carga-instructor/carga-instruc
 import { AdmTareaComponent } from './vistas/adm-tarea/adm-tarea.component';
 import { HomeComponent } from './vistas/home/home.component';
 import { HeaderComponent } from './header/header.component';
+import { BackupComponent } from './vistas/backup/backup.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +105,8 @@ import { HeaderComponent } from './header/header.component';
     CargaInstructorComponent,
     AdmTareaComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    BackupComponent
 
   ],
   imports: [
@@ -128,7 +132,8 @@ import { HeaderComponent } from './header/header.component';
     CdkTableModule,
     CdkTreeModule,
     MatSortModule,
-    PaginatorModule
+    PaginatorModule,
+    FileUploadModule
   ],
   providers: [
     AlumnoService,TokenStorageService,AuthGuardService,httpInterceptorProviders

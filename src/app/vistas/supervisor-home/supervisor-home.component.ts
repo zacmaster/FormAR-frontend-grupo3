@@ -28,6 +28,11 @@ export class SupervisorHomeComponent implements OnInit {
       active: false,
       url: '/supervisor/instructor'
     },
+    {
+      name: "Backup",
+      active: false,
+      url: '/supervisor/backup'
+    },
   ]
 
   constructor() { }
