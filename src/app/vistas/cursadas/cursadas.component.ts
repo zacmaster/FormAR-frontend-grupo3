@@ -582,53 +582,28 @@ export class CursadasComponent implements OnInit {
 
   getCursadas(){
     this.cursadas = [];
-    if(this._tokenService.isAdministrativo()){
-      this._cursadaService.getCursadasByAdministrativo(this._tokenService.getUsername())
-        .subscribe(cursadas => {
-          cursadas.forEach(cursada => {
-            let nuevaCursada = new Cursada();
-            let nuevoCurso = new Curso();
-            let nuevoInstructor = new Instructor();
-            let nuevaSala = new Sala();
+    this._cursadaService.list()
+      .subscribe(cursadas => {
+        cursadas.forEach(cursada => {
+          let nuevaCursada = new Cursada();
+          let nuevoCurso = new Curso();
+          let nuevoInstructor = new Instructor();
+          let nuevaSala = new Sala();
 
-            nuevoCurso.copiar(cursada.curso);
-            nuevoInstructor.copiar(cursada.instructor);
-            nuevaSala.copiar(cursada.sala);
-            nuevaCursada.copiar(cursada);
-            nuevaCursada.curso = nuevoCurso;
-            nuevaCursada.instructor = nuevoInstructor;
-            nuevaCursada.sala = nuevaSala;
+          nuevoCurso.copiar(cursada.curso);
+          nuevoInstructor.copiar(cursada.instructor);
+          nuevaSala.copiar(cursada.sala);
+          nuevaCursada.copiar(cursada);
+          nuevaCursada.curso = nuevoCurso;
+          nuevaCursada.instructor = nuevoInstructor;
+          nuevaCursada.sala = nuevaSala;
 
-            this.cursadas.push(nuevaCursada);
+          this.cursadas.push(nuevaCursada);
 
-          })
-          //console.log(this.cursadas);
-          this.busqueda = undefined;
         })
-    }else {
-      this._cursadaService.list()
-        .subscribe(cursadas => {
-          cursadas.forEach(cursada => {
-            let nuevaCursada = new Cursada();
-            let nuevoCurso = new Curso();
-            let nuevoInstructor = new Instructor();
-            let nuevaSala = new Sala();
-
-            nuevoCurso.copiar(cursada.curso);
-            nuevoInstructor.copiar(cursada.instructor);
-            nuevaSala.copiar(cursada.sala);
-            nuevaCursada.copiar(cursada);
-            nuevaCursada.curso = nuevoCurso;
-            nuevaCursada.instructor = nuevoInstructor;
-            nuevaCursada.sala = nuevaSala;
-
-            this.cursadas.push(nuevaCursada);
-
-          })
-          //console.log(this.cursadas);
-          this.busqueda = undefined;
-        })
-    }
+        //console.log(this.cursadas);
+        this.busqueda = undefined;
+      })
   }
 
   getAlumnos(){
