@@ -9,7 +9,7 @@ import {AutoCompleteModule,  PaginatorModule, InputSwitchModule, SelectButtonMod
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import {AccordionModule} from 'primeng/accordion';
 
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { CalendarModule } from 'primeng/calendar';
@@ -133,7 +133,8 @@ import { BackupComponent } from './vistas/backup/backup.component';
     CdkTreeModule,
     MatSortModule,
     PaginatorModule,
-    FileUploadModule
+    FileUploadModule,
+    AccordionModule
   ],
   providers: [
     AlumnoService,TokenStorageService,AuthGuardService,httpInterceptorProviders

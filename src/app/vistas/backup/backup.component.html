@@ -8,9 +8,8 @@
 <br>
 <br>
 <h4>Importar:  </h4>
-    <!-- <p-fileUpload mode="basic" name="file[]" chooseLabel="Elegir Archivo" 
-    url="{{urlPostBD}}" accept=".sql" maxFileSize="1000000" (onUpload)="onBasicUpload($event)" 
-    auto="true"></p-fileUpload> -->
-    <p-fileUpload  mode="basic" chooseLabel="Elegir Archivo" accept=".sql" maxFileSize="1000000"
+<!-- <p-fileUpload #fubauto mode="basic" name="demo[]" url="{{urlPostBD}}" accept=".sql" maxFileSize="1000000" 
+(onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="Examinar"></p-fileUpload> -->
+    <p-fileUpload  mode="basic" chooseLabel="Elegir Archivo" uploadLabel="Subir Archivo" cancelLabel="Cancelar" accept=".sql" maxFileSize="1000000"
      name="file" customUpload="true"  (uploadHandler)="myUploader($event)"></p-fileUpload>
 </div>

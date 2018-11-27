@@ -12,6 +12,13 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
 import { ContactoService } from 'src/app/servicios/contacto.service';
 import {TokenStorageService} from '../../auth/token-storage.service';
+import { Alumno } from 'src/app/modelos/alumno';
+import { Area } from 'src/app/modelos/area';
+import { Curso } from 'src/app/modelos/curso';
+import { SelectItem } from 'primeng/api';
+import { AlumnoService } from 'src/app/servicios/alumno.service';
+import { AreaService } from 'src/app/servicios/area.service';
+import { CursoService } from 'src/app/servicios/curso.service';
 
 @Component({
   selector: 'app-adm-tarea',
@@ -24,7 +31,7 @@ export class AdmTareaComponent implements OnInit {
   _HVR = HVR;
   _VALIDACION = VALIDACION;
   _PATTERN = PATTERNS;
-  _UTIL= Util;
+  _Util = Util;
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -60,6 +67,7 @@ export class AdmTareaComponent implements OnInit {
   tareasPersonalesParaHoy: Tarea[] = [];
   tareasPersonalesPendientes: Tarea[] = [];
   tareasPersonalesCompletadas: Tarea[] = [];
+  tareasPersonalesFuturas: Tarea[] = [];
 
   tareasPendientes: Tarea[] = [];
 
@@ -71,8 +79,44 @@ export class AdmTareaComponent implements OnInit {
   selectedAdministrativo: Administrativo = new Administrativo();
   colsCompletadas: { field: string; header: string; }[];
 
+  // ----Variables del formulario de contacto
+  mostrandoDialogoContacto: boolean = false;
+  alumnoSeleccionado: Alumno = new Alumno(); 
+  contactoSeleccionado: Contacto = new Contacto();
+  horaContacto: Date = new Date();
+  areas: Area[] = [];
+  selectedArea: Area = new Area();
+  fechaPorDia: Date = new Date();
+
+  alumnos: Alumno[] = [];
+
+
+  cursosFiltrados: Curso[] = [];
+  selectedCurso: Curso = new Curso();
+  seEligeArea: boolean = false;
+  porFecha: boolean = true;
+  types: SelectItem[] = [ {label: 'por Fecha', value: 'porFecha'},
+                                  {label: 'por Días', value: 'porDías'}];
+  selectedType: string = this.types[0].value;
+
+  generarTarea: boolean = true;
+
+  cantidadDias: number = 1;
+
+  tareaAnterior: Tarea = new Tarea();
+  selectedAlumno;
+  
+
+
+  
+  // ----Variables del formulario de contacto
+
+
   constructor(
     private _tareasService:TareaService,
+    private _alumnoService: AlumnoService,
+    private _areaService: AreaService,
+    private _cursoService: CursoService,
     private _administrativoService:AdministrativoService,
     private _spinnerService: Ng4LoadingSpinnerService,
     private _contactoService: ContactoService,
@@ -92,11 +136,14 @@ export class AdmTareaComponent implements OnInit {
     Promise.all([
       this._administrativoService.getAdministrativoByUsername(this.tokenStorageService.getUsername()).toPromise(),
       this._tareasService.getTareas().toPromise(),
-      this._contactoService.getContactos().toPromise()
+      this._contactoService.getContactos().toPromise(),
+      this._alumnoService.getAlumnos().toPromise()
     ]).then(values =>{
       this.administrativos = [];
       this.tareas = [];
       this.contactos = [];
+      this.alumnos = [];
+
       values[0].forEach(administrativo => {
         console.log(administrativo)
         let adminAux = new Administrativo();
@@ -113,6 +160,12 @@ export class AdmTareaComponent implements OnInit {
         let contactoAux = new Contacto();
         contactoAux.copiar(contacto);
         this.contactos.push(contacto);
+      });
+      values[3].forEach(alumno =>{
+        let alumnoAux = new Alumno();
+        alumnoAux.copiar(alumno);
+        alumnoAux.nombreApellido = alumno.nombre + ' ' + alumno.apellido;
+        this.alumnos.push(alumnoAux);
       })
 
     }).then(() => {
@@ -154,16 +207,18 @@ export class AdmTareaComponent implements OnInit {
       if(tarea.pendiente){
         if(tarea.administrativoCreador.id == this.selectedAdministrativo.id){
           console.log('tareaFechaEstimada: ',tarea.fechaEstimada);
-          console.log('esHoy: ',this._UTIL.esHoy(tarea.fechaEstimada));
-          if(this._UTIL.esHoy(tarea.fechaEstimada)){
+          console.log('esHoy: ',this._Util.esHoy(tarea.fechaEstimada));
+          if(this._Util.esHoy(tarea.fechaEstimada)){
             this.tareasPersonalesParaHoy.push(tarea);
-          }else if(this._UTIL.yaPaso(tarea.fechaEstimada)){
+          }else if(this._Util.yaPaso(tarea.fechaEstimada)){
             this.tareasPersonalesPendientes.push(tarea);
+          }else{ //es para el futuro, la agrego a tareas personales futuras
+            this.tareasPersonalesFuturas.push(tarea);
           }
           // console.log('pendiente del admin activo: ',tarea);
         }
         else{ //es pendiente pero no del admin activo
-          if(this._UTIL.yaPaso(tarea.fechaEstimada)){
+          if(this._Util.yaPaso(tarea.fechaEstimada)){
             this.tareasPendientes.push(tarea);
           }
           // console.log('pendiente de otro: ',tarea)
@@ -181,9 +236,7 @@ export class AdmTareaComponent implements OnInit {
   }
 
   ngDoCheck(){
-    // console.log('tareasPendientesPersonales', this.tareasPersonalesPendientes);
-
-    console.log("administrativo: ",this.administrativos);
+    console.log('selectedAlumno',this.selectedAlumno)
   }
 
 
@@ -195,6 +248,9 @@ export class AdmTareaComponent implements OnInit {
 
   nuevaTarea(){
     this.tareaSeleccionada = new Tarea();
+    this.fechaTarea = + new Date();
+    this.tareaSeleccionada.contacto = null;
+    this.tareaSeleccionada.administrativoCreador.copiar(this.selectedAdministrativo)
     this.mostrarDialogoNuevaTarea = true;
   }
   ocultarDialogo(){
@@ -210,6 +266,7 @@ export class AdmTareaComponent implements OnInit {
       .toPromise()
       .then(()=>  this.actualizarTareas())
       .then(() =>{
+        this.tareaAnterior.copiar(this.tareaSeleccionada);
         this.tareaSeleccionada = new Tarea();
         this.mostrarDialogoNuevaTarea = false;
       })
@@ -314,26 +371,6 @@ export class AdmTareaComponent implements OnInit {
           this.tareas.push(tarea);
         })
       })
-    // this._spinnerService.show();
-    // return this._tareasService.getTareasAdmin(this.selectedAdministrativo.id)
-    //   .toPromise().then(tareas => {
-    //     this.tareas = [];
-    //     tareas.forEach(tarea => {
-    //       let tareaAux =  new Tarea();
-    //       let adminAux = new Administrativo();
-    //       let contactoAux = new Contacto();
-    //       tareaAux.copiar(tarea);
-    //       adminAux.copiar(tarea.administrativo);
-    //       tareaAux.administrativo=adminAux;
-    //       if(tarea.contacto != undefined){
-    //         contactoAux.copiar(tarea.contacto);
-    //         tareaAux.contacto = contactoAux;
-    //       }
-    //       this.tareas.push(tareaAux);
-    //       })
-    //       this.filtrarTareas();
-    //       this._spinnerService.hide();
-    //   })
   }
   filtrarTareas(){
     this.tareasPendientes = [];
@@ -365,6 +402,9 @@ export class AdmTareaComponent implements OnInit {
     return this.tareasPendientes.length > 0;
   }
 
+  hayTareasPersonalesFuturasPendientes(){
+    return this.tareasPersonalesFuturas.length > 0;
+  }
 
 
   mostrarDialogoOfrecerContacto(){
@@ -375,8 +415,68 @@ export class AdmTareaComponent implements OnInit {
   }
 
   generarNuevoContacto(){
-
+    this.ocultarDialogoOfrecerContacto();
+    this.mostrarDialogoContacto();
   }
+
+  // Métodos formulario contacto
+
+  togglePorFechaPorDia(){
+    if( this.selectedType == 'porFecha'){
+      this.porFecha = true;
+    }else{
+      this.porFecha = false;
+      this.fechaPorDia = this._Util.postergarPorDias(this.cantidadDias);
+    }
+  }
+
+  sumarDias(){
+    this.fechaPorDia = this._Util.postergarPorDias(this.cantidadDias);
+  }
+
+
+  mostrarDialogoContacto(){
+    console.log("tareaSeleccionada: ",this.tareaSeleccionada);
+    this.alumnoSeleccionado = new Alumno();
+    if(this.tareaSeleccionada.contacto != null){
+      this.selectedAlumno = this.alumnos[0];
+      this.tareaAnterior.copiar(this.tareaSeleccionada);
+      this.alumnoSeleccionado.copiar(this.tareaAnterior.contacto.alumno);
+      this.tareaSeleccionada = new Tarea();
+      
+    }else{
+      
+    }
+    
+    this.mostrandoDialogoContacto = true;
+  }
+
+
+  cerrarFormularioContacto(){
+    this.mostrandoDialogoContacto = false;
+  }
+
+  agregarTarea(){
+    this.tareaSeleccionada = new Tarea();
+  }
+
+
+
+  // Click en los selects
+  actualizarAlumnoSeleccionado(alumno: Alumno){
+    
+    this.alumnoSeleccionado = this.selectedAlumno;
+     
+   }
+
+
+
+
+
+
+
+  // Métodos formulario contacto
+
 
 
 
@@ -397,7 +497,7 @@ export class AdmTareaComponent implements OnInit {
     ];
     this.colsTodas = [
       { field: 'fechaEstimada', header: 'Fecha'},
-      { field: 'administrativoCreador', header: 'Administrativo'},
+      { field: 'administrativoCreador', header: 'Administrativo creador'},
       { field: 'titulo', header: 'Título'},
       { field: 'info', header: 'Info'},
       { field: 'acciones', header: 'Acciones'}

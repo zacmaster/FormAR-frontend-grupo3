@@ -1,6 +1,7 @@
 import { Component, OnInit,DoCheck } from '@angular/core';
 import { BackupService } from 'src/app/servicios/backup.service';
 import { GLOBAL } from 'src/app/servicios/global';
+import { FileUpload } from 'primeng/primeng';
 
 @Component({
   selector: 'app-backup',
@@ -38,12 +39,12 @@ export class BackupComponent implements OnInit {
     })  
   }
 myUploader(event) {
- console.log(event.files);
+ console.log(event);
  this.file=event.files[0];
  this._backupService.uploadFile(this.file).catch(e=>{
-   console.log(e);
-   
+   event.files.pop();
  })
+
 }
 
 
