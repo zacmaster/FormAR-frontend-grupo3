@@ -19,6 +19,7 @@ import { Tarea } from 'src/app/modelos/tarea';
 import { AdministrativoService } from 'src/app/servicios/administrativo.service';
 import { TareaService } from 'src/app/servicios/tarea.service';
 import { Administrativo } from 'src/app/modelos/administrativo';
+import { TokenStorageService } from 'src/app/auth/token-storage.service';
 
 
 @Component({
@@ -40,18 +41,18 @@ export class ContactosListComponent implements OnInit {
 
 
 
-  contactoSeleccionado: Contacto = this.newContacto();
+  contactoSeleccionado: Contacto = new Contacto();
   
   alumnoSeleccionado: Alumno = new Alumno();
   alumnoNuevo: Alumno = new Alumno();
   selectedAlumno:Alumno = new Alumno();
-  selectedCurso:Curso = new Curso();
-  selectedArea: Area= new Area();
+  selectedCurso:Curso;
+  selectedArea: Area = new Area();
 
-  tareaSeleccionada:Tarea = new Tarea();
+  tareaSeleccionada:Tarea;
 
   areaSeleccionada: Area = new Area;
-  cursoSeleccionado: Curso = new Curso;
+  cursoSeleccionado: Curso;
   mostrarDialogoBorrar: boolean = false;
   descripcionShowed: boolean = false;
 
@@ -99,6 +100,7 @@ export class ContactosListComponent implements OnInit {
   cursos: Curso[];
   cursosFiltrados: Curso[];
   areas: Area[];
+  administrativoSeleccionado: Administrativo;
 
 
 
@@ -115,15 +117,16 @@ export class ContactosListComponent implements OnInit {
     private _contactoService : ContactoService,
     private _cursoService: CursoService,
     private _areaService: AreaService,
+    private _tareaService: TareaService,
     private _administrativoService: AdministrativoService,
-    private _tareaService: TareaService
-
+    private tokenStorageService: TokenStorageService
 
     ) {}
 
     
 
   ngOnInit() {
+      this.getAdministrativo();
       this.cargarCampos();
       this.getContactos();
       this.getAlumnos();
@@ -132,6 +135,9 @@ export class ContactosListComponent implements OnInit {
   }
 
   ngDoCheck(){
+    console.log("adm Seleccionada: ",this.administrativoSeleccionado);
+    console.log("tarea Seleccionada: ",this.tareaSeleccionada);
+    
    // console.log('fechaContacto', this.fechaContacto);
     // console.log("%c Contacto","color: white; background-color: green;font-size: 15px", this.contactoSeleccionado);
    // console.log(this.contactos)
@@ -198,6 +204,18 @@ export class ContactosListComponent implements OnInit {
           alumno_aux.copiar(alumno);
           alumno_aux.nombreApellido=alumno_aux.nombre+" "+alumno_aux.apellido;
           this.alumnos.push(alumno_aux);
+        })
+      })
+  }
+
+  getAdministrativo(){
+    this._administrativoService
+      .getAdministrativoByUsername(this.tokenStorageService.getUsername())
+      .toPromise()
+      .then(r =>{
+        r.forEach(administrativo => {
+          this.administrativoSeleccionado = new Administrativo();
+          this.administrativoSeleccionado.copiar(administrativo);
         })
       })
   }
@@ -271,8 +289,8 @@ export class ContactosListComponent implements OnInit {
   nuevoContacto(){
     this.horaContacto = new Date();
     this.alumnoSeleccionado = new Alumno();
-    this.selectedAlumno=this.alumnos[0];
-    this.alumnoSeleccionado=this.selectedAlumno;
+    this.selectedAlumno = this.alumnos[0];
+    this.alumnoSeleccionado = this.selectedAlumno;
     
     this.seEligeArea = true;
     this.agregandoAlumno = false; 
@@ -280,12 +298,16 @@ export class ContactosListComponent implements OnInit {
 
 
     this.areaSeleccionada = new Area();
-    this.selectedArea=this.areas[0];
+    this.selectedArea = this.areas[0];
    
 
     this.cursoSeleccionado = new Curso();
-    this.selectedCurso=this.cursos[0];
+    this.selectedCurso = this.cursos[0];
     this.contactoSeleccionado = new Contacto();
+
+    if(this.generarTarea){
+      this.tareaSeleccionada = new Tarea();
+    }
     
     this.mostrarDialogo = true;
   
@@ -296,53 +318,53 @@ export class ContactosListComponent implements OnInit {
     this.contactoSeleccionado.copiar(contacto);
     this.horaContacto = new Date(this.contactoSeleccionado.fecha);
     this.alumnos.forEach(element => {
-      if(element.id==this.contactoSeleccionado.alumno.id){
+      if(element.id == this.contactoSeleccionado.alumno.id){
         console.log("este es el alumno al editar",element);
         
-        this.selectedAlumno=element;
-        this.alumnoSeleccionado=element;
+        this.selectedAlumno = element;
+        this.alumnoSeleccionado = element;
       }
     });
     console.log("contactoSeleccionado",this.contactoSeleccionado);
     
-    if(this.contactoSeleccionado.curso.id==0){
+    if(this.contactoSeleccionado.curso.id == 0){
      
-      this.seEligeArea=true;
-      this.selectedCurso=this.cursos[0];
-      if(this.contactoSeleccionado.area.id!=0){
+      this.seEligeArea = true;
+      this.selectedCurso = this.cursos[0];
+      if(this.contactoSeleccionado.area.id != 0){
         this.areas.forEach(element => {
-          if(element.id==this.contactoSeleccionado.area.id){
+          if(element.id == this.contactoSeleccionado.area.id){
             
-            this.selectedArea=element;
+            this.selectedArea = element;
           }
       });
       this.filtrarCursos();
-        this.seEligeArea=false;
+        this.seEligeArea = false;
       }
       else{
-        this.selectedArea=this.areas[0];
+        this.selectedArea = this.areas[0];
       }
       
       
     }
     else{
-      this.seEligeArea=false;
+      this.seEligeArea = false;
       this.areas.forEach(element => {
-        if(element.id==this.contactoSeleccionado.area.id){
+        if(element.id == this.contactoSeleccionado.area.id){
           
-          this.selectedArea=element;
+          this.selectedArea = element;
         }
       });
       this.filtrarCursos();
       this.cursos.forEach(element => {
-        if(element.id==this.contactoSeleccionado.curso.id){
-          this.selectedCurso=element;
+        if(element.id == this.contactoSeleccionado.curso.id){
+          this.selectedCurso = element;
         }
       });
       
     }
     this.mostrarDialogo = true;
-    this.edicion=true;
+    this.edicion = true;
    
   }
 
@@ -354,20 +376,20 @@ export class ContactosListComponent implements OnInit {
     } 
 
   guardarContactoNuevo(){
-   if(this.contactoSeleccionado.id==0){
+   if(this.contactoSeleccionado.id == 0){
       if(!this.agregandoAlumno){
-          this.contactoSeleccionado.alumno=this.selectedAlumno;
-          if(this.selectedArea.id==0){
-            this.contactoSeleccionado.area=null;
+          this.contactoSeleccionado.alumno = this.selectedAlumno;
+          if(this.selectedArea.id == 0){
+            this.contactoSeleccionado.area = null;
           }
           else{
-            this.contactoSeleccionado.area=this.selectedArea;
+            this.contactoSeleccionado.area = this.selectedArea;
           }
-          if(this.selectedCurso.id==0){
-            this.contactoSeleccionado.curso=null;
+          if(this.selectedCurso.id == 0){
+            this.contactoSeleccionado.curso = null;
           }
           else{
-            this.contactoSeleccionado.curso=this.selectedCurso;
+            this.contactoSeleccionado.curso = this.selectedCurso;
           }
 
           let fechaTemp: Date = new Date(this.contactoSeleccionado.fecha)
@@ -377,50 +399,50 @@ export class ContactosListComponent implements OnInit {
           this.guardar(this.contactoSeleccionado);  
       }
       else{
-        if(this.selectedArea.id==0){
-          this.contactoSeleccionado.area=null;
+        if(this.selectedArea.id == 0){
+          this.contactoSeleccionado.area = null;
         }
         else{
-          this.contactoSeleccionado.area=this.selectedArea;
+          this.contactoSeleccionado.area = this.selectedArea;
         }
-        if(this.selectedCurso.id==0){
-          this.contactoSeleccionado.curso=null;
+        if(this.selectedCurso.id == 0){
+          this.contactoSeleccionado.curso = null;
         }
         else{
-          this.contactoSeleccionado.curso=this.selectedCurso;
+          this.contactoSeleccionado.curso = this.selectedCurso;
         }
         this.guardar(this.contactoSeleccionado);  
       } 
    }
    else{
     if(!this.agregandoAlumno){
-      this.contactoSeleccionado.alumno=this.selectedAlumno;
-      if(this.selectedArea.id==0){
-        this.contactoSeleccionado.area=null;
+      this.contactoSeleccionado.alumno = this.selectedAlumno;
+      if(this.selectedArea.id == 0){
+        this.contactoSeleccionado.area = null;
       }
       else{
-        this.contactoSeleccionado.area=this.selectedArea;
+        this.contactoSeleccionado.area = this.selectedArea;
       }
-      if(this.selectedCurso.id==0){
-        this.contactoSeleccionado.curso=null;
+      if(this.selectedCurso.id == 0){
+        this.contactoSeleccionado.curso = null;
       }
       else{
-        this.contactoSeleccionado.curso=this.selectedCurso;
+        this.contactoSeleccionado.curso = this.selectedCurso;
       }
       this.editar(this.contactoSeleccionado);  
   }
   else{
-    if(this.selectedArea.id==0){
-      this.contactoSeleccionado.area=null;
+    if(this.selectedArea.id == 0){
+      this.contactoSeleccionado.area = null;
     }
     else{
-      this.contactoSeleccionado.area=this.selectedArea;
+      this.contactoSeleccionado.area = this.selectedArea;
     }
-    if(this.selectedCurso.id==0){
-      this.contactoSeleccionado.curso=null;
+    if(this.selectedCurso.id == 0){
+      this.contactoSeleccionado.curso = null;
     }
     else{
-      this.contactoSeleccionado.curso=this.selectedCurso;
+      this.contactoSeleccionado.curso = this.selectedCurso;
     }
     this.editar(this.contactoSeleccionado); 
     } 
@@ -461,15 +483,12 @@ export class ContactosListComponent implements OnInit {
                   }
                 });
                 
-                let administrativoAux = new Administrativo();
-                administrativoAux.id = 2;
-                administrativoAux.nombre = "Eduardo Feinman";
                 
                 if(!this.porFecha){
                   this.tareaSeleccionada.fechaEstimada = + this.fechaPorDia; 
                 }
-                this.tareaSeleccionada.administrativoCreador = administrativoAux;
-                this.tareaSeleccionada.administrativoResolvedor=null;
+                this.tareaSeleccionada.administrativoCreador = this.administrativoSeleccionado;
+                this.tareaSeleccionada.administrativoResolvedor = null;
     
                 this._tareaService.addTarea(this.tareaSeleccionada).subscribe();
               }
@@ -487,9 +506,6 @@ export class ContactosListComponent implements OnInit {
         })
     
     
-    // () => {
-
-    // })
   }
 
   agregarNuevoAlumno(){
@@ -503,13 +519,6 @@ export class ContactosListComponent implements OnInit {
    
 
   }
-  newContacto():Contacto{
-    let aux = new Contacto();
-    aux.alumno= new Alumno();
-    aux.area=new Area();
-    aux.curso=new Curso();
-    return aux;
-  }1
   
   
   
@@ -527,7 +536,7 @@ export class ContactosListComponent implements OnInit {
   // Click en los selects
    actualizarAlumnoSeleccionado(alumno: Alumno){
     
-    this.alumnoSeleccionado=this.selectedAlumno;
+    this.alumnoSeleccionado = this.selectedAlumno;
      
    }
 
@@ -538,9 +547,9 @@ export class ContactosListComponent implements OnInit {
     
   }
   cerrarFormulario(){
-    this.mostrarDialogo=false;
-    this.edicion=false;
-    this.selectedAlumno= new Alumno();
+    this.mostrarDialogo = false;
+    this.edicion = false;
+    this.selectedAlumno = new Alumno();
   }
 
   mostrarDescripcion(contacto: any){

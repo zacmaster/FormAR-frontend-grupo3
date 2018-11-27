@@ -1,141 +1,36 @@
 <!-- header de la sección -->
-<div class="d-flex justify-content-between p-1 bg-light header" >
+<div class="d-flex justify-content-between p-4 bg-light header" >
   <div class="input-group-prepend">
-      <div class="bg-light p-1">
-        <h5 style="text-align: right;color: #000000">{{nombreAdm}}</h5>
-      </div>
-    <p-dropdown *ngIf="mostrarAdministrativosSpinner" [options]="administrativos" [(ngModel)]="selectedAdministrativo" [filter]="true" optionLabel="nombre" [style]="{'width':'250px','height':'38px'}" (onChange)="onChange()"></p-dropdown>
+    <span class="input-group-text font-italic" id="inputGroup-sizing-default">{{ selectedAdministrativo.nombre }}</span>
   </div>
   <!-- (onChange)="refrescarTareas()"  -->
   <div>
-    <button
-      class="btn btn-success"
-      (click)="nuevaTarea()">
-      {{ _LABEL.nuevaTarea }}
+    <button 
+          class="btn btn-success"
+          (click)="nuevaTarea()">
+          {{ _LABEL.nuevaTarea }}
     </button>
   </div>
 </div>
-
+    
 <div class="contenedorTablas">
 
-  <!-- Comienzo Tabla de todas las tareas pendientes para hoy-->
-  <div class="bg-light p-4">
-    <h5 style="text-align: left;color: #9b59b6; border-bottom: solid 3px #9b59b6;">Pendientes personales para hoy <i class="fas fa-exclamation-circle"></i></h5>
-    <p-table *ngIf="hayTareasPersonalesParaHoy()" #dt [columns]="cols" [value]="tareasPersonalesParaHoy" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+<!-- Comienzo Tabla de todas las tareas pendientes para hoy-->          
+<div class="bg-light p-4">
+  <h5 style="text-align: left;color: #9b59b6; border-bottom: solid 3px #9b59b6;">Pendientes personales para hoy <i class="fas fa-exclamation-circle"></i></h5>
+  <p-table *ngIf="hayTareasPersonalesParaHoy()" #dt [columns]="cols" [value]="tareasPersonalesParaHoy" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" pResizableColumn>
             {{col.header}}
           </th>
         </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
-              <span *ngSwitchCase="'fechaEstimada'">
-                  {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
-              </span>
-            <span *ngSwitchCase="'titulo'">
-                  {{ rowData.titulo}}
-              </span>
-            <span *ngSwitchCase="'info'">
-                  <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
-                          (click)="mostrarDetalleTarea(rowData)">
-                          <i class="fas fa-info"></i>
-                  </button>
-              </span>
-            <span *ngSwitchCase="'acciones'">
-                  <button
-                    class="btn btn-success mr-2"
-                    (click)="finalizarTarea(rowData);"
-                    [title]="_LABEL.marcarComoResuelta"
-                  >
-                    <i class="fas fa-clipboard-check"></i>
-                  </button>
-              </span>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <div *ngIf="! hayTareasPersonalesParaHoy()">
-      {{ _LABEL.sinTareas }}
-    </div>
-  </div>
-  <!-- Fin Tabla de todas las tareas pendientes para hoy-->
-
-
-
-
-
-  <!-- Comienzo Tabla pendientes del administrativo seleccionado-->
-  <div class="bg-light p-4">
-    <h5 style="text-align: left; color: #e74c3c; border-bottom: solid 3px #e74c3c">Pendientes para {{ selectedAdministrativo.nombre }}</h5>
-    <p-table *ngIf="hayTareasPersonalesPendientes()" #dt [columns]="cols" [value]="tareasPersonalesPendientes" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" pResizableColumn>
-            {{col.header}}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
-              <span *ngSwitchCase="'fechaEstimada'">
-                  {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
-              </span>
-            <span *ngSwitchCase="'titulo'">
-                  {{ rowData.titulo}}
-              </span>
-            <span *ngSwitchCase="'info'">
-                  <button class="btn btn-warning mr-2"
-                          (click)="mostrarDetalleTarea(rowData)">
-                          <i class="fas fa-info"></i>
-                  </button>
-              </span>
-            <span *ngSwitchCase="'acciones'">
-                  <button
-                    class="btn btn-success mr-2"
-                    (click)="finalizarTarea(rowData);"
-                    [title]="_LABEL.marcarComoResuelta"
-                  >
-                    <i class="fas fa-clipboard-check"></i>
-                  </button>
-              </span>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <div *ngIf="! hayTareasPersonalesPendientes()">
-      {{ _LABEL.sinTareas }}
-    </div>
-  </div>
-
-  <!-- Fin Tabla pendientes del administrativo seleccionado-->
-
-
-
-
-
-
-
-
-  <!-- Comienzo Tabla completadas del administrativo seleccionado-->
-  <div class="bg-light p-4">
-    <h5 style="text-align: left;color: #2ecc71; border-bottom: solid 3px #2ecc71;">Completadas por {{ selectedAdministrativo.nombre }}</h5>
-    <p-table *ngIf="hayTareasPersonalesCompletadas()" #dt [columns]="colsCompletadas" [value]="tareasPersonalesCompletadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" pResizableColumn>
-            {{col.header}}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
             <span *ngSwitchCase="'fechaEstimada'">
-                {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
+                {{ _Util.convertirTimestamp(rowData.fechaEstimada) }}
             </span>
             <span *ngSwitchCase="'titulo'">
                 {{ rowData.titulo}}
@@ -146,74 +41,230 @@
                         <i class="fas fa-info"></i>
                 </button>
             </span>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <div *ngIf="! hayTareasPersonalesCompletadas()">
+            <span *ngSwitchCase="'acciones'">
+                <button
+                          class="btn btn-success mr-2"
+                          (click)="finalizarTarea(rowData);"
+                          [title]="_LABEL.marcarComoResuelta"
+                          >
+                  <i class="fas fa-clipboard-check"></i>
+                </button>
+            </span>
+        </td>
+      </tr>
+    </ng-template>
+</p-table>
+  <div *ngIf="! hayTareasPersonalesParaHoy()">
       {{ _LABEL.sinTareas }}
-    </div>
   </div>
-  <!-- Fin Tabla completadas del administrativo seleccionado-->
+</div>
+<!-- Fin Tabla de todas las tareas pendientes para hoy-->    
 
 
 
 
-
-
-  <!-- Comienzo Tabla de todas las tareas pendientes-->
-  <div class="bg-light p-4">
-    <h5 style="text-align: left;color: #f39c12; border-bottom: solid 3px #f39c12;">Todas las pendientes</h5>
-    <p-table *ngIf="hayTareasPendientes()" #dt [columns]="colsTodas" [value]="tareasPendientes" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+        
+<!-- Comienzo Tabla pendientes del administrativo seleccionado-->          
+<div class="bg-light p-4">
+  <h5 style="text-align: left; color: #e74c3c; border-bottom: solid 3px #e74c3c">Pendientes para {{ selectedAdministrativo.nombre }}</h5>
+  <p-table *ngIf="hayTareasPersonalesPendientes()" #dt [columns]="cols" [value]="tareasPersonalesPendientes" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" pResizableColumn>
             {{col.header}}
           </th>
         </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+            <span *ngSwitchCase="'fechaEstimada'">
+                {{ _Util.convertirTimestamp(rowData.fechaEstimada) }}
+            </span>
+            <span *ngSwitchCase="'titulo'">
+                {{ rowData.titulo}}
+            </span>
+            <span *ngSwitchCase="'info'">
+                <button class="btn btn-warning mr-2"
+                        (click)="mostrarDetalleTarea(rowData)">
+                        <i class="fas fa-info"></i>
+                </button>
+            </span>
+            <span *ngSwitchCase="'acciones'">
+                <button
+                          class="btn btn-success mr-2"
+                          (click)="finalizarTarea(rowData);"
+                          [title]="_LABEL.marcarComoResuelta"
+                          >
+                  <i class="fas fa-clipboard-check"></i>
+                </button>
+            </span>
+        </td>
+      </tr>
+    </ng-template>
+</p-table>
+  <div *ngIf="! hayTareasPersonalesPendientes()">
+      {{ _LABEL.sinTareas }}
+  </div>
+</div>
+
+<!-- Fin Tabla pendientes del administrativo seleccionado-->          
+
+
+
+
+
+
+
+
+<!-- Comienzo Tabla completadas del administrativo seleccionado-->          
+<div class="bg-light p-4">
+<h5 style="text-align: left;color: #2ecc71; border-bottom: solid 3px #2ecc71;">Completadas por {{ selectedAdministrativo.nombre }}</h5>
+<p-table *ngIf="hayTareasPersonalesCompletadas()" #dt [columns]="colsCompletadas" [value]="tareasPersonalesCompletadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" pResizableColumn>
+          {{col.header}}
+        </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+          <span *ngSwitchCase="'fechaEstimada'">
+              {{ _Util.convertirTimestamp(rowData.fechaEstimada) }}
+          </span>
+          <span *ngSwitchCase="'titulo'">
+              {{ rowData.titulo}}
+          </span>
+          <span *ngSwitchCase="'info'">
+              <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
+                      (click)="mostrarDetalleTarea(rowData)">
+                      <i class="fas fa-info"></i>
+              </button>
+          </span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div *ngIf="! hayTareasPersonalesCompletadas()">
+      {{ _LABEL.sinTareas }}
+  </div>
+</div>
+<!-- Fin Tabla completadas del administrativo seleccionado-->          
+
+
+
+
+
+
+<!-- Comienzo Tabla de todas las tareas pendientes-->          
+<div class="bg-light p-4">
+<h5 style="text-align: left;color: #f39c12; border-bottom: solid 3px #f39c12;">Todas las pendientes</h5>
+<p-table *ngIf="hayTareasPendientes()" #dt [columns]="colsTodas" [value]="tareasPendientes" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" pResizableColumn>
+              {{col.header}}
+            </th>
+          </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
+      <tr>
           <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
-                <span *ngSwitchCase="'fechaEstimada'">
-                        {{ _UTIL.convertirTimestamp(rowData.fechaEstimada) }}
-                </span>
-            <span *ngSwitchCase="'administrativoCreador'">
-                    {{ rowData.administrativoCreador.nombre}}
-                </span>
-            <span *ngSwitchCase="'info'">
-                    <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
-                            (click)="mostrarDetalleTarea(rowData)">
-                            <i class="fas fa-info"></i>
-                    </button>
-                </span>
-            <span *ngSwitchCase="'acciones'">
-                    <button
+              <span *ngSwitchCase="'fechaEstimada'">
+                      {{ _Util.convertirTimestamp(rowData.fechaEstimada) }}
+              </span>
+              <span *ngSwitchCase="'administrativoCreador'">
+                  {{ rowData.administrativoCreador.nombre}}
+              </span>
+              <span *ngSwitchCase="'info'">
+                  <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
+                          (click)="mostrarDetalleTarea(rowData)">
+                          <i class="fas fa-info"></i>
+                  </button>
+              </span>
+              <span *ngSwitchCase="'acciones'">
+                  <button
                       class="btn btn-success mr-2"
                       (click)="finalizarTarea(rowData);"
                       [title]="_LABEL.marcarComoResuelta"
-                    >
-                        <i class="fas fa-clipboard-check"></i>
-                    </button>
-                </span>
-            <span *ngSwitchDefault>
-                    {{ rowData[col.field] }}
-                </span>
-
+                      >
+                      <i class="fas fa-clipboard-check"></i>
+                  </button>
+              </span>
+              <span *ngSwitchDefault>
+                  {{ rowData[col.field] }}
+              </span>
+              
           </td>
-        </tr>
+      </tr>
       </ng-template>
-    </p-table>
-    <div *ngIf="! hayTareasPendientes()">
+  </p-table>
+  <div *ngIf="! hayTareasPendientes()">
       {{ _LABEL.sinTareas }}
-    </div>
   </div>
-  <!-- Fin Tabla de todas las tareas pendientes-->
-
-
-
-  <!-- Finaliza el contenedor de la tabla:  -->
 </div>
+<!-- Fin Tabla de todas las tareas pendientes-->          
+
+
+
+
+<!-- Comienzo tabla tareas a futuro -->
+
+<div class="bg-light p-4">
+  <h5 style="text-align: left; color: #3498db; border-bottom: solid 3px #3498db">Tareas futuras para {{ selectedAdministrativo.nombre }}</h5>
+  <p-table *ngIf="hayTareasPersonalesFuturasPendientes()" #dt [columns]="cols" [value]="tareasPersonalesFuturas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" pResizableColumn>
+            {{col.header}}
+          </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns" class="ui-resizable-column" [ngSwitch]="col.field">
+            <span *ngSwitchCase="'fechaEstimada'">
+                {{ _Util.convertirTimestamp(rowData.fechaEstimada) }}
+            </span>
+            <span *ngSwitchCase="'titulo'">
+                {{ rowData.titulo}}
+            </span>
+            <span *ngSwitchCase="'info'">
+                <button class="btn btn-warning mr-2"
+                        (click)="mostrarDetalleTarea(rowData)">
+                        <i class="fas fa-info"></i>
+                </button>
+            </span>
+            <span *ngSwitchCase="'acciones'">
+                <button
+                          class="btn btn-success mr-2"
+                          (click)="finalizarTarea(rowData);"
+                          [title]="_LABEL.marcarComoResuelta"
+                          >
+                  <i class="fas fa-clipboard-check"></i>
+                </button>
+            </span>
+        </td>
+      </tr>
+    </ng-template>
+</p-table>
+  <div *ngIf="! hayTareasPersonalesPendientes()">
+      {{ _LABEL.sinTareas }}
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Fin tabla tareas a futuro -->
+
+
+<!-- Finaliza el contenedor de la tabla:  -->
+</div> 
 
 
 
@@ -258,54 +309,63 @@
   [botonAceptar]="false"
   (clickBotonCerrar)="ocultarDialogo()"
   [titulo]="_LABEL.nuevaTarea"
-
+  
 
 >
 
-  <div class="row form-group">
-    <div class="col mr-2">
-      <label class="d-flex">{{ _LABEL_R.fecha}}</label>
-      <ng-datepicker
-        [options]="options"
-        [(ngModel)]="fechaTarea"
-        style="z-index: 1000; position: relative;"
-      >
-      </ng-datepicker>
-    </div>
-    <div class="col">
-      <label class="d-flex">{{ _LABEL_R.titulo }}</label>
-      <input
-        type="text"
-        class="form-control"
-        #titulo="ngModel"
-        required
-        [(ngModel)]="tareaSeleccionada.titulo"
-        [placeholder]="_LABEL.ingrese.asunto    "
-      >
-    </div>
-  </div>
-  <div class="row">
-    <div class="form-group col">
-      <label class="d-flex">{{ _LABEL.descripcion }}</label>
-      <textarea
-        class="form-control"
-        rows="2"
-        #descripcion="ngModel"
-        required
-        [(ngModel)]="tareaSeleccionada.descripcion"
-        [placeholder]="_LABEL.ingrese.descripcion"
+  <div class="row form-group" style="width: 500px">
+      <div class="col">
+          <label class="d-flex">{{ _LABEL_R.fecha}}</label>
+          <ng-datepicker
+          [options]="options"
+          [(ngModel)]="fechaTarea"
+          style="z-index: 1000; position: relative;"
+          >
+          </ng-datepicker>
+      </div>
 
-      ></textarea>
-    </div>
+  </div>
+  <div class="row form-group">
+          <div class="col">
+              <label class="d-flex">{{ _LABEL_R.titulo }}</label>
+              <input
+                          type="text"
+                          class="form-control"
+                          #titulo="ngModel"
+                          required
+                          [(ngModel)]="tareaSeleccionada.titulo"
+                          [placeholder]="_LABEL.ingrese.asunto    "
+                          >
+          </div>
   </div>
   <div class="row">
-    <div class="form-group col d-flex justify-content-end">
-      <button class="btn btn-primary" (click)="guardarTarea()">{{ _LABEL.guardar }}</button>
-    </div>
+      <div class="form-group col">
+        <label class="d-flex">{{ _LABEL.descripcion }}</label>
+        <textarea
+                  class="form-control"
+                  rows="2"
+                  #descripcion="ngModel"
+                  required
+                  [(ngModel)]="tareaSeleccionada.descripcion"
+                  [placeholder]="_LABEL.ingrese.descripcion"
+                  
+      ></textarea>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col d-flex justify-content-end">
+          <button class="btn btn-primary" (click)="guardarTarea()">{{ _LABEL.guardar }}</button>
+      </div>
   </div>
 
 
 </dialogo-confirmacion>
+
+
+
+
+
+
 
 
 <dialogo-info
@@ -314,10 +374,25 @@
   (clickBotonOk)="ocultarDetalleTarea()"
   [title]="_LABEL.detalleTarea"
   titulo="Detalle de tarea"
-  [subtituloIzquierdo]="_UTIL.convertirTimestamp(tareaSeleccionada.fechaEstimada)"
+  [subtituloIzquierdo]="_Util.convertirTimestamp(tareaSeleccionada.fechaEstimada)"
   [subtituloDerecho]="tareaSeleccionada.titulo"
-  [texto]="tareaSeleccionada.descripcion">
+  [texto]="tareaSeleccionada.descripcion"                        
+>
+
 </dialogo-info>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dialogo-confirmacion
@@ -331,3 +406,209 @@
 >
 
 </dialogo-confirmacion>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Principio de Formulario de Contacto -->
+<div class="contenedorFormularioContacto" *ngIf="mostrandoDialogoContacto">
+  <div class="card mt-4 mx-auto" style="height: auto;">
+      <div class="card-head d-flex  p-1 w-100 justify-content-between">
+          <div></div>
+          <div class="pt-2">
+            <h5>{{ _LABEL.nuevoContacto }}</h5>
+           
+          </div>
+          <span class="btn btn-danger" (click)="cerrarFormularioContacto()"><i class="fas fa-times"></i></span>
+      </div>
+      <div class="contenedor">
+        <div class="card-body">
+            <div class="row" style="max-height: 80vh; overflow-y: scroll">
+                  <!-- Alumno Seleccionado -->
+                  <div class="col-7">
+                      <div class="row">
+                          <div class="col">
+                              <p-accordion>
+                                    <p-accordionTab header="Contacto" *ngIf="tareaAnterior.contacto != undefined && tareaAnterior.contacto.asunto != ''">
+                                            <div class="d-flex justify-content-between">
+                                                <div>{{ _Util.convertirTimestamp(tareaAnterior.contacto.fecha) }}</div>
+                                                <div *ngIf="tareaAnterior.contacto.area != null && tareaAnterior.contacto.area.nombre !=''">Interés: 
+                                                    <span *ngIf="tareaAnterior.contacto.curso == null || tareaAnterior.contacto.curso.nombre != ''">{{ tareaAnterior.contacto.area.nombre }}</span>
+                                                    <span *ngIf="tareaAnterior.contacto.curso != null">{{ tareaAnterior.contacto.curso.nombre }}</span>
+                                                </div>
+                                            </div>
+                                            <div style="background-color: #3af53738;border-radius: 2px;margin: 10px 0">
+                                                <div style="font-size: 20px;text-transform: capitalize" class="font-weight-bold">{{ tareaAnterior.contacto.asunto }}</div>
+                                                <div>{{ tareaAnterior.contacto.descripcion }}</div>
+                                            </div>
+                                    </p-accordionTab>
+                                  <p-accordionTab header="Tarea anterior">
+                                      <div>{{ _Util.convertirTimestampConHora(tareaAnterior.fechaEstimada) }}</div>
+                                      <div class="d-flex justify-content-between">
+                                          <div class="font-italic">creado por <span class="font-weight-bold">{{ tareaAnterior.administrativoCreador.nombre }}</span></div>
+                                          <div class="font-italic">resuelto por <span class="font-weight-bold">{{ tareaAnterior.administrativoResolvedor.nombre }}</span></div>
+                                      </div>
+                                      <div style="background-color: #77b7f833;border-radius: 2px;margin: 10px 0">
+                                          <div style="font-size: 20px;text-transform: capitalize" class="font-weight-bold">{{ tareaAnterior.titulo }}</div>
+                                          <div>{{ tareaAnterior.descripcion }}</div>
+                                      </div>
+                                  </p-accordionTab>
+                              </p-accordion>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-7" >
+                                  <label >{{ _LABEL_R.fecha }}</label>
+                                  <ng-datepicker
+                                      #fechaContacto = "ngModel"
+                                      [(ngModel)]="contactoSeleccionado.fecha"
+                                      [options]="options"
+                                      style="z-index: 1000; position: relative;"
+                                  >
+                              </ng-datepicker>
+                              <div  *ngIf="fechaContacto.invalid && (fechaContacto.dirty || fechaContacto.touched)" class="alert alert-danger">
+                                  <div *ngIf="fechaContacto.errors.required">{{ _VALIDACION.requerido.fecha }}</div>
+                              </div>
+                          
+                              <label style="display: block; margin-top: 10px;">{{ _LABEL.hora }}</label>
+                              <p-calendar class="estilo-reloj"  [(ngModel)]="horaContacto"  name="Hora" [timeOnly]="true" hourFormat="24"></p-calendar>
+                              <div style="margin-top: 10px;">
+                                  <p-dropdown [options]="alumnos" [(ngModel)]="selectedAlumno" optionLabel="nombreApellido"[style]="{'width':'300px'}" 
+                                  (onClick)="actualizarAlumnoSeleccionado(selectedAlumno)"
+                                  [filter]="true"
+                                  ></p-dropdown>
+                                  <ul style="padding: 20px">
+                                      <li> {{ _LABEL.alumno }}: {{ alumnoSeleccionado.nombre }} {{ alumnoSeleccionado.apellido }}</li>
+                                      <li> {{ _LABEL.dni }} : {{ alumnoSeleccionado.dni }}</li>
+                                      <li> {{ _LABEL.fechaNacimiento }} : {{ _Util.convertirTimestamp(alumnoSeleccionado.fechaNacimiento) }}</li>
+                                      <li> {{ _LABEL.telefono }} : {{ alumnoSeleccionado.telefono }} </li>
+                                      <li> {{ _LABEL.email }} : {{ alumnoSeleccionado.email }} </li>
+                                  </ul>
+                              </div>
+                              </div>
+                              <div class="col-5">
+                                  <label for="">{{ _LABEL_R.asunto }}</label>
+                                  <input
+                                          #asuntoContacto = "ngModel"
+                                          type="text"
+                                          class="form-control"
+                                          required
+                                          [(ngModel)]="contactoSeleccionado.asunto"
+                                          [placeholder]="_LABEL.ingrese.asunto"
+                                          >
+                                  <div  *ngIf="asuntoContacto.invalid && (asuntoContacto.dirty || asuntoContacto.touched)" class="alert alert-danger">
+                                  <div *ngIf="asuntoContacto.errors.required">{{ _VALIDACION.requerido.asunto }}</div>
+                                  </div>
+                                  <label style="margin: 10px 0">{{ _LABEL.descripcion }}</label>
+                                  <textarea
+                                          [(ngModel)]="contactoSeleccionado.descripcion"
+                                          name=""
+                                          id=""
+                                          class="form-control"
+                                          rows="6">
+                                  </textarea>
+                              </div>
+                      </div>
+                  </div>
+                  <div class="col-5">
+                      <div>Generar tarea</div>
+                      <div><p-inputSwitch [(ngModel)]="generarTarea" (click)="agregarTarea()"></p-inputSwitch></div>
+                      <div *ngIf="generarTarea">
+                              <div ><p-selectButton [options]="types" [(ngModel)]="selectedType" (click)="togglePorFechaPorDia()"></p-selectButton></div>
+                              <label style="margin: 5px 0 2px 0">{{ _LABEL_R.fecha }}</label>
+                              <div  *ngIf="porFecha">
+                                  <ng-datepicker
+                                  #fechaTarea = "ngModel"
+                                  [(ngModel)]="tareaSeleccionada.fechaEstimada"
+                                  [options]="options"
+                                  style="z-index: 1000; position: relative;"
+                                  >
+                                  </ng-datepicker>
+                              </div>
+                              <div  *ngIf="!porFecha" class="fechaTarea">{{ _Util.convertirDate(fechaPorDia) }}</div>
+                              <div  *ngIf="!porFecha">
+                                  <label>Programar para dentro de </label>
+                                  <input class="form-control ml-2 mr-2" style="width: 80px; display: inline-block" type="number" [(ngModel)]="cantidadDias" (change)="sumarDias()" min="1" max="100">
+                                  <label >días</label>
+                              </div>
+                              <div  class="form-group">
+                                      <label>{{ _LABEL_R.titulo }}</label>
+                                      <input  
+                                              type="text"
+                                              class="form-control"
+                                              #tituloTarea= "ngModel"
+                                              required
+                                              [(ngModel)]="tareaSeleccionada.titulo"
+                                              [placeholder]="_LABEL.ingrese.asunto"
+                                      >
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <label>{{ _LABEL.descripcion }}</label>
+                                      <textarea
+                                              class="form-control" rows="2"
+                                              #descripcionTarea = "ngModel"
+                                              required
+                                              [(ngModel)]="tareaSeleccionada.descripcion"
+                                              [placeholder]="_LABEL.ingrese.descripcion"
+                                      
+                                      ></textarea>
+                                  </div>
+                          </div>
+                  </div>
+                  <div class="d-flex justify-content-end px-2 w-100" >
+                          <button
+                  
+                                class="btn btn-primary float-right"
+                                (click)="guardarContactoNuevo()"
+                          >
+                          <span>{{ _LABEL.agregar }}</span>
+                          </button>
+                      </div>
+                </div>
+
+                <!-- Fin de alumno seleccionado  -->
+
+
+
+          
+            
+              
+          
+
+          </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fin del formulario -->

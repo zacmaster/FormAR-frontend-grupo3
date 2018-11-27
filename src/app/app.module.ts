@@ -9,7 +9,7 @@ import {AutoCompleteModule,  PaginatorModule, InputSwitchModule, SelectButtonMod
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosListComponent } from './componentes/usuarios-list/usuarios-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import {AccordionModule} from 'primeng/accordion';
 
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { CalendarModule } from 'primeng/calendar';
@@ -128,6 +128,7 @@ import { HeaderComponent } from './header/header.component';
     CdkTableModule,
     CdkTreeModule,
     MatSortModule,
+    AccordionModule,
     PaginatorModule
   ],
   providers: [
