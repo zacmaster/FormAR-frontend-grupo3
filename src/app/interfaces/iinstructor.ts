@@ -5,11 +5,13 @@ import { Horario } from "../modelos/horario";
 export interface IInstructor extends Iresource{
     nombre: string,
     apellido: string,
+    username: string,
+    password: string,
     email: string,
     dni: string,
     telefono: string,
     estudios: string,
     areasPreferencia: Area[],
     disponibilidadHoraria: Horario[],
-    
+
 }

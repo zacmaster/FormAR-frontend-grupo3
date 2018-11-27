@@ -29,6 +29,7 @@ export const VALIDACION = {
     valido: {
         nombre: "El nombre ingresado no es válido",
         apellido: "El apellido ingresado no es válido",
+        username: "El nombre de usuario ingresado no es válido",
         dni: "El DNI ingresado no es válido",
         telefono: "El teléfono ingresado no es válido",
         email: "El email ingresado no es válido",
@@ -38,6 +39,8 @@ export const VALIDACION = {
     requerido: {
         nombre: "El campo nombre es obligatorio",
         apellido: "El campo apellido es obligatorio",
+        username: "El campo nombre de usuario es obligatorio",
+        password: "El campo contraseña es obligatorio",
         dni: "El campo DNI es obligatorio",
         telefono: "El campo teléfono es obligatorio",
         email: "El campo email es obligatorio",
@@ -48,6 +51,8 @@ export const VALIDACION = {
 
 export const LABEL_REQUIRED ={
     nombre: "Nombre*",
+    username: "Nombre de usuario*",
+    password: "Contraseña*",
     apellido: "Apellido*",
     dni: "DNI*",
     fechaNacimiento: "Fecha de nacimiento*",
@@ -137,6 +142,8 @@ export var LABEL ={
     num_cuota: "Cuota Nro.",
     ingrese: {
         nombre: "Ingrese el nombre",
+        username: "Ingrese el nombre de usuario",
+        password: "Ingrese la contraseña",
         apellido: "Ingrese el apellido",
         dni: "Ingrese el DNI",
         email: "Ingrese el email",

@@ -12,6 +12,8 @@ export class Instructor extends Resource implements IInstructor{
     estudios: string;
     areasPreferencia: Area[];
     disponibilidadHoraria: Horario[];
+    username: string;
+    password: string;
 
     constructor(){
         super();
@@ -22,5 +24,7 @@ export class Instructor extends Resource implements IInstructor{
 		this.dni = "";
         this.telefono = "";
         this.estudios = "";
+        this.username = "";
+        this.password = "";
     }
 }
