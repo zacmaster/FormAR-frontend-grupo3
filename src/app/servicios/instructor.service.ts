@@ -43,6 +43,10 @@ export class InstructorService extends ResourceService<Instructor, IInstructor>{
     return super.readByEmail(email)
   }
 
+  getInstructorByUsername(username: string): Observable<IInstructor>{
+    return super.findByUsername(username)
+  }
+
   save(instructor: Instructor){
     if(instructor.id)
       return this.updateInstructor(instructor)

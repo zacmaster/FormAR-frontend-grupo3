@@ -282,9 +282,9 @@ deleteAtributteValue(){
     setTimeout(() => {
       this.signupInfo = new SignUpInfo(
         instructorDTO.nombre + " " + instructorDTO.apellido,
+        instructorDTO.username,
         instructorDTO.email,
-        instructorDTO.email,
-        "123456",
+        instructorDTO.password,
         ["Instructor"]);
 
       this.authService.signUp(this.signupInfo).subscribe(
