@@ -37,6 +37,7 @@ import { AbmAlumnosComponent } from './vistas/abm-alumnos/abm-alumnos.component'
 import { DialogoConfirmacionComponent } from './componentes/dialogo-confirmacion/dialogo-confirmacion.component';
 import { MatTableModule } from '@angular/material/table';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import {ButtonModule} from 'primeng/button';
 
 import { TableModule } from 'primeng/table';
 
@@ -51,6 +52,7 @@ import { SearchPipe } from './pipes/search.pipe';
 import { DialogoInscripcionComponent } from './componentes/dialogo-inscripcion/dialogo-inscripcion.component';
 import { AlumnoService } from './servicios/alumno.service';
 import { DialogoInfoComponent } from './componentes/dialogo-info/dialogo-info.component';
+import {DialogModule} from 'primeng/dialog';
 import { CalendarioDisponibilidadComponent } from './componentes/calendario-disponibilidad/calendario-disponibilidad.component';
 import { InstructorHomeComponent } from './vistas/instructor-home/instructor-home.component';
 import { AsistenciaComponent } from './vistas/asistencia/asistencia.component';
@@ -101,7 +103,7 @@ import { HeaderComponent } from './header/header.component';
     SupervisorHomeComponent,
     CargaInstructorComponent,
     AdmTareaComponent,
-    HomeComponent,
+    HomeComponent,    
     HeaderComponent
 
   ],
@@ -128,6 +130,8 @@ import { HeaderComponent } from './header/header.component';
     CdkTableModule,
     CdkTreeModule,
     MatSortModule,
+    DialogModule,
+    ButtonModule,
     AccordionModule,
     PaginatorModule
   ],

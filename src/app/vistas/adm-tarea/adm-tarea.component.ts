@@ -71,7 +71,7 @@ export class AdmTareaComponent implements OnInit {
 
   tareasPendientes: Tarea[] = [];
 
-  tareaSeleccionada: Tarea;
+  tareaSeleccionada: Tarea = new Tarea();
   cols: any[];
   colsTodas: any[];
   administrativos: Administrativo[];
