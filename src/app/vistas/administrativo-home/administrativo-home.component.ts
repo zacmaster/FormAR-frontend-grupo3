@@ -8,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class AdministrativoHomeComponent implements OnInit {
 
   linksNavegacion = [
-    {
-      name: 'Alumnos',
-      active: true,
-      url: '/administrativo/alumnos'
+     {
+      name: 'Tareas',
+      active: false,
+      url: '/administrativo/tareas'
     },
     {
       name: 'Contactos',
@@ -19,14 +19,19 @@ export class AdministrativoHomeComponent implements OnInit {
       url: '/administrativo/contactos'
     },
     {
+      name: 'Cursadas',
+      active: false,
+      url: '/administrativo/cursadas'
+    },
+    {
       name: 'Cursos',
       active: false,
       url: '/administrativo/cursos'
     },
     {
-      name: 'Cursadas',
-      active: false,
-      url: '/administrativo/cursadas'
+      name: 'Alumnos',
+      active: true,
+      url: '/administrativo/alumnos'
     },
     {
       name: 'Instructores',
@@ -37,11 +42,6 @@ export class AdministrativoHomeComponent implements OnInit {
       name: 'Salas',
       active: false,
       url: '/administrativo/salas'
-    },
-    {
-      name: 'Tareas',
-      active: false,
-      url: '/administrativo/tareas'
     }
   ]
 
