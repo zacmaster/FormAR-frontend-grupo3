@@ -137,7 +137,7 @@ export class InstructorHomeComponent implements OnInit {
   private getInstructor(){
     this.instructores = [];
     this._spinnerService.show();
-    return this._instructorService.getInstructorByEmail(this.tokenStorage.getUsername())
+    return this._instructorService.getInstructorByUsername(this.tokenStorage.getUsername())
       .toPromise().then(instructor => {
         let nuevoinstructor =  new Instructor();
         nuevoinstructor.copiar(instructor);

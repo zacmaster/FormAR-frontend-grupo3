@@ -203,6 +203,45 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="form-group col">
+            <label for="username">{{ _LABEL_REQUIRED.username }}</label>
+            <input
+              #username = "ngModel"
+              class="form-control"
+              type="text"
+              required
+              minlength="3"
+              maxlength="30"
+              [(ngModel)]="instructorSeleccionado.username"
+              [placeholder]="_LABEL.ingrese.username"
+            >
+            <div  *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
+              <div *ngIf="username.errors.required">{{ _VALIDACION.requerido.username }}</div>
+              <div *ngIf="username.errors.pattern">{{ _VALIDACION.valido.username }}</div>
+              <div *ngIf="username.errors.minlength">{{ _VALIDACION.minimoTres }}</div>
+            </div>
+          </div>
+
+          <div class="form-group col">
+            <label for="password">{{ _LABEL_REQUIRED.password }}</label>
+            <input #password = "ngModel"
+                   class="form-control"
+                   type="password"
+                   required
+                   minlength="6"
+                   maxlength="30"
+                   [(ngModel)]="instructorSeleccionado.password"
+                   [placeholder]="_LABEL.ingrese.password">
+            <div  *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+              <div *ngIf="password.errors.required">{{ _VALIDACION.requerido.password }}</div>
+              <div *ngIf="password.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
+            </div>
+          </div>
+        </div>
+
+
         <div class="row">
           <div class="form-group col">
             <label for="dni">{{ _LABEL_REQUIRED.dni }}</label>
@@ -407,7 +446,7 @@
     <div class="pr-4 pb-4">
       <button
         class="btn btn-primary float-right "
-        [disabled]="blankSpaces() || nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid "
+        [disabled]="blankSpaces() || nombre.invalid || apellido.invalid || dni.invalid || email.invalid || telefono.invalid || password.invalid || username.invalid "
         (click)="guardar()">
         <span *ngIf="edicion">{{ _LABEL.guardar }}</span>
         <span *ngIf="!edicion">{{ _LABEL.agregar }}</span>
