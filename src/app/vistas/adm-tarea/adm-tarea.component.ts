@@ -250,6 +250,7 @@ export class AdmTareaComponent implements OnInit {
     this.tareaSeleccionada = new Tarea();
     this.fechaTarea = + new Date();
     this.tareaSeleccionada.contacto = null;
+    this.tareaSeleccionada.administrativoCreador.copiar(this.selectedAdministrativo)
     this.mostrarDialogoNuevaTarea = true;
   }
   ocultarDialogo(){
