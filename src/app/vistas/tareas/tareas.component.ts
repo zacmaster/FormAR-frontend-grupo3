@@ -46,7 +46,6 @@ export class TareasComponent implements OnInit {
   tareas: Tarea[];
 
   fechaTarea = + new Date();
-  selectedAdministrativo: Administrativo = new Administrativo();
   tareaSeleccionada: Tarea = new Tarea();
 
   mostrandoReasignacionTarea: boolean = false;
@@ -67,7 +66,6 @@ export class TareasComponent implements OnInit {
 
   tareasPendientes: Tarea[] = [];
 
-  tareaSeleccionada: Tarea;
   cols: any[];
   colsTodas: any[];
   administrativos: Administrativo[];
@@ -297,13 +295,23 @@ export class TareasComponent implements OnInit {
   }
 
 
-  mostrarDialogoReasignarTarea(){
+  guardarReAsignacionAdministrativo(){
+    if(this.selectedAdministrativo.id != this.tareaSeleccionada.administrativoCreador.id){
+      this.reasignarTarea(this.tareaSeleccionada);
+    }
+    this.mostrandoReasignacionTarea = false;
+  }
+
+  mostrarDialogoReasignarTarea(tarea){
+    this.tareaSeleccionada = new Tarea();
+    this.tareaSeleccionada.copiar(tarea);
     this.mostrandoReasignacionTarea = true;
   }
-  reasignarTarea(tarea: Tarea){
-    tarea.administrativoCreador = new Administrativo();
+  private reasignarTarea(tarea: Tarea){
     tarea.administrativoCreador = this.selectedAdministrativo;
-    this._tareasService.updateTarea(tarea);
+    this._tareasService.updateTarea(tarea)
+      .toPromise()
+      .then(() => this.actualizarTareas())
   }
 
 

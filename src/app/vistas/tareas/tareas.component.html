@@ -39,18 +39,18 @@
                   {{ rowData.titulo}}
               </span>
               <span *ngSwitchCase="'info'">
-                  <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
+                  <button  class="btn btn-warning mr-2"
                           (click)="mostrarDetalleTarea(rowData)">
                           <i class="fas fa-info"></i>
                   </button>
               </span>
               <span *ngSwitchCase="'acciones'">
                   <button
-                            class="btn btn-success mr-2"
+                            class="btn btn-primary mr-2"
                             (click)="mostrarDialogoReasignarTarea(rowData);"
                             title="re asignar tarea"
                             >
-                    <i class="fas fa-clipboard-check"></i>
+                        <i class="fas fa-exchange-alt"></i>
                   </button>
               </span>
           </td>
@@ -102,7 +102,7 @@
                 {{ rowData.titulo}}
             </span>
             <span *ngSwitchCase="'info'">
-                <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
+                <button class="btn btn-warning mr-2"
                         (click)="mostrarDetalleTarea(rowData)">
                         <i class="fas fa-info"></i>
                 </button>
@@ -143,18 +143,18 @@
                     {{ rowData.administrativoCreador.nombre}}
                 </span>
                 <span *ngSwitchCase="'info'">
-                    <button *ngIf="rowData.contacto!=undefined" class="btn btn-warning mr-2"
+                    <button class="btn btn-warning mr-2"
                             (click)="mostrarDetalleTarea(rowData)">
                             <i class="fas fa-info"></i>
                     </button>
                 </span>
                 <span *ngSwitchCase="'acciones'">
                     <button
-                        class="btn btn-success mr-2"
-                        (click)="finalizarTarea(rowData);"
-                        [title]="_LABEL.marcarComoResuelta"
+                        class="btn btn-primary mr-2"
+                        (click)="mostrarDialogoReasignarTarea(rowData);"
+                        title="re asignar tarea"
                         >
-                        <i class="fas fa-clipboard-check"></i>
+                        <i class="fas fa-exchange-alt"></i>
                     </button>
                 </span>
                 <span *ngSwitchDefault>
@@ -192,43 +192,20 @@
     <p-header>
         Cambiar el responsable de la tarea
     </p-header>
-    <div>
-        <div class="row p-4">
-            <div class="d-flex justify-content-between w-100">
-                <div class="font-weight-bold">{{ _UTIL.convertirTimestamp(tareaSeleccionada.fechaEstimada) }}</div>
-                <div class="font-weight-bold">{{ tareaSeleccionada.titulo }}</div>
-            </div>
-        </div>
-        <div class="row p-3 font-italic" style="background-color: beige">
-            <div class="col" style="word-wrap: break-word;">
-                    {{ tareaSeleccionada.descripcion }} 
-            </div>
+    <div style="background-color: beige">
+        <div class="row p-3 font-italic" >
             <div class="col">Administrativo anterior: {{ tareaSeleccionada.administrativoCreador.nombre }}</div>
-            <p-dropdown [options]="administrativos"  [(ngModel)]="selectedAdministrativo" optionLabel="nombre" [filter]="true" [style]="{'width':'150px','z-index':'2000'}">
-
-            </p-dropdown>
         </div>
-        <p-accordion *ngIf="tareaSeleccionada.contacto != null">
-            <p-accordionTab header="Ver Contacto">
-                <div class="row p-4">
-                        <div class="d-flex justify-content-between w-100">
-                            <div class="font-weight-bold">{{ _UTIL.convertirTimestampConHora(tareaSeleccionada.contacto.fecha) }}</div>
-                            <div class="font-weight-bold">{{ tareaSeleccionada.contacto.asunto }}</div>
-                        </div>
-                </div>
-                <div class="row p-3 font-italic" style="background-color: beige">
-                    <div class="col" style="word-wrap: break-word;">
-                        {{ tareaSeleccionada.contacto.descripcion }} 
-                    </div>
-                </div>
-                
-                
-            </p-accordionTab>
-        </p-accordion>
+        <div class="row p-3">
+            <div class="col">Nuevo responsable: 
+                <p-dropdown [options]="administrativos"  [(ngModel)]="selectedAdministrativo" optionLabel="nombre" [filter]="true" [style]="{'width':'150px','z-index':'2000'}">
+                </p-dropdown>
+            </div>
+        </div>
     </div>
-    <!-- <p-footer>
-            <p-button label="Ok" (onClick)="ocultarDetalleTarea()"></p-button>
-    </p-footer> -->
+    <p-footer>
+            <p-button label="Ok" (onClick)="guardarReAsignacionAdministrativo()"></p-button>
+    </p-footer>
     
     
 </p-dialog>
@@ -276,8 +253,7 @@
     [botonAceptar]="false"
     (clickBotonCerrar)="ocultarDialogo()"
     [titulo]="_LABEL.nuevaTarea"
-    
-
+     
 >
 
     <div class="row form-group">
