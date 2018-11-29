@@ -1,7 +1,7 @@
 <!-- header de la sección -->
 <div class="d-flex justify-content-between p-4 bg-light header" >
   <div class="input-group-prepend">
-    <span class="input-group-text font-italic" id="inputGroup-sizing-default">{{ selectedAdministrativo.nombre }}</span>
+    <span class="input-group-text font-italic" id="inputGroup-sizing-default">{{ administrativoLogueado.nombre }}</span>
   </div>
   <!-- (onChange)="refrescarTareas()"  -->
   <div>
@@ -588,6 +588,19 @@
                                           class="form-control"
                                           rows="6">
                                   </textarea>
+                                  <div *ngIf="tareaSinContacto">
+                                      <h5>Interesado en</h5>
+                                      <div>
+                                        <label>Área</label>
+                                        <p-dropdown [options]="areas" [(ngModel)]="selectedArea" optionLabel="nombre"[style]="{'width':'200px'}" 
+                                            (onChange)="verificarArea()"></p-dropdown>
+                                      </div>
+                                        <div>
+                                            <label>Curso</label>
+                                            <p-dropdown [options]="cursosFiltrados" [(ngModel)]="selectedCurso" optionLabel="nombre"[style]="{'width':'200px'}" 
+                                            [disabled]="seEligeArea"></p-dropdown>
+                                        </div>
+                                  </div>
                               </div>
                       </div>
                   </div>

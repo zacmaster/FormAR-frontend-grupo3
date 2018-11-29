@@ -57,12 +57,15 @@ export class AdmTareaComponent implements OnInit {
   mostrandoDetalleTarea: boolean = false;
   mostrarDialogoNuevaTarea: boolean = false;
   mostrarNombre = false;
+  tareaSinContacto: boolean = false;
+
+
   nombreAdm: string;
   mostrarAdministrativosSpinner = false
 
   mostrandoDialogoOfrecerContacto: boolean = false;
 
-
+  administrativoLogueado: Administrativo = new Administrativo();
 
   tareasPersonalesParaHoy: Tarea[] = [];
   tareasPersonalesPendientes: Tarea[] = [];
@@ -86,13 +89,15 @@ export class AdmTareaComponent implements OnInit {
   horaContacto: Date = new Date();
   areas: Area[] = [];
   selectedArea: Area = new Area();
+  selectedCurso: Curso = new Curso();
   fechaPorDia: Date = new Date();
 
+
+  
   alumnos: Alumno[] = [];
 
 
   cursosFiltrados: Curso[] = [];
-  selectedCurso: Curso = new Curso();
   seEligeArea: boolean = false;
   porFecha: boolean = true;
   types: SelectItem[] = [ {label: 'por Fecha', value: 'porFecha'},
@@ -105,7 +110,24 @@ export class AdmTareaComponent implements OnInit {
 
   tareaAnterior: Tarea = new Tarea();
   selectedAlumno;
+  cursos: Curso[];
   
+
+  private dialogoResolverTareaconContacto(){
+    this.tareaSinContacto = false;
+    this.tareaAnterior = new Tarea();
+    this.tareaAnterior.copiar(this.tareaSeleccionada);
+    this.alumnoSeleccionado.copiar(this.tareaAnterior.contacto.alumno);
+    this.tareaSeleccionada = new Tarea();
+  }
+  private dialogoResolverTareasinContacto(){
+    this.tareaSinContacto = true;
+    this.tareaAnterior = new Tarea();
+    this.tareaAnterior.copiar(this.tareaSeleccionada);
+    this.tareaSeleccionada = new Tarea();
+    this.selectedAlumno = this.alumnos[0];
+    this.alumnoSeleccionado = this.selectedAlumno;
+  }
 
 
   
@@ -137,12 +159,16 @@ export class AdmTareaComponent implements OnInit {
       this._administrativoService.getAdministrativoByUsername(this.tokenStorageService.getUsername()).toPromise(),
       this._tareasService.getTareas().toPromise(),
       this._contactoService.getContactos().toPromise(),
-      this._alumnoService.getAlumnos().toPromise()
+      this._alumnoService.getAlumnos().toPromise(),
+      this._areaService.getAreas().toPromise(),
+      this._cursoService.getCursos().toPromise()
     ]).then(values =>{
       this.administrativos = [];
       this.tareas = [];
       this.contactos = [];
       this.alumnos = [];
+      this.areas = [];
+      this.cursos = [];
 
       values[0].forEach(administrativo => {
         console.log(administrativo)
@@ -166,12 +192,20 @@ export class AdmTareaComponent implements OnInit {
         alumnoAux.copiar(alumno);
         alumnoAux.nombreApellido = alumno.nombre + ' ' + alumno.apellido;
         this.alumnos.push(alumnoAux);
+      });
+      values[4].forEach(area =>{
+        let areaAux = new Area();
+        areaAux.copiar(area);
+        this.areas.push(areaAux);
+      })
+      values[5].forEach(curso =>{
+        let cursoAux = new Curso();
+        cursoAux.copiar(curso);
+        this.cursos.push(cursoAux);
       })
 
     }).then(() => {
-      this.selectedAdministrativo = this.administrativos[0];
-
-
+      this.administrativoLogueado = this.administrativos[0];
       this.llenarTablas();
 
     })
@@ -274,19 +308,10 @@ export class AdmTareaComponent implements OnInit {
 
 
   finalizarTarea(tarea){
-    this.modificarEstadoTarea(tarea, false);
-  }
-
-  restaurarTarea(tarea){
-    this.modificarEstadoTarea(tarea, true);
-  }
-
-
-  private modificarEstadoTarea(tarea, pendiente: boolean){
     this.tareaSeleccionada = new Tarea();
     this.tareaSeleccionada.copiar(tarea);
-    this.tareaSeleccionada.administrativoResolvedor = this.selectedAdministrativo;
-    this.tareaSeleccionada.pendiente = pendiente;
+    this.tareaSeleccionada.administrativoResolvedor = this.administrativoLogueado;
+    this.tareaSeleccionada.pendiente = false;
     this._tareasService.updateTarea(this.tareaSeleccionada)
       .toPromise()
       .then(() => {
@@ -294,6 +319,9 @@ export class AdmTareaComponent implements OnInit {
         this.mostrarDialogoOfrecerContacto();
       });
   }
+
+
+
 
   mostrarDetalleTarea(tarea){
     this.tareaSeleccionada = new Tarea();
@@ -437,15 +465,10 @@ export class AdmTareaComponent implements OnInit {
 
   mostrarDialogoContacto(){
     console.log("tareaSeleccionada: ",this.tareaSeleccionada);
-    this.alumnoSeleccionado = new Alumno();
     if(this.tareaSeleccionada.contacto != null){
-      this.selectedAlumno = this.alumnos[0];
-      this.tareaAnterior.copiar(this.tareaSeleccionada);
-      this.alumnoSeleccionado.copiar(this.tareaAnterior.contacto.alumno);
-      this.tareaSeleccionada = new Tarea();
-      
+      this.dialogoResolverTareaconContacto();
     }else{
-      
+      this.dialogoResolverTareasinContacto();
     }
     
     this.mostrandoDialogoContacto = true;
@@ -471,7 +494,32 @@ export class AdmTareaComponent implements OnInit {
 
 
 
+   verificarArea(){
+    console.log("verifico el area",this.selectedArea);
+    
+    if(this.selectedArea.id>0){
+      this.seEligeArea = false;
+      this.filtrarCursos();
+    }
+  }
 
+
+  filtrarCursos(){
+    let cursosAux=[];
+    let aux= new Curso();
+    aux.id=0;
+    aux.nombre="Sin especificar";
+    cursosAux.push(aux);
+    this.cursos.forEach(element => {
+      console.log("comparo",element,this.selectedArea);
+      
+       if(element.id!=0 && element.area.id==this.selectedArea.id){
+          cursosAux.push(element);
+       }
+    });
+    this.cursosFiltrados=cursosAux;
+    this.selectedCurso= this.cursosFiltrados[0];
+}
 
 
 
