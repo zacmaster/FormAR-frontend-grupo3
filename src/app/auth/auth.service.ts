@@ -14,7 +14,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-
   private loginUrl = 'http://localhost:3000/auth/signin';
   private signupUrl = 'http://localhost:3000/auth/signup';
 
@@ -26,7 +25,7 @@ export class AuthService {
   }
 
   signUp(info: SignUpInfo): Observable<string> {
-    console.log("Paso por el signup");
+    //console.log("Paso por el signup");
     return this.http.post<string>(this.signupUrl, info, httpOptions);
   }
 }

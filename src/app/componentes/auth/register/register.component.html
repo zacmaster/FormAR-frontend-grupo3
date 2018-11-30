@@ -24,7 +24,7 @@
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="text" class="form-control" name="email" [(ngModel)]="form.email" required email #email="ngModel"/>
+        <input type="text" class="form-control" name="email" [(ngModel)]="form.email"  #email="ngModel"/>
         <div *ngIf="f.submitted && email.invalid">
           <div *ngIf="email.errors.required">El email es obligatorio</div>
           <div *ngIf="email.errors.email">Ingrese un email válido</div>

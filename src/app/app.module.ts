@@ -60,6 +60,7 @@ import { NotasComponent } from './vistas/notas/notas.component';
 import { TareasComponent } from './vistas/tareas/tareas.component';
 import { MatSortModule,} from '@angular/material';
 import {FileUploadModule} from 'primeng/fileupload';
+import {ToastModule} from 'primeng/toast';
 
 
 import {CdkTableModule} from '@angular/cdk/table';
@@ -140,7 +141,9 @@ import { BackupComponent } from './vistas/backup/backup.component';
     DialogModule,
     ButtonModule,
     AccordionModule,
-    PaginatorModule
+    PaginatorModule,
+    ToastModule,
+  
   ],
   providers: [
     AlumnoService,TokenStorageService,AuthGuardService,httpInterceptorProviders

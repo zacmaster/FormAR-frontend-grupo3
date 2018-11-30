@@ -61,7 +61,7 @@ export class TokenStorageService {
   }
 
   public isInstructor(): boolean {
-    console.log(this.getAuthorities());
+    //console.log(this.getAuthorities());
     return this.getAuthorities().includes('ROLE_INSTRUCTOR')
   }
 

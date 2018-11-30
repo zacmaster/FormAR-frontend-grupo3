@@ -29,12 +29,14 @@ import { TokenStorageService } from 'src/app/auth/token-storage.service';
 import {AdministrativoService} from '../../servicios/administrativo.service';
 import {Area} from '../../modelos/area';
 import {Administrativo} from '../../modelos/administrativo';
-import { SelectItem } from 'primeng/api';
+import { SelectItem,MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-cursadas',
   templateUrl: './cursadas.component.html',
-  styleUrls: ['./cursadas.component.css']
+  styleUrls: ['./cursadas.component.css'],
+  providers: [MessageService]
 })
 export class CursadasComponent implements OnInit {
 
@@ -47,7 +49,8 @@ export class CursadasComponent implements OnInit {
     private _spinnerService: Ng4LoadingSpinnerService,
     private _inscripcionService: InscripcionService,
     private _tokenService : TokenStorageService,
-    private _administrativoService: AdministrativoService
+    private _administrativoService: AdministrativoService,
+    private messageService: MessageService,
   ) { }
 
   _LABEL = LABEL;
@@ -530,8 +533,7 @@ export class CursadasComponent implements OnInit {
       console.log(this.selectedAdm);
       this._cursadaService.addCursada(cursada)
       .subscribe(response => {
-        console.log(response)
-
+        console.log(response)  
         this.getCursadas();
         this.getSalas();
         this.getCursos();
@@ -540,6 +542,7 @@ export class CursadasComponent implements OnInit {
         this.cursadaSeleccionada = this.newCursada();
         this.cerrarDialogo();
         this._spinnerService.hide();
+        this.messageService.add({severity:'success', summary: 'Cursada generada', detail:'Se genero la cursada exitosamente'});
               })
     },500)
   }
@@ -555,8 +558,9 @@ export class CursadasComponent implements OnInit {
         this.getCursos();
         this.getInstructores();
         this.cursadaSeleccionada = this.newCursada();
-        this.cerrarDialogo();
+        this.cerrarDialogo();   
         this._spinnerService.hide();
+        this.messageService.add({severity:'success', summary: 'Cursada editada', detail:'Se edito la cursada exitosamente'});
       })
     }, 500)
 
@@ -575,6 +579,7 @@ export class CursadasComponent implements OnInit {
           this.cursadaSeleccionada = this.newCursada();
           this.cerrarDialogo();
           this._spinnerService.hide();
+          this.messageService.add({severity:'success', summary: 'Cursada iniciada', detail:'Se inicio la cursada exitosamente'});
        });
       })
     }, 500)
