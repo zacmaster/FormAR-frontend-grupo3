@@ -915,7 +915,7 @@ export class CursadasComponent implements OnInit {
   private cargarCampos(){
     this.cols = [
       { field: 'nombre', header: 'Nombre' },
-      { field: 'descripcion', header: 'Descripción' },
+      // { field: 'descripcion', header: 'Descripción' },
       { field: 'curso', header: 'Curso' },
       { field: 'fechaInicio', header: 'Fecha de Inicio' },
       { field: 'fechaFin', header: 'Fecha de Fin' },

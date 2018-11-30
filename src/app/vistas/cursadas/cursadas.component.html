@@ -111,9 +111,9 @@
                 <span *ngSwitchCase="'nombre'">
                     {{ rowData.nombre }}
                 </span>
-                <span *ngSwitchCase="'descripcion'">
+                <!-- <span *ngSwitchCase="'descripcion'">
                     {{ rowData.curso.descripcion }}
-                </span>
+                </span> -->
                 <span *ngSwitchCase="'curso'">
                     {{ rowData.curso.nombre }}
                 </span>
@@ -208,7 +208,9 @@
         <div class="titulo text-center" ><h5> Info Cursada </h5></div>
         <span class="btn btn-danger" (click)="cerrarInfo()"><i class="fas fa-times"></i></span>
       </div>
-      <div class="dialogoBody p-3 pt-3 text-center">
+      <div class="dialogoBody p-3 pt-3 text-center w-80">
+        <p> <span style="font-weight: bold"> Nombre: </span>{{ cursadaSeleccionada.nombre}} </p>
+        <p style="word-wrap: break-word"> <span style="font-weight: bold"> Descripción: </span>{{ cursadaSeleccionada.descripcion}} </p>
         <p> <span style="font-weight: bold"> Sala: </span>{{ cursadaSeleccionada.sala.nombre}} </p>
         <p> <span style="font-weight: bold"> Instructor: </span>{{ cursadaSeleccionada.instructor.nombre }} </p>
         <p> <span style="font-weight: bold"> Administrativo: </span>{{ cursadaSeleccionada.administrativo.nombre }} </p>
