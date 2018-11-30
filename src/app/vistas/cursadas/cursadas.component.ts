@@ -581,7 +581,9 @@ export class CursadasComponent implements OnInit {
   }
 
   getCursadas(){
-    this.cursadas = [];
+    this._spinnerService.show();
+    setTimeout(() =>{
+      this.cursadas = [];
     if(this.selectedTipoCursada=="activas"){
       this.cursadasActivas=true;
       this._cursadaService.list()
@@ -632,6 +634,9 @@ export class CursadasComponent implements OnInit {
           this.busqueda = undefined;
         })
     }
+    this._spinnerService.hide();
+    }, 1000);
+    
   }
 
   getAlumnos(){

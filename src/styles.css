@@ -24,3 +24,7 @@ body{
 .ui-dialog-content.ui-widget-content{
     overflow: visible !important;
 }
+
+.ui-inputtext.ui-widget.ui-state-default.ui-corner-all{
+    
+}

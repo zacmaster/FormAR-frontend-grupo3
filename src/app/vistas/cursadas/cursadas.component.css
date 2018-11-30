@@ -48,3 +48,9 @@
   overflow-y: scroll;
   max-height: 75vh;
 }
+
+
+
+.contenedor-formulario .card{
+  width: 95% !important;
+}
