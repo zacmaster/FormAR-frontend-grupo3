@@ -256,6 +256,12 @@
      
 >
 
+    <div class="row mb-2">
+        <div class="col"><label>Administrativo responsable:</label></div>
+        <div class="col"><p-dropdown [options]="administrativos"  [(ngModel)]="selectedAdministrativo" optionLabel="nombre" [filter]="true" [style]="{'width':'200px','z-index':'2000'}">
+        </p-dropdown></div>
+    </div>
+
     <div class="row form-group">
         <div class="col mr-2">
             <label class="d-flex">{{ _LABEL_R.fecha}}</label>

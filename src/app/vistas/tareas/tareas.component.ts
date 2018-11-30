@@ -176,6 +176,7 @@ export class TareasComponent implements OnInit {
 
 
   nuevaTarea(){
+    this.selectedAdministrativo = this.administrativos[0];
     this.tareaSeleccionada = new Tarea();
     this.mostrarDialogoNuevaTarea = true;
   }
@@ -183,14 +184,13 @@ export class TareasComponent implements OnInit {
     this.mostrarDialogoNuevaTarea = false;
   }
   guardarTarea(){
-    let auxAdministrativo = new Administrativo();
-    auxAdministrativo.copiar(this.selectedAdministrativo);
-    this.tareaSeleccionada.administrativoCreador.copiar(auxAdministrativo);
-    this.tareaSeleccionada.administrativoResolvedor=null;
+    this.tareaSeleccionada.administrativoCreador = new Administrativo();
+    this.tareaSeleccionada.administrativoCreador.copiar(this.selectedAdministrativo);
+    this.tareaSeleccionada.administrativoResolvedor = null;
     this.tareaSeleccionada.fechaEstimada = this.fechaTarea;
     this._tareasService.addTarea(this.tareaSeleccionada)
       .toPromise()
-      .then(()=>  this.actualizarTareas())
+      .then(() =>  this.actualizarTareas())
       .then(() =>{
         this.tareaSeleccionada = new Tarea();
         this.mostrarDialogoNuevaTarea = false;
@@ -303,6 +303,7 @@ export class TareasComponent implements OnInit {
   }
 
   mostrarDialogoReasignarTarea(tarea){
+    this.selectedAdministrativo = this.administrativos[0];
     this.tareaSeleccionada = new Tarea();
     this.tareaSeleccionada.copiar(tarea);
     this.mostrandoReasignacionTarea = true;

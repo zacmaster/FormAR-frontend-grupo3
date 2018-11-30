@@ -57,12 +57,15 @@ export class AdmTareaComponent implements OnInit {
   mostrandoDetalleTarea: boolean = false;
   mostrarDialogoNuevaTarea: boolean = false;
   mostrarNombre = false;
+  tareaSinContacto: boolean = false;
+
+
   nombreAdm: string;
   mostrarAdministrativosSpinner = false
 
   mostrandoDialogoOfrecerContacto: boolean = false;
 
-
+  administrativoLogueado: Administrativo = new Administrativo();
 
   tareasPersonalesParaHoy: Tarea[] = [];
   tareasPersonalesPendientes: Tarea[] = [];
@@ -76,7 +79,6 @@ export class AdmTareaComponent implements OnInit {
   colsTodas: any[];
   administrativos: Administrativo[];
   contactos: Contacto[];
-  selectedAdministrativo: Administrativo = new Administrativo();
   colsCompletadas: { field: string; header: string; }[];
 
   // ----Variables del formulario de contacto
@@ -85,14 +87,16 @@ export class AdmTareaComponent implements OnInit {
   contactoSeleccionado: Contacto = new Contacto();
   horaContacto: Date = new Date();
   areas: Area[] = [];
-  selectedArea: Area = new Area();
+  selectedArea: Area;
+  selectedCurso: Curso;
   fechaPorDia: Date = new Date();
 
+
+  
   alumnos: Alumno[] = [];
 
 
   cursosFiltrados: Curso[] = [];
-  selectedCurso: Curso = new Curso();
   seEligeArea: boolean = false;
   porFecha: boolean = true;
   types: SelectItem[] = [ {label: 'por Fecha', value: 'porFecha'},
@@ -105,7 +109,28 @@ export class AdmTareaComponent implements OnInit {
 
   tareaAnterior: Tarea = new Tarea();
   selectedAlumno;
+  cursos: Curso[];
   
+
+  private dialogoResolverTareaconContacto(){
+    this.tareaSinContacto = false;
+    this.contactoSeleccionado = new Contacto();
+    this.tareaAnterior = new Tarea();
+    this.tareaAnterior.copiar(this.tareaSeleccionada);
+    this.alumnoSeleccionado.copiar(this.tareaAnterior.contacto.alumno);
+    this.tareaSeleccionada = new Tarea();
+    this.mostrandoDialogoContacto = true;
+  }
+  private dialogoResolverTareasinContacto(){
+    this.contactoSeleccionado = new Contacto();
+    this.tareaSinContacto = true;
+    this.tareaAnterior = new Tarea();
+    this.tareaAnterior.copiar(this.tareaSeleccionada);
+    this.tareaSeleccionada = new Tarea();
+    this.selectedAlumno = this.alumnos[0];
+    this.alumnoSeleccionado = this.selectedAlumno;
+    this.mostrandoDialogoContacto = true;
+  }
 
 
   
@@ -137,12 +162,20 @@ export class AdmTareaComponent implements OnInit {
       this._administrativoService.getAdministrativoByUsername(this.tokenStorageService.getUsername()).toPromise(),
       this._tareasService.getTareas().toPromise(),
       this._contactoService.getContactos().toPromise(),
-      this._alumnoService.getAlumnos().toPromise()
+      this._alumnoService.getAlumnos().toPromise(),
+      this._areaService.getAreas().toPromise(),
+      this._cursoService.getCursos().toPromise()
     ]).then(values =>{
       this.administrativos = [];
       this.tareas = [];
       this.contactos = [];
       this.alumnos = [];
+      this.areas = [];
+      this.cursos = [];
+
+      let areaAux = new Area();
+      areaAux.nombre = "Sin especificar";
+      this.areas.push(areaAux);
 
       values[0].forEach(administrativo => {
         console.log(administrativo)
@@ -166,12 +199,20 @@ export class AdmTareaComponent implements OnInit {
         alumnoAux.copiar(alumno);
         alumnoAux.nombreApellido = alumno.nombre + ' ' + alumno.apellido;
         this.alumnos.push(alumnoAux);
+      });
+      values[4].forEach(area =>{
+        let areaAux = new Area();
+        areaAux.copiar(area);
+        this.areas.push(areaAux);
+      })
+      values[5].forEach(curso =>{
+        let cursoAux = new Curso();
+        cursoAux.copiar(curso);
+        this.cursos.push(cursoAux);
       })
 
     }).then(() => {
-      this.selectedAdministrativo = this.administrativos[0];
-
-
+      this.administrativoLogueado = this.administrativos[0];
       this.llenarTablas();
 
     })
@@ -205,9 +246,7 @@ export class AdmTareaComponent implements OnInit {
 
     this.tareas.forEach(tarea =>{
       if(tarea.pendiente){
-        if(tarea.administrativoCreador.id == this.selectedAdministrativo.id){
-          console.log('tareaFechaEstimada: ',tarea.fechaEstimada);
-          console.log('esHoy: ',this._Util.esHoy(tarea.fechaEstimada));
+        if(tarea.administrativoCreador.id == this.administrativoLogueado.id){
           if(this._Util.esHoy(tarea.fechaEstimada)){
             this.tareasPersonalesParaHoy.push(tarea);
           }else if(this._Util.yaPaso(tarea.fechaEstimada)){
@@ -221,12 +260,10 @@ export class AdmTareaComponent implements OnInit {
           if(this._Util.yaPaso(tarea.fechaEstimada)){
             this.tareasPendientes.push(tarea);
           }
-          // console.log('pendiente de otro: ',tarea)
         }
       }
       else{ //!tarea.pendiente
-        if(tarea.administrativoCreador.id == this.selectedAdministrativo.id){
-          console.log('tareas completadas por el admin activo', tarea);
+        if(tarea.administrativoCreador.id == this.administrativoLogueado.id){
           this.tareasPersonalesCompletadas.push(tarea);
         }
       }
@@ -236,13 +273,13 @@ export class AdmTareaComponent implements OnInit {
   }
 
   ngDoCheck(){
-    console.log('selectedAlumno',this.selectedAlumno)
+    
   }
 
 
   esTareaAdministrativoHoy(tarea: Tarea): boolean{
     return  tarea.pendiente &&
-      tarea.administrativoCreador.id == this.selectedAdministrativo.id &&
+      tarea.administrativoCreador.id == this.administrativoLogueado.id &&
       Util.esHoy(tarea.fechaEstimada)
   }
 
@@ -250,7 +287,7 @@ export class AdmTareaComponent implements OnInit {
     this.tareaSeleccionada = new Tarea();
     this.fechaTarea = + new Date();
     this.tareaSeleccionada.contacto = null;
-    this.tareaSeleccionada.administrativoCreador.copiar(this.selectedAdministrativo)
+    this.tareaSeleccionada.administrativoCreador.copiar(this.administrativoLogueado)
     this.mostrarDialogoNuevaTarea = true;
   }
   ocultarDialogo(){
@@ -258,7 +295,7 @@ export class AdmTareaComponent implements OnInit {
   }
   guardarTarea(){
     let auxAdministrativo = new Administrativo();
-    auxAdministrativo.copiar(this.selectedAdministrativo);
+    auxAdministrativo.copiar(this.administrativoLogueado);
     this.tareaSeleccionada.administrativoCreador.copiar(auxAdministrativo);
     this.tareaSeleccionada.administrativoResolvedor=null;
     this.tareaSeleccionada.fechaEstimada = this.fechaTarea;
@@ -274,19 +311,10 @@ export class AdmTareaComponent implements OnInit {
 
 
   finalizarTarea(tarea){
-    this.modificarEstadoTarea(tarea, false);
-  }
-
-  restaurarTarea(tarea){
-    this.modificarEstadoTarea(tarea, true);
-  }
-
-
-  private modificarEstadoTarea(tarea, pendiente: boolean){
     this.tareaSeleccionada = new Tarea();
     this.tareaSeleccionada.copiar(tarea);
-    this.tareaSeleccionada.administrativoResolvedor = this.selectedAdministrativo;
-    this.tareaSeleccionada.pendiente = pendiente;
+    this.tareaSeleccionada.administrativoResolvedor = this.administrativoLogueado;
+    this.tareaSeleccionada.pendiente = false;
     this._tareasService.updateTarea(this.tareaSeleccionada)
       .toPromise()
       .then(() => {
@@ -295,6 +323,9 @@ export class AdmTareaComponent implements OnInit {
       });
   }
 
+
+
+
   mostrarDetalleTarea(tarea){
     this.tareaSeleccionada = new Tarea();
     this.tareaSeleccionada.copiar(tarea);
@@ -302,7 +333,7 @@ export class AdmTareaComponent implements OnInit {
 
   }
   refrescarTareas(){
-    if(this.selectedAdministrativo != undefined){
+    if(this.administrativoLogueado != undefined){
       this.getTareas();
     }
   }
@@ -316,13 +347,13 @@ export class AdmTareaComponent implements OnInit {
           nuevoAdmin.copiar(admin);
           this.administrativos.push(nuevoAdmin);
         })
-        this.selectedAdministrativo = this.administrativos[0];
+        this.administrativoLogueado = this.administrativos[0];
         // this.getTareas();
       })
   }
   onChange(){
     let auxAdministrativo = new Administrativo();
-    auxAdministrativo.copiar(this.selectedAdministrativo);
+    auxAdministrativo.copiar(this.administrativoLogueado);
     this.llenarTablas();//this.llenarTablasAdministrativo(auxAdministrativo);
   }
 
@@ -436,19 +467,14 @@ export class AdmTareaComponent implements OnInit {
 
 
   mostrarDialogoContacto(){
-    console.log("tareaSeleccionada: ",this.tareaSeleccionada);
-    this.alumnoSeleccionado = new Alumno();
+    this.selectedArea = this.areas[0];
     if(this.tareaSeleccionada.contacto != null){
-      this.selectedAlumno = this.alumnos[0];
-      this.tareaAnterior.copiar(this.tareaSeleccionada);
-      this.alumnoSeleccionado.copiar(this.tareaAnterior.contacto.alumno);
-      this.tareaSeleccionada = new Tarea();
-      
+      this.dialogoResolverTareaconContacto();
     }else{
-      
+      this.dialogoResolverTareasinContacto();
     }
     
-    this.mostrandoDialogoContacto = true;
+    
   }
 
 
@@ -456,9 +482,6 @@ export class AdmTareaComponent implements OnInit {
     this.mostrandoDialogoContacto = false;
   }
 
-  agregarTarea(){
-    this.tareaSeleccionada = new Tarea();
-  }
 
 
 
@@ -471,8 +494,170 @@ export class AdmTareaComponent implements OnInit {
 
 
 
+   verificarArea(){
+    
+    if(this.selectedArea.id > 0){
+      this.seEligeArea = false;
+      this.filtrarCursos();
+    }
+  }
 
 
+  filtrarCursos(){
+    let cursosAux=[];
+    let aux= new Curso();
+    aux.id=0;
+    aux.nombre="Sin especificar";
+    cursosAux.push(aux);
+    this.cursos.forEach(element => {
+      console.log("comparo",element,this.selectedArea);
+      
+       if(element.id != 0 && element.area.id == this.selectedArea.id){
+          cursosAux.push(element);
+       }
+    });
+    this.cursosFiltrados=cursosAux;
+    this.selectedCurso= this.cursosFiltrados[0];
+}
+
+
+bajarContactos(){
+  return this._contactoService.getContactos()
+  .toPromise()
+  .then(contactos => {
+    this.contactos = [];
+    contactos.forEach(contacto =>{
+      let contactoAux = new Contacto();
+      contactoAux.copiar(contacto);
+      this.contactos.push(contactoAux);
+  })
+    
+
+  })
+
+}
+
+guardarContactoNuevo(){
+  if(this.tareaAnterior.contacto == null || this.tareaAnterior.contacto == undefined){
+    this.guardarContactoNuevosinContactoPrevio()
+  } else{
+    this.guardarContactoNuevoconContactoPrevio();
+  }
+
+
+  // console.log("tareaSeleccionada: ",this.tareaSeleccionada);
+  // console.log("alumnoSeleccionado: ",this.alumnoSeleccionado);
+  // console.log("contacto: ", this.contactoSeleccionado);
+  
+  // console.log("area: ",this.selectedArea);
+  // console.log("curso: ",this.selectedCurso);
+  
+}
+  private guardarContactoNuevoconContactoPrevio() {
+    let fechaAux = new Date(this.contactoSeleccionado.fecha);
+    fechaAux.setHours(this.horaContacto.getHours());
+    fechaAux.setMinutes(this.horaContacto.getMinutes());
+    this.contactoSeleccionado.fecha = + fechaAux;
+    
+    this.contactoSeleccionado.alumno = new Alumno();
+    this.contactoSeleccionado.alumno.copiar(this.tareaAnterior.contacto.alumno);
+
+
+
+
+
+    if(this.selectedArea != undefined && this.selectedArea.id != 0){
+      this.contactoSeleccionado.area.copiar(this.selectedArea);
+    }else{
+      this.contactoSeleccionado.area = null;
+    }
+    if(this.selectedCurso != undefined && this.selectedCurso.id != 0){
+      this.contactoSeleccionado.curso.copiar(this.selectedCurso);
+    }else{
+      this.contactoSeleccionado.curso = null;
+    }
+
+    this._contactoService.addContacto(this.contactoSeleccionado)
+    .toPromise()
+    .then(() => this.bajarContactos().then(() => {
+      if(this.generarTarea){
+        this.tareaSeleccionada.administrativoCreador = this.administrativoLogueado;
+        this.contactos.forEach(contacto => {
+          let d1 = new Date(contacto.fecha);
+          let d2 = new Date(this.contactoSeleccionado.fecha);
+          console.log('d1, d2', d1, d2);
+
+          if(Util.esMismoTiempo(d1,d2)){
+            console.log('es el mismo...')
+            this.tareaSeleccionada.contacto = new Contacto();
+            this.tareaSeleccionada.contacto.copiar(contacto);
+          }
+        })
+        this._tareasService.addTarea(this.tareaSeleccionada)
+          .toPromise()
+          .then(() => {
+            this.cerrarFormularioContacto();
+            this.bajarDatos();
+          })
+      }
+    })
+    
+    
+    
+    )
+    
+
+
+  }
+
+private guardarContactoNuevosinContactoPrevio(){
+  let fechaAux = new Date(this.contactoSeleccionado.fecha);
+  fechaAux.setHours(this.horaContacto.getHours());
+  fechaAux.setMinutes(this.horaContacto.getMinutes());
+  this.contactoSeleccionado.fecha = + fechaAux;
+
+  this.contactoSeleccionado.alumno.copiar(this.alumnoSeleccionado);
+  if(this.selectedArea != undefined && this.selectedArea.id != 0){
+    this.contactoSeleccionado.area.copiar(this.selectedArea);
+  }else{
+    this.contactoSeleccionado.area = null;
+  }
+  if(this.selectedCurso != undefined && this.selectedCurso.id != 0){
+    this.contactoSeleccionado.curso.copiar(this.selectedCurso);
+  }else{
+    this.contactoSeleccionado.curso = null;
+  }
+  
+
+  this._contactoService.addContacto(this.contactoSeleccionado)
+    .toPromise()
+    .then(() => this.bajarContactos().then(() => {
+      if(this.generarTarea){
+        this.tareaSeleccionada.administrativoCreador = this.administrativoLogueado;
+        this.contactos.forEach(contacto => {
+          let d1 = new Date(contacto.fecha);
+          let d2 = new Date(this.contactoSeleccionado.fecha);
+          console.log('d1, d2', d1, d2);
+
+          if(Util.esMismoTiempo(d1,d2)){
+            console.log('es el mismo...')
+            this.tareaSeleccionada.contacto = new Contacto();
+            this.tareaSeleccionada.contacto.copiar(contacto);
+          }
+        })
+        this._tareasService.addTarea(this.tareaSeleccionada)
+          .toPromise()
+          .then(() => {
+            this.cerrarFormularioContacto();
+            this.bajarDatos();
+          })
+      }
+    })
+    
+    
+    
+    )
+}
 
 
   // Métodos formulario contacto
@@ -492,6 +677,7 @@ export class AdmTareaComponent implements OnInit {
     ];
     this.colsCompletadas = [
       { field: 'fechaEstimada', header: 'Fecha estimada a realizar'},
+      { field: 'administrativoCreador', header: 'Asignada originalmente a'},
       { field: 'titulo', header:'Titulo'},
       { field: 'info', header:'Info'}
     ];
