@@ -242,14 +242,14 @@ deleteAtributteValue(){
           this.instructorSeleccionado.disponibilidadHoraria.push(horario);
           });
         }
-        else{
-          let horario = new Horario();
-          horario.id=0;
-          horario.dia=this.newAttribute.dia;
-          horario.horaInicio=this.newAttribute.horaInicio;
-          horario.horaFin=this.newAttribute.horaFin;
-          this.instructorSeleccionado.disponibilidadHoraria.push(horario);
-        }
+        
+        let horario = new Horario();
+        horario.id=0;
+        horario.dia=this.newAttribute.dia;
+        horario.horaInicio=this.newAttribute.horaInicio;
+        horario.horaFin=this.newAttribute.horaFin;
+        this.instructorSeleccionado.disponibilidadHoraria.push(horario);
+        
         //console.log(this.instructorSeleccionado);
           for (let j = 0; j < this.selectedAreas.length; j++) {
             if(this.selectedAreas[j]!=null){

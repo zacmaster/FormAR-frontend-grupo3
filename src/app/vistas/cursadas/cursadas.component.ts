@@ -166,7 +166,7 @@ export class CursadasComponent implements OnInit {
           horario.horaFin=element.horaFin;
           this.cursadaSeleccionada.horariosCursada.push(horario);
           });
-        }
+    }
 
      let horario = new Horario();
      horario.id=0;
@@ -473,7 +473,7 @@ export class CursadasComponent implements OnInit {
     this.cursadaSeleccionada.copiar(cursada);
     if(this.cursadaSeleccionada.iniciada){
       this.textoDlgEliminar =  `¿Está seguro que desea dar de baja la cursada
-      ${ this.cursadaSeleccionada.nombre },ya iniciada? \n (Se generaran tareas para avisar a los inscriptos)`
+      ${ this.cursadaSeleccionada.nombre },ya iniciada? \n (Se generaran tareas para avisar a los inscriptos y se borraran los datos relacionados a la cursada)`
     }
     else{
       this.textoDlgEliminar =  `¿Está seguro que desea dar de baja la cursada
@@ -867,23 +867,6 @@ export class CursadasComponent implements OnInit {
       this.validarAlumnos();
       this.mostrandoAlumnosInscriptos = true;
     });
-    // this._inscripcionService.getAlumnosCursada(cursada.id)
-    //     .toPromise()
-    //     .then(alumnos => {
-    //       this.alumnosEnCursada = [];
-    //       alumnos.forEach(alumno => {
-    //         this._inscripcionService.getInscripcion(alumno.id,cursada.id)
-    //         .toPromise()
-    //         .then(inscripcion => {
-    //           let alumnoAux = new Alumno();
-    //           alumnoAux.copiar(alumno);
-    //           alumnoAux.activo==inscripcion.activa;
-    //           this.alumnosEnCursada.push(alumno);
-    //         })
-            
-    //       })
-    //       this.mostrandoAlumnosInscriptos = true;
-    //     });
   }
   validarAlumnos(){
     this.alumnosEnCursada.forEach(element => {

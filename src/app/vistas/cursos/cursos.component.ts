@@ -57,7 +57,7 @@ export class CursosComponent implements OnInit, DoCheck {
     this.cargarCampos();
   }
   ngDoCheck(){
-    // console.log("area seleccionada: ",this.areaSeleccionada);
+     console.log("area seleccionada: ",this.areaSeleccionada);
     // console.log("curso seleccionado: ",this.cursoSeleccionado);
     // console.log("ara de curso: ", this.cursoSeleccionado.area);
     // console.log("input: ", this.nombreNuevoArea)
@@ -168,6 +168,7 @@ export class CursosComponent implements OnInit, DoCheck {
       this.editar(this.cursoSeleccionado)
     }
     else
+      this.cursoSeleccionado.area=this.areaSeleccionada;
       this.agregar(this.cursoSeleccionado);
   }
 
