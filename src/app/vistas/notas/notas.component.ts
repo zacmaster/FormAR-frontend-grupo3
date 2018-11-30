@@ -11,6 +11,7 @@ import { VALIDACION, LABEL, LABEL_REQUIRED } from '../../utilidades/mensajes';
 import { Util } from '../../utilidades/util';
 import { DatepickerOptions } from 'ng2-datepicker';
 import * as esLocale from 'date-fns/locale/es';
+import { Inscripcion } from 'src/app/modelos/inscripcion';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class NotasComponent implements OnInit {
   alumnosEnCursada: Alumno[] ;  
   calificaciones: Calificacion[];
   examenesGuardar :Examen[];
+  inscripciones: Inscripcion[];
   nuevoExamen:boolean = false;
   nombreNuevoExamen:string;
   fechaExamen: Date;
@@ -38,8 +40,8 @@ export class NotasComponent implements OnInit {
     dayNamesFormat: 'dd',
     firstCalendarDay: 1,
     locale: esLocale,
-    barTitleIfEmpty: 'Click para seleccionar una fecha',
-    placeholder: 'Click para seleccionar una fecha', 
+    barTitleIfEmpty: 'Seleccionar una fecha',
+    placeholder: 'Seleccionar una fecha', 
     addClass: 'form-control', 
     addStyle: {}, 
     fieldId: 'my-date-picker', 
@@ -53,7 +55,7 @@ export class NotasComponent implements OnInit {
    _Util = Util;
 
   ngDoCheck(){ 
-   console.log("fecha",this.fechaExamen);
+   //console.log("fecha",this.fechaExamen);
    
     
   }
@@ -131,16 +133,11 @@ export class NotasComponent implements OnInit {
   agregarExamen(){
     this.nuevoExamen=false;
     let numero =0;
-    console.log("tamaño arreglo ",this.examenesDeCursada.length);
     
-    if(this.examenesDeCursada.length==1){
-      console.log("entre 1");
-      
+    if(this.examenesDeCursada.length==1){   
       numero = this.examenesDeCursada[0].nroExamen;
     }
-    else{
-      console.log("entre2");
-      
+    else{     
       numero = this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen;
     }
      numero++;
@@ -177,10 +174,7 @@ export class NotasComponent implements OnInit {
      this.calificaciones.splice(this.calificaciones.length-2,1);
      //this.calificaciones.pop();
   }
-  esUltimoExamen(nro:number):boolean{
-    console.log("tamaño arreglo", this.examenesDeCursada.length);
-    console.log("tamaño arreglo", this.examenesDeCursada);
-    
+  esUltimoExamen(nro:number):boolean{  
     if(this.examenesDeCursada.length>2 && nro==this.examenesDeCursada[this.examenesDeCursada.length-2].nroExamen){
       if(this.examenesDeCursada[this.examenesDeCursada.length-2].id==0 && this.examenesDeCursada.length>1 ){
         console.log("entre 1");
@@ -202,43 +196,56 @@ export class NotasComponent implements OnInit {
   }
   obtenerDatos(){
     this._spinnerService.show();
-    this._inscripcionService.getAlumnosCursada(this.cursadaSeleccionada.id)
-        .toPromise()
-        .then(alumnos => {
-          this.alumnosEnCursada = [];
-          alumnos.forEach(alumno => {
-            let alumnoAux = new Alumno();
-            alumnoAux.copiar(alumno);
-            let nombreAux= alumnoAux.apellido+", "+alumnoAux.nombre
-            alumnoAux.nombreApellido= nombreAux;
-            this.alumnosEnCursada.push(alumnoAux);
-          })
-          this.alumnosEnCursada=this.ordenarAlfabeticamente(this.alumnosEnCursada);
-          //console.log("Alumnos ordenados",this.alumnosEnCursada);
-          
-          
-          this._examenService.getExamenes(this.cursadaSeleccionada.id).toPromise().then(examenes=>{
-            this.examenesDeCursada=[];
-            examenes.forEach(examen=>{
-                let examenAux = new Examen();
-                examenAux.copiar(examen);
-                this.examenesDeCursada.push(examenAux);
-            });
-            // if(this.examenesDeCursada.length==0){
-            //   this.generarPrimerExamen();
-            // }
-            this.examenesDeCursada= this.ordenarLista(this.examenesDeCursada);
-            this.examenesDeCursada.forEach(element => {
+    Promise.all([
+      this._inscripcionService.getAlumnosCursada(this.cursadaSeleccionada.id).toPromise(),
+      this._examenService.getExamenes(this.cursadaSeleccionada.id).toPromise(),
+      this._inscripcionService.getInscCursada(this.cursadaSeleccionada.id).toPromise()
+    ]).then(values =>{
+      this.alumnosEnCursada = [];
+      this.examenesDeCursada=[];
+      this.inscripciones=[];
+
+      values[0].forEach(alumno => {
+        let alumnoAux = new Alumno();
+        alumnoAux.copiar(alumno);
+        let nombreAux= alumnoAux.apellido+", "+alumnoAux.nombre
+        alumnoAux.nombreApellido= nombreAux;   
+        this.alumnosEnCursada.push(alumnoAux);
+      });
+      values[1].forEach(examen =>{
+        let examenAux = new Examen();
+        examenAux.copiar(examen);
+        console.log("examen copiado",examenAux);       
+        this.examenesDeCursada.push(examenAux);
+      });
+      values[2].forEach(inscripcion =>{
+        let inscAux = new Inscripcion();
+        inscAux.idAlumno=inscripcion.idAlumno;
+        inscAux.idCursada=inscripcion.idCursada;
+        inscAux.activa=inscripcion.activa;      
+        this.inscripciones.push(inscAux);
+      });
+    }).then(() => {
+      this.alumnosEnCursada=this.ordenarAlfabeticamente(this.alumnosEnCursada);
+      this.validarAlumnos();
+      this.examenesDeCursada= this.ordenarLista(this.examenesDeCursada);
+      this.examenesDeCursada.forEach(element => {
                   element.notas=this.ordenarNotas(element.notas);          
-            });
-            console.log("examenes ordenados",this.examenesDeCursada);
-            
-            this.getFilas();
-            this._spinnerService.hide();
-          
-          });
-        });
+      });
+      this.getFilas();
+      
+    })
   }
+  validarAlumnos(){
+    this.alumnosEnCursada.forEach(element => {
+      this.inscripciones.forEach(element2 => {
+        if(element.id==element2.idAlumno){
+          element.activo=element2.activa;
+        }
+      });
+    });
+  }
+
   ordenarLista(dato:any[]):any[]{
     let aux= dato.sort((n1,n2) => {
       if (n1.nroExamen > n2.nroExamen) {
@@ -282,14 +289,21 @@ export class NotasComponent implements OnInit {
   }
   
 getFilas(){
+  console.log("Alumnos llegaron",this.alumnosEnCursada);
+  console.log("examenes llegaron",this.examenesDeCursada);
   this.filas=[];
   this.calificaciones=[];
       for (let i = 0; i < this.alumnosEnCursada.length; i++) {
+        console.log("primer for",this.alumnosEnCursada[i]);
+        
         let filaAux= new Fila();
         filaAux.idAlumno= this.alumnosEnCursada[i].id;
         filaAux.nombreAlumno= this.alumnosEnCursada[i].nombreApellido;
+        filaAux.activa=this.alumnosEnCursada[i].activo;
         let notasAux: Nota[]=[]
         for (let z = 0; z < this.examenesDeCursada.length; z++) {
+            console.log("segundo for",this.examenesDeCursada[z]);
+            
             let notaAux = new Nota();
             notaAux.id=this.examenesDeCursada[z].notas[i].id;
             notaAux.idAlumno=this.examenesDeCursada[z].notas[i].idAlumno;
@@ -303,30 +317,39 @@ getFilas(){
               notaAux.nota=this.examenesDeCursada[z].notas[i].nota;
             }
             notaAux.deshabilitado=true;
+            console.log("genere la nota",notaAux);
+            
             notasAux.push(notaAux);
             
         }  
         filaAux.notas=notasAux;
+        console.log("voy a pushear notas",filaAux);
+        
         this.filas.push(filaAux); 
       }
       this.examenesDeCursada.forEach(element => {
         this.calificaciones.push({deshabilitado:true,calificar:false})
       });
-      //console.log("filas",this.filas);
+      this._spinnerService.hide();
+      console.log("filas",this.filas);
       
   }
   habilitarColumna(nro : number){
     if(!this.calificaciones[nro].calificar){
       this.calificaciones[nro].calificar=true;;
       for (let i = 0; i < this.filas.length; i++) {
+        if(this.filas[i].activa){
         this.filas[i].notas[nro].deshabilitado=false;
-        
+        }
       }  
     }
     else{
       this.calificaciones[nro].calificar=false;
       for (let i = 0; i < this.filas.length; i++) {
-        this.filas[i].notas[nro].deshabilitado=true;
+        if(this.filas[i].activa){
+          this.filas[i].notas[nro].deshabilitado=true;
+        }
+        
         
       }  
       this.guardar(nro);
@@ -360,6 +383,7 @@ getFilas(){
 export class Fila {
   nombreAlumno: string;
   idAlumno: number;
+  activa:boolean;
   notas: Nota[];
 
 

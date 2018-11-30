@@ -29,7 +29,7 @@ const routes: Routes = [
       component:  AdministrativoHomeComponent,
       children:[
           { path: '',
-            redirectTo: '/administrativo/alumnos',
+            redirectTo: '/administrativo/tareas',
             pathMatch: 'full',
             canActivate: [AuthGuardService],
             data: {

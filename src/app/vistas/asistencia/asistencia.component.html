@@ -17,7 +17,8 @@
                 </thead>
                     <tbody >
                       <tr *ngFor="let fila of filas;">
-                        <td class="col">{{fila.nombreAlumno}}</td>
+                        <td class="col"><del *ngIf="!fila.activa">{{fila.nombreAlumno}}</del>
+                          <p *ngIf="fila.activa"> {{fila.nombreAlumno}}</p></td>
                         <td class="col2">{{calcularFaltas(fila)}}</td>
                         <td *ngFor="let asist of fila.asistencia;"  >
                           <p-dropdown [options]="opcAsistencia" [(ngModel)]="asist.estado" optionLabel="opc" [disabled]="asist.deshabilitado"></p-dropdown>

@@ -3,7 +3,7 @@ import { ResourceService } from './resource.service';
 import { Pago } from '../modelos/pago';
 import { IPago } from '../interfaces/ipago';
 import { GLOBAL } from './global';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -50,6 +50,13 @@ export class PagoService extends ResourceService<Pago,IPago>{
       return this.updatePago(pago)
     else
       this.addPago(pago)
+  }
+  getEstadoCuenta(id: number){
+    let url = GLOBAL.url + 'pagos/estadoCuenta/' + id;
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this._http.get(url, { headers: headers, responseType: 'blob' });
+   
   }
 
 }

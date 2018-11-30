@@ -76,6 +76,10 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
     let url = GLOBAL.url + 'cursadas/instructor/email/' + email +'/finalizada';
     return super.listURL(url);
   }
+  getCursadasFinalizadas(){
+    let url = GLOBAL.url + 'cursadas/finalizadas';
+    return super.listURL(url);
+  }
 
   save(cursada: Cursada){
     if(cursada.id)

@@ -17,7 +17,8 @@
                 </thead>
                     <tbody >
                       <tr *ngFor="let fila of filas;">
-                        <td class="zui-sticky-col">{{fila.nombreAlumno}}</td>
+                        <td class="zui-sticky-col"><del *ngIf="!fila.activa">{{fila.nombreAlumno}}</del>
+                                                    <p *ngIf="fila.activa"> {{fila.nombreAlumno}}</p></td>
                         <td *ngFor="let notaE of fila.notas;"  >
                            <p-spinner size="10" [(ngModel)]="notaE.nota" [min]="0" [max]="10" [step]="0.25" [disabled]="notaE.deshabilitado" ></p-spinner> 
                           

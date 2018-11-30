@@ -29,6 +29,7 @@ import { TokenStorageService } from 'src/app/auth/token-storage.service';
 import {AdministrativoService} from '../../servicios/administrativo.service';
 import {Area} from '../../modelos/area';
 import {Administrativo} from '../../modelos/administrativo';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-cursadas',
@@ -103,7 +104,10 @@ export class CursadasComponent implements OnInit {
   selectedSala= new Sala();
   selectedInstructor= new Instructor();
   selectedAdm = new Administrativo();
-
+  cursadasTipo:SelectItem[]=[];
+  selectedTipoCursada:String;
+  cursadasActivas:boolean=true;
+  inscripciones:Inscripcion[];
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2000,
@@ -136,6 +140,7 @@ export class CursadasComponent implements OnInit {
     this.cursadaSeleccionada.curso = new Curso();
     this.cursadaSeleccionada.curso = this.selectedCurso;
     this.cursadaSeleccionada.instructor = new Instructor();
+    this.cursadaSeleccionada.administrativo= this.selectedAdm;
     if(this.selectedInstructor.nombre=="Sin Especificar"){
       this.cursadaSeleccionada.instructor = null;
     }
@@ -248,6 +253,9 @@ export class CursadasComponent implements OnInit {
         this.textoDialogoInfo="La sala se encuentra ocupada de manera tentativa, aunque se volvera a verificar al iniciar la cursada";
         this.mensajeInfo=true;
       }
+    }
+    refrescarTipoCursadas(){
+      this.getCursadas();
     }
 
   verCalendarioInstructor(){
@@ -400,7 +408,7 @@ export class CursadasComponent implements OnInit {
       this.selectedSala=this.cursadaSeleccionada.sala;
     }
 
-
+    this.selectedAdm=this.cursadaSeleccionada.administrativo;
     this.fechaInicio=new Date(this.cursadaSeleccionada.fechaInicio);
     this.newAttribute={};
     this.fieldArray=[];
@@ -417,6 +425,7 @@ export class CursadasComponent implements OnInit {
            horaFin:new Date(arrayAux[index].horaFin)});
       }
     }
+    
     this.edicion=true;
     this.mostrarDialogo=true;
   }
@@ -439,7 +448,7 @@ export class CursadasComponent implements OnInit {
       this.selectedSala=this.cursadaSeleccionada.sala;
     }
 
-
+    this.selectedAdm=this.cursadaSeleccionada.administrativo;
     this.fechaInicio=new Date(this.cursadaSeleccionada.fechaInicio);
     this.newAttribute={};
     this.fieldArray=[];
@@ -499,6 +508,7 @@ export class CursadasComponent implements OnInit {
     this.filtrarInstructores();
     this.selectedInstructor=this.instructores[0];
     this.selectedSala=this.salas[0];
+    this.selectedAdm=this.administrativos[0];
     this.fechaInicio=new Date();
     this.fieldArray= [];
     this.newAttribute={};
@@ -572,28 +582,56 @@ export class CursadasComponent implements OnInit {
 
   getCursadas(){
     this.cursadas = [];
-    this._cursadaService.list()
-      .subscribe(cursadas => {
-        cursadas.forEach(cursada => {
-          let nuevaCursada = new Cursada();
-          let nuevoCurso = new Curso();
-          let nuevoInstructor = new Instructor();
-          let nuevaSala = new Sala();
+    if(this.selectedTipoCursada=="activas"){
+      this.cursadasActivas=true;
+      this._cursadaService.list()
+        .subscribe(cursadas => {
+          cursadas.forEach(cursada => {
+            let nuevaCursada = new Cursada();
+            let nuevoCurso = new Curso();
+            let nuevoInstructor = new Instructor();
+            let nuevaSala = new Sala();
 
-          nuevoCurso.copiar(cursada.curso);
-          nuevoInstructor.copiar(cursada.instructor);
-          nuevaSala.copiar(cursada.sala);
-          nuevaCursada.copiar(cursada);
-          nuevaCursada.curso = nuevoCurso;
-          nuevaCursada.instructor = nuevoInstructor;
-          nuevaCursada.sala = nuevaSala;
+            nuevoCurso.copiar(cursada.curso);
+            nuevoInstructor.copiar(cursada.instructor);
+            nuevaSala.copiar(cursada.sala);
+            nuevaCursada.copiar(cursada);
+            nuevaCursada.curso = nuevoCurso;
+            nuevaCursada.instructor = nuevoInstructor;
+            nuevaCursada.sala = nuevaSala;
 
-          this.cursadas.push(nuevaCursada);
+            this.cursadas.push(nuevaCursada);
 
+          })
+          //console.log(this.cursadas);
+          this.busqueda = undefined;
         })
-        //console.log(this.cursadas);
-        this.busqueda = undefined;
-      })
+    }
+    else{
+      this.cursadasActivas=false;
+      this._cursadaService.getCursadasFinalizadas()
+        .subscribe(cursadas => {
+          cursadas.forEach(cursada => {
+            let nuevaCursada = new Cursada();
+            let nuevoCurso = new Curso();
+            let nuevoInstructor = new Instructor();
+            let nuevaSala = new Sala();
+
+            nuevoCurso.copiar(cursada.curso);
+            nuevoInstructor.copiar(cursada.instructor);
+            nuevaSala.copiar(cursada.sala);
+            nuevaCursada.copiar(cursada);
+            nuevaCursada.curso = nuevoCurso;
+            nuevaCursada.instructor = nuevoInstructor;
+            nuevaCursada.sala = nuevaSala;
+
+            this.cursadas.push(nuevaCursada);
+
+          })
+          //console.log(this.cursadas);
+          this.busqueda = undefined;
+        })
+    }
   }
 
   getAlumnos(){
@@ -709,7 +747,9 @@ export class CursadasComponent implements OnInit {
 
     ngOnInit() {
       console.log(this._tokenService.getUsername())
-
+      this.cursadasTipo.push({label:"Activas",value:"activas"});
+      this.cursadasTipo.push({label:"Finalizadas",value:"finalizada"}); 
+      this.selectedTipoCursada=this.cursadasTipo[0].value;
       this.cargarCampos();
       this.getAlumnos();
       this.getAdministrativos();
@@ -793,7 +833,7 @@ export class CursadasComponent implements OnInit {
      //console.log("Cursadas: ", this.cursadas);
     //console.log('alumnosFiltrados: ',this.alumnosFiltrados
 
-   console.log("Cursada: ",this.cursadaSeleccionada);
+   console.log("elegido: ",this.selectedAdm);
 
     // console.log("fecha: ",this.fechaInicio);
   }
@@ -802,17 +842,57 @@ export class CursadasComponent implements OnInit {
   mostrarAlumnosEnCursada(cursada){
     this.cursadaSeleccionada = new Cursada();
     this.cursadaSeleccionada.copiar(cursada);
-    this._inscripcionService.getAlumnosCursada(cursada.id)
-        .toPromise()
-        .then(alumnos => {
-          this.alumnosEnCursada = [];
-          alumnos.forEach(alumno => {
-            let alumnoAux = new Alumno();
-            alumnoAux.copiar(alumno);
-            this.alumnosEnCursada.push(alumno);
-          })
-          this.mostrandoAlumnosInscriptos = true;
-        });
+    Promise.all([
+      this._inscripcionService.getAlumnosCursada(this.cursadaSeleccionada.id).toPromise(),
+      this._inscripcionService.getInscCursada(this.cursadaSeleccionada.id).toPromise()
+    ]).then(values =>{
+      this.alumnosEnCursada = [];
+      this.inscripciones=[];
+
+      values[0].forEach(alumno => {
+        let alumnoAux = new Alumno();
+        alumnoAux.copiar(alumno);
+        let nombreAux= alumnoAux.apellido+", "+alumnoAux.nombre
+        alumnoAux.nombreApellido= nombreAux;   
+        this.alumnosEnCursada.push(alumnoAux);
+      });
+      values[1].forEach(inscripcion =>{
+        let inscAux = new Inscripcion();
+        inscAux.idAlumno=inscripcion.idAlumno;
+        inscAux.idCursada=inscripcion.idCursada;
+        inscAux.activa=inscripcion.activa;      
+        this.inscripciones.push(inscAux);
+      });
+    }).then(() => {
+      this.validarAlumnos();
+      this.mostrandoAlumnosInscriptos = true;
+    });
+    // this._inscripcionService.getAlumnosCursada(cursada.id)
+    //     .toPromise()
+    //     .then(alumnos => {
+    //       this.alumnosEnCursada = [];
+    //       alumnos.forEach(alumno => {
+    //         this._inscripcionService.getInscripcion(alumno.id,cursada.id)
+    //         .toPromise()
+    //         .then(inscripcion => {
+    //           let alumnoAux = new Alumno();
+    //           alumnoAux.copiar(alumno);
+    //           alumnoAux.activo==inscripcion.activa;
+    //           this.alumnosEnCursada.push(alumno);
+    //         })
+            
+    //       })
+    //       this.mostrandoAlumnosInscriptos = true;
+    //     });
+  }
+  validarAlumnos(){
+    this.alumnosEnCursada.forEach(element => {
+      this.inscripciones.forEach(element2 => {
+        if(element.id==element2.idAlumno){
+          element.activo=element2.activa;
+        }
+      });
+    });
   }
 
   getAlumnosFiltrados(alumnosTodos: Alumno[], alumnosInscriptos: Alumno[]): Alumno[]{

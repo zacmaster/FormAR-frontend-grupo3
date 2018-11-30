@@ -36,6 +36,10 @@ export class InscripcionService extends ResourceService<Inscripcion,IInscripcion
     let url = GLOBAL.url + 'inscripciones/cursadas/' + cursadaId;
     return this._alumnoService.listURL(url);
   }
+  getInscCursada(cursadaId: number){
+    let url = GLOBAL.url + 'inscripciones/cursadaInsc/' + cursadaId;
+    return super.listURL(url);
+  }
   deleteInscripcion(inscripcion: Inscripcion): Observable<{}>{
     return super.delete(inscripcion)
   }

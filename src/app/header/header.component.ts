@@ -11,6 +11,7 @@ import { MyBooleanService } from '../servicios/boolean-cerrarsesion';
 export class HeaderComponent implements OnInit {
 
   logueado:boolean=false;
+  nombre:string;
 
   constructor(private tokenStorage: TokenStorageService,
     private router: Router,private service: MyBooleanService) {

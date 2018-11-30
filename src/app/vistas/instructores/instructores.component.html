@@ -216,6 +216,7 @@
               maxlength="30"
               [(ngModel)]="instructorSeleccionado.username"
               [placeholder]="_LABEL.ingrese.username"
+              [disabled]="edicion"
             >
             <div  *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
               <div *ngIf="username.errors.required">{{ _VALIDACION.requerido.username }}</div>
@@ -233,7 +234,8 @@
                    minlength="6"
                    maxlength="30"
                    [(ngModel)]="instructorSeleccionado.password"
-                   [placeholder]="_LABEL.ingrese.password">
+                   [placeholder]="_LABEL.ingrese.password"
+                   [disabled]="edicion">
             <div  *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
               <div *ngIf="password.errors.required">{{ _VALIDACION.requerido.password }}</div>
               <div *ngIf="password.errors.minlength">{{ _VALIDACION.minimoSeis }}</div>
@@ -382,64 +384,6 @@
           </table>
         </div>
         </div>
-        <!-- <div class="form-group col">
-          <label for="">{{ _LABEL.dispHoraria }}</label>
-
-                <table  style="border:hidden;">
-                    <thead>
-                        <tr>
-                            <th>Dia</th>
-                            <th>Hora Inicio</th>
-                            <th>Hora Fin</th>
-                            <th>Accion</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let field of fieldArray; let i = index">
-                            <td>
-                                <select class="form-control" [(ngModel)]="field.dia"  type="text" name="{{field.dia}}">
-                                    <option *ngFor="let dia of dias" [value]="dia.dia">
-                                      {{ dia.dia }}
-                                    </option>
-                                  </select>
-                            </td>
-                            <td>
-                                <p-calendar [(ngModel)]="field.horaInicio"   name="{{field.horaInicio}}" [timeOnly]="true" hourFormat="24"></p-calendar>
-
-                            </td>
-                            <td>
-                                <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
-                            </td>
-                            <td>
-                                <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <select class="form-control" id="newAttributeDia" [(ngModel)]="newAttribute.dia"  type="text" name="newAttributeDia">
-                                    <option *ngFor="let dia of dias" [value]="dia.dia">
-                                      {{ dia.dia }}
-                                    </option>
-                                  </select>
-                            </td>
-                            <td>
-                                <p-calendar [(ngModel)]="newAttribute.horaInicio" id="newAttributehoraInicio"   name="newAttributehoraInicio" [timeOnly]="true" hourFormat="24"></p-calendar>
-
-                            </td>
-                            <td>
-                                <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
-
-                            </td>
-                            <td>
-                                <button class="btn btn-default" type="button" (click)="addFieldValue()">Agregar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div>
-      </div>
--->
-
       </div>
     </div>
 

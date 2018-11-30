@@ -49,6 +49,7 @@
     <table class="table bg-light table-hover">
       <thead class="thead-light">
         <tr>
+          <th>Nro</th>
           <th>{{ _LABEL.nombre }}</th>
           <th>{{ _LABEL.apellido }}</th>
           <th>{{ _LABEL.dni }}</th>
@@ -56,11 +57,15 @@
         </tr>
     </thead>
       <tbody>
-        <tr *ngFor="let alumno of alumnosEnCursada">
-          <td>{{ alumno.nombre }}</td>
-          <td>{{ alumno.apellido }}</td>
-          <td>{{ alumno.dni }}</td>
-          <td>   <button class="btn btn-danger" (click)="eliminarInscripcion(alumno)">
+        <tr *ngFor="let alumno of alumnosEnCursada;let i = index">
+          <td>{{i+1}}</td>
+          <td><del *ngIf="!alumno.activo">{{alumno.nombre}}</del>
+            <p *ngIf="alumno.activo"> {{alumno.nombre}}</p></td>
+          <td><del *ngIf="!alumno.activo">{{alumno.apellido}}</del>
+            <p *ngIf="alumno.activo"> {{alumno.apellido}}</p></td>
+          <td><del *ngIf="!alumno.activo">{{alumno.dni}}</del>
+            <p *ngIf="alumno.activo"> {{alumno.dni}}</p></td>
+          <td>   <button class="btn btn-danger" *ngIf="alumno.activo" (click)="eliminarInscripcion(alumno)">
             <i class="fas fa-ban"></i>
           </button></td>
         </tr>
@@ -75,14 +80,17 @@
 <div class="content-section implementation ui-fluid">
     <p-table #dt [columns]="cols" [value]="cursadas" [scrollable]="true" scrollHeight="70vh" [resizableColumns]="true">
         <ng-template pTemplate="caption">
-          <div style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-              <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-              <button class="btn btn-success"
-                      (click)="nuevaCursada()">
-                      <span>{{ _LABEL.nuevaCursada }}</span>
-              </button>
-            </div>
+            <div style="text-align: right">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input type="text" pInputText size="50" [placeholder]="_LABEL.buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                <button class="btn btn-success"
+                        (click)="nuevaCursada()">
+                        <span>{{ _LABEL.nuevaCursada }}</span>
+                </button>
+              </div>
+          <div style="text-align: left">
+              <p-dropdown [options]="cursadasTipo" [(ngModel)]="selectedTipoCursada" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarTipoCursadas()" ></p-dropdown>
+          </div>
           </ng-template>
 
           <ng-template pTemplate="colgroup" let-columns>
@@ -133,17 +141,17 @@
                   <span *ngIf="!rowData.iniciada">En espera</span>
               </span>
                 <span *ngSwitchCase="'acciones'">
-                    <button *ngIf="supervisorConectado && !rowData.iniciada" class="btn btn-success mr-2" (click)="iniciarCursada(rowData)">
+                    <button *ngIf="supervisorConectado && !rowData.iniciada && cursadasActivas" class="btn btn-success mr-2" (click)="iniciarCursada(rowData)">
                         <i class="fas fa-play-circle"></i>
                       </button>
-                    <button class="btn btn-info mr-2" (click)="clickInscribir(rowData)">
+                    <button *ngIf="cursadasActivas" class="btn btn-info mr-2" (click)="clickInscribir(rowData)">
                         <i class="fas fa-file-signature"></i>
                       </button>
-                      <button *ngIf="!rowData.iniciada" class="btn btn-success mr-2" (click)="editarCursada(rowData)">
+                      <button *ngIf="!rowData.iniciada && cursadasActivas" class="btn btn-success mr-2" (click)="editarCursada(rowData)">
                         <i class="fas fa-edit"></i>
                       </button>
 
-                      <button class="btn btn-danger" (click)="eliminarCursada(rowData)">
+                      <button *ngIf="cursadasActivas" class="btn btn-danger" (click)="eliminarCursada(rowData)">
                         <i class="fas fa-trash"></i>
                       </button>
                 </span>
@@ -203,6 +211,7 @@
       <div class="dialogoBody p-3 pt-3 text-center">
         <p> <span style="font-weight: bold"> Sala: </span>{{ cursadaSeleccionada.sala.nombre}} </p>
         <p> <span style="font-weight: bold"> Instructor: </span>{{ cursadaSeleccionada.instructor.nombre }} </p>
+        <p> <span style="font-weight: bold"> Administrativo: </span>{{ cursadaSeleccionada.administrativo.nombre }} </p>
         <p> <span style="font-weight: bold"> Precio Cuota: </span>${{ cursadaSeleccionada.precioCuota }} </p>
         <p> <span style="font-weight: bold"> Matricula: </span>${{ cursadaSeleccionada.matricula }} </p>
         <p> <span style="font-weight: bold"> Cantidad de Cuotas: </span>{{ cursadaSeleccionada.cantidadCuotas }} </p>

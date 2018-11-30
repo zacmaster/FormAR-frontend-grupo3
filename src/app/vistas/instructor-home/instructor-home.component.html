@@ -4,7 +4,7 @@
           <ng-template pTemplate="caption">
             <div style="text-align: left">
               <div class="input-group-prepend">
-                <label>{{nombre}}</label>
+                <h4>Bienvenido, {{nombre}}</h4>
               </div>
               <p-dropdown *ngIf="mostrarInstructoresSpinner" [options]="instructores" [(ngModel)]="selectedInstructor" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarCursadas()" ></p-dropdown>
               <p-dropdown [options]="cursadasTipo" [(ngModel)]="selectedTipoCursada" [style]="{'width':'250px','height':'38px'}" (onChange)="refrescarTipoCursadas()" ></p-dropdown>
@@ -41,15 +41,15 @@
                         <button
                         (click)="mostrarInfo(rowData)"
                         class="btn btn-warning mr-2"
-                        [title]="_LABEL.info.contacto">
+                        [title]="_LABEL.info.informacion">
                          <i class="fas fa-info"></i>
                       </button>
                       </span>
                       <span *ngSwitchCase="'acciones'">
-                          <button class="btn btn-success mr-2"(click)="verAsistencia(rowData)">
+                          <button class="btn btn-success mr-2"(click)="verAsistencia(rowData)"[title]="_LABEL.info.asistencia">
                               <i class="fas fa-clipboard-list"></i>
                           </button>
-                          <button class="btn btn-info mr-2"(click)="verNotas(rowData)">
+                          <button class="btn btn-info mr-2"(click)="verNotas(rowData)" [title]="_LABEL.info.notas">
                               <i class="far fa-edit"></i>
                           </button>
                       </span>

@@ -1,6 +1,9 @@
 export class Util {
     static convertirTimestamp(timestamp: number): string{
         let date = new Date(timestamp);
+        if(timestamp==null){
+            return " ";
+        }
         return date.toLocaleDateString('en-GB');
     } 
     static convertirDate(date: Date): string{

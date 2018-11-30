@@ -95,6 +95,8 @@ export class SalasComponent{
   ocultarDialogoError(){
       this.mostrarDialogoErrorBorrar=false;
       this.mostrarDialogoErrorEditar=false;
+      this.salaSeleccionada = this.newSala();
+
   }
   verCalendario(sala){
     this.salaSeleccionada = new Sala();

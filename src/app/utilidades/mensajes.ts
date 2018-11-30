@@ -209,6 +209,9 @@ export var LABEL ={
         contacto: "Descripción del contacto",
         cursada: "Detalles de la cursada",
         alumnosEnCursada: "Ver los alumnos inscriptos en la cursada",
+        informacion:"Ver informacion",
+        notas:"Generar notas",
+        asistencia:"Tomar asistencia"
     },
     error: {
         horarioCursada: "El instructor seleccionado no se encuentra disponible en el horario elegido"

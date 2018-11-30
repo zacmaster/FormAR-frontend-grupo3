@@ -34,8 +34,9 @@ export class AlumnosListComponent implements OnInit {
     dayNamesFormat: 'dd',
     firstCalendarDay: 1,
     locale: esLocale,
-    barTitleIfEmpty: 'Click to select a date',
-    placeholder: 'Click to select a date', 
+    maxDate: new Date(Date.now()),
+    barTitleIfEmpty: 'Seleccione una fecha',
+    placeholder: 'Seleccione una fecha', 
     addClass: 'form-control', 
     addStyle: {}, 
     fieldId: 'my-date-picker', 
@@ -257,6 +258,7 @@ captureScreen(){
   nuevoAlumno(){
     this.edicion = false;
     this.alumnoSeleccionado = new Alumno();
+    this.dateNac=null;
     this.mostrarDialogoAB = true;
   }
 
@@ -433,6 +435,20 @@ captureScreen(){
         window.URL.revokeObjectURL(url);
         a.remove(); // remove the element
       })  
+ }
+ buscarEstadoCuenta(){
+   this._pagoService.getEstadoCuenta(this.alumnoSeleccionado.id).subscribe(res=>{
+    console.log('start download:',res);
+    var url = window.URL.createObjectURL(res);
+    var a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = "EstadoCuenta-"+this.alumnoSeleccionado.apellido+new Date().toLocaleDateString('en-GB');
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove(); // remove the element
+   });
  }
 
 }

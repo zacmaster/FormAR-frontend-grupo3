@@ -6,6 +6,7 @@ export class Inscripcion extends Resource implements IInscripcion{
     
     idAlumno: number;
     idCursada: number;
+    activa:boolean;
 
     copiar(iresource: Iresource) {
         throw new Error("Method not implemented.");
