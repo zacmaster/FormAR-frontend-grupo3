@@ -600,6 +600,10 @@ guardarContactoNuevo(){
             this.bajarDatos();
           })
       }
+      else{
+        this.cerrarFormularioContacto();
+        this.bajarDatos();
+      }
     })
     
     
@@ -651,6 +655,10 @@ private guardarContactoNuevosinContactoPrevio(){
             this.cerrarFormularioContacto();
             this.bajarDatos();
           })
+      }
+      else{
+        this.cerrarFormularioContacto();
+            this.bajarDatos();
       }
     })
     

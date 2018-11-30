@@ -321,7 +321,7 @@
           </div>
         </div>
         <div class="row"><div class="form-group col">
-          <label for="">{{ _LABEL.horarioCursada }} &nbsp; </label>
+          <label for="">{{ _LABEL.dispHoraria }} &nbsp; </label>
 
           <label for=""><button class="btn btn-success " type="button" (click)="addFieldValue()"> <i class="fas fa-plus"></i></button>
           </label>
@@ -351,7 +351,7 @@
 
               </td>
               <td>
-                <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true" hourFormat="24"></p-calendar>
+                <p-calendar [(ngModel)]="field.horaFin"  name="{{field.horaFin}}" [timeOnly]="true"  hourFormat="24"></p-calendar>
               </td>
               <td>
 
@@ -371,7 +371,7 @@
 
               </td>
               <td>
-                <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin" [timeOnly]="true" hourFormat="24"></p-calendar>
+                <p-calendar [(ngModel)]="newAttribute.horaFin" id="newAttributehoraFin"  name="newAttributehoraFin"  [timeOnly]="true" hourFormat="24"></p-calendar>
 
               </td>
 

@@ -169,8 +169,8 @@ export var LABEL ={
         cupoMinimo: "Cantidad Mínima de Inscriptos",
         cupoMaximo: "Cantidad Máxima de Inscriptos",
         nombreCursada: "Nombre de la cursada",
-        matricula: "Ingrese el valor de la mátricula",
-        cuota: "Ingrese el valor de la cuota",
+        matricula: "Valor de la mátricula",
+        cuota: "Valor de la cuota",
         infoCursada: "Cursadas de ",
         inscripcion: "Nueva inscripción"
     },

@@ -482,6 +482,7 @@ export class ContactosListComponent implements OnInit {
                     this.tareaSeleccionada.contacto.copiar(c);
                   }
                 });
+                console.log("contacto de tarea",this.tareaSeleccionada.contacto);
                 
                 
                 if(!this.porFecha){
