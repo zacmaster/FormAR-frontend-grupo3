@@ -227,8 +227,8 @@ export class ContactosListComponent implements OnInit {
             cursos => {
               this.cursos = [];
               let aux= new Curso();
-              aux.id=0;
-              aux.nombre="Sin especificar";
+              aux.id = 0;
+              aux.nombre = "Sin especificar";
               this.cursos.push(aux);
               cursos.forEach(curso =>{
                 let area_aux = new Area();
@@ -248,8 +248,8 @@ export class ContactosListComponent implements OnInit {
       .then(areas => {
         this.areas = [];
         let aux = new Area();
-        aux.id=0;
-        aux.nombre="Sin especificar"
+        aux.id = 0;
+        aux.nombre = "Sin especificar"
         this.areas.push(aux);
         areas.forEach(area=>{
           let area_aux = new Area();
