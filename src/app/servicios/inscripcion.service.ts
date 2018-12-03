@@ -19,7 +19,7 @@ export class InscripcionService extends ResourceService<Inscripcion,IInscripcion
                 private _cursadaService: CursadaService,
                 private _alumnoService: AlumnoService
             ) {
-    super(_http, GLOBAL.url + 'inscripciones','');
+    super(_http, GLOBAL.url + 'v1/inscripciones','');
   }
 
   addInscripcion(inscripcion: Inscripcion): Observable<Inscripcion>{
@@ -28,23 +28,23 @@ export class InscripcionService extends ResourceService<Inscripcion,IInscripcion
   // http://localhost:3000/v1/inscripciones/alumnos/1
 
   getCursadasDeAlumno(alumnoId: number){
-    let url = GLOBAL.url + 'inscripciones/alumnos/' + alumnoId;
+    let url = GLOBAL.url + 'v1/inscripciones/alumnos/' + alumnoId;
     return this._cursadaService.listURL(url);
   }
 
   getAlumnosCursada(cursadaId: number){
-    let url = GLOBAL.url + 'inscripciones/cursadas/' + cursadaId;
+    let url = GLOBAL.url + 'v1/inscripciones/cursadas/' + cursadaId;
     return this._alumnoService.listURL(url);
   }
   getInscCursada(cursadaId: number){
-    let url = GLOBAL.url + 'inscripciones/cursadaInsc/' + cursadaId;
+    let url = GLOBAL.url + 'v1/inscripciones/cursadaInsc/' + cursadaId;
     return super.listURL(url);
   }
   deleteInscripcion(inscripcion: Inscripcion): Observable<{}>{
     return super.delete(inscripcion)
   }
   getInscripcion(alumnoId: number,cursadaId: number){
-    let url = GLOBAL.url + 'inscripciones/alumno/' + alumnoId+'/cursada/'+cursadaId;
+    let url = GLOBAL.url + 'v1/inscripciones/alumno/' + alumnoId+'/cursada/'+cursadaId;
     return super.listURLOne(url);
   }
 }

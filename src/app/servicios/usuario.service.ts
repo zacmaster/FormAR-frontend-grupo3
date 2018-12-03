@@ -11,7 +11,7 @@ import { GLOBAL } from './global';
 })
 export class UsuarioService {
   // public _urlUsuarios: string = "assects/data/usuarios.json";
-  public _urlUsuarios: string =  GLOBAL.url + '/usuarios';
+  public _urlUsuarios: string =  GLOBAL.url + 'v1/usuarios';
   
 
 

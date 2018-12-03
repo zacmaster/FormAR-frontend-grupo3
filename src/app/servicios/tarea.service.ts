@@ -14,7 +14,7 @@ import { ITarea } from '../interfaces/itarea';
 export class TareaService extends ResourceService<Tarea, ITarea>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'tareas','');
+    super(_http,GLOBAL.url + 'v1/tareas','');
    }
 
   public getTareas(): Observable<ITarea[]>{
@@ -38,7 +38,7 @@ export class TareaService extends ResourceService<Tarea, ITarea>{
     return super.read(id);
   }
   getTareasAdmin(id:number):Observable<ITarea[]>{
-    let url = GLOBAL.url + 'tareas/administrativo/' + id;
+    let url = GLOBAL.url + 'v1/tareas/administrativo/' + id;
     return super.listURL(url); 
   }
 

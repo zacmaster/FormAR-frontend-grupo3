@@ -15,7 +15,7 @@ import { ResourceService } from "./resource.service";
 export class InstructorService extends ResourceService<Instructor, IInstructor>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'instructores','');
+    super(_http,GLOBAL.url + 'v1/instructores','');
    }
 
   public getInstructores(): Observable<IInstructor[]>{

@@ -16,7 +16,7 @@ export class ContactoService extends ResourceService<Contacto, IContacto>{
 
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'contactos','');
+    super(_http,GLOBAL.url + 'v1/contactos','');
    }
 
 

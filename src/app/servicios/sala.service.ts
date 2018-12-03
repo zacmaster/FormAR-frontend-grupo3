@@ -15,7 +15,7 @@ import { ResourceService } from "./resource.service";
 export class SalaService extends ResourceService<Sala, ISala>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'salas','');
+    super(_http,GLOBAL.url + 'v1/salas','');
    }
 
   public getSalas(): Observable<ISala[]>{

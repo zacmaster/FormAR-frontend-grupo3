@@ -22,13 +22,13 @@ export class CalendarioService{
 
   public readSala(id: number): Observable<IClase[]>{
     return this.httpClient
-      .get<IClase[]>(`${GLOBAL.url}disponibilidad/sala/${id}`)
+      .get<IClase[]>(`${GLOBAL.url}v1/disponibilidad/sala/${id}`)
       .pipe(catchError(this.handleError))
 
    }
    public readInstructor(id: number): Observable<IClase[]>{
     return this.httpClient
-      .get<IClase[]>(`${GLOBAL.url}disponibilidad/instructor/${id}`)
+      .get<IClase[]>(`${GLOBAL.url}v1/disponibilidad/instructor/${id}`)
       .pipe(catchError(this.handleError))
 
    }

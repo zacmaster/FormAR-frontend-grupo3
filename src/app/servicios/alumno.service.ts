@@ -15,7 +15,7 @@ import { ResourceService } from "./resource.service";
 export class AlumnoService extends ResourceService<Alumno, IAlumno>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'alumnos','');
+    super(_http,GLOBAL.url + 'v1/alumnos','');
    }
 
 
@@ -40,14 +40,14 @@ export class AlumnoService extends ResourceService<Alumno, IAlumno>{
     return super.read(id);
   }
   getAnalitico(id: number){
-    let url = GLOBAL.url + 'alumnos/analitico/' + id;
+    let url = GLOBAL.url + 'v1/alumnos/analitico/' + id;
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');
     return this._http.get(url, { headers: headers, responseType: 'blob' });
    
   }
   getHistorial(id: number){
-    let url = GLOBAL.url + 'alumnos/historialacademico/' + id;
+    let url = GLOBAL.url + 'v1/alumnos/historialacademico/' + id;
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');
     return this._http.get(url, { headers: headers, responseType: 'blob' });

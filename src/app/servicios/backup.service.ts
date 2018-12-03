@@ -13,7 +13,7 @@ export class BackupService {
   constructor(private _http: HttpClient) {}
 
   getBD(){
-    let url = GLOBAL.url + 'backup'
+    let url = GLOBAL.url + 'v1/backup'
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/sql');
     return this._http.get(url, { headers: headers, responseType: 'blob' });
@@ -21,7 +21,7 @@ export class BackupService {
   }
 
   setBD(item:File){
-    let url = GLOBAL.url + 'backup'
+    let url = GLOBAL.url + 'v1/backup'
     var fd = new FormData();
         fd.append('file', item);
     let headers = new HttpHeaders();
@@ -30,7 +30,7 @@ export class BackupService {
    
   }
   uploadFile(file:File):Promise<any> {
-    let url = GLOBAL.url + 'backup'
+    let url = GLOBAL.url + 'v1/backup'
     return new Promise((resolve, reject) => {
 
         let xhr:XMLHttpRequest = new XMLHttpRequest();

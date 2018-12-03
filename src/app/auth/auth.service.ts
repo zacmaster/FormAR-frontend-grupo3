@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { JwtResponse} from '../modelos/jwt-response';
 import { AuthLoginInfo} from '../modelos/login-info';
 import { SignUpInfo} from '../modelos/signup-info';
-
+import { GLOBAL } from '../servicios/global';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -14,8 +14,8 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = 'http://localhost:3000/auth/signin';
-  private signupUrl = 'http://localhost:3000/auth/signup';
+  private loginUrl = GLOBAL.url+"auth/signin";
+  private signupUrl = GLOBAL.url+"auth/signup";
 
   constructor(private http: HttpClient) {
   }

@@ -14,11 +14,11 @@ import {Injectable} from "@angular/core";
 export class ExamenService extends ResourceService<Examen, IExamen>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'examenes','');
+    super(_http,GLOBAL.url + 'v1/examenes','');
   }
 
   public getExamenes(cursadaId: number): Observable<IExamen[]>{
-    let url = GLOBAL.url + 'examenes/cursada/' + cursadaId;
+    let url = GLOBAL.url + 'v1/examenes/cursada/' + cursadaId;
     return super.listURL(url);
   }
 

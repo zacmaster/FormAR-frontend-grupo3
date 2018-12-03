@@ -15,11 +15,11 @@ import {Injectable} from "@angular/core";
 export class ClaseService extends ResourceService<ClaseCursada, IClaseCursada>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'clases','');
+    super(_http,GLOBAL.url + 'v1/clases','');
   }
 
   public getClases(cursadaId: number): Observable<IClaseCursada[]>{
-    let url = GLOBAL.url + 'clases/cursada/' + cursadaId;
+    let url = GLOBAL.url + 'v1/clases/cursada/' + cursadaId;
     return super.listURL(url);
   }
 

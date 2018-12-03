@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
 export class AreaService extends ResourceService<Area, IArea>{
 
   constructor(private _http: HttpClient) {
-    super(_http, GLOBAL.url + 'areas', '');
+    super(_http, GLOBAL.url + 'v1/areas', '');
   }
 
   public getAreas(): Observable<IArea[]>{

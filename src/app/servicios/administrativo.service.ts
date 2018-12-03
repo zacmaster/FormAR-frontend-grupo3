@@ -17,7 +17,7 @@ import { IAdministrativo } from '../interfaces/iadministrativo';
 export class AdministrativoService extends ResourceService<Administrativo, IAdministrativo>{
 
   constructor(private _http: HttpClient) {
-    super(_http,GLOBAL.url + 'tareas/administrativos','');
+    super(_http,GLOBAL.url + 'v1/tareas/administrativos','');
    }
 
    public getAdministrativos(): Observable<IAdministrativo[]>{

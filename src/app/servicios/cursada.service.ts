@@ -13,7 +13,7 @@ import { ValidacionCursada } from '../modelos/validacionCursada';
 export class CursadaService extends ResourceService<Cursada,Icursada>{
 
   constructor(private _http: HttpClient) {
-    super(_http, GLOBAL.url + 'cursadas','');
+    super(_http, GLOBAL.url + 'v1/cursadas','');
   }
 
   public getCursadas(): Observable<Icursada[]>{
@@ -43,41 +43,41 @@ export class CursadaService extends ResourceService<Cursada,Icursada>{
   }
 
   getCursadasInstructor(id:number):Observable<Icursada[]>{
-    let url = GLOBAL.url + 'cursadas/instructor/' + id;
+    let url = GLOBAL.url + 'v1/cursadas/instructor/' + id;
     return super.listURL(url);
   }
 
   getCursadasInstructorEmail(email: string):Observable<Icursada[]>{
-    let url = GLOBAL.url + 'cursadas/instructor/email/' + email;
+    let url = GLOBAL.url + 'v1/cursadas/instructor/email/' + email;
     return super.listURL(url)
   }
 
   getCursadasByAdministrativo(username: string):Observable<Icursada[]>{
-    let url = GLOBAL.url + 'cursadas/administrativo/username/' + username;
+    let url = GLOBAL.url + 'v1/cursadas/administrativo/username/' + username;
     return super.listURL(url);
   }
 
   getCursadasInstructorFinalizadas(id:number):Observable<Icursada[]>{
-    let url = GLOBAL.url + 'cursadas/instructor/' + id+'/finalizada';
+    let url = GLOBAL.url + 'v1/cursadas/instructor/' + id+'/finalizada';
     return super.listURL(url);
   }
   validarCursada(cursada:Cursada){
-    let url = GLOBAL.url + 'cursadas/validar';
+    let url = GLOBAL.url + 'v1/cursadas/validar';
     return this._http
       .post<ValidacionCursada>(url, cursada,GLOBAL.httpOptions)
   }
   iniciarCursada(cursada:Cursada){
-    let url = GLOBAL.url + 'cursadas/iniciar/'+cursada.id;
+    let url = GLOBAL.url + 'v1/cursadas/iniciar/'+cursada.id;
     return this._http
       .post(url,"",GLOBAL.httpOptions)
   }
 
   getCursadasInstructorEmailFinalizadas(email: string):Observable<Icursada[]>{
-    let url = GLOBAL.url + 'cursadas/instructor/email/' + email +'/finalizada';
+    let url = GLOBAL.url + 'v1/cursadas/instructor/email/' + email +'/finalizada';
     return super.listURL(url);
   }
   getCursadasFinalizadas(){
-    let url = GLOBAL.url + 'cursadas/finalizadas';
+    let url = GLOBAL.url + 'v1/cursadas/finalizadas';
     return super.listURL(url);
   }
 
